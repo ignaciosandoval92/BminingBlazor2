@@ -35,5 +35,13 @@ namespace BminingBlazor.Services
             return items.First().Id_proyecto;
 
         }
+
+        public async Task AddIntegrante(IntegranteModel integrante)
+        {
+            string sql = "insert into Integrantes_Proyecto (Integrantes_Proyecto.Id_Usuario,Integrantes_Proyecto.Id_Proyecto) " +
+                         " Values (@Id_Usuario,@Id_Proyecto)";
+            await _dataAccess.SaveData(sql, integrante, _configuration.GetConnectionString("default"));
+        }
+
     }
 }

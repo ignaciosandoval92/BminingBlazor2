@@ -65,7 +65,7 @@
         };
         var id_proyecto = await ProyectoDataService.CreateProyecto(proyecto);
 
-        NavigationManager.NavigateTo("");
+        NavigationManager.NavigateTo($"/ProyectoIntegrantes/{id_proyecto}");
 
     }
 }

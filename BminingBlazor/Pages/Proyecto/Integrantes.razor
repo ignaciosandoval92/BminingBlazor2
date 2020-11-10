@@ -1,6 +1,72 @@
-﻿@page "/ProyectoIntegrantes"
+﻿@page "/ProyectoIntegrantes/{id_proyecto:int}"
+
+@using Models
+@using BminingBlazor.Services
+
+@inject IUserDataService UserDataService
+@inject IProyectoDataService ProyectoDataService
+@inject NavigationManager NavigationManager
+
+
 <h3>Integrantes</h3>
 
+<EditForm Model="@newintegrante" OnValidSubmit="@InsertIntegrante">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group col-md-6">
+        <label for="inputTContrato">Integrante del Proyecto:</label>
+        <select class="form-control" @bind="newintegrante.Id_Usuario" required>
+            @if (users is null)
+            {
+                <p><em>Cargando..</em></p>
+            }
+            else
+            {
+                @foreach (var emails in users)
+                {
+                    <option value="@emails.id">@emails.Email_Bmining</option>
+                }
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Agregar</button>
+    <button type="button" class="btn btn-secondary" @onclick="@InsertMoreIntegrante" >Agregar mas Integrantes</button>
+
+</EditForm>
+
 @code {
+        [Parameter]
+        public int id_proyecto { get; set; }
+
+    private IntegranteModel newintegrante = new IntegranteModel();
+    private List<UsuarioModel> users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await UserDataService.ReadUsers();
+
+    }
+
+
+    private async Task InsertIntegrante()
+    {
+        var integrante = new IntegranteModel()
+        {
+            Id_Usuario = newintegrante.Id_Usuario,
+            Id_Proyecto = id_proyecto
+        };
+        await ProyectoDataService.AddIntegrante(integrante);
+    }
+    private async Task InsertMoreIntegrante()
+    {
+        var integrante = new IntegranteModel()
+        {
+            Id_Usuario = newintegrante.Id_Usuario,
+            Id_Proyecto = id_proyecto
+        };
+        await ProyectoDataService.AddIntegrante(integrante);
+        NavigationManager.NavigateTo($"/ProyectoIntegrantes/{id_proyecto}",true);
+    }
 
 }

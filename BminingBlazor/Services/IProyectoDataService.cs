@@ -6,5 +6,6 @@ namespace BminingBlazor.Services
     public interface IProyectoDataService
     {
         Task<int> CreateProyecto(ProyectoModel proyecto);
+        Task AddIntegrante(IntegranteModel integrante);
     }
 }
