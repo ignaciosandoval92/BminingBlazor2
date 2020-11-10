@@ -48,6 +48,8 @@ namespace BminingBlazor
                 app.UseHsts();
             }
 
+            // TODO: Borrar este comentario
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
