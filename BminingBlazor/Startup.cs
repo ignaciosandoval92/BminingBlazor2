@@ -31,6 +31,7 @@ namespace BminingBlazor
             services.AddServerSideBlazor();
             services.AddTransient<IDataAccess,DataAccess>();
             services.AddTransient<IUserDataService, UserDataService>();
+            services.AddTransient<IProyectoDataService, ProyectoDataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

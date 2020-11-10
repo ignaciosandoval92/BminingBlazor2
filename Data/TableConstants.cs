@@ -10,5 +10,6 @@ namespace Data
     {
         public const string TablaUsuario = "bminin39_SGPBM.Usuario";
         public const string TablaContrato = "bminin39_SGPBM.Contrato";
+        public const string TablaProyecto = "bminin39_SGPBM.Proyecto";
     }
 }

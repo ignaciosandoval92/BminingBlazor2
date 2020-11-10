@@ -1,0 +1,64 @@
+﻿@page "/CrearProyecto"
+@using Models
+@using BminingBlazor.Services
+@inject IProyectoDataService ProyectoDataService
+@inject NavigationManager NavigationManager
+
+<h3>CrearProyecto</h3>
+
+<EditForm Model="@newproyecto" OnValidSubmit="@InsertProyecto">
+<DataAnnotationsValidator />
+<ValidationSummary />
+<tr>
+    <td>
+        <label for="inputNombres">  Codigo de Proyecto:  </label>
+        <InputText id="Cod_Proyecto" @bind-Value="newproyecto.Cod_Proyecto" />
+        <label for="inputNombres">  Nombre de Proyecto:  </label>
+        <InputText id="Nombre_Proyecto" @bind-Value="newproyecto.Nombre_Proyecto" />
+    </td>
+</tr>
+<tr>
+    <td>
+        <label for="inputNombres">  Tipo de Proyecto:  </label>
+        <InputNumber id="Cod_TipoProyecto" @bind-Value="newproyecto.Cod_TipoProyecto" />
+        <label for="inputNombres">  Fecha de Inicio:  </label>
+        <InputDate id="Fecha_Inicio" @bind-Value="newproyecto.Fecha_Inicio" />
+        <label for="inputNombres">  Fecha de Termino:  </label>
+        <InputDate id="Fecha_Fin" @bind-Value="newproyecto.Fecha_Fin" />
+            
+    </td>
+</tr>
+<tr>
+    <td>
+        <label for="inputNombres">  Email del Creador del Proyecto:  </label>
+        <InputText id="Email_Creador" @bind-Value="newproyecto.Email_Creador" />
+        <label for="inputNombres">  Email de Jefe de Proyecto:  </label>
+        <InputText id="Email_JefeProyecto" @bind-Value="newproyecto.Email_JefeProyecto" />
+    </td>
+</tr>
+<button type="submit" class="btn btn-primary">Crear</button>
+    
+</EditForm>
+
+@code {
+    private ProyectoModel newproyecto =new ProyectoModel();
+
+    private async Task InsertProyecto()
+    {
+        var proyecto = new ProyectoModel()
+        {
+            Cod_Proyecto = newproyecto.Cod_Proyecto,
+            Nombre_Proyecto = newproyecto.Nombre_Proyecto,
+            Cod_TipoProyecto = newproyecto.Cod_TipoProyecto,
+            Fecha_Inicio = newproyecto.Fecha_Inicio,
+            Fecha_Fin = newproyecto.Fecha_Fin,
+            Email_Creador = newproyecto.Email_Creador,
+            Email_JefeProyecto = newproyecto.Email_JefeProyecto
+
+        };
+        var id_proyecto = await ProyectoDataService.CreateProyecto(proyecto);
+
+        NavigationManager.NavigateTo("");
+
+    }
+}
