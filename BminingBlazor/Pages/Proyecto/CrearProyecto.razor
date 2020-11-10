@@ -6,34 +6,34 @@
 
 <h3>CrearProyecto</h3>
 
-<EditForm Model="@newproyecto" OnValidSubmit="@InsertProyecto">
+<EditForm Model="@newProyecto" OnValidSubmit="@InsertProyecto">
 <DataAnnotationsValidator />
 <ValidationSummary />
 <tr>
     <td>
         <label for="inputNombres">  Codigo de Proyecto:  </label>
-        <InputText id="Cod_Proyecto" @bind-Value="newproyecto.Cod_Proyecto" />
+        <InputText id="Cod_Proyecto" @bind-Value="newProyecto.Cod_Proyecto" />
         <label for="inputNombres">  Nombre de Proyecto:  </label>
-        <InputText id="Nombre_Proyecto" @bind-Value="newproyecto.Nombre_Proyecto" />
+        <InputText id="Nombre_Proyecto" @bind-Value="newProyecto.Nombre_Proyecto" />
     </td>
 </tr>
 <tr>
     <td>
         <label for="inputNombres">  Tipo de Proyecto:  </label>
-        <InputNumber id="Cod_TipoProyecto" @bind-Value="newproyecto.Cod_TipoProyecto" />
+        <InputNumber id="Cod_TipoProyecto" @bind-Value="newProyecto.Cod_TipoProyecto" />
         <label for="inputNombres">  Fecha de Inicio:  </label>
-        <InputDate id="Fecha_Inicio" @bind-Value="newproyecto.Fecha_Inicio" />
+        <InputDate id="Fecha_Inicio" @bind-Value="newProyecto.Fecha_Inicio" />
         <label for="inputNombres">  Fecha de Termino:  </label>
-        <InputDate id="Fecha_Fin" @bind-Value="newproyecto.Fecha_Fin" />
+        <InputDate id="Fecha_Fin" @bind-Value="newProyecto.Fecha_Fin" />
             
     </td>
 </tr>
 <tr>
     <td>
         <label for="inputNombres">  Email del Creador del Proyecto:  </label>
-        <InputText id="Email_Creador" @bind-Value="newproyecto.Email_Creador" />
+        <InputText id="Email_Creador" @bind-Value="newProyecto.Email_Creador" />
         <label for="inputNombres">  Email de Jefe de Proyecto:  </label>
-        <InputText id="Email_JefeProyecto" @bind-Value="newproyecto.Email_JefeProyecto" />
+        <InputText id="Email_JefeProyecto" @bind-Value="newProyecto.Email_JefeProyecto" />
     </td>
 </tr>
 <button type="submit" class="btn btn-primary">Crear</button>
@@ -41,19 +41,26 @@
 </EditForm>
 
 @code {
-    private ProyectoModel newproyecto =new ProyectoModel();
+    private ProyectoModel newProyecto =new ProyectoModel();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        newProyecto.Fecha_Inicio = DateTime.Today;
+        newProyecto.Fecha_Fin = DateTime.Today;
+    }
 
     private async Task InsertProyecto()
     {
         var proyecto = new ProyectoModel()
         {
-            Cod_Proyecto = newproyecto.Cod_Proyecto,
-            Nombre_Proyecto = newproyecto.Nombre_Proyecto,
-            Cod_TipoProyecto = newproyecto.Cod_TipoProyecto,
-            Fecha_Inicio = newproyecto.Fecha_Inicio,
-            Fecha_Fin = newproyecto.Fecha_Fin,
-            Email_Creador = newproyecto.Email_Creador,
-            Email_JefeProyecto = newproyecto.Email_JefeProyecto
+            Cod_Proyecto = newProyecto.Cod_Proyecto,
+            Nombre_Proyecto = newProyecto.Nombre_Proyecto,
+            Cod_TipoProyecto = newProyecto.Cod_TipoProyecto,
+            Fecha_Inicio = newProyecto.Fecha_Inicio,
+            Fecha_Fin = newProyecto.Fecha_Fin,
+            Email_Creador = newProyecto.Email_Creador,
+            Email_JefeProyecto = newProyecto.Email_JefeProyecto
 
         };
         var id_proyecto = await ProyectoDataService.CreateProyecto(proyecto);
