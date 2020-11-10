@@ -1,0 +1,96 @@
+﻿@page "/editarusuario/{id:int}"
+@using BminingBlazor.Services
+@using Models
+@using System.Runtime.CompilerServices
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager NavigationManager
+
+
+@inject IUserDataService UserDataService
+<h3>Editar a @Email</h3>
+<EditForm Model="@newusuario2" OnValidSubmit="@EditUsers">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+        <div class="form-group col-md-6">
+            <label for="inputTContrato">Tipo de Contrato:</label>
+            <select class="form-control" @bind="newusuario2.Cod_TipoContrato" required>
+                @if (tc is null)
+                {
+                    <p><em>Cargando..</em></p>
+                }
+                else
+                {
+                    @foreach (var contratos in tc)
+                    {
+                        <option value="@contratos.Cod_TipoContrato">@contratos.TipoContrato</option>
+                    }
+                }
+            </select>
+        </div>
+    
+    <tr>
+        <td>
+            <label for="inputNombres">  Cargo:  </label>
+            <InputText id="Cargo" @bind-Value="newusuario2.Cargo" />
+            <label for="inputNombres">  Telefono:  </label>
+            <InputText id="Telefono" @bind-Value="newusuario2.Telefono" />
+            <label for="inputNombres">  Direccion:  </label>
+            <InputText id="Direccion" @bind-Value="newusuario2.Direccion" />
+        </td>
+    </tr>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public string Email { get; set; }
+
+    private UsuarioEditModel newusuario2 = new UsuarioEditModel();
+    private List<ContratoModel> tc;
+
+   
+
+    protected override async Task OnInitializedAsync()
+    {
+        tc = await UserDataService.ReadContrato();
+        var user = await UserDataService.ReadUser(Id);
+        newusuario2.Email_Bmining = user.First().Email_Bmining;
+        newusuario2.Nombre = user.First().Nombre;
+        newusuario2.Apellido_Paterno = user.First().Apellido_Paterno;
+        newusuario2.Apellido_Materno = user.First().Apellido_Materno;
+        newusuario2.Rut = user.First().Rut;
+        newusuario2.Cod_TipoContrato = user.First().Cod_TipoContrato;
+        newusuario2.Cargo = user.First().Cargo;
+        newusuario2.Telefono = user.First().Telefono;
+        newusuario2.Direccion = user.First().Direccion;
+        Email = user.First().Email_Bmining;
+
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        var user = await UserDataService.ReadUsers();
+    }
+
+    private async Task EditUsers()
+        {
+            var usuario2 = new UsuarioEditModel()
+            {
+                Cargo = newusuario2.Cargo,
+                Telefono = newusuario2.Telefono,
+                Direccion = newusuario2.Direccion,
+                Cod_TipoContrato = newusuario2.Cod_TipoContrato,
+                Id=Id
+                    
+
+
+            };
+
+        await UserDataService.EditUser(usuario2);
+        NavigationManager.NavigateTo("ViewUsers");
+        }
+    
+}

@@ -1,0 +1,90 @@
+﻿@page "/viewusers"
+
+@using global::Data
+@using Microsoft.Extensions.Configuration
+@using Models
+@using BminingBlazor.Services
+@using Renci.SshNet
+@inject IUserDataService UserDataService
+@inject NavigationManager NavigationManager
+<h3>Usuarios</h3>
+@if (users == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <div class="table-responsive{-sm|-md|-lg|-xl}">
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th>Nombre</th>
+        <th>Apellido Paterno</th>
+        <th>Apellido Materno</th>
+        <th>Rut</th>
+        <th>Cargo</th>
+        <th>Telefono</th>
+        <th>Direccion</th>
+        <th>Tipo de Contrato</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var p in users)
+    {
+        <tr>
+            <td>@p.Email_Bmining</td>
+            <td>@p.Nombre</td>
+            <td>@p.Apellido_Paterno</td>
+            <td>@p.Apellido_Materno</td>
+            <td>@p.Rut</td>
+            <td>@p.Cargo</td>
+            <td>@p.Telefono</td>
+            <td>@p.Direccion</td>
+            <td>@p.Cod_TipoContrato</td>
+            <button @onclick=@(()=>EditCallback(p.id))>Editar</button>
+            <button @onclick=@(()=>Delete(p.id))>Eliminar</button>
+        </tr>
+    }
+    <tr>
+        <button type="button" class="btn btn-primary"@onclick="@NewUser">Crear Usuario</button>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+}
+
+@code {
+    private List<UsuarioModel> users;
+
+    public void NewUser()
+    {
+        NavigationManager.NavigateTo("CrearUser");
+    }
+
+    public async void Delete(int id)
+    {
+        
+            await UserDataService.DeleteUser(id);
+        NavigationManager.NavigateTo("ViewUsers",true);
+        
+    }
+
+    public void EditCallback(int id )
+    {
+        
+        NavigationManager.NavigateTo($"editarusuario/{id}");
+        
+
+    }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        users = await UserDataService.ReadUsers();
+    }
+
+
+}

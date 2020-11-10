@@ -1,0 +1,57 @@
+﻿@page "/crearuser"
+@using BminingBlazor.Services
+@using Models
+@inject NavigationManager NavigationManager
+
+@inject IUserDataService UserDataService
+<h3>Crear Usuario</h3>
+<EditForm Model="@newusuario" OnValidSubmit="@InsertUsers">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <tr>
+        <td>
+            <label for="inputNombres">  Mail:  </label>
+            <InputText id="Email_Bmining" @bind-Value="newusuario.Email_Bmining" />
+            <label for="inputNombres">  Nombres:  </label>
+            <InputText id="Nombre" @bind-Value="newusuario.Nombre" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="inputNombres">  Apellido paterno:  </label>
+            <InputText id="Apellido_Paterno" @bind-Value="newusuario.Apellido_Paterno" />
+            <label for="inputNombres">  Apellido materno:  </label>
+            <InputText id="Apellido_Materno" @bind-Value="newusuario.Apellido_Materno" />
+            <label for="inputNombres">  Rut:  </label>
+            <InputText id="Rut" @bind-Value="newusuario.Rut" />
+            
+        </td>
+    </tr>
+    <button type="submit" class="btn btn-primary">Crear</button>
+    
+</EditForm>
+
+
+@code {
+    private UsuarioModel newusuario = new UsuarioModel();
+
+    private async Task InsertUsers()
+    {
+        var usuario = new UsuarioModel()
+        {
+            Email_Bmining=newusuario.Email_Bmining,
+            Nombre = newusuario.Nombre,
+            Apellido_Paterno = newusuario.Apellido_Paterno,
+            Apellido_Materno = newusuario.Apellido_Materno,
+            Rut = newusuario.Rut
+
+
+        };
+        var id =await UserDataService.CreateUser(usuario);
+
+
+
+        NavigationManager.NavigateTo($"editarusuario/{id}");
+    }
+
+}
