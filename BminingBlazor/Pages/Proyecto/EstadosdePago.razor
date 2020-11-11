@@ -1,5 +1,73 @@
-﻿<h3>EstadosdePago</h3>
+﻿@page "/EstadoPago/{id_proyecto:int}"
+@using Models
+@using BminingBlazor.Services
+
+@inject IProyectoDataService ProyectoDataService
+@inject NavigationManager NavigationManager
+
+<h3>Estados de Pago</h3>
+
+<EditForm Model="@newestadopago" OnValidSubmit="@InsertEstadoPago">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <label for="inputNombres">  Nombre Estado de Pago:  </label>
+    <InputText id="Estado_Pago" @bind-Value="newestadopago.Estado_Pago" />
+    <div class="form-group col-md-6">
+        <label for="inputTContrato">Estado de Pago:</label>
+        <select class="form-control" @bind="newestadopago.Cod_TipoEstadoPago" required>
+            @if (tipoep is null)
+            {
+                <p><em>Cargando..</em></p>
+            }
+            else
+            {
+                @foreach (var estado in tipoep)
+                {
+                    <option value="@estado.Cod_TipoEstadoPago">@estado.TipoEstadoPago</option>
+                }
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Agregar</button>
+    <button type="button" class="btn btn-secondary" @onclick="@InsertMoreEstadoPago">Agregar mas Estados de Pago</button>
+
+</EditForm>
 
 @code {
+    [Parameter]
+    public int id_proyecto { get; set; }
+    private EstadoPagoModel newestadopago = new EstadoPagoModel();
+    private List<TipoEstadoPagoModel> tipoep;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tipoep = await ProyectoDataService.ReadTipoEstadoPago();
+    }
+
+    private async Task InsertEstadoPago()
+    {
+        var estadopago = new EstadoPagoModel()
+        {
+            Estado_Pago = newestadopago.Estado_Pago,
+            Id_Proyecto = id_proyecto,
+            Cod_TipoEstadoPago = newestadopago.Cod_TipoEstadoPago
+        };
+        await ProyectoDataService.AddEstadoPago(estadopago);
+        NavigationManager.NavigateTo("/proyectos");
+    }
+
+    private async Task InsertMoreEstadoPago()
+    {
+        var estadopago = new EstadoPagoModel()
+        {
+            Estado_Pago = newestadopago.Estado_Pago,
+            Id_Proyecto = id_proyecto,
+            Cod_TipoEstadoPago = newestadopago.Cod_TipoEstadoPago
+        };
+        await ProyectoDataService.AddEstadoPago(estadopago);
+        NavigationManager.NavigateTo($"/EstadoPagos/{id_proyecto}");
+    }
+
 
 }
