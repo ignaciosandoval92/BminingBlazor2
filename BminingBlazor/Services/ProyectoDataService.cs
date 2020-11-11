@@ -42,6 +42,13 @@ namespace BminingBlazor.Services
                          " Values (@Id_Usuario,@Id_Proyecto)";
             await _dataAccess.SaveData(sql, integrante, _configuration.GetConnectionString("default"));
         }
+        public async Task<List<TipoProyectoModel>> ReadTipoProyecto()
+        {
+            string sql = $"select*from {TableConstants.TablaTipoProyecto}";
+            var tipro  = await _dataAccess.LoadData<TipoProyectoModel, dynamic>(sql, new { },
+                _configuration.GetConnectionString("default"));
+            return tipro;
+        }
 
     }
 }

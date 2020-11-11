@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Models;
 
 namespace BminingBlazor.Services
@@ -7,5 +8,6 @@ namespace BminingBlazor.Services
     {
         Task<int> CreateProyecto(ProyectoModel proyecto);
         Task AddIntegrante(IntegranteModel integrante);
+        Task<List<TipoProyectoModel>> ReadTipoProyecto();
     }
 }
