@@ -20,8 +20,8 @@ namespace BminingBlazor.Services
         public async Task<int> CreateProyecto(ProyectoModel proyecto)
         {
             var sql =
-                "insert into Proyecto (Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,Proyecto.Cod_TipoProyecto,Proyecto.Fecha_Inicio,Proyecto.Fecha_Fin,Proyecto.Email_Creador,Proyecto.Email_JefeProyecto)" +
-                " Values (@Cod_Proyecto,@Nombre_Proyecto,@Cod_TipoProyecto,@Fecha_Inicio,@Fecha_Fin,@Email_Creador,@Email_JefeProyecto)";
+                "insert into Proyecto (Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,Proyecto.Cod_TipoProyecto,Proyecto.Fecha_Inicio,Proyecto.Fecha_Fin,Proyecto.Id_Creador,Proyecto.Id_JefeProyecto)" +
+                " Values (@Cod_Proyecto,@Nombre_Proyecto,@Cod_TipoProyecto,@Fecha_Inicio,@Fecha_Fin,@Id_Creador,@Id_JefeProyecto)";
             await _dataAccess.SaveData(sql, proyecto, _configuration.GetConnectionString("default"));
 
             sql =
@@ -48,6 +48,13 @@ namespace BminingBlazor.Services
             var tipro  = await _dataAccess.LoadData<TipoProyectoModel, dynamic>(sql, new { },
                 _configuration.GetConnectionString("default"));
             return tipro;
+        }
+        public async Task<List<TipoEstadoPagoModel>> ReadTipoEstadoPago()
+        {
+            string sql = $"select*from {TableConstants.TablaTipoEstadoPago}";
+            var tipoep = await _dataAccess.LoadData<TipoEstadoPagoModel, dynamic>(sql, new { },
+                _configuration.GetConnectionString("default"));
+            return tipoep;
         }
 
     }

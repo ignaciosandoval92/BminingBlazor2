@@ -12,5 +12,6 @@ namespace Data
         public const string TablaContrato = "bminin39_SGPBM.Contrato";
         public const string TablaProyecto = "bminin39_SGPBM.Proyecto";
         public const string TablaTipoProyecto = "bminin39_SGPBM.Tipo_Proyecto";
+        public const string TablaTipoEstadoPago = "bminin39_SGPBM.Tipo_EstadoPago";
     }
 }

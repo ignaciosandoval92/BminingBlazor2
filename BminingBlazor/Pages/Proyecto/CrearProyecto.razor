@@ -3,6 +3,7 @@
 @using BminingBlazor.Services
 @inject IProyectoDataService ProyectoDataService
 @inject NavigationManager NavigationManager
+@inject IUserDataService UserDataService
 
 <h3>CrearProyecto</h3>
 
@@ -48,9 +49,37 @@
 <tr>
     <td>
         <label for="inputNombres">  Email del Creador del Proyecto:  </label>
-        <InputText id="Email_Creador" @bind-Value="newProyecto.Email_Creador" />
+        <select class="form-control" @bind="newProyecto.Cod_TipoProyecto" required>
+            @if (users is null)
+            {
+                <p><em>Cargando..</em></p>
+            }
+            else
+            {
+                @foreach (var creador in users)
+                {
+                    <option value="@creador.id">@creador.Email_Bmining</option>
+                }
+            }
+
+        </select>
+        
         <label for="inputNombres">  Email de Jefe de Proyecto:  </label>
-        <InputText id="Email_JefeProyecto" @bind-Value="newProyecto.Email_JefeProyecto" />
+        <select class="form-control" @bind="newProyecto.Cod_TipoProyecto" required>
+            @if (users is null)
+            {
+                <p><em>Cargando..</em></p>
+            }
+            else
+            {
+                @foreach (var jefe in users)
+                {
+                    <option value="@jefe.id">@jefe.Email_Bmining</option>
+                }
+            }
+
+        </select>
+        
     </td>
 </tr>
 <button type="submit" class="btn btn-primary">Crear</button>
@@ -60,10 +89,14 @@
 @code {
     private ProyectoModel newProyecto =new ProyectoModel();
     private List<TipoProyectoModel> tipro;
+    private List<UsuarioModel> users;
+
+    
 
     protected override async Task OnInitializedAsync()
     {
         tipro = await ProyectoDataService.ReadTipoProyecto();
+        users = await UserDataService.ReadUsers();
     }
 
     protected override void OnInitialized()
@@ -82,8 +115,8 @@
             Cod_TipoProyecto = newProyecto.Cod_TipoProyecto,
             Fecha_Inicio = newProyecto.Fecha_Inicio,
             Fecha_Fin = newProyecto.Fecha_Fin,
-            Email_Creador = newProyecto.Email_Creador,
-            Email_JefeProyecto = newProyecto.Email_JefeProyecto
+            Id_Creador = newProyecto.Id_Creador,
+            Id_JefeProyecto = newProyecto.Id_JefeProyecto
 
         };
         var id_proyecto = await ProyectoDataService.CreateProyecto(proyecto);

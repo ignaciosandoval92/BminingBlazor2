@@ -9,5 +9,6 @@ namespace BminingBlazor.Services
         Task<int> CreateProyecto(ProyectoModel proyecto);
         Task AddIntegrante(IntegranteModel integrante);
         Task<List<TipoProyectoModel>> ReadTipoProyecto();
+        Task<List<TipoEstadoPagoModel>> ReadTipoEstadoPago();
     }
 }
