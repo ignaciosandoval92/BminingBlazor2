@@ -17,5 +17,7 @@ namespace BminingBlazor.Services
         Task<int> ReadJefeProyecto(int id_proyecto);
         Task<List<UsuarioEditModel>> ReadIntegrantes(int id_proyecto);
         Task<int> EditEstadoPago(EstadoPagoModel estadopago);
+        Task DeleteIntegrante(int cod_integrantes);
+        Task DeleteProyecto(int id_proyecto);
     }
 }

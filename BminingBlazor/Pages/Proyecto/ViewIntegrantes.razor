@@ -65,18 +65,19 @@ else
             <tbody>
                 @foreach (var i in integrantes)
                 {
-                    <tr>
-                        <td>@i.Email_Bmining</td>
-                        <td>@i.Nombre</td>
-                        <td>@i.Apellido_Paterno</td>
-                        <td>@i.Apellido_Materno</td>
-                        <td>@i.Rut</td>
-                        
+                <tr>
+                    <td>@i.Email_Bmining</td>
+                    <td>@i.Nombre</td>
+                    <td>@i.Apellido_Paterno</td>
+                    <td>@i.Apellido_Materno</td>
+                    <td>@i.Rut</td>
+                    <button @onclick=@(()=>Delete(i.Cod_Integrantes))>Eliminar</button>
 
 
 
 
-                    </tr>
+
+                </tr>
                 }
             <tr>
                 <button type="button" class="btn btn-primary" @onclick="@Agregar">Agregar Integrante</button>
@@ -107,5 +108,9 @@ else
         NavigationManager.NavigateTo($"/AddIntegrantes/{id_proyecto}");
     }
 
-
+    public async void Delete(int cod_integrantes)
+    {
+        await ProyectoDataService.DeleteIntegrante(cod_integrantes);
+        NavigationManager.NavigateTo($"/viewIntegrantes/{id_proyecto}",true);
+    }
 }

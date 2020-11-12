@@ -35,6 +35,7 @@ else
                     <td>@p.TipoEstadoPago</td>
                     <button @onclick=@(()=>ViewIntegrantes(p.Id_Proyecto))>Integrantes</button>
                     <button @onclick=@(()=>EditEstadoPago(p.Cod_EstadoPago))>Cambiar Estado de pago</button>
+                    <button @onclick=@(()=>Delete(p.Id_Proyecto))>Eliminar</button>
 
 
 
@@ -75,4 +76,9 @@ else
 
     }
 
+    public async void Delete(int Id_Proyecto)
+    {
+        await ProyectoDataService.DeleteProyecto(Id_Proyecto);
+        NavigationManager.NavigateTo("/proyectos",true);
+    }
 }

@@ -131,7 +131,7 @@ namespace BminingBlazor.Services
         }
         public async Task<List<UsuarioEditModel>> ReadIntegrantes(int id_proyecto)
         {
-            string sql = "select Usuario.Id, Usuario.Email_Bmining,Usuario.Nombre ,Usuario.Apellido_Paterno,Usuario.Apellido_Materno,Usuario.Rut,Usuario.Cargo,Usuario.Telefono,Usuario.Direccion  " +
+            string sql = "select Usuario.Id, Usuario.Email_Bmining,Usuario.Nombre ,Usuario.Apellido_Paterno,Usuario.Apellido_Materno,Usuario.Rut,Usuario.Cargo,Usuario.Telefono,Usuario.Direccion,Integrantes_Proyecto.Cod_Integrantes  " +
                          $" from {TableConstants.TablaUsuario},{TableConstants.TablaIntegrantes}" +
                          $" where Integrantes_Proyecto.Id_Proyecto={id_proyecto}" +
                          $" and Usuario.Id=Integrantes_Proyecto.Id_Usuario";
@@ -140,6 +140,23 @@ namespace BminingBlazor.Services
                 await _dataAccess.LoadData<UsuarioEditModel, dynamic>(sql, new { },
                     _configuration.GetConnectionString("default"));
             return integrantes;
+        }
+        public async Task DeleteIntegrante(int cod_integrantes)
+        {
+            string sql = "Delete " +
+                         $"from {TableConstants.TablaIntegrantes} " +
+                         $"where Integrantes_Proyecto.Cod_Integrantes=@cod_integrantes";
+            await _dataAccess.DeleteData(sql, new { Cod_Integrantes = cod_integrantes }, _configuration.GetConnectionString("default"));
+
+        }
+
+        public async Task DeleteProyecto(int id_proyecto)
+        {
+            string sql = "Delete " +
+                         $" from {TableConstants.TablaProyecto} " +
+                         $" where Proyecto.Id_Proyecto=@id_proyecto";
+            await _dataAccess.DeleteData(sql, new {Id_Proyecto = id_proyecto},
+                _configuration.GetConnectionString("default"));
         }
     }
 }
