@@ -1,6 +1,55 @@
 ﻿@page "/proyectos"
+@using Models
+
+@inject NavigationManager NavigationManager
 <h3>Proyectos</h3>
+@if (proyectos == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <div class="table-responsive{-sm|-md|-lg|-xl}">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Codigo Proyecto</th>
+                <th>Nombre Proyecto</th>
+                <th>Tipo de Proyecto</th>
+                <th>Tipo de Pago </th>
+                <th>Estado de Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var p in proyectos)
+            {
+                <tr>
+                    <td>@p.Cod_Proyecto</td>
+                    <td>@p.Nombre_Proyecto</td>
+                    <td>@p.Tipo_Proyecto</td>
+                    <td>@p.Tipo_Pago</td>
+                    <td>@p.TipoEstadoPago</td>
+
+
+                    
+                </tr>
+            }
+            <tr>
+                <button type="button" class="btn btn-primary"@onclick="@NewProyecto">Agregar Proyecto</button>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
 
 @code {
+    private List<ViewProyectoModel> proyectos;
+
+    public void NewProyecto()
+    {
+        NavigationManager.NavigateTo("/CrearProyecto");
+    }
+
 
 }

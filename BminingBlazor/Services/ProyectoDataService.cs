@@ -65,5 +65,16 @@ namespace BminingBlazor.Services
             return tipoep;
         }
 
+        public async Task<List<ViewProyectoModel>> ReadProyectos()
+        {
+            string sql =
+                "select (Proyecto.Id_Proyecto,Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,Tipo_Proyecto.Tipo_Proyecto,EstadoPago.Estado_Pago as Tipo_Pago,Tipo_EstadoPago.TipoEstadoPago " +
+                $" from {TableConstants.TablaProyecto},{TableConstants.TablaTipoEstadoPago},{TableConstants.TablaTipoProyecto},{TableConstants.TablaTipoEstadoPago} " +
+                $" where Proyecto.Id_Proyecto=EstadoPago.Id_Proyecto,EstadoPago.Cod_TipoEstadoPago=Tipo_EstadoPago.Cod_TipoEstadoPago,Proyecto.Cod_TipoProyecto=Tipo_Proyecto.Cod_TipoProyecto";
+            var proyectos =
+                await _dataAccess.LoadData<ViewProyectoModel, dynamic>(sql, new { },
+                    _configuration.GetConnectionString("default"));
+            return proyectos;
+        }
     }
 }

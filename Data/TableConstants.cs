@@ -13,5 +13,6 @@ namespace Data
         public const string TablaProyecto = "bminin39_SGPBM.Proyecto";
         public const string TablaTipoProyecto = "bminin39_SGPBM.Tipo_Proyecto";
         public const string TablaTipoEstadoPago = "bminin39_SGPBM.Tipo_EstadoPago";
+        public const string TablaEstadoPago = "bminin39_SGPBM.EstadoPago";
     }
 }
