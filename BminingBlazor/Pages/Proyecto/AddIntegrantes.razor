@@ -1,4 +1,4 @@
-﻿@page "/ProyectoIntegrantes/{id_proyecto:int}"
+﻿@page "/AddIntegrantes/{id_proyecto:int}"
 
 @using Models
 @using BminingBlazor.Services
@@ -57,7 +57,7 @@
             Id_Proyecto = id_proyecto
         };
         await ProyectoDataService.AddIntegrante(integrante);
-        NavigationManager.NavigateTo("/proyectos");
+        NavigationManager.NavigateTo($"/ViewIntegrantes/{id_proyecto}");
     }
     private async Task InsertMoreIntegrante()
     {

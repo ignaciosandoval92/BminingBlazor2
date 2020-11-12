@@ -17,6 +17,7 @@ else
             <tr>
                 <th>Codigo Proyecto</th>
                 <th>Nombre Proyecto</th>
+                <th>Email Jefe de Proyecto</th>
                 <th>Tipo de Proyecto</th>
                 <th>Tipo de Pago </th>
                 <th>Estado de Pago</th>
@@ -28,12 +29,15 @@ else
                 <tr>
                     <td>@p.Cod_Proyecto</td>
                     <td>@p.Nombre_Proyecto</td>
+                    <td>@p.Email_JefeProyecto</td>
                     <td>@p.Tipo_Proyecto</td>
                     <td>@p.Tipo_Pago</td>
                     <td>@p.TipoEstadoPago</td>
+                    <button @onclick=@(()=>ViewIntegrantes(p.Id_Proyecto))>Integrantes</button>
+                    <button @onclick=@(()=>EditEstadoPago(p.Cod_EstadoPago))>Cambiar Estado de pago</button>
 
 
-                    
+
                 </tr>
             }
             <tr>
@@ -54,10 +58,21 @@ else
         proyectos = await ProyectoDataService.ReadProyectos();
     }
 
+    public void EditEstadoPago(int Cod_EstadoPago)
+    {
+        NavigationManager.NavigateTo($"/EditEstadoPago/{Cod_EstadoPago}");
+    }
+
     public void NewProyecto()
     {
         NavigationManager.NavigateTo("/CrearProyecto");
     }
+    public void ViewIntegrantes(int Id_Proyecto )
+    {
+        
+        NavigationManager.NavigateTo($"ViewIntegrantes/{Id_Proyecto}");
+        
 
+    }
 
 }

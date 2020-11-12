@@ -14,5 +14,8 @@ namespace BminingBlazor.Services
         Task<int> AddCreadorProyecto(ProyectoModel proyecto);
         Task<int> AddJefeProyecto(ProyectoModel proyecto);
         Task<List<ViewProyectoModel>> ReadProyectos();
+        Task<int> ReadJefeProyecto(int id_proyecto);
+        Task<List<UsuarioEditModel>> ReadIntegrantes(int id_proyecto);
+        Task<int> EditEstadoPago(EstadoPagoModel estadopago);
     }
 }

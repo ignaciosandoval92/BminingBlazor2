@@ -61,6 +61,20 @@ namespace BminingBlazor.Services
             return 0;
 
         }
+        public async Task<int> EditEstadoPago(EstadoPagoModel estadopago)
+        {
+            var sql =
+                "Update EstadoPago" +
+                " set EstadoPago.Cod_TipoEstadoPago=@Cod_TipoEstadoPago" +
+                " where EstadoPago.Cod_EstadoPago=@Cod_EstadoPago ";
+                ;
+            await _dataAccess.UpdateData(sql, estadopago, _configuration.GetConnectionString("default"));
+
+
+
+            return 0;
+
+        }
 
         public async Task AddEstadoPago(EstadoPagoModel estadopago)
         {
@@ -94,15 +108,38 @@ namespace BminingBlazor.Services
         public async Task<List<ViewProyectoModel>> ReadProyectos()
         {
             string sql =
-                "select Proyecto.Id_Proyecto,Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,Tipo_Proyecto.Tipo_Proyecto,(EstadoPago.Estado_Pago) as Tipo_Pago,Tipo_EstadoPago.TipoEstadoPago " +
-                $" from {TableConstants.TablaProyecto},{TableConstants.TablaTipoEstadoPago},{TableConstants.TablaTipoProyecto},{TableConstants.TablaEstadoPago} " +
+                "select Proyecto.Id_Proyecto,Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,(Usuario.Email_Bmining) as Email_JefeProyecto,Tipo_Proyecto.Tipo_Proyecto,(EstadoPago.Estado_Pago) as Tipo_Pago,Tipo_EstadoPago.TipoEstadoPago,EstadoPago.Cod_EstadoPago " +
+                $" from {TableConstants.TablaProyecto},{TableConstants.TablaTipoEstadoPago},{TableConstants.TablaTipoProyecto},{TableConstants.TablaEstadoPago},{TableConstants.TablaUsuario} " +
                 $" where Proyecto.Id_Proyecto=EstadoPago.Id_Proyecto " +
                 $"and EstadoPago.Cod_TipoEstadoPago=Tipo_EstadoPago.Cod_TipoEstadoPago " +
-                $"and Proyecto.Cod_TipoProyecto=Tipo_Proyecto.Cod_TipoProyecto";
+                $"and Proyecto.Cod_TipoProyecto=Tipo_Proyecto.Cod_TipoProyecto " +
+                $"and Usuario.Id=Proyecto.Id_JefeProyecto";
             var proyectos =
                 await _dataAccess.LoadData<ViewProyectoModel, dynamic>(sql, new { },
                     _configuration.GetConnectionString("default"));
             return proyectos;
+        }
+
+        public async Task<int> ReadJefeProyecto(int id_proyecto)
+        {
+            string sql = "select Proyecto.Id_JefeProyecto " +
+                         $" from {TableConstants.TablaProyecto} " +
+                         $" where Proyecto.Id_Proyecto={id_proyecto}";
+            var id_jefe =
+                await _dataAccess.LoadData<ProyectoModel, dynamic>(sql, new { }, _configuration.GetConnectionString("default"));
+            return id_jefe.First().Id_JefeProyecto;
+        }
+        public async Task<List<UsuarioEditModel>> ReadIntegrantes(int id_proyecto)
+        {
+            string sql = "select Usuario.Id, Usuario.Email_Bmining,Usuario.Nombre ,Usuario.Apellido_Paterno,Usuario.Apellido_Materno,Usuario.Rut,Usuario.Cargo,Usuario.Telefono,Usuario.Direccion  " +
+                         $" from {TableConstants.TablaUsuario},{TableConstants.TablaIntegrantes}" +
+                         $" where Integrantes_Proyecto.Id_Proyecto={id_proyecto}" +
+                         $" and Usuario.Id=Integrantes_Proyecto.Id_Usuario";
+
+            var integrantes =
+                await _dataAccess.LoadData<UsuarioEditModel, dynamic>(sql, new { },
+                    _configuration.GetConnectionString("default"));
+            return integrantes;
         }
     }
 }
