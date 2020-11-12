@@ -1,0 +1,37 @@
+﻿@page "/Cliente"
+@using Models
+@using BminingBlazor.Services
+@inject IProyectoDataService ProyectoDataService
+@inject NavigationManager NavigationManager
+<h3>Agregar Cliente</h3>
+
+<EditForm Model="@newCliente" OnValidSubmit="@InsertCliente">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+
+
+    <label for="inputNombres">  Nombre Cliente:  </label>
+    <InputText id="Nombre_Cliente" @bind-Value="newCliente.Nombre_Cliente" />
+
+    
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    
+</EditForm>
+
+@code {
+    private ClienteModel newCliente = new ClienteModel();
+
+    private async Task InsertCliente()
+    {
+        var cliente = new ClienteModel()
+        {
+            Nombre_Cliente = newCliente.Nombre_Cliente,
+        };
+        await ProyectoDataService.CreateCliente(cliente);
+
+        NavigationManager.NavigateTo("/");
+
+    }
+
+}

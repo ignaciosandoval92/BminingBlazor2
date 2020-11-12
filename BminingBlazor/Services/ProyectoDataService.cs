@@ -20,8 +20,8 @@ namespace BminingBlazor.Services
         public async Task<int> CreateProyecto(ProyectoModel proyecto)
         {
             var sql =
-                "insert into Proyecto (Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,Proyecto.Cod_TipoProyecto,Proyecto.Fecha_Inicio,Proyecto.Fecha_Fin,Proyecto.Id_Creador,Proyecto.Id_JefeProyecto)" +
-                " Values (@Cod_Proyecto,@Nombre_Proyecto,@Cod_TipoProyecto,@Fecha_Inicio,@Fecha_Fin,@Id_Creador,@Id_JefeProyecto)";
+                "insert into Proyecto (Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,Proyecto.Cod_TipoProyecto,Proyecto.Fecha_Inicio,Proyecto.Fecha_Fin,Proyecto.Id_Creador,Proyecto.Id_JefeProyecto,Proyecto.Id_Cliente)" +
+                " Values (@Cod_Proyecto,@Nombre_Proyecto,@Cod_TipoProyecto,@Fecha_Inicio,@Fecha_Fin,@Id_Creador,@Id_JefeProyecto,@Id_Cliente)";
             await _dataAccess.SaveData(sql, proyecto, _configuration.GetConnectionString("default"));
 
             sql =
@@ -53,6 +53,19 @@ namespace BminingBlazor.Services
             var sql =
                 "Update Proyecto" +
                 " set Proyecto.Id_JefeProyecto=@Id_JefeProyecto" +
+                " where Proyecto.Id_Proyecto=@Id_proyecto ";
+            await _dataAccess.UpdateData(sql, proyecto, _configuration.GetConnectionString("default"));
+
+
+
+            return 0;
+
+        }
+        public async Task<int> AddCliente(ProyectoModel proyecto)
+        {
+            var sql =
+                "Update Proyecto" +
+                " set Proyecto.Id_Cliente=@Id_Cliente" +
                 " where Proyecto.Id_Proyecto=@Id_proyecto ";
             await _dataAccess.UpdateData(sql, proyecto, _configuration.GetConnectionString("default"));
 
@@ -108,12 +121,13 @@ namespace BminingBlazor.Services
         public async Task<List<ViewProyectoModel>> ReadProyectos()
         {
             string sql =
-                "select Proyecto.Id_Proyecto,Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,(Usuario.Email_Bmining) as Email_JefeProyecto,Tipo_Proyecto.Tipo_Proyecto,(EstadoPago.Estado_Pago) as Tipo_Pago,Tipo_EstadoPago.TipoEstadoPago,EstadoPago.Cod_EstadoPago " +
-                $" from {TableConstants.TablaProyecto},{TableConstants.TablaTipoEstadoPago},{TableConstants.TablaTipoProyecto},{TableConstants.TablaEstadoPago},{TableConstants.TablaUsuario} " +
+                "select Proyecto.Id_Proyecto,Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,(Usuario.Email_Bmining) as Email_JefeProyecto,Cliente.Nombre_Cliente,Tipo_Proyecto.Tipo_Proyecto,(EstadoPago.Estado_Pago) as Tipo_Pago,Tipo_EstadoPago.TipoEstadoPago,EstadoPago.Cod_EstadoPago " +
+                $" from {TableConstants.TablaProyecto},{TableConstants.TablaTipoEstadoPago},{TableConstants.TablaTipoProyecto},{TableConstants.TablaEstadoPago},{TableConstants.TablaUsuario},{TableConstants.TablaClientes} " +
                 $" where Proyecto.Id_Proyecto=EstadoPago.Id_Proyecto " +
                 $"and EstadoPago.Cod_TipoEstadoPago=Tipo_EstadoPago.Cod_TipoEstadoPago " +
                 $"and Proyecto.Cod_TipoProyecto=Tipo_Proyecto.Cod_TipoProyecto " +
-                $"and Usuario.Id=Proyecto.Id_JefeProyecto";
+                $"and Usuario.Id=Proyecto.Id_JefeProyecto " +
+                $"and Proyecto.Id_Cliente=Cliente.Id_Cliente";
             var proyectos =
                 await _dataAccess.LoadData<ViewProyectoModel, dynamic>(sql, new { },
                     _configuration.GetConnectionString("default"));
@@ -157,6 +171,26 @@ namespace BminingBlazor.Services
                          $" where Proyecto.Id_Proyecto=@id_proyecto";
             await _dataAccess.DeleteData(sql, new {Id_Proyecto = id_proyecto},
                 _configuration.GetConnectionString("default"));
+        }
+        public async Task<int> CreateCliente(ClienteModel cliente)
+        {
+            var sql =
+                "insert into Cliente (Cliente.Nombre_Cliente)" +
+                " Values (@Nombre_Cliente)";
+            await _dataAccess.SaveData(sql, cliente, _configuration.GetConnectionString("default"));
+
+          
+            return 0;
+
+        }
+     
+
+        public async Task<List<ClienteModel>> ReadCliente()
+        {
+            string sql = $"select*from {TableConstants.TablaClientes}";
+            var clientes =await _dataAccess.LoadData<ClienteModel, dynamic>(sql, new { },
+                _configuration.GetConnectionString("default"));
+            return clientes;
         }
     }
 }

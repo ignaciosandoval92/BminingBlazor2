@@ -14,5 +14,6 @@ namespace Models
         public string Tipo_Proyecto { get; set; }
         public int Cod_EstadoPago { get; set; }
         public string Email_JefeProyecto { get; set; }
+        public string Nombre_Cliente { get; set; }
     }
 }

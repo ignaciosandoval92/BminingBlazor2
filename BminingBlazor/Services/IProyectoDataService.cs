@@ -13,11 +13,14 @@ namespace BminingBlazor.Services
         Task AddEstadoPago(EstadoPagoModel estadopago);
         Task<int> AddCreadorProyecto(ProyectoModel proyecto);
         Task<int> AddJefeProyecto(ProyectoModel proyecto);
+        Task<int> AddCliente(ProyectoModel proyecto);
         Task<List<ViewProyectoModel>> ReadProyectos();
         Task<int> ReadJefeProyecto(int id_proyecto);
         Task<List<UsuarioEditModel>> ReadIntegrantes(int id_proyecto);
         Task<int> EditEstadoPago(EstadoPagoModel estadopago);
         Task DeleteIntegrante(int cod_integrantes);
         Task DeleteProyecto(int id_proyecto);
+        Task<int> CreateCliente(ClienteModel cliente);
+        Task<List<ClienteModel>> ReadCliente();
     }
 }

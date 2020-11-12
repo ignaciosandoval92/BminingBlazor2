@@ -14,5 +14,6 @@ namespace Models
         public int Id_Creador { get; set; }
         public int Id_JefeProyecto { get; set; }
         public int Id_proyecto { get; set; }
+        public int Id_Cliente { get; set; }
     }
 }
