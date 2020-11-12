@@ -11,5 +11,8 @@ namespace BminingBlazor.Services
         Task<List<TipoProyectoModel>> ReadTipoProyecto();
         Task<List<TipoEstadoPagoModel>> ReadTipoEstadoPago();
         Task AddEstadoPago(EstadoPagoModel estadopago);
+        Task<int> AddCreadorProyecto(ProyectoModel proyecto);
+        Task<int> AddJefeProyecto(ProyectoModel proyecto);
+        Task<List<ViewProyectoModel>> ReadProyectos();
     }
 }

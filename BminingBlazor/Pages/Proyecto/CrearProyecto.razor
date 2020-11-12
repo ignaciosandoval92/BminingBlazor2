@@ -18,15 +18,22 @@
         <InputText id="Nombre_Proyecto" @bind-Value="newProyecto.Nombre_Proyecto" />
     </td>
 </tr>
+<td>
+    <tr>
+    <td>
+        <label for="inputNombres">  Fecha de Inicio:  </label>
+        <InputDate id="Fecha_Inicio" @bind-Value="newProyecto.Fecha_Inicio" />
+        <label for="inputNombres">  Fecha de Termino:  </label>
+        <InputDate id="Fecha_Fin" @bind-Value="newProyecto.Fecha_Fin" />
+
+    </td>
+    </tr>
+</td>
 <tr>
     <td>
         <label for="inputNombres">  Tipo de Proyecto:  </label>
         <select class="form-control" @bind="newProyecto.Cod_TipoProyecto" required>
-            @if (tipro is null)
-            {
-                <p><em>Cargando..</em></p>
-            }
-            else
+            @if(tipro!=null)
             {
                 @foreach (var tipoproyecto in tipro)
                 {
@@ -37,67 +44,27 @@
         </select>
     </td>
     </tr>
+
 <tr>
-    <td>
-        <label for="inputNombres">  Fecha de Inicio:  </label>
-        <InputDate id="Fecha_Inicio" @bind-Value="newProyecto.Fecha_Inicio" />
-        <label for="inputNombres">  Fecha de Termino:  </label>
-        <InputDate id="Fecha_Fin" @bind-Value="newProyecto.Fecha_Fin" />
-
-    </td>
+   
 </tr>
-<tr>
-    <td>
-        <label for="inputNombres">  Email del Creador del Proyecto:  </label>
-        <select class="form-control" @bind="newProyecto.Cod_TipoProyecto" required>
-            @if (users is null)
-            {
-                <p><em>Cargando..</em></p>
-            }
-            else
-            {
-                @foreach (var creador in users)
-                {
-                    <option value="@creador.id">@creador.Email_Bmining</option>
-                }
-            }
-
-        </select>
-        
-        <label for="inputNombres">  Email de Jefe de Proyecto:  </label>
-        <select class="form-control" @bind="newProyecto.Cod_TipoProyecto" required>
-            @if (users is null)
-            {
-                <p><em>Cargando..</em></p>
-            }
-            else
-            {
-                @foreach (var jefe in users)
-                {
-                    <option value="@jefe.id">@jefe.Email_Bmining</option>
-                }
-            }
-
-        </select>
-        
-    </td>
-</tr>
-<button type="submit" class="btn btn-primary">Crear</button>
+<button type="submit" class="btn btn-primary">Siguiente</button>
     
 </EditForm>
 
 @code {
     private ProyectoModel newProyecto =new ProyectoModel();
     private List<TipoProyectoModel> tipro;
-    private List<UsuarioModel> users;
+
 
     
 
     protected override async Task OnInitializedAsync()
     {
         tipro = await ProyectoDataService.ReadTipoProyecto();
-        users = await UserDataService.ReadUsers();
+       
     }
+  
 
     protected override void OnInitialized()
     {
@@ -114,14 +81,14 @@
             Nombre_Proyecto = newProyecto.Nombre_Proyecto,
             Cod_TipoProyecto = newProyecto.Cod_TipoProyecto,
             Fecha_Inicio = newProyecto.Fecha_Inicio,
-            Fecha_Fin = newProyecto.Fecha_Fin,
-            Id_Creador = newProyecto.Id_Creador,
-            Id_JefeProyecto = newProyecto.Id_JefeProyecto
+            Fecha_Fin = newProyecto.Fecha_Fin
+           
+          
 
         };
         var id_proyecto = await ProyectoDataService.CreateProyecto(proyecto);
 
-        NavigationManager.NavigateTo($"/ProyectoIntegrantes/{id_proyecto}");
+        NavigationManager.NavigateTo($"/CrearProyecto2/{id_proyecto}");
 
     }
 }

@@ -1,0 +1,57 @@
+﻿@page "/crearproyecto2/{id_proyecto:int}"
+@using Models
+@using BminingBlazor.Services
+@inject IProyectoDataService ProyectoDataService
+@inject NavigationManager NavigationManager
+@inject IUserDataService UserDataService
+<h3>CrearProyecto</h3>
+<EditForm Model="@newProyecto" OnValidSubmit="@InsertProyecto">
+    <DataAnnotationsValidator />
+<ValidationSummary />
+
+
+
+<label for="inputNombres">  Email del Creador del Proyecto:  </label>
+<select class="form-control" @bind="newProyecto.Id_Creador" required>
+           
+    @foreach (var creador in users)
+    {
+        <option value="@creador.id">@creador.Email_Bmining</option>
+    }
+            
+
+</select>
+    <button type="submit" class="btn btn-primary">Siguiente</button>
+    
+</EditForm>
+
+@code {
+    [Parameter]
+    public int id_proyecto { get; set; }
+        private ProyectoModel newProyecto = new ProyectoModel();
+        private List<UsuarioModel> users;
+        protected override async Task OnInitializedAsync()
+        {
+           
+            users = await UserDataService.ReadUsers();
+          
+        }
+       
+        private async Task InsertProyecto()
+        {
+            var proyecto = new ProyectoModel()
+            {
+               
+               
+                Id_Creador = newProyecto.Id_Creador,
+                Id_proyecto = id_proyecto
+                
+                
+
+            };
+            await ProyectoDataService.AddCreadorProyecto(proyecto);
+
+            NavigationManager.NavigateTo($"/JefeProyecto/{id_proyecto}");
+
+        }
+    }

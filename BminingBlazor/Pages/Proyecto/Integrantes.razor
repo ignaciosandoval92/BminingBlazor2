@@ -57,6 +57,7 @@
             Id_Proyecto = id_proyecto
         };
         await ProyectoDataService.AddIntegrante(integrante);
+        NavigationManager.NavigateTo($"/EstadoPago/{id_proyecto}");
     }
     private async Task InsertMoreIntegrante()
     {

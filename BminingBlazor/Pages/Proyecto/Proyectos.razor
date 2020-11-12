@@ -1,6 +1,8 @@
 ﻿@page "/proyectos"
 @using Models
+@using BminingBlazor.Services
 
+@inject IProyectoDataService ProyectoDataService
 @inject NavigationManager NavigationManager
 <h3>Proyectos</h3>
 @if (proyectos == null)
@@ -45,6 +47,12 @@ else
 
 @code {
     private List<ViewProyectoModel> proyectos;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        proyectos = await ProyectoDataService.ReadProyectos();
+    }
 
     public void NewProyecto()
     {
