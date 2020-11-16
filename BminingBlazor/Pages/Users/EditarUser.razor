@@ -4,31 +4,31 @@
 @using System.Runtime.CompilerServices
 @using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavigationManager
-
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @inject IUserDataService UserDataService
 <h3>Editar a @Email</h3>
 <EditForm Model="@newusuario2" OnValidSubmit="@EditUsers">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    
-        <div class="form-group col-md-6">
-            <label for="inputTContrato">Tipo de Contrato:</label>
-            <select class="form-control" @bind="newusuario2.Cod_TipoContrato" required>
-                @if (tc is null)
+
+    <div class="form-group col-md-6">
+        <label for="inputTContrato">Tipo de Contrato:</label>
+        <select class="form-control" @bind="newusuario2.Cod_TipoContrato" required>
+            @if (tc is null)
+            {
+                <p><em>Cargando..</em></p>
+            }
+            else
+            {
+                @foreach (var contratos in tc)
                 {
-                    <p><em>Cargando..</em></p>
+                    <option value="@contratos.Cod_TipoContrato">@contratos.TipoContrato</option>
                 }
-                else
-                {
-                    @foreach (var contratos in tc)
-                    {
-                        <option value="@contratos.Cod_TipoContrato">@contratos.TipoContrato</option>
-                    }
-                }
-            </select>
-        </div>
-    
+            }
+        </select>
+    </div>
+
     <tr>
         <td>
             <label for="inputNombres">  Cargo:  </label>
@@ -40,7 +40,7 @@
         </td>
     </tr>
     <button type="submit" class="btn btn-primary">Guardar</button>
-    
+
 </EditForm>
 
 @code {
@@ -52,7 +52,7 @@
     private UsuarioEditModel newusuario2 = new UsuarioEditModel();
     private List<ContratoModel> tc;
 
-   
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -76,21 +76,21 @@
     }
 
     private async Task EditUsers()
+    {
+        var usuario2 = new UsuarioEditModel()
         {
-            var usuario2 = new UsuarioEditModel()
-            {
-                Cargo = newusuario2.Cargo,
-                Telefono = newusuario2.Telefono,
-                Direccion = newusuario2.Direccion,
-                Cod_TipoContrato = newusuario2.Cod_TipoContrato,
-                Id=Id
-                    
+            Cargo = newusuario2.Cargo,
+            Telefono = newusuario2.Telefono,
+            Direccion = newusuario2.Direccion,
+            Cod_TipoContrato = newusuario2.Cod_TipoContrato,
+            Id = Id
 
 
-            };
+
+        };
 
         await UserDataService.EditUser(usuario2);
         NavigationManager.NavigateTo("ViewUsers");
-        }
-    
+    }
+
 }

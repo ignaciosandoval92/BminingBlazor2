@@ -11,6 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BminingBlazor.Services;
 using Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.AzureAD.UI;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BminingBlazor
 {
@@ -32,6 +36,15 @@ namespace BminingBlazor
             services.AddTransient<IDataAccess,DataAccess>();
             services.AddTransient<IUserDataService, UserDataService>();
             services.AddTransient<IProyectoDataService, ProyectoDataService>();
+            services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
+                .AddAzureAD(options => Configuration.Bind("AzureAd", options));
+            services.AddControllersWithViews(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,8 +68,12 @@ namespace BminingBlazor
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });

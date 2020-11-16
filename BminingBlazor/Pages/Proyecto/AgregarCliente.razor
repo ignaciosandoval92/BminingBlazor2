@@ -3,6 +3,7 @@
 @using BminingBlazor.Services
 @inject IProyectoDataService ProyectoDataService
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 <h3>Agregar Cliente</h3>
 
 <EditForm Model="@newProyecto" OnValidSubmit="@InsertCliente">
@@ -32,9 +33,9 @@
     private ProyectoModel newProyecto = new ProyectoModel();
     protected override async Task OnInitializedAsync()
     {
-           
+
         clientes = await ProyectoDataService.ReadCliente();
-          
+
     }
     private async Task InsertCliente()
     {

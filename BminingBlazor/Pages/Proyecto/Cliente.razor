@@ -3,6 +3,7 @@
 @using BminingBlazor.Services
 @inject IProyectoDataService ProyectoDataService
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 <h3>Agregar Cliente</h3>
 
 <EditForm Model="@newCliente" OnValidSubmit="@InsertCliente">
@@ -14,9 +15,9 @@
     <label for="inputNombres">  Nombre Cliente:  </label>
     <InputText id="Nombre_Cliente" @bind-Value="newCliente.Nombre_Cliente" />
 
-    
+
     <button type="submit" class="btn btn-primary">Guardar</button>
-    
+
 </EditForm>
 
 @code {

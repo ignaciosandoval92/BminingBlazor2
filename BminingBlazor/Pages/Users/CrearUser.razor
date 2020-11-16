@@ -4,6 +4,7 @@
 @inject NavigationManager NavigationManager
 
 @inject IUserDataService UserDataService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 <h3>Crear Usuario</h3>
 <EditForm Model="@newusuario" OnValidSubmit="@InsertUsers">
     <DataAnnotationsValidator />
@@ -24,11 +25,11 @@
             <InputText id="Apellido_Materno" @bind-Value="newusuario.Apellido_Materno" />
             <label for="inputNombres">  Rut:  </label>
             <InputText id="Rut" @bind-Value="newusuario.Rut" />
-            
+
         </td>
     </tr>
     <button type="submit" class="btn btn-primary">Crear</button>
-    
+
 </EditForm>
 
 
@@ -39,7 +40,7 @@
     {
         var usuario = new UsuarioModel()
         {
-            Email_Bmining=newusuario.Email_Bmining,
+            Email_Bmining = newusuario.Email_Bmining,
             Nombre = newusuario.Nombre,
             Apellido_Paterno = newusuario.Apellido_Paterno,
             Apellido_Materno = newusuario.Apellido_Materno,
@@ -47,7 +48,7 @@
 
 
         };
-        var id =await UserDataService.CreateUser(usuario);
+        var id = await UserDataService.CreateUser(usuario);
 
 
 

@@ -6,6 +6,7 @@
 @inject IUserDataService UserDataService
 @inject IProyectoDataService ProyectoDataService
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 <h3>Integrantes</h3>
@@ -31,13 +32,13 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Agregar</button>
-    <button type="button" class="btn btn-secondary" @onclick="@InsertMoreIntegrante" >Agregar mas Integrantes</button>
+    <button type="button" class="btn btn-secondary" @onclick="@InsertMoreIntegrante">Agregar mas Integrantes</button>
 
 </EditForm>
 
 @code {
-        [Parameter]
-        public int id_proyecto { get; set; }
+    [Parameter]
+    public int id_proyecto { get; set; }
 
     private IntegranteModel newintegrante = new IntegranteModel();
     private List<UsuarioModel> users;
@@ -67,7 +68,7 @@
             Id_Proyecto = id_proyecto
         };
         await ProyectoDataService.AddIntegrante(integrante);
-        NavigationManager.NavigateTo($"/ProyectoIntegrantes/{id_proyecto}",true);
+        NavigationManager.NavigateTo($"/ProyectoIntegrantes/{id_proyecto}", true);
     }
 
 }
