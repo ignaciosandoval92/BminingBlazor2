@@ -5,13 +5,14 @@
 @inject IProyectoDataService ProyectoDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "Administracion")]
 
 <h3>Estados de Pago</h3>
 
 <EditForm Model="@newestadopago" OnValidSubmit="@InsertEstadoPago">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <label for="inputNombres">  Nombre Estado de Pago:  </label>
+    <label for="inputNombres">  Tipo de Pago:  </label>
     <InputText id="Estado_Pago" @bind-Value="newestadopago.Estado_Pago" />
     <div class="form-group col-md-6">
         <label for="inputTContrato">Estado de Pago:</label>

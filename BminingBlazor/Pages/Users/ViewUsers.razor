@@ -8,6 +8,7 @@
 @inject IUserDataService UserDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "AdminRRHH,Administracion")]
 <h3>Usuarios</h3>
 @if (users == null)
 {

@@ -5,6 +5,7 @@
 @using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "AdminRRHH,Administracion")]
 
 @inject IUserDataService UserDataService
 <h3>Editar a @Email</h3>

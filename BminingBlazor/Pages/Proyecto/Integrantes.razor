@@ -7,6 +7,7 @@
 @inject IProyectoDataService ProyectoDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "Administracion")]
 
 
 <h3>Integrantes</h3>

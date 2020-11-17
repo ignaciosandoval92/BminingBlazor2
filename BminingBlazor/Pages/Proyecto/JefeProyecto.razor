@@ -5,6 +5,7 @@
 @inject NavigationManager NavigationManager
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "Administracion")]
 <h3>JefeProyecto</h3>
 
 <EditForm Model="@newProyecto" OnValidSubmit="@InsertJefe">

@@ -5,6 +5,7 @@
 
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "AdminRRHH,Administracion")]
 <h3>Crear Usuario</h3>
 <EditForm Model="@newusuario" OnValidSubmit="@InsertUsers">
     <DataAnnotationsValidator />
