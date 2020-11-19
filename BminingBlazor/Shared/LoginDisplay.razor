@@ -1,6 +1,8 @@
-﻿<AuthorizeView>
+﻿
+
+<AuthorizeView>
     <Authorized>
-        Hola, @context.User.Identity.Name!
+        Usuario: @context.User.Identity.Name
         <a href="AzureAD/Account/SignOut">Cerrar Sesión</a>
     </Authorized>
     <NotAuthorized>
