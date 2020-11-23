@@ -13,25 +13,26 @@
 <EditForm Model="@newProyecto" OnValidSubmit="@InsertProyecto">
     <DataAnnotationsValidator />
     <ValidationSummary />
-   
+    <div>
         <td>
             <label for="inputNombres">  Codigo de Proyecto:  </label>
             <InputText id="Cod_Proyecto" @bind-Value="newProyecto.Cod_Proyecto" />
             <label for="inputNombres">  Nombre de Proyecto:  </label>
             <InputText id="Nombre_Proyecto" @bind-Value="newProyecto.Nombre_Proyecto" />
         </td>
-   
-    <td>
-        
-            <td>
-                <label for="inputNombres">  Fecha de Inicio:  </label>
-                <InputDate id="Fecha_Inicio" @bind-Value="newProyecto.Fecha_Inicio" />
-                <label for="inputNombres">  Fecha de Termino:  </label>
-                <InputDate id="Fecha_Fin" @bind-Value="newProyecto.Fecha_Fin" />
-            </td>
-        
-    </td>
-    <tr>
+    </div>
+
+    <div>
+
+        <td>
+            <label for="inputNombres">  Fecha de Inicio:  </label>
+            <InputDate id="Fecha_Inicio" @bind-Value="newProyecto.Fecha_Inicio" />
+            <label for="inputNombres">  Fecha de Termino:  </label>
+            <InputDate id="Fecha_Fin" @bind-Value="newProyecto.Fecha_Fin" />
+        </td>
+
+    </div>
+    <div>
         <td>
             <label for="inputNombres">  Tipo de Proyecto:  </label>
             <select class="form-control" @bind="newProyecto.Cod_TipoProyecto" required>
@@ -45,10 +46,17 @@
 
             </select>
         </td>
-    </tr>
+    </div>
+    <div>
+    <label for="inputNombres">  Email del Creador del Proyecto:  </label>
+    <select class="form-control" @bind="newProyecto.Id_Creador" required>
+        @foreach (var creador in users)
+        {
+            <option value="@creador.id">@creador.Email_Bmining</option>
+        }
+    </select>
+    </div>
 
-    <tr>
-    </tr>
     <button type="submit" class="btn btn-primary">@Resource.Next</button>
 
 </EditForm>
@@ -56,6 +64,7 @@
 @code {
     private ProyectoModel newProyecto = new ProyectoModel();
     private List<TipoProyectoModel> tipro;
+    private List<UsuarioModel> users;
 
 
 
@@ -63,6 +72,7 @@
     protected override async Task OnInitializedAsync()
     {
         tipro = await ProyectoDataService.ReadTipoProyecto();
+        users = await UserDataService.ReadUsers();
 
     }
 

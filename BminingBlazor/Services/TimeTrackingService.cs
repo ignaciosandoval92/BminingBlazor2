@@ -1,11 +1,15 @@
 ﻿using Models.TimeTracking;
 using System;
 using System.Collections.Generic;
+using Data;
+using Microsoft.Extensions.Configuration;
 
 namespace BminingBlazor.Services
 {
     public class TimeTrackingService : ITimeTrackingService
     {
+        private readonly IDataAccess _dataAccess;
+        private readonly IConfiguration _configuration;
         public TimeTrackingService()
         {
         }

@@ -3,37 +3,39 @@
 
 @inject ITimeTrackingService TimeTrackingService
 @inject IMatToaster MatToaster
+    <AuthorizeView>
+    <h3>@context.User.Identity.Name</h3>
+    </AuthorizeView>
+    
 
-<h3>@UserId</h3>
-
-<div class="container">
-    <table class="table table-bordered">
-        <tr>
-            @foreach (var dateTime in DashboardUserTracking.GetDates())
-            {
-                <th>@dateTime.ToString("dddd")</th>
-            }
-        </tr>
-        <tr>
-        </tr>
-    </table>
-</div>
-@code {
-    [Parameter]
-    public int UserId { get; set; }
-    [Parameter]
-    public int Week { get; set; }
-    [Parameter]
-    public int Year { get; set; }
-
-
-    public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
-
+    <div class="container">
+        <table class="table table-bordered">
+            <tr>
+                @foreach (var dateTime in DashboardUserTracking.GetDates())
+                {
+                    <th>@dateTime.ToString("dddd")</th>
+                }
+            </tr>
+            <tr>
+            </tr>
+        </table>
+    </div>
+    @code {
+        [Parameter]
+        public int UserId { get; set; }
+        [Parameter]
+        public int Week { get; set; }
+        [Parameter]
+        public int Year { get; set; }
 
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        DashboardUserTracking = new DashboardUserTrackingViewModel();
+        public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
+
+
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            DashboardUserTracking = new DashboardUserTrackingViewModel();
+        }
     }
-}
