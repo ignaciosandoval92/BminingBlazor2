@@ -1,0 +1,71 @@
+﻿@page "/addusertrackinghour/{userId:int}/{day:int}/{month:int}/{year:int}"
+@using BminingBlazor.ViewModels.TrackingHours
+@using BminingBlazor.Services
+@inject IDialogService DialogService
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Cargar Horas @ViewModel.MyTrackingHourDate.ToShortDateString()</legend>
+                <EditForm Model="@ViewModel" OnSubmit="SubmitCallback">
+                    <div class="form-group">
+                        <label for="inputHours">Horas invertidas</label>
+                        <input type="number" step="0.1" class="form-control" id="inputHours" placeholder="Horas invertidas">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputProject">Proyecto</label>
+                        <select @bind="@ViewModel.MySelectedProjectId" class="form-control" id="inputProject">
+
+                            @foreach (var projectDetailsViewModel in ViewModel?.OurAvailableProjects)
+                            {
+                                <option value="@projectDetailsViewModel.MyProjectId">
+                                    @projectDetailsViewModel.MyProjectCode - @projectDetailsViewModel.MyProjectName
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary float-lg-right">Cargar</button>
+                </EditForm>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int UserId { get; set; }
+
+    [Parameter]
+    public int Day { get; set; }
+
+    [Parameter]
+    public int Month { get; set; }
+
+    [Parameter]
+    public int Year { get; set; }
+
+    public AddUserTimeTrackingViewModel ViewModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ViewModel = new AddUserTimeTrackingViewModel(UserId);
+
+        ViewModel.MyTrackingHourDate = new DateTime(Year, Month, Day);
+
+        for (int i = 0; i < 3; i++)
+        {
+            var projectDetails = new ProjectDetailsViewModel();
+            projectDetails.MyProjectCode = $"Code {i}";
+            projectDetails.MyProjectName = $"Name {i}";
+            ViewModel.OurAvailableProjects.Add(projectDetails);
+        }
+    }
+
+    private void SubmitCallback()
+    {
+        DialogService.ShowError("Hellfire");
+    }
+}

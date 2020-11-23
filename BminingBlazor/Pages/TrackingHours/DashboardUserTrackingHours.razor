@@ -1,0 +1,39 @@
+﻿@page "/dashboard_tracking_hours/{userid:int}/{week:int}/{year:int}"
+@using BminingBlazor.ViewModels.TrackingHours
+
+@inject ITimeTrackingService TimeTrackingService
+@inject IMatToaster MatToaster
+
+<h3>@UserId</h3>
+
+<div class="container">
+    <table class="table table-bordered">
+        <tr>
+            @foreach (var dateTime in DashboardUserTracking.GetDates())
+            {
+                <th>@dateTime.ToString("dddd")</th>
+            }
+        </tr>
+        <tr>
+        </tr>
+    </table>
+</div>
+@code {
+    [Parameter]
+    public int UserId { get; set; }
+    [Parameter]
+    public int Week { get; set; }
+    [Parameter]
+    public int Year { get; set; }
+
+
+    public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
+
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        DashboardUserTracking = new DashboardUserTrackingViewModel();
+    }
+}

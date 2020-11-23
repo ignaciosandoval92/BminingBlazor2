@@ -1,6 +1,7 @@
 ﻿@page "/crearproyecto2/{id_proyecto:int}"
 @using Models
 @using BminingBlazor.Services
+@using BminingBlazor.Resources
 @inject IProyectoDataService ProyectoDataService
 @inject NavigationManager NavigationManager
 @inject IUserDataService UserDataService
@@ -17,7 +18,7 @@
             <option value="@creador.id">@creador.Email_Bmining</option>
         }
     </select>
-    <button type="submit" class="btn btn-primary">Siguiente</button>
+    <button type="submit" class="btn btn-primary"></button>
 </EditForm>
 
 @code {

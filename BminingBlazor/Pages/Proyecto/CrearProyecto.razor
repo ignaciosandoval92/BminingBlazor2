@@ -1,6 +1,7 @@
 ﻿@page "/CrearProyecto"
 @using Models
 @using BminingBlazor.Services
+@using BminingBlazor.Resources
 @inject IProyectoDataService ProyectoDataService
 @inject NavigationManager NavigationManager
 @inject IUserDataService UserDataService
@@ -12,23 +13,23 @@
 <EditForm Model="@newProyecto" OnValidSubmit="@InsertProyecto">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <tr>
+   
         <td>
             <label for="inputNombres">  Codigo de Proyecto:  </label>
             <InputText id="Cod_Proyecto" @bind-Value="newProyecto.Cod_Proyecto" />
             <label for="inputNombres">  Nombre de Proyecto:  </label>
             <InputText id="Nombre_Proyecto" @bind-Value="newProyecto.Nombre_Proyecto" />
         </td>
-    </tr>
+   
     <td>
-        <tr>
+        
             <td>
                 <label for="inputNombres">  Fecha de Inicio:  </label>
                 <InputDate id="Fecha_Inicio" @bind-Value="newProyecto.Fecha_Inicio" />
                 <label for="inputNombres">  Fecha de Termino:  </label>
                 <InputDate id="Fecha_Fin" @bind-Value="newProyecto.Fecha_Fin" />
             </td>
-        </tr>
+        
     </td>
     <tr>
         <td>
@@ -48,7 +49,7 @@
 
     <tr>
     </tr>
-    <button type="submit" class="btn btn-primary">Siguiente</button>
+    <button type="submit" class="btn btn-primary">@Resource.Next</button>
 
 </EditForm>
 
