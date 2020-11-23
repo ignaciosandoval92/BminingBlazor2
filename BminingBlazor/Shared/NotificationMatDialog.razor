@@ -1,0 +1,35 @@
+﻿<MatDialog @bind-IsOpen="@_isOpen">
+    <MatDialogTitle>@_title</MatDialogTitle>
+    <MatDialogContent>@_message</MatDialogContent>
+    <MatDialogActions><MatButton OnClick="@Close">Ok</MatButton></MatDialogActions>
+</MatDialog>
+@code {
+
+    private bool _isOpen = false;
+
+    private string _title;
+    private string _message;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _title = "Notificación";
+
+        _isOpen = false;
+    }
+
+    private void Close()
+    {
+        _isOpen = false;
+    }
+
+    public void Show(string message, string title = null)
+    {
+        _message = message;
+        if (title == null)
+            _title = "Notificación";
+        else _title = title;
+        _isOpen = true;
+        StateHasChanged();
+    }
+}

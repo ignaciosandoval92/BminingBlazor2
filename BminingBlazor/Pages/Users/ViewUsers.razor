@@ -1,4 +1,5 @@
 ﻿@page "/viewusers"
+@inject IDialogService DialogService
 
 @using global::Data
 @using Microsoft.Extensions.Configuration
@@ -87,6 +88,13 @@ else
 
         users = await UserDataService.ReadUsers();
     }
+   
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        DialogService.ShowNotification("Hola");
+    }
+    
 
 
 }
