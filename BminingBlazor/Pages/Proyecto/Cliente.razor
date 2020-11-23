@@ -10,13 +10,8 @@
 <EditForm Model="@newCliente" OnValidSubmit="@InsertCliente">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
-
-
-    <label for="inputNombres">  Nombre Cliente:  </label>
+    <label for="inputNombres">Nombre Cliente:</label>
     <InputText id="Nombre_Cliente" @bind-Value="newCliente.Nombre_Cliente" />
-
-
     <button type="submit" class="btn btn-primary">Guardar</button>
 
 </EditForm>
@@ -33,7 +28,5 @@
         await ProyectoDataService.CreateCliente(cliente);
 
         NavigationManager.NavigateTo("/");
-
     }
-
 }

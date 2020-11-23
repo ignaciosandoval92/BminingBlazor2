@@ -12,19 +12,19 @@
 
 <h3>Integrantes</h3>
 
-<EditForm Model="@newintegrante" OnValidSubmit="@InsertIntegrante">
+<EditForm Model="@_newIntegrante" OnValidSubmit="@InsertIntegrante">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="form-group col-md-6">
         <label for="inputTContrato">Integrante del Proyecto:</label>
-        <select class="form-control" @bind="newintegrante.Id_Usuario" required>
-            @if (users is null)
+        <select class="form-control" @bind="_newIntegrante.Id_Usuario" required>
+            @if (_users is null)
             {
                 <p><em>Cargando..</em></p>
             }
             else
             {
-                @foreach (var emails in users)
+                @foreach (var emails in _users)
                 {
                     <option value="@emails.id">@emails.Email_Bmining</option>
                 }
@@ -33,7 +33,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Agregar</button>
-    <button type="button" class="btn btn-secondary" @onclick="@InsertMoreIntegrante">Agregar mas Integrantes</button>
+    <button type="button" class="btn btn-secondary" @onclick="@InsertMoreIntegrante">Agregar más Integrantes</button>
 
 </EditForm>
 
@@ -41,13 +41,12 @@
     [Parameter]
     public int id_proyecto { get; set; }
 
-    private IntegranteModel newintegrante = new IntegranteModel();
-    private List<UsuarioModel> users;
+    private IntegranteModel _newIntegrante = new IntegranteModel();
+    private List<UsuarioModel> _users;
 
     protected override async Task OnInitializedAsync()
     {
-        users = await UserDataService.ReadUsers();
-
+        _users = await UserDataService.ReadUsers();
     }
 
 
@@ -55,7 +54,7 @@
     {
         var integrante = new IntegranteModel()
         {
-            Id_Usuario = newintegrante.Id_Usuario,
+            Id_Usuario = _newIntegrante.Id_Usuario,
             Id_Proyecto = id_proyecto
         };
         await ProyectoDataService.AddIntegrante(integrante);
@@ -65,7 +64,7 @@
     {
         var integrante = new IntegranteModel()
         {
-            Id_Usuario = newintegrante.Id_Usuario,
+            Id_Usuario = _newIntegrante.Id_Usuario,
             Id_Proyecto = id_proyecto
         };
         await ProyectoDataService.AddIntegrante(integrante);

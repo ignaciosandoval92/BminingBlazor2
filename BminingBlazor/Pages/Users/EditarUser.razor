@@ -9,39 +9,37 @@
 
 @inject IUserDataService UserDataService
 <h3>Editar a @Email</h3>
-<EditForm Model="@newusuario2" OnValidSubmit="@EditUsers">
+<EditForm Model="@newUser" OnValidSubmit="@EditUsers">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="form-group col-md-6">
         <label for="inputTContrato">Tipo de Contrato:</label>
-        <select class="form-control" @bind="newusuario2.Cod_TipoContrato" required>
-            @if (tc is null)
+        <select class="form-control" @bind="newUser.Cod_TipoContrato" required>
+            @if (_listOfContratoModels is null)
             {
                 <p><em>Cargando..</em></p>
             }
             else
             {
-                @foreach (var contratos in tc)
+                @foreach (var contratos in _listOfContratoModels)
                 {
                     <option value="@contratos.Cod_TipoContrato">@contratos.TipoContrato</option>
                 }
             }
         </select>
     </div>
-
     <tr>
         <td>
-            <label for="inputNombres">  Cargo:  </label>
-            <InputText id="Cargo" @bind-Value="newusuario2.Cargo" />
-            <label for="inputNombres">  Telefono:  </label>
-            <InputText id="Telefono" @bind-Value="newusuario2.Telefono" />
-            <label for="inputNombres">  Direccion:  </label>
-            <InputText id="Direccion" @bind-Value="newusuario2.Direccion" />
+            <label for="inputNombres">Cargo:</label>
+            <InputText id="Cargo" @bind-Value="newUser.Cargo" />
+            <label for="inputNombres">Teléfono:</label>
+            <InputText id="Telefono" @bind-Value="newUser.Telefono" />
+            <label for="inputNombres">Dirección:</label>
+            <InputText id="Direccion" @bind-Value="newUser.Direccion" />
         </td>
     </tr>
     <button type="submit" class="btn btn-primary">Guardar</button>
-
 </EditForm>
 
 @code {
@@ -50,25 +48,24 @@
 
     public string Email { get; set; }
 
-    private UsuarioEditModel newusuario2 = new UsuarioEditModel();
-    private List<ContratoModel> tc;
-
-
-
+    private UsuarioEditModel newUser = new UsuarioEditModel();
+    private List<ContratoModel> _listOfContratoModels;
+    
     protected override async Task OnInitializedAsync()
     {
-        tc = await UserDataService.ReadContrato();
-        var user = await UserDataService.ReadUser(Id);
-        newusuario2.Email_Bmining = user.First().Email_Bmining;
-        newusuario2.Nombre = user.First().Nombre;
-        newusuario2.Apellido_Paterno = user.First().Apellido_Paterno;
-        newusuario2.Apellido_Materno = user.First().Apellido_Materno;
-        newusuario2.Rut = user.First().Rut;
-        newusuario2.Cod_TipoContrato = user.First().Cod_TipoContrato;
-        newusuario2.Cargo = user.First().Cargo;
-        newusuario2.Telefono = user.First().Telefono;
-        newusuario2.Direccion = user.First().Direccion;
-        Email = user.First().Email_Bmining;
+        _listOfContratoModels = await UserDataService.ReadContrato();
+        var userEditModels = await UserDataService.ReadUser(Id);
+        var user = userEditModels.First();
+        newUser.Email_Bmining = user.Email_Bmining;
+        newUser.Nombre = user.Nombre;
+        newUser.Apellido_Paterno = user.Apellido_Paterno;
+        newUser.Apellido_Materno = user.Apellido_Materno;
+        newUser.Rut = user.Rut;
+        newUser.Cod_TipoContrato = user.Cod_TipoContrato;
+        newUser.Cargo = user.Cargo;
+        newUser.Telefono = user.Telefono;
+        newUser.Direccion = user.Direccion;
+        Email = user.Email_Bmining;
 
     }
     protected override async Task OnParametersSetAsync()
@@ -80,18 +77,13 @@
     {
         var usuario2 = new UsuarioEditModel()
         {
-            Cargo = newusuario2.Cargo,
-            Telefono = newusuario2.Telefono,
-            Direccion = newusuario2.Direccion,
-            Cod_TipoContrato = newusuario2.Cod_TipoContrato,
+            Cargo = newUser.Cargo,
+            Telefono = newUser.Telefono,
+            Direccion = newUser.Direccion,
+            Cod_TipoContrato = newUser.Cod_TipoContrato,
             Id = Id
-
-
-
         };
-
         await UserDataService.EditUser(usuario2);
         NavigationManager.NavigateTo("ViewUsers");
     }
-
 }

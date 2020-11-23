@@ -6,25 +6,19 @@
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize(Roles = "Administracion")]
-<h3>JefeProyecto</h3>
+<h3>Jefe de Proyecto</h3>
 
-<EditForm Model="@newProyecto" OnValidSubmit="@InsertJefe">
+<EditForm Model="@_newProyecto" OnValidSubmit="@InsertJefe">
     <DataAnnotationsValidator />
     <ValidationSummary /><td>
-
-
-        <label for="inputNombres">  Email de Jefe de Proyecto:  </label>
-        <select class="form-control" @bind="newProyecto.Id_JefeProyecto" required>
-
+        <label for="inputNombres">Email de Jefe de Proyecto:</label>
+        <select class="form-control" @bind="_newProyecto.Id_JefeProyecto" required>
             @foreach (var jefe in users)
             {
                 <option value="@jefe.id">@jefe.Email_Bmining</option>
             }
-
-
         </select>
         <button type="submit" class="btn btn-primary">Agregar Integrantes</button>
-
     </td>
 </EditForm>
 
@@ -32,7 +26,7 @@
     [Parameter]
     public int id_proyecto { get; set; }
     private List<UsuarioModel> users;
-    private ProyectoModel newProyecto = new ProyectoModel();
+    private ProyectoModel _newProyecto = new ProyectoModel();
     protected override async Task OnInitializedAsync()
     {
 
@@ -43,17 +37,11 @@
     {
         var proyecto = new ProyectoModel()
         {
-
-
-            Id_JefeProyecto = newProyecto.Id_JefeProyecto,
+            Id_JefeProyecto = _newProyecto.Id_JefeProyecto,
             Id_proyecto = id_proyecto
-
-
 
         };
         await ProyectoDataService.AddJefeProyecto(proyecto);
-
         NavigationManager.NavigateTo($"/ProyectoIntegrantes/{id_proyecto}");
-
     }
 }

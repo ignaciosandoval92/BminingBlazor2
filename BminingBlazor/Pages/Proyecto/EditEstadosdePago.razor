@@ -9,20 +9,20 @@
 
 <h3>Estados de Pago</h3>
 
-<EditForm Model="@newestadopago" OnValidSubmit="@EditarEstadoPago">
+<EditForm Model="@_newEstadoPago" OnValidSubmit="@EditarEstadoPago">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="form-group col-md-6">
         <label for="inputTContrato">Estado de Pago:</label>
-        <select class="form-control" @bind="newestadopago.Cod_TipoEstadoPago" required>
-            @if (tipoep is null)
+        <select class="form-control" @bind="_newEstadoPago.Cod_TipoEstadoPago" required>
+            @if (_listTipoEstadoPagoModels is null)
             {
                 <p><em>Cargando..</em></p>
             }
             else
             {
-                @foreach (var estado in tipoep)
+                @foreach (var estado in _listTipoEstadoPagoModels)
                 {
                     <option value="@estado.Cod_TipoEstadoPago">@estado.TipoEstadoPago</option>
                 }
@@ -38,12 +38,12 @@
 @code {
     [Parameter]
     public int cod_estadopago { get; set; }
-    private EstadoPagoModel newestadopago = new EstadoPagoModel();
-    private List<TipoEstadoPagoModel> tipoep;
+    private EstadoPagoModel _newEstadoPago = new EstadoPagoModel();
+    private List<TipoEstadoPagoModel> _listTipoEstadoPagoModels;
 
     protected override async Task OnInitializedAsync()
     {
-        tipoep = await ProyectoDataService.ReadTipoEstadoPago();
+        _listTipoEstadoPagoModels = await ProyectoDataService.ReadTipoEstadoPago();
     }
 
     private async Task EditarEstadoPago()
@@ -51,12 +51,9 @@
         var estadopago = new EstadoPagoModel()
         {
             Cod_EstadoPago = cod_estadopago,
-            Cod_TipoEstadoPago = newestadopago.Cod_TipoEstadoPago
+            Cod_TipoEstadoPago = _newEstadoPago.Cod_TipoEstadoPago
         };
         await ProyectoDataService.EditEstadoPago(estadopago);
         NavigationManager.NavigateTo("/proyectos");
     }
-
-
-
 }

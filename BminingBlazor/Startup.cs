@@ -38,6 +38,7 @@ namespace BminingBlazor
             services.AddTransient<IUserDataService, UserDataService>();
             services.AddTransient<IProyectoDataService, ProyectoDataService>();
             services.AddSingleton<IDialogService, DialogService>();
+            services.AddMatBlazor();
             services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
                 .AddAzureAD(options => Configuration.Bind("AzureAd", options));
             services.AddControllersWithViews(options =>
@@ -71,8 +72,6 @@ namespace BminingBlazor
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            // TODO: Borrar este comentario
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
