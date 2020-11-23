@@ -1,0 +1,62 @@
+﻿@page "/EditEstadoPago/{cod_estadopago:int}"
+@using Models
+@using BminingBlazor.Services
+
+@inject IProyectoDataService ProyectoDataService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "Administracion")]
+
+<h3>Estados de Pago</h3>
+
+<EditForm Model="@newestadopago" OnValidSubmit="@EditarEstadoPago">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group col-md-6">
+        <label for="inputTContrato">Estado de Pago:</label>
+        <select class="form-control" @bind="newestadopago.Cod_TipoEstadoPago" required>
+            @if (tipoep is null)
+            {
+                <p><em>Cargando..</em></p>
+            }
+            else
+            {
+                @foreach (var estado in tipoep)
+                {
+                    <option value="@estado.Cod_TipoEstadoPago">@estado.TipoEstadoPago</option>
+                }
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cambiar</button>
+
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public int cod_estadopago { get; set; }
+    private EstadoPagoModel newestadopago = new EstadoPagoModel();
+    private List<TipoEstadoPagoModel> tipoep;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tipoep = await ProyectoDataService.ReadTipoEstadoPago();
+    }
+
+    private async Task EditarEstadoPago()
+    {
+        var estadopago = new EstadoPagoModel()
+        {
+            Cod_EstadoPago = cod_estadopago,
+            Cod_TipoEstadoPago = newestadopago.Cod_TipoEstadoPago
+        };
+        await ProyectoDataService.EditEstadoPago(estadopago);
+        NavigationManager.NavigateTo("/proyectos");
+    }
+
+
+
+}

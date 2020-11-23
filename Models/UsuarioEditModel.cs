@@ -16,5 +16,6 @@ namespace Models
         public string Telefono { get; set; }
         public string Direccion { get; set; }
         public int Cod_TipoContrato { get; set; }
+        public int Cod_Integrantes { get; set; }
     }
 }

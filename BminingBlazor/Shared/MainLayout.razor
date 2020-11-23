@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using BminingBlazor.Services
+@inherits LayoutComponentBase
+@inject IDialogService DialogService
+
 
 <div class="sidebar">
     <NavMenu />
@@ -6,10 +9,42 @@
 
 <div class="main">
     <div class="top-row px-4">
+        <LoginDisplay></LoginDisplay>
         <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
     </div>
 
     <div class="content px-4">
+      
+        <MatToastContainer />
         @Body
+        <NotificationMatDialog @ref="@_notificationMatDialog"></NotificationMatDialog>
+
     </div>
 </div>
+@code
+{
+    private NotificationMatDialog _notificationMatDialog;
+
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        //isOpen = true;
+    }
+
+
+
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            if (!(DialogService is DialogService))
+                throw new Exception($"Error in interface {nameof(DialogService)}");
+            ((DialogService)DialogService).SetNotificationMatDialog(_notificationMatDialog);
+        }
+        base.OnAfterRender(firstRender);
+    }
+}

@@ -11,8 +11,9 @@ namespace Models
         public int Cod_TipoProyecto { get; set; }
         public DateTime Fecha_Inicio { get; set; }
         public DateTime Fecha_Fin { get; set; }
-        public string Email_Creador { get; set; }
-        public string Email_JefeProyecto { get; set; }
+        public int Id_Creador { get; set; }
+        public int Id_JefeProyecto { get; set; }
         public int Id_proyecto { get; set; }
+        public int Id_Cliente { get; set; }
     }
 }

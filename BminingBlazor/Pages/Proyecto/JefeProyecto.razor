@@ -1,0 +1,59 @@
+﻿@page "/JefeProyecto/{id_Proyecto:int}"
+@using Models
+@using BminingBlazor.Services
+@inject IProyectoDataService ProyectoDataService
+@inject NavigationManager NavigationManager
+@inject IUserDataService UserDataService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "Administracion")]
+<h3>JefeProyecto</h3>
+
+<EditForm Model="@newProyecto" OnValidSubmit="@InsertJefe">
+    <DataAnnotationsValidator />
+    <ValidationSummary /><td>
+
+
+        <label for="inputNombres">  Email de Jefe de Proyecto:  </label>
+        <select class="form-control" @bind="newProyecto.Id_JefeProyecto" required>
+
+            @foreach (var jefe in users)
+            {
+                <option value="@jefe.id">@jefe.Email_Bmining</option>
+            }
+
+
+        </select>
+        <button type="submit" class="btn btn-primary">Agregar Integrantes</button>
+
+    </td>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int id_proyecto { get; set; }
+    private List<UsuarioModel> users;
+    private ProyectoModel newProyecto = new ProyectoModel();
+    protected override async Task OnInitializedAsync()
+    {
+
+        users = await UserDataService.ReadUsers();
+
+    }
+    private async Task InsertJefe()
+    {
+        var proyecto = new ProyectoModel()
+        {
+
+
+            Id_JefeProyecto = newProyecto.Id_JefeProyecto,
+            Id_proyecto = id_proyecto
+
+
+
+        };
+        await ProyectoDataService.AddJefeProyecto(proyecto);
+
+        NavigationManager.NavigateTo($"/ProyectoIntegrantes/{id_proyecto}");
+
+    }
+}

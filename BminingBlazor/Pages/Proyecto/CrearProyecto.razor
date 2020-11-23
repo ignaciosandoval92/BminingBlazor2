@@ -3,45 +3,69 @@
 @using BminingBlazor.Services
 @inject IProyectoDataService ProyectoDataService
 @inject NavigationManager NavigationManager
+@inject IUserDataService UserDataService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "Administracion")]
 
 <h3>CrearProyecto</h3>
 
 <EditForm Model="@newProyecto" OnValidSubmit="@InsertProyecto">
-<DataAnnotationsValidator />
-<ValidationSummary />
-<tr>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <tr>
+        <td>
+            <label for="inputNombres">  Codigo de Proyecto:  </label>
+            <InputText id="Cod_Proyecto" @bind-Value="newProyecto.Cod_Proyecto" />
+            <label for="inputNombres">  Nombre de Proyecto:  </label>
+            <InputText id="Nombre_Proyecto" @bind-Value="newProyecto.Nombre_Proyecto" />
+        </td>
+    </tr>
     <td>
-        <label for="inputNombres">  Codigo de Proyecto:  </label>
-        <InputText id="Cod_Proyecto" @bind-Value="newProyecto.Cod_Proyecto" />
-        <label for="inputNombres">  Nombre de Proyecto:  </label>
-        <InputText id="Nombre_Proyecto" @bind-Value="newProyecto.Nombre_Proyecto" />
+        <tr>
+            <td>
+                <label for="inputNombres">  Fecha de Inicio:  </label>
+                <InputDate id="Fecha_Inicio" @bind-Value="newProyecto.Fecha_Inicio" />
+                <label for="inputNombres">  Fecha de Termino:  </label>
+                <InputDate id="Fecha_Fin" @bind-Value="newProyecto.Fecha_Fin" />
+
+            </td>
+        </tr>
     </td>
-</tr>
-<tr>
-    <td>
-        <label for="inputNombres">  Tipo de Proyecto:  </label>
-        <InputNumber id="Cod_TipoProyecto" @bind-Value="newProyecto.Cod_TipoProyecto" />
-        <label for="inputNombres">  Fecha de Inicio:  </label>
-        <InputDate id="Fecha_Inicio" @bind-Value="newProyecto.Fecha_Inicio" />
-        <label for="inputNombres">  Fecha de Termino:  </label>
-        <InputDate id="Fecha_Fin" @bind-Value="newProyecto.Fecha_Fin" />
-            
-    </td>
-</tr>
-<tr>
-    <td>
-        <label for="inputNombres">  Email del Creador del Proyecto:  </label>
-        <InputText id="Email_Creador" @bind-Value="newProyecto.Email_Creador" />
-        <label for="inputNombres">  Email de Jefe de Proyecto:  </label>
-        <InputText id="Email_JefeProyecto" @bind-Value="newProyecto.Email_JefeProyecto" />
-    </td>
-</tr>
-<button type="submit" class="btn btn-primary">Crear</button>
-    
+    <tr>
+        <td>
+            <label for="inputNombres">  Tipo de Proyecto:  </label>
+            <select class="form-control" @bind="newProyecto.Cod_TipoProyecto" required>
+                @if (tipro != null)
+                {
+                    @foreach (var tipoproyecto in tipro)
+                    {
+                        <option value="@tipoproyecto.Cod_TipoProyecto">@tipoproyecto.Tipo_Proyecto</option>
+                    }
+                }
+
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+    </tr>
+    <button type="submit" class="btn btn-primary">Siguiente</button>
+
 </EditForm>
 
 @code {
-    private ProyectoModel newProyecto =new ProyectoModel();
+    private ProyectoModel newProyecto = new ProyectoModel();
+    private List<TipoProyectoModel> tipro;
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        tipro = await ProyectoDataService.ReadTipoProyecto();
+
+    }
+
 
     protected override void OnInitialized()
     {
@@ -58,14 +82,14 @@
             Nombre_Proyecto = newProyecto.Nombre_Proyecto,
             Cod_TipoProyecto = newProyecto.Cod_TipoProyecto,
             Fecha_Inicio = newProyecto.Fecha_Inicio,
-            Fecha_Fin = newProyecto.Fecha_Fin,
-            Email_Creador = newProyecto.Email_Creador,
-            Email_JefeProyecto = newProyecto.Email_JefeProyecto
+            Fecha_Fin = newProyecto.Fecha_Fin
+
+
 
         };
         var id_proyecto = await ProyectoDataService.CreateProyecto(proyecto);
 
-        NavigationManager.NavigateTo("");
+        NavigationManager.NavigateTo($"/agregarcliente/{id_proyecto}");
 
     }
 }

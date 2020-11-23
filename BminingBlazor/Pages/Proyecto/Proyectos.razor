@@ -1,0 +1,88 @@
+﻿@page "/proyectos"
+@using Models
+@using BminingBlazor.Services
+
+@inject IProyectoDataService ProyectoDataService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "Administracion")]
+<h3>Proyectos</h3>
+@if (proyectos == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <div class="table-responsive{-sm|-md|-lg|-xl}">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Codigo Proyecto</th>
+                    <th>Nombre Proyecto</th>
+                    <th>Cliente</th>
+                    <th>Email Jefe de Proyecto</th>
+                    <th>Tipo de Proyecto</th>
+                    <th>Tipo de Pago </th>
+                    <th>Estado de Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in proyectos)
+                {
+                    <tr>
+                        <td>@p.Cod_Proyecto</td>
+                        <td>@p.Nombre_Proyecto</td>
+                        <td>@p.Nombre_Cliente</td>
+                        <td>@p.Email_JefeProyecto</td>
+                        <td>@p.Tipo_Proyecto</td>
+                        <td>@p.Tipo_Pago</td>
+                        <td>@p.TipoEstadoPago</td>
+                        <button @onclick=@(()=>ViewIntegrantes(p.Id_Proyecto))>Integrantes</button>
+                        <button @onclick=@(()=>EditEstadoPago(p.Cod_EstadoPago))>Cambiar Estado de pago</button>
+                        <button @onclick=@(()=>Delete(p.Id_Proyecto))>Eliminar</button>
+
+
+
+                    </tr>
+                }
+                <tr>
+                    <button type="button" class="btn btn-primary" @onclick="@NewProyecto">Agregar Proyecto</button>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@code {
+    private List<ViewProyectoModel> proyectos;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        proyectos = await ProyectoDataService.ReadProyectos();
+    }
+
+    public void EditEstadoPago(int Cod_EstadoPago)
+    {
+        NavigationManager.NavigateTo($"/EditEstadoPago/{Cod_EstadoPago}");
+    }
+
+    public void NewProyecto()
+    {
+        NavigationManager.NavigateTo("/CrearProyecto");
+    }
+    public void ViewIntegrantes(int Id_Proyecto)
+    {
+
+        NavigationManager.NavigateTo($"ViewIntegrantes/{Id_Proyecto}");
+
+
+    }
+
+    public async void Delete(int Id_Proyecto)
+    {
+        await ProyectoDataService.DeleteProyecto(Id_Proyecto);
+        NavigationManager.NavigateTo("/proyectos", true);
+    }
+}
