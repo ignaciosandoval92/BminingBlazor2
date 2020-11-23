@@ -1,14 +1,13 @@
 ﻿@page "/viewusers"
-@inject IDialogService DialogService
-
-@using global::Data
-@using Microsoft.Extensions.Configuration
 @using Models
 @using BminingBlazor.Services
-@using Renci.SshNet
+
 @inject IUserDataService UserDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IMatDialogService MatDialogService;
+@inject IDialogService DialogService
+
 @attribute [Authorize(Roles = "AdminRRHH,Administracion")]
 <h3>Usuarios</h3>
 @if (users == null)
@@ -28,7 +27,7 @@ else
                     <th>Rut</th>
                     <th>Cargo</th>
                     <th>Telefono</th>
-                    <th>Direccion</th>
+                    <th>Dirección</th>
                     <th>Tipo de Contrato</th>
                 </tr>
             </thead>
@@ -45,12 +44,12 @@ else
                         <td>@p.Telefono</td>
                         <td>@p.Direccion</td>
                         <td>@p.Cod_TipoContrato</td>
-                        <button @onclick=@(()=>EditCallback(p.id))>Editar</button>
-                        <button @onclick=@(()=>Delete(p.id))>Eliminar</button>
+                        <MatButton @onclick=@(()=>EditCallback(p.id))>Editar</MatButton>
+                        <MatButton @onclick=@(()=>Delete(p.id))>Eliminar</MatButton>
                     </tr>
                 }
                 <tr>
-                    <button type="button" class="btn btn-primary" @onclick="@NewUser">Crear Usuario</button>
+                    <MatButton type="button" class="btn btn-primary" @onclick="@NewUser">Crear Usuario</MatButton>
                 </tr>
             </tbody>
         </table>
@@ -67,7 +66,9 @@ else
 
     public async void Delete(int id)
     {
-
+        var answer = await MatDialogService.AskAsync($"¿Seguro de borrar el proyecto {id}?", new List<string> { "Sí", "No" });
+        if (answer == null || answer == "No")
+            return;
         await UserDataService.DeleteUser(id);
         NavigationManager.NavigateTo("ViewUsers", true);
 
@@ -75,26 +76,16 @@ else
 
     public void EditCallback(int id)
     {
-
         NavigationManager.NavigateTo($"editarusuario/{id}");
-
-
     }
-
-
 
     protected override async Task OnInitializedAsync()
     {
-
         users = await UserDataService.ReadUsers();
     }
-   
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        DialogService.ShowNotification("Hola");
     }
-    
-
-
 }

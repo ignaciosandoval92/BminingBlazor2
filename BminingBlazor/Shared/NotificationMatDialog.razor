@@ -1,7 +1,13 @@
 ﻿<MatDialog @bind-IsOpen="@_isOpen">
     <MatDialogTitle>@_title</MatDialogTitle>
     <MatDialogContent>@_message</MatDialogContent>
-    <MatDialogActions><MatButton OnClick="@Close">Ok</MatButton></MatDialogActions>
+    <MatDialogActions>
+        @if (_isNotificationDialog)
+        {
+            <MatButton OnClick="@Close">Ok</MatButton>
+        }
+
+    </MatDialogActions>
 </MatDialog>
 @code {
 
@@ -9,6 +15,8 @@
 
     private string _title;
     private string _message;
+
+    private bool _isNotificationDialog;
 
     protected override void OnInitialized()
     {
@@ -23,7 +31,7 @@
         _isOpen = false;
     }
 
-    public void Show(string message, string title = null)
+    public void ShowNotification(string message, string title = null)
     {
         _message = message;
         if (title == null)

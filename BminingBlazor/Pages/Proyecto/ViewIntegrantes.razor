@@ -33,13 +33,8 @@ else
                         <td>@p.Apellido_Paterno</td>
                         <td>@p.Apellido_Materno</td>
                         <td>@p.Rut</td>
-
-
-
-
                     </tr>
                 }
-
             </tbody>
         </table>
     </div>
@@ -61,7 +56,6 @@ else
                     <th>Apellido Paterno</th>
                     <th>Apellido Materno </th>
                     <th>Rut</th>
-
                 </tr>
             </thead>
             <tbody>
@@ -73,12 +67,7 @@ else
                         <td>@i.Apellido_Paterno</td>
                         <td>@i.Apellido_Materno</td>
                         <td>@i.Rut</td>
-                        <button @onclick=@(()=>Delete(i.Cod_Integrantes))>Eliminar</button>
-
-
-
-
-
+                        <MatButton @onclick=@(()=>Delete(i.Cod_Integrantes))>Eliminar</MatButton>
                     </tr>
                 }
                 <tr>

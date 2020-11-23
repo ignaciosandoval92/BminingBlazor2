@@ -1,13 +1,16 @@
 ﻿@page "/proyectos"
 @using Models
 @using BminingBlazor.Services
+@using MySql.Data
+@using BminingBlazor.Resources
 
 @inject IProyectoDataService ProyectoDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IMatDialogService MatDialogService
 @attribute [Authorize(Roles = "Administracion")]
 <h3>Proyectos</h3>
-@if (proyectos == null)
+@if (_proyectos == null)
 {
     <p><em>Cargando...</em></p>
 }
@@ -27,7 +30,7 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var p in proyectos)
+                @foreach (var p in _proyectos)
                 {
                     <tr>
                         <td>@p.Cod_Proyecto</td>
@@ -37,16 +40,13 @@ else
                         <td>@p.Tipo_Proyecto</td>
                         <td>@p.Tipo_Pago</td>
                         <td>@p.TipoEstadoPago</td>
-                        <button @onclick=@(()=>ViewIntegrantes(p.Id_Proyecto))>Integrantes</button>
-                        <button @onclick=@(()=>EditEstadoPago(p.Cod_EstadoPago))>Cambiar Estado de pago</button>
-                        <button @onclick=@(()=>Delete(p.Id_Proyecto))>Eliminar</button>
-
-
-
+                        <MatButton @onclick=@(()=>ViewIntegrantes(p.Id_Proyecto))>Integrantes</MatButton>
+                        <MatButton @onclick=@(()=>EditEstadoPago(p.Cod_EstadoPago))>Cambiar Estado de pago</MatButton>
+                        <MatButton @onclick=@(()=>Delete(p.Id_Proyecto))>Eliminar</MatButton>
                     </tr>
                 }
                 <tr>
-                    <button type="button" class="btn btn-primary" @onclick="@NewProyecto">Agregar Proyecto</button>
+                    <MatButton type="button" class="btn btn-primary" @onclick="@NewProyecto">Agregar Proyecto</MatButton>
                 </tr>
             </tbody>
         </table>
@@ -55,12 +55,12 @@ else
 
 
 @code {
-    private List<ViewProyectoModel> proyectos;
+    private List<ViewProyectoModel> _proyectos;
 
     protected override async Task OnInitializedAsync()
     {
 
-        proyectos = await ProyectoDataService.ReadProyectos();
+        _proyectos = await ProyectoDataService.ReadProyectos();
     }
 
     public void EditEstadoPago(int Cod_EstadoPago)
@@ -72,17 +72,17 @@ else
     {
         NavigationManager.NavigateTo("/CrearProyecto");
     }
-    public void ViewIntegrantes(int Id_Proyecto)
+    public void ViewIntegrantes(int idProyecto)
     {
-
-        NavigationManager.NavigateTo($"ViewIntegrantes/{Id_Proyecto}");
-
-
+        NavigationManager.NavigateTo($"ViewIntegrantes/{idProyecto}");
     }
 
-    public async void Delete(int Id_Proyecto)
+    public async void Delete(int idProyecto)
     {
-        await ProyectoDataService.DeleteProyecto(Id_Proyecto);
+        var answer = await MatDialogService.AskAsync(Resource.AreYouSureToDelete, new[] {Resource.Yes, Resource.No});
+        if (answer == null || answer == Resource.No)
+            return;
+        await ProyectoDataService.DeleteProyecto(idProyecto);
         NavigationManager.NavigateTo("/proyectos", true);
     }
 }

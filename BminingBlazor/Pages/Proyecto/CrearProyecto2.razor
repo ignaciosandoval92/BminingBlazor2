@@ -10,21 +10,14 @@
 <EditForm Model="@newProyecto" OnValidSubmit="@InsertProyecto">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
-
-
     <label for="inputNombres">  Email del Creador del Proyecto:  </label>
     <select class="form-control" @bind="newProyecto.Id_Creador" required>
-
         @foreach (var creador in users)
         {
             <option value="@creador.id">@creador.Email_Bmining</option>
         }
-
-
     </select>
     <button type="submit" class="btn btn-primary">Siguiente</button>
-
 </EditForm>
 
 @code {

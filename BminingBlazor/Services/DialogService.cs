@@ -18,21 +18,21 @@ namespace BminingBlazor.Services
 
         public void ShowError(string message)
         {
-            _notificationMatDialog.Show(message, "Error");
+            _notificationMatDialog.ShowNotification(message, "Error");
         }
 
 
 
         public void ShowWarning(string message)
         {
-            _notificationMatDialog.Show(message, "Advertencia");
+            _notificationMatDialog.ShowNotification(message, "Advertencia");
         }
 
 
 
         public void ShowNotification(string message)
         {
-            _notificationMatDialog.Show(message, "Notificación");
+            _notificationMatDialog.ShowNotification(message, "Notificación");
         }
     }
 }

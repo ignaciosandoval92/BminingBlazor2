@@ -13,15 +13,13 @@
     <ValidationSummary /><td>
 
 
-        <label for="inputNombres">  Cliente:  </label>
+        <label for="inputNombres">Cliente:</label>
         <select class="form-control" @bind="newProyecto.Id_Cliente" required>
 
             @foreach (var cliente in clientes)
             {
                 <option value="@cliente.Id_Cliente">@cliente.Nombre_Cliente</option>
             }
-
-
         </select>
         <button type="submit" class="btn btn-primary">Agregar Integrantes</button>
 
@@ -47,8 +45,6 @@
             Id_proyecto = id_proyecto
         };
         await ProyectoDataService.AddCliente(proyecto);
-
         NavigationManager.NavigateTo($"/crearproyecto2/{id_proyecto}");
-
     }
 }

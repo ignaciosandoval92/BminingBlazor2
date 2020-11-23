@@ -2,7 +2,6 @@
 @inherits LayoutComponentBase
 @inject IDialogService DialogService
 
-
 <div class="sidebar">
     <NavMenu />
 </div>
@@ -14,26 +13,22 @@
     </div>
 
     <div class="content px-4">
-      
+
         <MatToastContainer />
         @Body
         <NotificationMatDialog @ref="@_notificationMatDialog"></NotificationMatDialog>
-
+        <MatPortalHost></MatPortalHost>
     </div>
 </div>
 @code
 {
     private NotificationMatDialog _notificationMatDialog;
 
-
-
     protected override void OnInitialized()
     {
         base.OnInitialized();
         //isOpen = true;
     }
-
-
 
 
     protected override void OnAfterRender(bool firstRender)
