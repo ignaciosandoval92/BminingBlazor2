@@ -20,7 +20,7 @@
         <select class="form-control" @bind="_newIntegrante.Id_Usuario" required>
             @if (_users is null)
             {
-                <p><em>Cargando..</em></p>
+                
             }
             else
             {
@@ -30,6 +30,9 @@
                 }
             }
         </select>
+        class="form-group">
+        <label for="inputHours">Horas invertidas</label>
+        <input type="number" step="0.1" class="form-control" id="inputHours" placeholder="Horas invertidas" @bind="_newIntegrante.Project_Hours" >
     </div>
 
     <button type="submit" class="btn btn-primary">Agregar</button>
@@ -65,7 +68,8 @@
         var integrante = new IntegranteModel()
         {
             Id_Usuario = _newIntegrante.Id_Usuario,
-            Id_Proyecto = id_proyecto
+            Id_Proyecto = id_proyecto,
+            Project_Hours = _newIntegrante.Project_Hours
         };
         await ProyectoDataService.AddIntegrante(integrante);
         NavigationManager.NavigateTo($"/ProyectoIntegrantes/{id_proyecto}", true);

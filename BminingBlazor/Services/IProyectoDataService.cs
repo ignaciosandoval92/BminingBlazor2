@@ -22,5 +22,6 @@ namespace BminingBlazor.Services
         Task DeleteProyecto(int id_proyecto);
         Task<int> CreateCliente(ClienteModel cliente);
         Task<List<ClienteModel>> ReadCliente();
+        Task<List<StatusProjectModel>> ReadStatusProject();
     }
 }

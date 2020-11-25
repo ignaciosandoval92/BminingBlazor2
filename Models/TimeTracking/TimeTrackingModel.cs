@@ -10,6 +10,7 @@ namespace Models.TimeTracking
         public int ProjectId { get; set; }
         public int UserId { get; set; }
         public TimeTrackingStatusEnum TimeTrackingStatus { get; set; }
+        public int TimeTrackingStatus2 { get; set; }
         public double TrackedHours { get; set; }
     }
 }

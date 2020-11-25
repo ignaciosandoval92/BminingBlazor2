@@ -12,7 +12,7 @@
     <ValidationSummary />
     <label for="inputNombres">Nombre Cliente:</label>
     <InputText id="Nombre_Cliente" @bind-Value="newCliente.Nombre_Cliente" />
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <MatButton type="submit" class="btn btn-primary">Guardar</MatButton>
 
 </EditForm>
 
@@ -27,6 +27,6 @@
         };
         await ProyectoDataService.CreateCliente(cliente);
 
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/Proyectos");
     }
 }

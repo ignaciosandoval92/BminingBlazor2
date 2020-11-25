@@ -18,6 +18,7 @@ namespace BminingBlazor.Services
        
         Task<List<UsuarioEditModel>> ReadUser(int id);
         Task DeleteUser(int id);
+        Task<int> IdUserFromEmail(string email);
 
 
 

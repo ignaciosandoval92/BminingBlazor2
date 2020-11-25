@@ -72,6 +72,20 @@ namespace BminingBlazor.Services
 
         }
 
+        public async Task<int> IdUserFromEmail(string email)
+        {
+            string sql =
+                "select Usuario.Id " +
+                $"from {TableConstants.TablaUsuario} " +
+                $"  where Usuario.Email_Bmining = '{email}';";
+
+            
+            var items = await _dataAccess.LoadData<UsuarioModel, dynamic>(sql, new { },
+                _configuration.GetConnectionString("default"));
+
+            return items.First().id;
+        }
+
        
 
         public async Task EditUser(UsuarioEditModel usuario2)

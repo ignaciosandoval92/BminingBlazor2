@@ -1,22 +1,24 @@
 ﻿@page "/addusertrackinghour/{userId:int}/{day:int}/{month:int}/{year:int}"
 @using BminingBlazor.ViewModels.TrackingHours
 @using BminingBlazor.Services
+@using Models.TimeTracking
 @inject IDialogService DialogService
+@inject ITimeTrackingService TimeTrackingService
 
+<EditForm Model="@_TrackingHoursModel" OnValidSubmit="@InsertHours">
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Cargar Horas </legend>
 
-<div class="row">
-    <div class="col-md-12">
-        <div>
-            <fieldset class="scheduler-border">
-                <legend class="scheduler-border">Cargar Horas @ViewModel.MyTrackingHourDate.ToShortDateString()</legend>
-                <EditForm Model="@ViewModel" OnSubmit="SubmitCallback">
                     <div class="form-group">
                         <label for="inputHours">Horas invertidas</label>
-                        <input type="number" step="0.1" class="form-control" id="inputHours" placeholder="Horas invertidas">
+                        <input type="number" step="0.1" class="form-control" id="inputHours" placeholder="Horas invertidas" @bind="_TrackingHoursModel.TrackedHours" >
                     </div>
                     <div class="form-group">
                         <label for="inputProject">Proyecto</label>
-                        <select @bind="@ViewModel.MySelectedProjectId" class="form-control" id="inputProject">
+                        <select @bind="_TrackingHoursModel.ProjectId" class="form-control" id="inputProject">
 
                             @foreach (var projectDetailsViewModel in ViewModel?.OurAvailableProjects)
                             {
@@ -27,11 +29,12 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary float-lg-right">Cargar</button>
-                </EditForm>
-            </fieldset>
+
+                </fieldset>
+            </div>
         </div>
     </div>
-</div>
+</EditForm>
 
 @code {
     [Parameter]
@@ -48,10 +51,13 @@
 
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
 
+    private TimeTrackingModel _TrackingHoursModel = new TimeTrackingModel();
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
         ViewModel = new AddUserTimeTrackingViewModel(UserId);
+
 
         ViewModel.MyTrackingHourDate = new DateTime(Year, Month, Day);
 
@@ -64,8 +70,22 @@
         }
     }
 
-    private void SubmitCallback()
+    private  async Task InsertHours()
+
+
     {
+        var timeTracking = new TimeTrackingModel()
+        {
+            CreationDate = DateTime.UtcNow,
+            TimeTrackingDate = new DateTime(Year,Month,Day),
+            ProjectId = 5,
+            TimeTrackingStatus = TimeTrackingStatusEnum.WaitingForApproval,
+            TrackedHours = _TrackingHoursModel.TrackedHours,
+            UserId = 1
+
+        };
+         await TimeTrackingService.AddTimeTracking(timeTracking);
+
         DialogService.ShowError("Hellfire");
     }
 }

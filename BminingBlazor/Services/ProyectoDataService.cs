@@ -20,8 +20,8 @@ namespace BminingBlazor.Services
         public async Task<int> CreateProyecto(ProyectoModel proyecto)
         {
             var sql =
-                "insert into Proyecto (Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,Proyecto.Cod_TipoProyecto,Proyecto.Fecha_Inicio,Proyecto.Fecha_Fin,Proyecto.Id_Creador,Proyecto.Id_JefeProyecto,Proyecto.Id_Cliente)" +
-                " Values (@Cod_Proyecto,@Nombre_Proyecto,@Cod_TipoProyecto,@Fecha_Inicio,@Fecha_Fin,@Id_Creador,@Id_JefeProyecto,@Id_Cliente)";
+                "insert into Proyecto (Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,Proyecto.Cod_TipoProyecto,Proyecto.Fecha_Inicio,Proyecto.Fecha_Fin,Proyecto.Id_Creador,Proyecto.Id_JefeProyecto,Proyecto.Id_Cliente,Proyecto.Id_Status)" +
+                " Values (@Cod_Proyecto,@Nombre_Proyecto,@Cod_TipoProyecto,@Fecha_Inicio,@Fecha_Fin,@Id_Creador,@Id_JefeProyecto,@Id_Cliente,@Id_Status)";
             await _dataAccess.SaveData(sql, proyecto, _configuration.GetConnectionString("default"));
 
             sql =
@@ -92,15 +92,15 @@ namespace BminingBlazor.Services
         public async Task AddEstadoPago(EstadoPagoModel estadopago)
         {
             string sql =
-                "insert into EstadoPago (EstadoPago.Estado_Pago,EstadoPago.Id_Proyecto,EstadoPago.Cod_TipoEstadoPago) " +
-                " Values (@Estado_Pago,@Id_Proyecto,@Cod_TipoEstadoPago)";
+                "insert into EstadoPago (EstadoPago.Estado_Pago,EstadoPago.Id_Proyecto,EstadoPago.Cod_TipoEstadoPago,EstadoPago.IssueExpirationDate,EstadoPago.InvoiceExpirationDate) " +
+                " Values (@Estado_Pago,@Id_Proyecto,@Cod_TipoEstadoPago,@IssueExpirationDate,@InvoiceExpirationDate)";
             await _dataAccess.SaveData(sql, estadopago, _configuration.GetConnectionString("default"));
         }
 
         public async Task AddIntegrante(IntegranteModel integrante)
         {
-            string sql = "insert into Integrantes_Proyecto (Integrantes_Proyecto.Id_Usuario,Integrantes_Proyecto.Id_Proyecto) " +
-                         " Values (@Id_Usuario,@Id_Proyecto)";
+            string sql = "insert into Integrantes_Proyecto (Integrantes_Proyecto.Id_Usuario,Integrantes_Proyecto.Id_Proyecto,Integrantes_Proyecto.Project_Hours) " +
+                         " Values (@Id_Usuario,@Id_Proyecto,@Project_Hours)";
             await _dataAccess.SaveData(sql, integrante, _configuration.GetConnectionString("default"));
         }
         public async Task<List<TipoProyectoModel>> ReadTipoProyecto()
@@ -191,6 +191,13 @@ namespace BminingBlazor.Services
             var clientes =await _dataAccess.LoadData<ClienteModel, dynamic>(sql, new { },
                 _configuration.GetConnectionString("default"));
             return clientes;
+        }
+        public async Task<List<StatusProjectModel>> ReadStatusProject()
+        {
+            string sql = $"select*from {TableConstants.TablaStatusProject}";
+            var statusProject = await _dataAccess.LoadData<StatusProjectModel, dynamic>(sql, new { },
+                _configuration.GetConnectionString("default"));
+            return statusProject;
         }
     }
 }
