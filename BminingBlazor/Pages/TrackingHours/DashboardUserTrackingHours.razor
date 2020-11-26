@@ -1,39 +1,175 @@
-﻿@page "/dashboard_tracking_hours/{userid:int}/{week:int}/{year:int}"
+﻿@page "/dashboard_tracking_hours"
+@page "/dashboard_tracking_hours/{day:int}/{month:int}/{year:int}"
 @using BminingBlazor.ViewModels.TrackingHours
+@using Microsoft.AspNetCore.Http
+@using Models.TimeTracking
+
 
 @inject ITimeTrackingService TimeTrackingService
 @inject IMatToaster MatToaster
+@inject IUserDataService UserDataService
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavigationManager
 
-<h3>@UserId</h3>
+<div>
+    <div class="d-flex flex-row">
+        <button class="btn btn-sm btn-secondary m-2" @onclick="@PreviousWeek">
+            <span class="oi oi-arrow-left"></span>
+        </button>
+        <button class="btn btn-sm btn-secondary m-2" @onclick="@NextWeek">
+            <span class="oi oi-arrow-right"></span>
+        </button>
+        <MatDatePicker @bind-Value="@MySelectedDate"></MatDatePicker>
+        <h3 class="m-2">@Resource.Week @MyStartOfWeek.ToLongDateString()</h3>
+    </div>
 
-<div class="container">
-    <table class="table table-bordered">
-        <tr>
-            @foreach (var dateTime in DashboardUserTracking.GetDates())
+    <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+
+    <div class="container-fluid w-100 d-flex">
+        <div class="row">
+            @foreach (var weekDayUserTrackingHours in DashboardUserTracking.WeekDayUserTrackingHours)
             {
-                <th>@dateTime.ToString("dddd")</th>
+                <div class="col">
+                    <div class="d-inline-block">
+                        <h5>@weekDayUserTrackingHours.ItemTime.ToString("dddd")</h5>
+                    </div>
+                    <div class="d-inline-block">
+                        <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="btn btn-sm btn-secondary m-1">
+                            <span class="oi oi-plus"></span>
+                        </button>
+                    </div>
+
+                    <div class="list-group">
+                        @foreach (var dayUserTrackingHourItem in weekDayUserTrackingHours.WeekDayUserTrackingHourItems)
+                        {
+                            <div class="list-group-item flex-column @dayUserTrackingHourItem.MyTrackingStatusClass">
+                                <MatTooltip Tooltip="@dayUserTrackingHourItem.ProjectName" Position="MatTooltipPosition.Left">
+                                    <div class="d-flex flex-row w-100 justify-content-between" @ref="@context.Current">
+                                        <small>
+                                            @dayUserTrackingHourItem.ProjectCode
+                                        </small>
+                                        <div class="form-inline">
+                                            <span class="badge badge-primary badge-pill m-1">
+                                                @dayUserTrackingHourItem.TrackedHours
+                                            </span>
+                                            @if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.WaitingForApproval)
+                                            {
+                                                <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="btn btn-sm btn-danger m-1">
+                                                    <span class="oi oi-trash"></span>
+                                                </button>
+                                            }
+                                            else if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.Rejected)
+                                            {
+                                                <button @onclick="() => EditItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="btn btn-sm btn-warning m-1">
+                                                    <span class="oi oi-pencil"></span>
+                                                </button>
+                                            }
+                                        </div>
+                                    </div>
+                                </MatTooltip>
+                            </div>
+                        }
+                    </div>
+                </div>
             }
-        </tr>
-        <tr>
-        </tr>
-    </table>
+        </div>
+    </div>
 </div>
 @code {
     [Parameter]
-    public int UserId { get; set; }
+    public int? Day { get; set; }
     [Parameter]
-    public int Week { get; set; }
+    public int? Month { get; set; }
     [Parameter]
-    public int Year { get; set; }
+    public int? Year { get; set; }
 
+
+    public string Email { get; set; }
 
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
 
+    private DateTime _mySelectedDate;
+    public DateTime MySelectedDate
+    {
+        get { return _mySelectedDate; }
+        set
+        {
+            _mySelectedDate = value;
+            var dayOfWeek = value.DayOfWeek;
+            var numberOfDay = 1;
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Sunday:
+                    numberOfDay = 6;
+                    break;
+                case DayOfWeek.Monday:
+                    numberOfDay = 0;
+                    break;
+                case DayOfWeek.Tuesday:
+                    numberOfDay = 1;
+                    break;
+                case DayOfWeek.Wednesday:
+                    numberOfDay = 2;
+                    break;
+                case DayOfWeek.Thursday:
+                    numberOfDay = 3;
+                    break;
+                case DayOfWeek.Friday:
+                    numberOfDay = 4;
+                    break;
+                case DayOfWeek.Saturday:
+                    numberOfDay = 5;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            MyStartOfWeek = MySelectedDate.AddDays(-numberOfDay);
+            SetDate(MyStartOfWeek);
+        }
+    }
+
+    public DateTime MyStartOfWeek { get; set; }
 
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        Email = HttpContextAccessor.GetEmail();
         DashboardUserTracking = new DashboardUserTrackingViewModel();
+        if (!Day.HasValue || !Month.HasValue || !Year.HasValue)
+            MySelectedDate = DateTime.UtcNow;
+        else MySelectedDate = new DateTime(Year.Value, Month.Value, Day.Value);
+    }
+
+    private void SetDate(DateTime fromTime)
+    {
+        DashboardUserTracking.SetStartDate(fromTime);
+    }
+
+    private void AddItem(WeekDayUserTrackingHoursViewModel weekDayUserTrackingHours)
+    {
+        var dateTime = weekDayUserTrackingHours.ItemTime;
+        NavigationManager.NavigateTo($"/addusertrackinghour/{dateTime.Day}/{dateTime.Month}/{dateTime.Year}");
+    }
+
+    private void RemoveItem(WeekDayUserTrackingHoursViewModel dayUserTrackingHours, WeekDayUserTrackingHoursItemViewModel weekDayUserTrackingHours)
+    {
+        dayUserTrackingHours.WeekDayUserTrackingHourItems.Remove(weekDayUserTrackingHours);
+    }
+
+    private void EditItem(WeekDayUserTrackingHoursViewModel weekDayUserTrackingHours, WeekDayUserTrackingHoursItemViewModel dayUserTrackingHourItem)
+    {
+
+    }
+
+    private void NextWeek()
+    {
+        MySelectedDate = MySelectedDate.AddDays(7);
+    }
+
+    private void PreviousWeek()
+    {
+        MySelectedDate = MySelectedDate.AddDays(-7);
     }
 }

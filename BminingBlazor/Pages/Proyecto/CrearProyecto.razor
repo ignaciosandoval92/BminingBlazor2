@@ -83,13 +83,8 @@
             Cod_TipoProyecto = newProyecto.Cod_TipoProyecto,
             Fecha_Inicio = newProyecto.Fecha_Inicio,
             Fecha_Fin = newProyecto.Fecha_Fin
-
-
-
         };
         var id_proyecto = await ProyectoDataService.CreateProyecto(proyecto);
-
         NavigationManager.NavigateTo($"/agregarcliente/{id_proyecto}");
-
     }
 }

@@ -112,4 +112,19 @@
   <data name="Next" xml:space="preserve">
     <value>Next</value>
   </data>
+  <data name="Week" xml:space="preserve">
+    <value>Week</value>
+  </data>
+  <data name="LoadHours" xml:space="preserve">
+    <value>Load hours</value>
+  </data>
+  <data name="InvestedHours" xml:space="preserve">
+    <value>Invested hours</value>
+  </data>
+  <data name="Project" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Load</value>
+  </data>
 </root>

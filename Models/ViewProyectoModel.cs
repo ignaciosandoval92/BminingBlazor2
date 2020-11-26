@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Models
 {
+    // TODO: Utilizar un ViewModel
     public class ViewProyectoModel
     {
         public int Id_Proyecto { get; set; }

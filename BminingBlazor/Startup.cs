@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace BminingBlazor
 {
@@ -34,11 +35,12 @@ namespace BminingBlazor
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddTransient<IDataAccess,DataAccess>();
+            services.AddTransient<IDataAccess, DataAccess>();
             services.AddTransient<IUserDataService, UserDataService>();
             services.AddTransient<IProyectoDataService, ProyectoDataService>();
             services.AddSingleton<IDialogService, DialogService>();
             services.AddTransient<ITimeTrackingService, TimeTrackingService>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMatBlazor();
             services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
                 .AddAzureAD(options => Configuration.Bind("AzureAd", options));

@@ -28,7 +28,7 @@ namespace BminingBlazor.Services
             return users;
         }
 
-        
+
 
         public async Task<List<ContratoModel>> ReadContrato()
         {
@@ -43,14 +43,18 @@ namespace BminingBlazor.Services
             string sql = "select * " +
                          $" from {TableConstants.TablaUsuario}" +
                          $" where Usuario.Id={id}";
-                         
+
             var user =
                await _dataAccess.LoadData<UsuarioEditModel, dynamic>(sql, new { },
                    _configuration.GetConnectionString("default"));
             return user;
         }
 
-    
+        public Task<int> GetUserId(string email)
+        {
+            return Task.Run(() => 1);
+        }
+
 
         public async Task<int> CreateUser(UsuarioModel usuario)
         {
@@ -64,15 +68,15 @@ namespace BminingBlazor.Services
                 $"from {TableConstants.TablaUsuario} " +
                 $"  where Usuario.Email_Bmining = '{usuario.Email_Bmining}';";
 
-        //    $"where Usuario.Email_Bmining={usuario.Email_Bmining};";
-            var items =     await _dataAccess.LoadData<UsuarioModel, dynamic>(sql, new { },
+            //    $"where Usuario.Email_Bmining={usuario.Email_Bmining};";
+            var items = await _dataAccess.LoadData<UsuarioModel, dynamic>(sql, new { },
                 _configuration.GetConnectionString("default"));
 
             return items.First().id;
 
         }
 
-       
+
 
         public async Task EditUser(UsuarioEditModel usuario2)
         {
@@ -88,7 +92,7 @@ namespace BminingBlazor.Services
             string sql = "Delete " +
                          $"from {TableConstants.TablaUsuario} " +
                          $"where Usuario.Id=@Id";
-            await _dataAccess.DeleteData(sql, new {Id = id}, _configuration.GetConnectionString("default"));
+            await _dataAccess.DeleteData(sql, new { Id = id }, _configuration.GetConnectionString("default"));
 
         }
 
@@ -96,6 +100,6 @@ namespace BminingBlazor.Services
         {
             throw new System.NotImplementedException();
         }
-        
+
     }
 }

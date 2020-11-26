@@ -192,5 +192,48 @@ namespace BminingBlazor.Services
                 _configuration.GetConnectionString("default"));
             return clientes;
         }
+
+        public Task<List<ViewProyectoModel>> ReadProjectsByUser(int userId)
+        {
+            return Task.Run(() => new List<ViewProyectoModel>
+            {
+                new ViewProyectoModel
+                {
+                    Cod_EstadoPago = 1,
+                    Cod_Proyecto = "BM-Project-1",
+                    Id_Proyecto = 4,
+                    Email_JefeProyecto = "jefe1@bmining.cl", // TODO: Cambiar a ID
+                    Nombre_Cliente = "cliente 1", // TODO: Cambiar a Id Cliente
+                    Nombre_Proyecto = "Proyecto 1",
+                    TipoEstadoPago = "test", // TODO: Con el Cod_Estado de pago basta
+                    Tipo_Proyecto = "test2", // TODO: Esto no es una ID?
+                    Tipo_Pago = "2", // TODO: Esto quedo fuera creo.
+                },
+                new ViewProyectoModel
+                {
+                    Cod_EstadoPago = 1,
+                    Cod_Proyecto = "BM-Project-2",
+                    Id_Proyecto = 5,
+                    Email_JefeProyecto = "jefe2@bmining.cl", // TODO: Cambiar a ID
+                    Nombre_Cliente = "cliente 2", // TODO: Cambiar a Id Cliente
+                    Nombre_Proyecto = "Proyecto 2",
+                    TipoEstadoPago = "test", // TODO: Con el Cod_Estado de pago basta
+                    Tipo_Proyecto = "test3", // TODO: Esto no es una ID?
+                    Tipo_Pago = "2", // TODO: Esto quedo fuera creo.
+                },
+                new ViewProyectoModel
+                {
+                    Cod_EstadoPago = 1,
+                    Cod_Proyecto = "BM-Project-3",
+                    Id_Proyecto = 6,
+                    Email_JefeProyecto = "jefe3@bmining.cl", // TODO: Cambiar a ID
+                    Nombre_Cliente = "cliente 3", // TODO: Cambiar a Id Cliente
+                    Nombre_Proyecto = "Proyecto 3",
+                    TipoEstadoPago = "test 2", // TODO: Con el Cod_Estado de pago basta
+                    Tipo_Proyecto = "test 4", // TODO: Esto no es una ID?
+                    Tipo_Pago = "5", // TODO: Esto quedo fuera creo.
+                }
+            });
+        }
     }
 }

@@ -1,21 +1,23 @@
-﻿@page "/addusertrackinghour/{userId:int}/{day:int}/{month:int}/{year:int}"
+﻿@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}"
 @using BminingBlazor.ViewModels.TrackingHours
-@using BminingBlazor.Services
+@using Microsoft.AspNetCore.Http
 @inject IDialogService DialogService
-
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IUserDataService UserDataService
+@inject IProyectoDataService ProyectoDataService
 
 <div class="row">
     <div class="col-md-12">
         <div>
             <fieldset class="scheduler-border">
-                <legend class="scheduler-border">Cargar Horas @ViewModel.MyTrackingHourDate.ToShortDateString()</legend>
-                <EditForm Model="@ViewModel" OnSubmit="SubmitCallback">
+                <legend class="scheduler-border">@Resource.LoadHours @ViewModel.MyTrackingHourDate.ToShortDateString()</legend>
+                <EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
                     <div class="form-group">
-                        <label for="inputHours">Horas invertidas</label>
-                        <input type="number" step="0.1" class="form-control" id="inputHours" placeholder="Horas invertidas">
+                        <label for="inputHours">@Resource.InvestedHours</label>
+                        <input type="number" step="0.1" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
                     </div>
                     <div class="form-group">
-                        <label for="inputProject">Proyecto</label>
+                        <label for="inputProject">@Resource.Project</label>
                         <select @bind="@ViewModel.MySelectedProjectId" class="form-control" id="inputProject">
 
                             @foreach (var projectDetailsViewModel in ViewModel?.OurAvailableProjects)
@@ -26,7 +28,7 @@
                             }
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary float-lg-right">Cargar</button>
+                    <button type="submit" class="btn btn-primary float-lg-right">@Resource.Load</button>
                 </EditForm>
             </fieldset>
         </div>
@@ -35,37 +37,44 @@
 
 @code {
     [Parameter]
-    public int UserId { get; set; }
-
-    [Parameter]
     public int Day { get; set; }
-
     [Parameter]
     public int Month { get; set; }
-
     [Parameter]
     public int Year { get; set; }
 
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
 
-    protected override void OnInitialized()
+  
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-        ViewModel = new AddUserTimeTrackingViewModel(UserId);
-
-        ViewModel.MyTrackingHourDate = new DateTime(Year, Month, Day);
-
-        for (int i = 0; i < 3; i++)
+        var email = HttpContextAccessor.GetEmail();
+        var userId = await UserDataService.GetUserId(email);
+        ViewModel = new AddUserTimeTrackingViewModel(userId)
         {
-            var projectDetails = new ProjectDetailsViewModel();
-            projectDetails.MyProjectCode = $"Code {i}";
-            projectDetails.MyProjectName = $"Name {i}";
+            MyTrackingHourDate = new DateTime(Year, Month, Day),
+        };
+        
+        var projects = await ProyectoDataService.ReadProjectsByUser(userId);
+        foreach (var viewProjectModel in projects)
+        {
+            var projectDetails = new ProjectDetailsViewModel
+            {
+                MyProjectName = viewProjectModel.Nombre_Proyecto,
+                MyProjectCode = viewProjectModel.Cod_Proyecto,
+                MyProjectId = viewProjectModel.Id_Proyecto,
+                MyProjectManagerEmail = viewProjectModel.Email_JefeProyecto,
+                MyProjectManagerId = 0,
+                MyProjectManagerName = viewProjectModel.Email_JefeProyecto,
+                MyProjectManagerSurname = viewProjectModel.Email_JefeProyecto,
+            };
             ViewModel.OurAvailableProjects.Add(projectDetails);
         }
     }
 
+
     private void SubmitCallback()
     {
-        DialogService.ShowError("Hellfire");
+       
     }
 }
