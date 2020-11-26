@@ -127,4 +127,28 @@
   <data name="Load" xml:space="preserve">
     <value>Load</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Names" xml:space="preserve">
+    <value>Names</value>
+  </data>
+  <data name="PaternalLastName" xml:space="preserve">
+    <value>Paternal Last Name</value>
+  </data>
+  <data name="MaternalLastName" xml:space="preserve">
+    <value>Maternal Last Name</value>
+  </data>
+  <data name="ProjectManager" xml:space="preserve">
+    <value>Project Manager</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="AddMember" xml:space="preserve">
+    <value>Add Member</value>
+  </data>
+  <data name="Members" xml:space="preserve">
+    <value>Members</value>
+  </data>
 </root>

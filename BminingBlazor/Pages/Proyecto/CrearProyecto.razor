@@ -3,7 +3,7 @@
 @using BminingBlazor.ViewModels.Project
 @using Microsoft.AspNetCore.Http
 
-@inject IProyectoDataService ProyectoDataService
+@inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -57,7 +57,7 @@
         <label for="inputNombres">Estado del Proyecto:</label>
         <select class="form-control" @bind="newProyecto.Id_Status" required>
 
-            @foreach (var project in projects)
+            @foreach (var project in _statusProjectModels)
             {
                 <option value="@project.Id_Status">@project.Status</option>
             }
@@ -156,7 +156,7 @@
     private List<PaymentStatusItemViewModel> _paymentStatusItems;
     private List<MembersProjectViewModel> _membersProjectItems;
     private List<ClienteModel> clientes;
-    private List<StatusProjectModel> projects;
+    private List<StatusProjectModel> _statusProjectModels;
 
 
 
@@ -189,9 +189,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        projects = await ProyectoDataService.ReadStatusProject();
-        clientes = await ProyectoDataService.ReadCliente();
-        tipro = await ProyectoDataService.ReadTipoProyecto();
+        _statusProjectModels = await ProjectDataService.GetAvailableProjectStatus();
+        clientes = await ProjectDataService.ReadCliente();
+        tipro = await ProjectDataService.ReadProjectType();
         users = await UserDataService.ReadUsers();
         _paymentStatusItems = new List<PaymentStatusItemViewModel>();
         _membersProjectItems = new List<MembersProjectViewModel>();
@@ -213,7 +213,7 @@
     private async Task InsertProyecto()
     {
         string user = HttpContextAccessor.HttpContext.User.Identity.Name;
-        var id_Creador = await UserDataService.IdUserFromEmail(user);
+        var id_Creador = await UserDataService.GetUserId(user);
         var proyecto = new ProyectoModel()
         {
             Cod_Proyecto = newProyecto.Cod_Proyecto,
@@ -228,7 +228,7 @@
 
 
         };
-        var id_proyecto = await ProyectoDataService.CreateProyecto(proyecto);
+        var id_proyecto = await ProjectDataService.CreateProject(proyecto);
         foreach (var integrantes in _membersProjectItems)
         {
             var members = new IntegranteModel()
@@ -237,7 +237,7 @@
                 Id_Usuario = integrantes.Id_Usuario,
                 Project_Hours = integrantes.HoursProject
             };
-            await ProyectoDataService.AddIntegrante(members);
+            await ProjectDataService.AddMember(members);
         }
         foreach (var estados in _paymentStatusItems)
         {
@@ -249,7 +249,7 @@
                 IssueExpirationDate = estados.IssueExpirationDate,
                 Cod_TipoEstadoPago = 1
             };
-            await ProyectoDataService.AddEstadoPago(status);
+            await ProjectDataService.AddPaymentStatus(status);
         }
 
 

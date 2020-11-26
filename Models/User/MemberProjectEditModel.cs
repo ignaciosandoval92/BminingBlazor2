@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-    public class UsuarioEditModel
+    public class MemberProjectEditModel
     {
         public int Id { get; set; }
         public string Email_Bmining { get; set; }

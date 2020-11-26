@@ -8,16 +8,16 @@ using Models;
 
 namespace BminingBlazor.Services
 {
-    public class ProyectoDataService : IProyectoDataService
+    public class ProjectDataService : IProjectDataService
     {
         private readonly IDataAccess _dataAccess;
         private readonly IConfiguration _configuration;
-        public ProyectoDataService(IDataAccess dataAccess, IConfiguration configuration)
+        public ProjectDataService(IDataAccess dataAccess, IConfiguration configuration)
         {
             _dataAccess = dataAccess;
             _configuration = configuration;
         }
-        public async Task<int> CreateProyecto(ProyectoModel proyecto)
+        public async Task<int> CreateProject(ProyectoModel proyecto)
         {
             var sql =
                 "insert into Proyecto (Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,Proyecto.Cod_TipoProyecto,Proyecto.Fecha_Inicio,Proyecto.Fecha_Fin,Proyecto.Id_Creador,Proyecto.Id_JefeProyecto,Proyecto.Id_Cliente,Proyecto.Id_Status)" +
@@ -35,7 +35,8 @@ namespace BminingBlazor.Services
             return items.First().Id_proyecto;
 
         }
-        public async Task<int> AddCreadorProyecto(ProyectoModel proyecto)
+        //TODO Insertar metodos add en create project
+        public async Task<int> AddProjectCreator(ProyectoModel proyecto)
         {
             var sql =
                 "Update Proyecto" +
@@ -48,6 +49,7 @@ namespace BminingBlazor.Services
             return 0;
 
         }
+        //TODO Insertar metodos add en create project
         public async Task<int> AddJefeProyecto(ProyectoModel proyecto)
         {
             var sql =
@@ -61,6 +63,7 @@ namespace BminingBlazor.Services
             return 0;
 
         }
+        //TODO Insertar metodos add en create project
         public async Task<int> AddCliente(ProyectoModel proyecto)
         {
             var sql =
@@ -71,10 +74,11 @@ namespace BminingBlazor.Services
 
 
 
-            return 0;
+            return 1;
 
         }
-        public async Task<int> EditEstadoPago(EstadoPagoModel estadopago)
+        //TODO viewmodel de entrada sin (retorno numerico?)
+        public async Task<int> EditPaymentStatus(EstadoPagoModel estadopago)
         {
             var sql =
                 "Update EstadoPago" +
@@ -82,14 +86,13 @@ namespace BminingBlazor.Services
                 " where EstadoPago.Cod_EstadoPago=@Cod_EstadoPago ";
                 ;
             await _dataAccess.UpdateData(sql, estadopago, _configuration.GetConnectionString("default"));
-
-
-
-            return 0;
-
+            return 1;
         }
 
-        public async Task AddEstadoPago(EstadoPagoModel estadopago)
+       
+
+        //TODO Insertar creato debe tener este ademas de existir para agregar estados
+        public async Task AddPaymentStatus(EstadoPagoModel estadopago)
         {
             string sql =
                 "insert into EstadoPago (EstadoPago.Estado_Pago,EstadoPago.Id_Proyecto,EstadoPago.Cod_TipoEstadoPago,EstadoPago.IssueExpirationDate,EstadoPago.InvoiceExpirationDate) " +
@@ -97,28 +100,28 @@ namespace BminingBlazor.Services
             await _dataAccess.SaveData(sql, estadopago, _configuration.GetConnectionString("default"));
         }
 
-        public async Task AddIntegrante(IntegranteModel integrante)
+        public async Task AddMember(IntegranteModel integrante)
         {
             string sql = "insert into Integrantes_Proyecto (Integrantes_Proyecto.Id_Usuario,Integrantes_Proyecto.Id_Proyecto,Integrantes_Proyecto.Project_Hours) " +
                          " Values (@Id_Usuario,@Id_Proyecto,@Project_Hours)";
             await _dataAccess.SaveData(sql, integrante, _configuration.GetConnectionString("default"));
         }
-        public async Task<List<TipoProyectoModel>> ReadTipoProyecto()
+        public async Task<List<TipoProyectoModel>> ReadProjectType()
         {
             string sql = $"select*from {TableConstants.TablaTipoProyecto}";
             var tipro  = await _dataAccess.LoadData<TipoProyectoModel, dynamic>(sql, new { },
                 _configuration.GetConnectionString("default"));
             return tipro;
         }
-        public async Task<List<TipoEstadoPagoModel>> ReadTipoEstadoPago()
+        public async Task<List<TipoEstadoPagoModel>> ReadPaymentStatusType()
         {
             string sql = $"select*from {TableConstants.TablaTipoEstadoPago}";
             var tipoep = await _dataAccess.LoadData<TipoEstadoPagoModel, dynamic>(sql, new { },
                 _configuration.GetConnectionString("default"));
             return tipoep;
         }
-
-        public async Task<List<ViewProyectoModel>> ReadProyectos()
+        //TODO Insertar mover view model a su carpeta
+        public async Task<List<ViewProyectoModel>> ReadProjects()
         {
             string sql =
                 "select Proyecto.Id_Proyecto,Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,(Usuario.Email_Bmining) as Email_JefeProyecto,Cliente.Nombre_Cliente,Tipo_Proyecto.Tipo_Proyecto,(EstadoPago.Estado_Pago) as Tipo_Pago,Tipo_EstadoPago.TipoEstadoPago,EstadoPago.Cod_EstadoPago " +
@@ -134,33 +137,38 @@ namespace BminingBlazor.Services
             return proyectos;
         }
 
-        public async Task<int> ReadIdProjectManager(int id_proyecto)
+        public Task<int> ReadProjectManagerId(int id_proyecto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<int> ReadIdProjectManager(int idProject)
         {
             string sql = "select Proyecto.Id_JefeProyecto " +
                          $" from {TableConstants.TablaProyecto} " +
-                         $" where Proyecto.Id_Proyecto={id_proyecto}";
-            var id_jefe =
+                         $" where Proyecto.Id_Proyecto={idProject}";
+            var idManager =
                 await _dataAccess.LoadData<ProyectoModel, dynamic>(sql, new { }, _configuration.GetConnectionString("default"));
-            return id_jefe.First().Id_JefeProyecto;
+            return idManager.First().Id_JefeProyecto;
         }
-        public async Task<List<UsuarioEditModel>> ReadIntegrantes(int id_proyecto)
+        public async Task<List<MemberProjectEditModel>> ReadMembers(int idProject)
         {
             string sql = "select Usuario.Id, Usuario.Email_Bmining,Usuario.Nombre ,Usuario.Apellido_Paterno,Usuario.Apellido_Materno,Usuario.Rut,Usuario.Cargo,Usuario.Telefono,Usuario.Direccion,Integrantes_Proyecto.Cod_Integrantes  " +
                          $" from {TableConstants.TablaUsuario},{TableConstants.TablaIntegrantes}" +
-                         $" where Integrantes_Proyecto.Id_Proyecto={id_proyecto}" +
+                         $" where Integrantes_Proyecto.Id_Proyecto={idProject}" +
                          $" and Usuario.Id=Integrantes_Proyecto.Id_Usuario";
 
-            var integrantes =
-                await _dataAccess.LoadData<UsuarioEditModel, dynamic>(sql, new { },
+            var members =
+                await _dataAccess.LoadData<MemberProjectEditModel, dynamic>(sql, new { },
                     _configuration.GetConnectionString("default"));
-            return integrantes;
+            return members;
         }
-        public async Task DeleteMember(int cod_integrantes)
+        public async Task DeleteMember(int memberId)
         {
             string sql = "Delete " +
                          $"from {TableConstants.TablaIntegrantes} " +
-                         $"where Integrantes_Proyecto.Cod_Integrantes=@cod_integrantes";
-            await _dataAccess.DeleteData(sql, new { Cod_Integrantes = cod_integrantes }, _configuration.GetConnectionString("default"));
+                         $"where Integrantes_Proyecto.Cod_Integrantes=@memberId";
+            await _dataAccess.DeleteData(sql, new { memberID = memberId }, _configuration.GetConnectionString("default"));
 
         }
 
@@ -192,12 +200,20 @@ namespace BminingBlazor.Services
                 _configuration.GetConnectionString("default"));
             return clientes;
         }
-        public async Task<List<StatusProjectModel>> ReadStatusProject()
+
+        public Task<List<ViewProyectoModel>> ReadProjectsByUser(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<StatusProjectModel>> GetAvailableProjectStatus()
         {
             string sql = $"select*from {TableConstants.TablaStatusProject}";
             var statusProject = await _dataAccess.LoadData<StatusProjectModel, dynamic>(sql, new { },
                 _configuration.GetConnectionString("default"));
             return statusProject;
         }
+
+       
     }
 }

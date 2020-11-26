@@ -38,7 +38,7 @@ namespace BminingBlazor
             services.AddServerSideBlazor();
             services.AddTransient<IDataAccess, DataAccess>();
             services.AddTransient<IUserDataService, UserDataService>();
-            services.AddTransient<IProyectoDataService, ProyectoDataService>();
+            services.AddTransient<IProjectDataService, ProjectDataService>();
             services.AddTransient<ITimeTrackingService, TimeTrackingService>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMatBlazor();

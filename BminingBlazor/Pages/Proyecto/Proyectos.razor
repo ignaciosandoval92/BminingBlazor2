@@ -2,7 +2,7 @@
 @using Models
 
 
-@inject IProyectoDataService ProyectoDataService
+@inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMatDialogService MatDialogService
@@ -61,12 +61,12 @@
         protected override async Task OnInitializedAsync()
         {
 
-            _proyectos = await ProyectoDataService.ReadProyectos();
+            _proyectos = await ProjectDataService.ReadProjects();
         }
 
         public void EditEstadoPago(int Cod_EstadoPago)
         {
-            NavigationManager.NavigateTo($"/EditEstadoPago/{Cod_EstadoPago}");
+            NavigationManager.NavigateTo($"/EditPaymentStatus/{Cod_EstadoPago}");
         }
 
         public void NewProyecto()
@@ -83,7 +83,7 @@
             var answer = await MatDialogService.AskAsync(Resource.AreYouSureToDelete, new[] { Resource.Yes, Resource.No });
             if (answer == null || answer == Resource.No)
                 return;
-            await ProyectoDataService.DeleteProyecto(idProyecto);
+            await ProjectDataService.DeleteProyecto(idProyecto);
             NavigationManager.NavigateTo("/proyectos", true);
         }
     }

@@ -6,11 +6,11 @@
 
 @inject IMatDialogService MatDialogService
 @inject NavigationManager NavigationManager
-@inject IProyectoDataService ProyectoDataService
+@inject IProjectDataService ProjectDataService
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize(Roles = "Administracion")]
-<h3>@Resource.Project_Manager</h3>
+<h3>@Resource.ProjectManager</h3>
 @if (_boss == null)
 {
 }
@@ -20,10 +20,10 @@ else
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>@Resource.Mail</th>
+                    <th>@Resource.Email</th>
                     <th>@Resource.Names</th>
-                    <th>@Resource.Last_Name_One</th>
-                    <th>@Resource.Last_Name_Two</th>
+                    <th>@Resource.PaternalLastName</th>
+                    <th>@Resource.MaternalLastName</th>
                     <th>Rut</th>
                 </tr>
             </thead>
@@ -43,7 +43,7 @@ else
     </div>
 }
 
-<h3>Integrantes</h3>
+<h3>@Resource.Members</h3>
 @if (_members == null)
 {
 }
@@ -53,10 +53,10 @@ else
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>@Resource.Mail</th>
+                    <th>@Resource.Email</th>
                     <th>@Resource.Names</th>
-                    <th>@Resource.Last_Name_One</th>
-                    <th>@Resource.Last_Name_Two</th>
+                    <th>@Resource.PaternalLastName</th>
+                    <th>@Resource.MaternalLastName</th>
                     <th>Rut</th>
                 </tr>
             </thead>
@@ -74,7 +74,7 @@ else
                 }
             </tbody>
         </table>
-        <MatButton type="button" class="btn btn-primary" @onclick="@AddMember">@Resource.Add_Member</MatButton>
+        <MatButton type="button" class="btn btn-primary" @onclick="@AddMember">@Resource.AddMember</MatButton>
     </div>
 
 }
@@ -82,13 +82,13 @@ else
 @code {
     [Parameter]
     public int IdProject { get; set; }
-    private List<UsuarioEditModel> _boss;
-    private List<UsuarioEditModel> _members;
+    private List<MemberProjectEditModel> _boss;
+    private List<MemberProjectEditModel> _members;
     protected override async Task OnInitializedAsync()
     {
-        var id = await ProyectoDataService.ReadIdProjectManager(IdProject);
+        var id = await ProjectDataService.ReadProjectManagerId(IdProject);
         _boss = await UserDataService.ReadUser(id);
-        _members = await ProyectoDataService.ReadIntegrantes(IdProject);
+        _members = await ProjectDataService.ReadMembers(IdProject);
     }
     public void AddMember()
     {
@@ -99,7 +99,7 @@ else
         var answer = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
         if (!answer) return;
 
-        await ProyectoDataService.DeleteMember(codmembers);
+        await ProjectDataService.DeleteMember(codmembers);
         NavigationManager.NavigateTo($"/viewMembers/{IdProject}", true);
 
     }

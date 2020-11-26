@@ -4,7 +4,7 @@
 @using BminingBlazor.Services
 
 @inject IUserDataService UserDataService
-@inject IProyectoDataService ProyectoDataService
+@inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize(Roles = "Administracion")]
@@ -51,7 +51,7 @@
             Id_Usuario = _newMember.Id_Usuario,
             Id_Proyecto = id_proyecto
         };
-        await ProyectoDataService.AddIntegrante(integrante);
+        await ProjectDataService.AddMember(integrante);
         NavigationManager.NavigateTo($"/ViewIntegrantes/{id_proyecto}");
     }
 }

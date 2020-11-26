@@ -2,7 +2,7 @@
 @using Models
 @using BminingBlazor.Services
 
-@inject IProyectoDataService ProyectoDataService
+@inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize(Roles = "Administracion")]
@@ -43,7 +43,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _listTipoEstadoPagoModels = await ProyectoDataService.ReadTipoEstadoPago();
+        _listTipoEstadoPagoModels = await ProjectDataService.ReadPaymentStatusType();
     }
 
     private async Task EditarEstadoPago()
@@ -53,7 +53,7 @@
             Cod_EstadoPago = cod_estadopago,
             Cod_TipoEstadoPago = _newEstadoPago.Cod_TipoEstadoPago
         };
-        await ProyectoDataService.EditEstadoPago(estadopago);
+        await ProjectDataService.EditPaymentStatus(estadopago);
         NavigationManager.NavigateTo("/proyectos");
     }
 }

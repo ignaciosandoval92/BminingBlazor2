@@ -1,10 +1,9 @@
 ﻿@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}"
 @using BminingBlazor.ViewModels.TrackingHours
 @using Microsoft.AspNetCore.Http
-@inject IDialogService DialogService
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IUserDataService UserDataService
-@inject IProyectoDataService ProyectoDataService
+@inject IProjectDataService ProjectDataService
 
 <div class="row">
     <div class="col-md-12">
@@ -55,7 +54,7 @@
             MyTrackingHourDate = new DateTime(Year, Month, Day),
         };
         
-        var projects = await ProyectoDataService.ReadProjectsByUser(userId);
+        var projects = await ProjectDataService.ReadProjectsByUser(userId);
         foreach (var viewProjectModel in projects)
         {
             var projectDetails = new ProjectDetailsViewModel

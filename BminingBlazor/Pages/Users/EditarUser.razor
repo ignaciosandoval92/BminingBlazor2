@@ -48,7 +48,7 @@
 
     public string Email { get; set; }
 
-    private UsuarioEditModel newUser = new UsuarioEditModel();
+    private MemberProjectEditModel newUser = new MemberProjectEditModel();
     private List<ContratoModel> _listOfContratoModels;
     
     protected override async Task OnInitializedAsync()
@@ -75,7 +75,7 @@
 
     private async Task EditUsers()
     {
-        var usuario2 = new UsuarioEditModel()
+        var usuario2 = new MemberProjectEditModel()
         {
             Cargo = newUser.Cargo,
             Telefono = newUser.Telefono,

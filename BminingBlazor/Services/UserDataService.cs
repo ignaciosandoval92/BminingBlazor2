@@ -38,14 +38,14 @@ namespace BminingBlazor.Services
             return tc;
         }
 
-        public async Task<List<UsuarioEditModel>> ReadUser(int id)
+        public async Task<List<MemberProjectEditModel>> ReadUser(int id)
         {
             string sql = "select * " +
                          $" from {TableConstants.TablaUsuario}" +
                          $" where Usuario.Id={id}";
                          
             var user =
-               await _dataAccess.LoadData<UsuarioEditModel, dynamic>(sql, new { },
+               await _dataAccess.LoadData<MemberProjectEditModel, dynamic>(sql, new { },
                    _configuration.GetConnectionString("default"));
             return user;
         }
@@ -72,7 +72,7 @@ namespace BminingBlazor.Services
 
         }
 
-        public async Task<int> IdUserFromEmail(string email)
+        public async Task<int> GetUserId(string email)
         {
             string sql =
                 "select Usuario.Id " +
@@ -88,7 +88,7 @@ namespace BminingBlazor.Services
 
        
 
-        public async Task EditUser(UsuarioEditModel usuario2)
+        public async Task EditUser(MemberProjectEditModel usuario2)
         {
             string sql =
                 "update Usuario " +
@@ -106,7 +106,7 @@ namespace BminingBlazor.Services
 
         }
 
-        public Task<UsuarioEditModel> EditUsers(string id)
+        public Task<MemberProjectEditModel> EditUsers(string id)
         {
             throw new System.NotImplementedException();
         }
