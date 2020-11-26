@@ -61,6 +61,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Add Member.
+        /// </summary>
+        internal static string Add_Member {
+            get {
+                return ResourceManager.GetString("Add Member", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Are you sure to delete?.
         /// </summary>
         internal static string AreYouSureToDelete {
@@ -79,6 +88,51 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Last Name 1.
+        /// </summary>
+        internal static string Last_Name_One {
+            get {
+                return ResourceManager.GetString("Last Name One", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Last Name Two.
+        /// </summary>
+        internal static string Last_Name_Two {
+            get {
+                return ResourceManager.GetString("Last Name Two", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Mail.
+        /// </summary>
+        internal static string Mail {
+            get {
+                return ResourceManager.GetString("Mail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Names.
+        /// </summary>
+        internal static string Names {
+            get {
+                return ResourceManager.GetString("Names", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Next.
         /// </summary>
         internal static string Next {
@@ -93,6 +147,15 @@ namespace BminingBlazor.Resources {
         internal static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Project Manager.
+        /// </summary>
+        internal static string Project_Manager {
+            get {
+                return ResourceManager.GetString("Project Manager", resourceCulture);
             }
         }
         

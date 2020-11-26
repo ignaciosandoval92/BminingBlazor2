@@ -2,7 +2,7 @@
 @using BminingBlazor.ViewModels.TrackingHours
 @using BminingBlazor.Services
 @using Models.TimeTracking
-@inject IDialogService DialogService
+
 @inject ITimeTrackingService TimeTrackingService
 
 <EditForm Model="@_TrackingHoursModel" OnValidSubmit="@InsertHours">
@@ -86,6 +86,6 @@
         };
          await TimeTrackingService.AddTimeTracking(timeTracking);
 
-        DialogService.ShowError("Hellfire");
+ 
     }
 }

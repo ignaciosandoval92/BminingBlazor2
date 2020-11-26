@@ -134,7 +134,7 @@ namespace BminingBlazor.Services
             return proyectos;
         }
 
-        public async Task<int> ReadJefeProyecto(int id_proyecto)
+        public async Task<int> ReadIdProjectManager(int id_proyecto)
         {
             string sql = "select Proyecto.Id_JefeProyecto " +
                          $" from {TableConstants.TablaProyecto} " +
@@ -155,7 +155,7 @@ namespace BminingBlazor.Services
                     _configuration.GetConnectionString("default"));
             return integrantes;
         }
-        public async Task DeleteIntegrante(int cod_integrantes)
+        public async Task DeleteMember(int cod_integrantes)
         {
             string sql = "Delete " +
                          $"from {TableConstants.TablaIntegrantes} " +

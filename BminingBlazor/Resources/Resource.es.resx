@@ -112,4 +112,25 @@
   <data name="Next" xml:space="preserve">
     <value>Siguiente</value>
   </data>
+  <data name="Mail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Names" xml:space="preserve">
+    <value>Nombres</value>
+  </data>
+  <data name="Last Name One" xml:space="preserve">
+    <value>Apellido Paterno</value>
+  </data>
+  <data name="Last Name Two" xml:space="preserve">
+    <value>Apellido Materno</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="Add Member" xml:space="preserve">
+    <value>Agregar Integrante</value>
+  </data>
+  <data name="Project Manager" xml:space="preserve">
+    <value>Jefe de Proyecto</value>
+  </data>
 </root>

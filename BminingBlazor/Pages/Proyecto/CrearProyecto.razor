@@ -17,19 +17,13 @@
 <EditForm Model="@newProyecto" OnValidSubmit="@InsertProyecto">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
     <div>
-
         <label for="inputNombres">  Codigo de Proyecto:  </label>
         <InputText id="Cod_Proyecto" @bind-Value="newProyecto.Cod_Proyecto" />
         <label for="inputNombres">  Nombre de Proyecto:  </label>
         <InputText id="Nombre_Proyecto" @bind-Value="newProyecto.Nombre_Proyecto" />
-
     </div>
     <div>
-
-
-
         <label for="inputNombres">Cliente:</label>
         <select class="form-control" @bind="newProyecto.Id_Cliente" required>
 
@@ -38,20 +32,12 @@
                 <option value="@cliente.Id_Cliente">@cliente.Nombre_Cliente</option>
             }
         </select>
-
-
-
     </div>
-
     <div>
-
-
         <label for="inputNombres">  Fecha de Inicio:  </label>
         <InputDate id="Fecha_Inicio" @bind-Value="newProyecto.Fecha_Inicio" />
         <label for="inputNombres">  Fecha de Termino:  </label>
         <InputDate id="Fecha_Fin" @bind-Value="newProyecto.Fecha_Fin" />
-
-
     </div>
     <div>
 
@@ -64,7 +50,6 @@
                     <option value="@tipoproyecto.Cod_TipoProyecto">@tipoproyecto.Tipo_Proyecto</option>
                 }
             }
-
         </select>
 
     </div>
@@ -122,11 +107,8 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-
                     <th>Email</th>
                     <th>Horas del Proyecto</th>
-
-
                 </tr>
             </thead>
             <tbody>
@@ -139,7 +121,6 @@
                                 <select class="form-control" @bind="membersProject.Id_Usuario" required>
                                     @if (users is null)
                                     {
-                                       
                                     }
                                     else
                                     {
@@ -155,8 +136,6 @@
                         <MatButton Type="button" OnClick="()=>DeleteMembersProject(membersProject)">
                             Eliminar
                         </MatButton>
-
-
                     </tr>
                 }
             </tbody>
