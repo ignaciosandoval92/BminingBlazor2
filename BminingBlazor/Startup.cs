@@ -33,12 +33,12 @@ namespace BminingBlazor
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddTransient<IDataAccess, DataAccess>();
             services.AddTransient<IUserDataService, UserDataService>();
             services.AddTransient<IProyectoDataService, ProyectoDataService>();
-            services.AddSingleton<IDialogService, DialogService>();
             services.AddTransient<ITimeTrackingService, TimeTrackingService>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMatBlazor();

@@ -20,8 +20,8 @@ namespace BminingBlazor.Services
         public async Task<int> CreateProyecto(ProyectoModel proyecto)
         {
             var sql =
-                "insert into Proyecto (Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,Proyecto.Cod_TipoProyecto,Proyecto.Fecha_Inicio,Proyecto.Fecha_Fin,Proyecto.Id_Creador,Proyecto.Id_JefeProyecto,Proyecto.Id_Cliente)" +
-                " Values (@Cod_Proyecto,@Nombre_Proyecto,@Cod_TipoProyecto,@Fecha_Inicio,@Fecha_Fin,@Id_Creador,@Id_JefeProyecto,@Id_Cliente)";
+                "insert into Proyecto (Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,Proyecto.Cod_TipoProyecto,Proyecto.Fecha_Inicio,Proyecto.Fecha_Fin,Proyecto.Id_Creador,Proyecto.Id_JefeProyecto,Proyecto.Id_Cliente,Proyecto.Id_Status)" +
+                " Values (@Cod_Proyecto,@Nombre_Proyecto,@Cod_TipoProyecto,@Fecha_Inicio,@Fecha_Fin,@Id_Creador,@Id_JefeProyecto,@Id_Cliente,@Id_Status)";
             await _dataAccess.SaveData(sql, proyecto, _configuration.GetConnectionString("default"));
 
             sql =
@@ -92,15 +92,15 @@ namespace BminingBlazor.Services
         public async Task AddEstadoPago(EstadoPagoModel estadopago)
         {
             string sql =
-                "insert into EstadoPago (EstadoPago.Estado_Pago,EstadoPago.Id_Proyecto,EstadoPago.Cod_TipoEstadoPago) " +
-                " Values (@Estado_Pago,@Id_Proyecto,@Cod_TipoEstadoPago)";
+                "insert into EstadoPago (EstadoPago.Estado_Pago,EstadoPago.Id_Proyecto,EstadoPago.Cod_TipoEstadoPago,EstadoPago.IssueExpirationDate,EstadoPago.InvoiceExpirationDate) " +
+                " Values (@Estado_Pago,@Id_Proyecto,@Cod_TipoEstadoPago,@IssueExpirationDate,@InvoiceExpirationDate)";
             await _dataAccess.SaveData(sql, estadopago, _configuration.GetConnectionString("default"));
         }
 
         public async Task AddIntegrante(IntegranteModel integrante)
         {
-            string sql = "insert into Integrantes_Proyecto (Integrantes_Proyecto.Id_Usuario,Integrantes_Proyecto.Id_Proyecto) " +
-                         " Values (@Id_Usuario,@Id_Proyecto)";
+            string sql = "insert into Integrantes_Proyecto (Integrantes_Proyecto.Id_Usuario,Integrantes_Proyecto.Id_Proyecto,Integrantes_Proyecto.Project_Hours) " +
+                         " Values (@Id_Usuario,@Id_Proyecto,@Project_Hours)";
             await _dataAccess.SaveData(sql, integrante, _configuration.GetConnectionString("default"));
         }
         public async Task<List<TipoProyectoModel>> ReadTipoProyecto()
@@ -134,7 +134,7 @@ namespace BminingBlazor.Services
             return proyectos;
         }
 
-        public async Task<int> ReadJefeProyecto(int id_proyecto)
+        public async Task<int> ReadIdProjectManager(int id_proyecto)
         {
             string sql = "select Proyecto.Id_JefeProyecto " +
                          $" from {TableConstants.TablaProyecto} " +
@@ -155,7 +155,7 @@ namespace BminingBlazor.Services
                     _configuration.GetConnectionString("default"));
             return integrantes;
         }
-        public async Task DeleteIntegrante(int cod_integrantes)
+        public async Task DeleteMember(int cod_integrantes)
         {
             string sql = "Delete " +
                          $"from {TableConstants.TablaIntegrantes} " +
@@ -192,48 +192,12 @@ namespace BminingBlazor.Services
                 _configuration.GetConnectionString("default"));
             return clientes;
         }
-
-        public Task<List<ViewProyectoModel>> ReadProjectsByUser(int userId)
+        public async Task<List<StatusProjectModel>> ReadStatusProject()
         {
-            return Task.Run(() => new List<ViewProyectoModel>
-            {
-                new ViewProyectoModel
-                {
-                    Cod_EstadoPago = 1,
-                    Cod_Proyecto = "BM-Project-1",
-                    Id_Proyecto = 4,
-                    Email_JefeProyecto = "jefe1@bmining.cl", // TODO: Cambiar a ID
-                    Nombre_Cliente = "cliente 1", // TODO: Cambiar a Id Cliente
-                    Nombre_Proyecto = "Proyecto 1",
-                    TipoEstadoPago = "test", // TODO: Con el Cod_Estado de pago basta
-                    Tipo_Proyecto = "test2", // TODO: Esto no es una ID?
-                    Tipo_Pago = "2", // TODO: Esto quedo fuera creo.
-                },
-                new ViewProyectoModel
-                {
-                    Cod_EstadoPago = 1,
-                    Cod_Proyecto = "BM-Project-2",
-                    Id_Proyecto = 5,
-                    Email_JefeProyecto = "jefe2@bmining.cl", // TODO: Cambiar a ID
-                    Nombre_Cliente = "cliente 2", // TODO: Cambiar a Id Cliente
-                    Nombre_Proyecto = "Proyecto 2",
-                    TipoEstadoPago = "test", // TODO: Con el Cod_Estado de pago basta
-                    Tipo_Proyecto = "test3", // TODO: Esto no es una ID?
-                    Tipo_Pago = "2", // TODO: Esto quedo fuera creo.
-                },
-                new ViewProyectoModel
-                {
-                    Cod_EstadoPago = 1,
-                    Cod_Proyecto = "BM-Project-3",
-                    Id_Proyecto = 6,
-                    Email_JefeProyecto = "jefe3@bmining.cl", // TODO: Cambiar a ID
-                    Nombre_Cliente = "cliente 3", // TODO: Cambiar a Id Cliente
-                    Nombre_Proyecto = "Proyecto 3",
-                    TipoEstadoPago = "test 2", // TODO: Con el Cod_Estado de pago basta
-                    Tipo_Proyecto = "test 4", // TODO: Esto no es una ID?
-                    Tipo_Pago = "5", // TODO: Esto quedo fuera creo.
-                }
-            });
+            string sql = $"select*from {TableConstants.TablaStatusProject}";
+            var statusProject = await _dataAccess.LoadData<StatusProjectModel, dynamic>(sql, new { },
+                _configuration.GetConnectionString("default"));
+            return statusProject;
         }
     }
 }

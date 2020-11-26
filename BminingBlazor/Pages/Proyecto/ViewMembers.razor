@@ -1,15 +1,18 @@
-﻿@page "/ViewIntegrantes/{id_proyecto:int}"
+﻿@page "/ViewMembers/{idproject:int}"
 @using Models
 @using BminingBlazor.Services
+@using Microsoft.AspNetCore.Components
+@using System.Data
+
+@inject IMatDialogService MatDialogService
 @inject NavigationManager NavigationManager
 @inject IProyectoDataService ProyectoDataService
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize(Roles = "Administracion")]
-<h3>Jefe Proyecto</h3>
-@if (jefe == null)
+<h3>@Resource.Project_Manager</h3>
+@if (_boss == null)
 {
-    <p><em>Cargando...</em></p>
 }
 else
 {
@@ -17,15 +20,15 @@ else
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Email</th>
-                    <th>Nombres</th>
-                    <th>Apellido Paterno</th>
-                    <th>Apellido Materno </th>
+                    <th>@Resource.Mail</th>
+                    <th>@Resource.Names</th>
+                    <th>@Resource.Last_Name_One</th>
+                    <th>@Resource.Last_Name_Two</th>
                     <th>Rut</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var p in jefe)
+                @foreach (var p in _boss)
                 {
                     <tr>
                         <td>@p.Email_Bmining</td>
@@ -41,9 +44,8 @@ else
 }
 
 <h3>Integrantes</h3>
-@if (integrantes == null)
+@if (_members == null)
 {
-    <p><em>Cargando...</em></p>
 }
 else
 {
@@ -51,15 +53,15 @@ else
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Email</th>
-                    <th>Nombres</th>
-                    <th>Apellido Paterno</th>
-                    <th>Apellido Materno </th>
+                    <th>@Resource.Mail</th>
+                    <th>@Resource.Names</th>
+                    <th>@Resource.Last_Name_One</th>
+                    <th>@Resource.Last_Name_Two</th>
                     <th>Rut</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var i in integrantes)
+                @foreach (var i in _members)
                 {
                     <tr>
                         <td>@i.Email_Bmining</td>
@@ -67,41 +69,38 @@ else
                         <td>@i.Apellido_Paterno</td>
                         <td>@i.Apellido_Materno</td>
                         <td>@i.Rut</td>
-                        <MatButton @onclick=@(()=>Delete(i.Cod_Integrantes))>Eliminar</MatButton>
+                        <MatButton @onclick="()=>Delete(i.Cod_Integrantes)">@Resource.Delete</MatButton>
                     </tr>
                 }
-                <tr>
-                    <button type="button" class="btn btn-primary" @onclick="@Agregar">Agregar Integrante</button>
-                </tr>
             </tbody>
         </table>
+        <MatButton type="button" class="btn btn-primary" @onclick="@AddMember">@Resource.Add_Member</MatButton>
     </div>
+
 }
 
 @code {
     [Parameter]
-    public int id_proyecto { get; set; }
-    public int id { get; set; }
-
-    private List<UsuarioEditModel> jefe;
-    private List<ProyectoModel> proyecto;
-    private List<UsuarioEditModel> integrantes;
-
+    public int IdProject { get; set; }
+    private List<UsuarioEditModel> _boss;
+    private List<UsuarioEditModel> _members;
     protected override async Task OnInitializedAsync()
     {
-        id = await ProyectoDataService.ReadJefeProyecto(id_proyecto);
-        jefe = await UserDataService.ReadUser(id);
-        integrantes = await ProyectoDataService.ReadIntegrantes(id_proyecto);
+        var id = await ProyectoDataService.ReadIdProjectManager(IdProject);
+        _boss = await UserDataService.ReadUser(id);
+        _members = await ProyectoDataService.ReadIntegrantes(IdProject);
     }
-
-    public void Agregar()
+    public void AddMember()
     {
-        NavigationManager.NavigateTo($"/AddIntegrantes/{id_proyecto}");
+        NavigationManager.NavigateTo($"/AddMembers/{IdProject}");
     }
-
-    public async void Delete(int cod_integrantes)
+    public async void Delete(int codmembers)
     {
-        await ProyectoDataService.DeleteIntegrante(cod_integrantes);
-        NavigationManager.NavigateTo($"/viewIntegrantes/{id_proyecto}", true);
+        var answer = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
+        if (!answer) return;
+
+        await ProyectoDataService.DeleteMember(codmembers);
+        NavigationManager.NavigateTo($"/viewMembers/{IdProject}", true);
+
     }
 }

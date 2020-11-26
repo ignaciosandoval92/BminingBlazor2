@@ -1,88 +1,89 @@
 ﻿@page "/proyectos"
 @using Models
-@using BminingBlazor.Services
-@using MySql.Data
-@using BminingBlazor.Resources
+
 
 @inject IProyectoDataService ProyectoDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMatDialogService MatDialogService
 @attribute [Authorize(Roles = "Administracion")]
-<h3>Proyectos</h3>
-@if (_proyectos == null)
-{
-    <p><em>Cargando...</em></p>
-}
-else
-{
-    <div class="table-responsive{-sm|-md|-lg|-xl}">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Codigo Proyecto</th>
-                    <th>Nombre Proyecto</th>
-                    <th>Cliente</th>
-                    <th>Email Jefe de Proyecto</th>
-                    <th>Tipo de Proyecto</th>
-                    <th>Tipo de Pago </th>
-                    <th>Estado de Pago</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var p in _proyectos)
-                {
+
+
+    <h3>Proyectos </h3>
+    >
+    @if (_proyectos == null)
+    {
+        <p><em>Cargando...</em></p>
+    }
+    else
+    {
+        <div class="table-responsive{-sm|-md|-lg|-xl}">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>@p.Cod_Proyecto</td>
-                        <td>@p.Nombre_Proyecto</td>
-                        <td>@p.Nombre_Cliente</td>
-                        <td>@p.Email_JefeProyecto</td>
-                        <td>@p.Tipo_Proyecto</td>
-                        <td>@p.Tipo_Pago</td>
-                        <td>@p.TipoEstadoPago</td>
-                        <MatButton @onclick=@(()=>ViewIntegrantes(p.Id_Proyecto))>Integrantes</MatButton>
-                        <MatButton @onclick=@(()=>EditEstadoPago(p.Cod_EstadoPago))>Cambiar Estado de pago</MatButton>
-                        <MatButton @onclick=@(()=>Delete(p.Id_Proyecto))>Eliminar</MatButton>
+                        <th>Codigo Proyecto</th>
+                        <th>Nombre Proyecto</th>
+                        <th>Cliente</th>
+                        <th>Email Jefe de Proyecto</th>
+                        <th>Tipo de Proyecto</th>
+                        <th>Tipo de Pago </th>
+                        <th>Estado de Pago</th>
                     </tr>
-                }
-                <tr>
-                    <MatButton type="button" class="btn btn-primary" @onclick="@NewProyecto">Agregar Proyecto</MatButton>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-}
-
-
-@code {
-    private List<ViewProyectoModel> _proyectos;
-
-    protected override async Task OnInitializedAsync()
-    {
-
-        _proyectos = await ProyectoDataService.ReadProyectos();
+                </thead>
+                <tbody>
+                    @foreach (var p in _proyectos)
+                    {
+                        <tr>
+                            <td>@p.Cod_Proyecto</td>
+                            <td>@p.Nombre_Proyecto</td>
+                            <td>@p.Nombre_Cliente</td>
+                            <td>@p.Email_JefeProyecto</td>
+                            <td>@p.Tipo_Proyecto</td>
+                            <td>@p.Tipo_Pago</td>
+                            <td>@p.TipoEstadoPago</td>
+                            <MatButton @onclick=@(()=>ViewIntegrantes(p.Id_Proyecto))>Integrantes</MatButton>
+                            <MatButton @onclick=@(()=>EditEstadoPago(p.Cod_EstadoPago))>Cambiar Estado de pago</MatButton>
+                            <MatButton @onclick=@(()=>Delete(p.Id_Proyecto))>Eliminar</MatButton>
+                        </tr>
+                    }
+                    <tr>
+                        <MatButton type="button" class="btn btn-primary" @onclick="@NewProyecto">Agregar Proyecto</MatButton>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     }
 
-    public void EditEstadoPago(int Cod_EstadoPago)
-    {
-        NavigationManager.NavigateTo($"/EditEstadoPago/{Cod_EstadoPago}");
-    }
 
-    public void NewProyecto()
-    {
-        NavigationManager.NavigateTo("/CrearProyecto");
-    }
-    public void ViewIntegrantes(int idProyecto)
-    {
-        NavigationManager.NavigateTo($"ViewIntegrantes/{idProyecto}");
-    }
+    @code {
+        private List<ViewProyectoModel> _proyectos;
 
-    public async void Delete(int idProyecto)
-    {
-        var answer = await MatDialogService.AskAsync(Resource.AreYouSureToDelete, new[] {Resource.Yes, Resource.No});
-        if (answer == null || answer == Resource.No)
-            return;
-        await ProyectoDataService.DeleteProyecto(idProyecto);
-        NavigationManager.NavigateTo("/proyectos", true);
+        protected override async Task OnInitializedAsync()
+        {
+
+            _proyectos = await ProyectoDataService.ReadProyectos();
+        }
+
+        public void EditEstadoPago(int Cod_EstadoPago)
+        {
+            NavigationManager.NavigateTo($"/EditEstadoPago/{Cod_EstadoPago}");
+        }
+
+        public void NewProyecto()
+        {
+            NavigationManager.NavigateTo("/CrearProyecto");
+        }
+        public void ViewIntegrantes(int idProyecto)
+        {
+            NavigationManager.NavigateTo($"ViewMembers/{idProyecto}");
+        }
+
+        public async void Delete(int idProyecto)
+        {
+            var answer = await MatDialogService.AskAsync(Resource.AreYouSureToDelete, new[] { Resource.Yes, Resource.No });
+            if (answer == null || answer == Resource.No)
+                return;
+            await ProyectoDataService.DeleteProyecto(idProyecto);
+            NavigationManager.NavigateTo("/proyectos", true);
+        }
     }
-}

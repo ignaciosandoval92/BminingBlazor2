@@ -15,5 +15,6 @@ namespace Models
         public int Id_JefeProyecto { get; set; }
         public int Id_proyecto { get; set; }
         public int Id_Cliente { get; set; }
+        public int Id_Status { get; set; }
     }
 }
