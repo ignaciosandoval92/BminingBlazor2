@@ -1,21 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using BminingBlazor.ViewModels.Project;
 using Models;
+using ProjectModel = Models.ProjectModel;
 
 namespace BminingBlazor.Services
 {
     public interface IProjectDataService
     {
-        Task<int> CreateProject(ProyectoModel proyecto);
-        Task AddMember(IntegranteModel integrante);
+        Task<int> CreateProject(ViewModels.Project.CreateProjectViewModel project);
+        Task AddMember(CreateProjectViewModel project);
         Task<List<TipoProyectoModel>> ReadProjectType();
         Task<List<TipoEstadoPagoModel>> ReadPaymentStatusType();
         Task AddPaymentStatus(EstadoPagoModel estadopago);
-        Task<int> AddProjectCreator(ProyectoModel proyecto);
-        Task<int> AddJefeProyecto(ProyectoModel proyecto);
-        Task<int> AddCliente(ProyectoModel proyecto);
+        Task<int> AddProjectCreator(ProjectModel createProjectView);
+        Task<int> AddJefeProyecto(ProjectModel createProjectView);
+        Task<int> AddCliente(ProjectModel createProjectView);
         Task<List<ViewProyectoModel>> ReadProjects();
-        Task<int> ReadProjectManagerId(int id_proyecto);
+        Task<int> ReadIdProjectManager(int id_proyecto);
         Task<List<MemberProjectEditModel>> ReadMembers(int idProject);
         Task<int> EditPaymentStatus(EstadoPagoModel estadopago);
         Task DeleteMember(int memberId);

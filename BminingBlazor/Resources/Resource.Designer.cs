@@ -205,6 +205,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Status Project.
+        /// </summary>
+        internal static string StatusProject {
+            get {
+                return ResourceManager.GetString("StatusProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Week.
         /// </summary>
         internal static string Week {

@@ -11,7 +11,7 @@
 
     <h3>Proyectos </h3>
     >
-    @if (_proyectos == null)
+    @if (_projects == null)
     {
         <p><em>Cargando...</em></p>
     }
@@ -23,28 +23,26 @@
                     <tr>
                         <th>Codigo Proyecto</th>
                         <th>Nombre Proyecto</th>
-                        <th>Cliente</th>
                         <th>Email Jefe de Proyecto</th>
                         <th>Tipo de Proyecto</th>
-                        <th>Tipo de Pago </th>
-                        <th>Estado de Pago</th>
+                        <th>Cliente</th>
+                        <th>@Resource.StatusProject </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var p in _proyectos)
+                    @foreach (var p in _projects)
                     {
-                        <tr>
-                            <td>@p.Cod_Proyecto</td>
-                            <td>@p.Nombre_Proyecto</td>
-                            <td>@p.Nombre_Cliente</td>
-                            <td>@p.Email_JefeProyecto</td>
-                            <td>@p.Tipo_Proyecto</td>
-                            <td>@p.Tipo_Pago</td>
-                            <td>@p.TipoEstadoPago</td>
-                            <MatButton @onclick=@(()=>ViewIntegrantes(p.Id_Proyecto))>Integrantes</MatButton>
-                            <MatButton @onclick=@(()=>EditEstadoPago(p.Cod_EstadoPago))>Cambiar Estado de pago</MatButton>
-                            <MatButton @onclick=@(()=>Delete(p.Id_Proyecto))>Eliminar</MatButton>
-                        </tr>
+                    <tr>
+                        <td>@p.Cod_Proyecto</td>
+                        <td>@p.Nombre_Proyecto</td>
+                        <td>@p.EmailProjectManager</td>
+                        <td>@p.Tipo_Proyecto</td>
+                        <td>@p.Nombre_Cliente</td>
+                        <td>@p.Status</td>
+                        <MatButton @onclick=@(()=>ViewIntegrantes(p.Id_Proyecto))>Integrantes</MatButton>
+                        <MatButton @onclick=@(()=>EditEstadoPago(p.Cod_EstadoPago))>Cambiar Estado de pago</MatButton>
+                        <MatButton @onclick=@(()=>Delete(p.Id_Proyecto))>Eliminar</MatButton>
+                    </tr>
                     }
                     <tr>
                         <MatButton type="button" class="btn btn-primary" @onclick="@NewProyecto">Agregar Proyecto</MatButton>
@@ -56,12 +54,12 @@
 
 
     @code {
-        private List<ViewProyectoModel> _proyectos;
+        private List<ViewProyectoModel> _projects;
 
         protected override async Task OnInitializedAsync()
         {
 
-            _proyectos = await ProjectDataService.ReadProjects();
+            _projects = await ProjectDataService.ReadProjects();
         }
 
         public void EditEstadoPago(int Cod_EstadoPago)

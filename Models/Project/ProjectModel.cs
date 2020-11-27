@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-    public class ProyectoModel
+    public class ProjectModel
     {
         public string Cod_Proyecto { get; set; }
         public string Nombre_Proyecto { get; set; }

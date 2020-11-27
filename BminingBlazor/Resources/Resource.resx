@@ -151,4 +151,7 @@
   <data name="Members" xml:space="preserve">
     <value>Members</value>
   </data>
+  <data name="StatusProject" xml:space="preserve">
+    <value>Status Project</value>
+  </data>
 </root>
