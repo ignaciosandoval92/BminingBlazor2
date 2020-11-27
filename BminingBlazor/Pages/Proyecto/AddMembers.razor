@@ -51,7 +51,7 @@
             Id_Usuario = _newMember.Id_Usuario,
             Id_Proyecto = id_proyecto
         };
-        await ProjectDataService.AddMember(integrante);
-        NavigationManager.NavigateTo($"/ViewIntegrantes/{id_proyecto}");
+       // await ProjectDataService.AddMember(integrante);
+        NavigationManager.NavigateTo($"/ViewMembers/{id_proyecto}");
     }
 }

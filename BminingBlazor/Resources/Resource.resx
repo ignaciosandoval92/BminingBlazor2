@@ -159,5 +159,7 @@
   </data>
   <data name="Reasons" xml:space="preserve">
     <value>Reasons</value>
+  <data name="StatusProject" xml:space="preserve">
+    <value>Status Project</value>
   </data>
 </root>

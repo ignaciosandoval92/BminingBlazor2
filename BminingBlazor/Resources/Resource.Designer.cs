@@ -219,6 +219,11 @@ namespace BminingBlazor.Resources {
         internal static string Reasons {
             get {
                 return ResourceManager.GetString("Reasons", resourceCulture);
+        ///   Busca una cadena traducida similar a Status Project.
+        /// </summary>
+        internal static string StatusProject {
+            get {
+                return ResourceManager.GetString("StatusProject", resourceCulture);
             }
         }
         
@@ -233,6 +238,7 @@ namespace BminingBlazor.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Week.
+        ///   Busca una cadena traducida similar a Week.
         /// </summary>
         internal static string Week {
             get {

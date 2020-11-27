@@ -2,6 +2,7 @@
 @using Models
 @using BminingBlazor.ViewModels.Project
 @using Microsoft.AspNetCore.Http
+@using ProjectModel = Models.ProjectModel
 
 @inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
@@ -14,18 +15,18 @@
 
 <h3>CrearProyecto</h3>
 
-<EditForm Model="@newProyecto" OnValidSubmit="@InsertProyecto">
+<EditForm Model="@_newCreateProjectView" OnValidSubmit="@InsertProject">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div>
         <label for="inputNombres">  Codigo de Proyecto:  </label>
-        <InputText id="Cod_Proyecto" @bind-Value="newProyecto.Cod_Proyecto" />
+        <InputText id="Cod_Proyecto" @bind-Value="_newCreateProjectView.Cod_Proyecto" />
         <label for="inputNombres">  Nombre de Proyecto:  </label>
-        <InputText id="Nombre_Proyecto" @bind-Value="newProyecto.Nombre_Proyecto" />
+        <InputText id="Nombre_Proyecto" @bind-Value="_newCreateProjectView.Nombre_Proyecto" />
     </div>
     <div>
         <label for="inputNombres">Cliente:</label>
-        <select class="form-control" @bind="newProyecto.Id_Cliente" required>
+        <select class="form-control" @bind="_newCreateProjectView.Id_Cliente" required>
 
             @foreach (var cliente in clientes)
             {
@@ -35,14 +36,14 @@
     </div>
     <div>
         <label for="inputNombres">  Fecha de Inicio:  </label>
-        <InputDate id="Fecha_Inicio" @bind-Value="newProyecto.Fecha_Inicio" />
+        <InputDate id="Fecha_Inicio" @bind-Value="_newCreateProjectView.Fecha_Inicio" />
         <label for="inputNombres">  Fecha de Termino:  </label>
-        <InputDate id="Fecha_Fin" @bind-Value="newProyecto.Fecha_Fin" />
+        <InputDate id="Fecha_Fin" @bind-Value="_newCreateProjectView.Fecha_Fin" />
     </div>
     <div>
 
         <label for="inputNombres">  Tipo de Proyecto:  </label>
-        <select class="form-control" @bind="newProyecto.Cod_TipoProyecto" required>
+        <select class="form-control" @bind="_newCreateProjectView.Cod_TipoProyecto" required>
             @if (tipro != null)
             {
                 @foreach (var tipoproyecto in tipro)
@@ -55,7 +56,7 @@
     </div>
     <div>
         <label for="inputNombres">Estado del Proyecto:</label>
-        <select class="form-control" @bind="newProyecto.Id_Status" required>
+        <select class="form-control" @bind="_newCreateProjectView.Id_Status" required>
 
             @foreach (var project in _statusProjectModels)
             {
@@ -65,7 +66,7 @@
     </div>
     <div>
         <label for="inputNombres">  Email Jefe del Proyecto:  </label>
-        <select class="form-control" @bind="newProyecto.Id_JefeProyecto" required>
+        <select class="form-control" @bind="_newCreateProjectView.Id_JefeProyecto" required>
             @foreach (var boss in users)
             {
                 <option value="@boss.id">@boss.Email_Bmining</option>
@@ -150,7 +151,7 @@
 @code {
 
 
-    private ProyectoModel newProyecto = new ProyectoModel();
+    private ProjectModel _newCreateProjectView = new ProjectModel();
     private List<TipoProyectoModel> tipro;
     private List<UsuarioModel> users;
     private List<PaymentStatusItemViewModel> _paymentStatusItems;
@@ -203,41 +204,40 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        newProyecto.Fecha_Inicio = DateTime.Today;
-        newProyecto.Fecha_Fin = DateTime.Today;
+        _newCreateProjectView.Fecha_Inicio = DateTime.Today;
+        _newCreateProjectView.Fecha_Fin = DateTime.Today;
 
 
 
     }
 
-    private async Task InsertProyecto()
+    private async Task InsertProject()
     {
         string user = HttpContextAccessor.HttpContext.User.Identity.Name;
         var id_Creador = await UserDataService.GetUserId(user);
-        var proyecto = new ProyectoModel()
+        var project = new CreateProjectViewModel()
         {
-            Cod_Proyecto = newProyecto.Cod_Proyecto,
-            Nombre_Proyecto = newProyecto.Nombre_Proyecto,
-            Cod_TipoProyecto = newProyecto.Cod_TipoProyecto,
-            Fecha_Inicio = newProyecto.Fecha_Inicio,
-            Fecha_Fin = newProyecto.Fecha_Fin,
+            Cod_Proyecto = _newCreateProjectView.Cod_Proyecto,
+            Nombre_Proyecto = _newCreateProjectView.Nombre_Proyecto,
+            Cod_TipoProyecto = _newCreateProjectView.Cod_TipoProyecto,
+            Fecha_Inicio = _newCreateProjectView.Fecha_Inicio,
+            Fecha_Fin = _newCreateProjectView.Fecha_Fin,
             Id_Creador = id_Creador,
-            Id_JefeProyecto = newProyecto.Id_JefeProyecto,
-            Id_Cliente = newProyecto.Id_Cliente,
-            Id_Status = newProyecto.Id_Status
+            Id_JefeProyecto = _newCreateProjectView.Id_JefeProyecto,
+            Id_Cliente = _newCreateProjectView.Id_Cliente,
+            Id_Status = _newCreateProjectView.Id_Status
 
 
         };
-        var id_proyecto = await ProjectDataService.CreateProject(proyecto);
-        foreach (var integrantes in _membersProjectItems)
+        var id_proyecto = await ProjectDataService.CreateProject(project);
+        foreach (var members in _membersProjectItems)
         {
-            var members = new IntegranteModel()
             {
-                Id_Proyecto = id_proyecto,
-                Id_Usuario = integrantes.Id_Usuario,
-                Project_Hours = integrantes.HoursProject
+                project.Id_Proyecto = id_proyecto;
+                project.Id_Usuario = members.Id_Usuario;
+                project.HoursProject = members.HoursProject;
             };
-            await ProjectDataService.AddMember(members);
+            await ProjectDataService.AddMember(project);
         }
         foreach (var estados in _paymentStatusItems)
         {
@@ -258,8 +258,8 @@
 
     }
 
- 
 
-  
+
+
 
 }
