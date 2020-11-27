@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using BminingBlazor.ViewModels.Projects;
 using BminingBlazor.ViewModels.User;
+using Models.Project;
 
 
 namespace BminingBlazor.Services

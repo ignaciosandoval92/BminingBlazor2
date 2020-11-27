@@ -54,15 +54,5 @@ namespace BminingBlazor.ViewModels.TrackingHours
                 }
             }
         }
-
-        public List<DateTime> GetDates()
-        {
-            var dates = new List<DateTime>();
-            for (int i = 0; i < 7; i++)
-            {
-                dates.Add(FromTime.AddDays(i));
-            }
-            return dates;
-        }
     }
 }

@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Models.Project;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Models;
 
 namespace BminingBlazor.Services
 {
     public interface IClientDataService
     {
-        Task<int> CreateClient(ClienteModel client);
-        Task<List<ClienteModel>> ReadClient();
+        Task<int> CreateClient(ClientModel client);
+        Task<List<ClientModel>> ReadClients();
+        Task<ClientModel> ReadClient(int id);
     }
 }

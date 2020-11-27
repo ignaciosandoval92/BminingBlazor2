@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public class TableConstants
+    public static class TableConstants
     {
         public const string TablaUsuario = "bminin39_SGPBM.Usuario";
         public const string TablaContrato = "bminin39_SGPBM.Contrato";

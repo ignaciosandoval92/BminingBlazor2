@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Data;
+﻿using Data;
 using Microsoft.Extensions.Configuration;
-using Models;
+using Models.Project;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using static Data.TableConstants;
 
 namespace BminingBlazor.Services
 {
@@ -11,12 +13,12 @@ namespace BminingBlazor.Services
         private readonly IDataAccess _dataAccess;
         private readonly IConfiguration _configuration;
 
-        public ClientDataService(IDataAccess dataAccess,IConfiguration configuration)
+        public ClientDataService(IDataAccess dataAccess, IConfiguration configuration)
         {
             _dataAccess = dataAccess;
             _configuration = configuration;
         }
-        public async Task<int> CreateClient(ClienteModel client)
+        public async Task<int> CreateClient(ClientModel client)
         {
             var sql =
                 "insert into Cliente (Cliente.Nombre_Cliente)" +
@@ -26,12 +28,21 @@ namespace BminingBlazor.Services
 
         }
 
-        public async Task<List<ClienteModel>> ReadClient()
+        public async Task<List<ClientModel>> ReadClients()
         {
-            string sql = $"select*from {TableConstants.TablaClientes}";
-            var clients = await _dataAccess.LoadData<ClienteModel, dynamic>(sql, new { },
+            var sql = $"select*from {TablaClientes}";
+            var clients = await _dataAccess.LoadData<ClientModel, dynamic>(sql, new { },
                 _configuration.GetConnectionString("default"));
             return clients;
+        }
+        public async Task<ClientModel> ReadClient(int id)
+        {
+            var sql = $"SELECT * FROM {TablaClientes} " +
+                      $"WHERE Cliente.Id_Cliente=@id";
+
+            var clients = await _dataAccess.LoadData<ClientModel, dynamic>(sql, new {  id },
+                _configuration.GetConnectionString("default"));
+            return clients.First();
         }
     }
 }

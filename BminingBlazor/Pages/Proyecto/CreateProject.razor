@@ -1,9 +1,10 @@
 ﻿@page "/CrearProyecto"
 @using Models
 @using Microsoft.AspNetCore.Http
-@using ProjectModel = Models.ProjectModel
+@using ProjectModel = Models.Project.ProjectModel
 @using BminingBlazor.ViewModels.Projects
 @using BminingBlazor.ViewModels.User
+@using Models.Project
 
 @inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
@@ -160,7 +161,7 @@
     private List<UsuarioModel> users;
     private List<PaymentViewModel> _paymentStatusItems;
     private List<MemberViewModel> _membersProjectItems;
-    private List<ClienteModel> clientes;
+    private List<ClientModel> clientes;
     private List<StatusProjectModel> _statusProjectModels;
 
 
@@ -195,7 +196,7 @@
     protected override async Task OnInitializedAsync()
     {
         _statusProjectModels = await ProjectDataService.GetAvailableProjectStatus();
-        clientes = await ClientDataService.ReadClient();
+        clientes = await ClientDataService.ReadClients();
         tipro = await ProjectDataService.ReadProjectType();
         users = await UserDataService.ReadUsers();
         _paymentStatusItems = new List<PaymentViewModel>();

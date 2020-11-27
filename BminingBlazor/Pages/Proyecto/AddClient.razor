@@ -1,6 +1,7 @@
 ﻿@page "/Cliente"
 @using Models
 @using BminingBlazor.Services
+@using Models.Project
 @inject IClientDataService ClientDataService
 @inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
@@ -8,23 +9,23 @@
 @attribute [Authorize(Roles = "Administracion")]
 <h3>Agregar Cliente</h3>
 
-<EditForm Model="@newCliente" OnValidSubmit="@InsertCliente">
+<EditForm Model="@_newClient" OnValidSubmit="@InsertCliente">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <label for="inputNombres">Nombre Cliente:</label>
-    <InputText id="Nombre_Cliente" @bind-Value="newCliente.Nombre_Cliente" />
+    <InputText id="Nombre_Cliente" @bind-Value="_newClient.Nombre_Cliente" />
     <MatButton type="submit" class="btn btn-primary">Guardar</MatButton>
 
 </EditForm>
 
 @code {
-    private ClienteModel newCliente = new ClienteModel();
+    private ClientModel _newClient = new ClientModel();
 
     private async Task InsertCliente()
     {
-        var cliente = new ClienteModel()
+        var cliente = new ClientModel()
         {
-            Nombre_Cliente = newCliente.Nombre_Cliente,
+            Nombre_Cliente = _newClient.Nombre_Cliente,
         };
         await ClientDataService.CreateClient(cliente);
 

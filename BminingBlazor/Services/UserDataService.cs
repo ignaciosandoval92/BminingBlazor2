@@ -13,11 +13,13 @@ namespace BminingBlazor.Services
     {
         private readonly IDataAccess _dataAccess;
         private readonly IConfiguration _configuration;
+        private readonly string _borrarConnectionString;
 
         public UserDataService(IDataAccess dataAccess, IConfiguration configuration)
         {
             _dataAccess = dataAccess;
             _configuration = configuration;
+            _borrarConnectionString = _configuration.GetConnectionString("default");
         }
         public async Task<List<UsuarioModel>> ReadUsers()
         {
@@ -28,7 +30,7 @@ namespace BminingBlazor.Services
             return users;
         }
 
-        
+
 
         public async Task<List<ContratoModel>> ReadContrato()
         {
@@ -43,14 +45,14 @@ namespace BminingBlazor.Services
             string sql = "select * " +
                          $" from {TableConstants.TablaUsuario}" +
                          $" where Usuario.Id={id}";
-                         
+
             var user =
                await _dataAccess.LoadData<MemberProjectEditModel, dynamic>(sql, new { },
                    _configuration.GetConnectionString("default"));
             return user;
         }
 
-    
+
 
         public async Task<int> CreateUser(UsuarioModel usuario)
         {
@@ -64,8 +66,8 @@ namespace BminingBlazor.Services
                 $"from {TableConstants.TablaUsuario} " +
                 $"  where Usuario.Email_Bmining = '{usuario.Email_Bmining}';";
 
-        //    $"where Usuario.Email_Bmining={usuario.Email_Bmining};";
-            var items =     await _dataAccess.LoadData<UsuarioModel, dynamic>(sql, new { },
+            //    $"where Usuario.Email_Bmining={usuario.Email_Bmining};";
+            var items = await _dataAccess.LoadData<UsuarioModel, dynamic>(sql, new { },
                 _configuration.GetConnectionString("default"));
 
             return items.First().id;
@@ -79,14 +81,14 @@ namespace BminingBlazor.Services
                 $"from {TableConstants.TablaUsuario} " +
                 $"  where Usuario.Email_Bmining = '{email}';";
 
-            
+
             var items = await _dataAccess.LoadData<UsuarioModel, dynamic>(sql, new { },
                 _configuration.GetConnectionString("default"));
 
             return items.First().id;
         }
 
-       
+
 
         public async Task EditUser(MemberProjectEditModel usuario2)
         {
@@ -102,7 +104,7 @@ namespace BminingBlazor.Services
             string sql = "Delete " +
                          $"from {TableConstants.TablaUsuario} " +
                          $"where Usuario.Id=@Id";
-            await _dataAccess.DeleteData(sql, new {Id = id}, _configuration.GetConnectionString("default"));
+            await _dataAccess.DeleteData(sql, new { Id = id }, _configuration.GetConnectionString("default"));
 
         }
 
@@ -110,6 +112,6 @@ namespace BminingBlazor.Services
         {
             throw new System.NotImplementedException();
         }
-        
+
     }
 }
