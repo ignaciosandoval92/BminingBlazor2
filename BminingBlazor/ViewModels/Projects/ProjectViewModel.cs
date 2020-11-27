@@ -11,13 +11,16 @@ namespace BminingBlazor.ViewModels.Projects
         public ProjectStatusEnum ProjectStatus { get; set; }
         public List<PaymentViewModel> Payments { get; set; }
         public UserViewModel ProjectManager { get; set; }
-        public List<UserViewModel> Members { get; set; }
+        public UserViewModel Creator { get; set; }
+        public List<MemberViewModel> Members { get; set; }
         public string ClientName { get; set; }
+        public int ClientId { get; set; }
+       
 
         public ProjectViewModel()
         {
             Payments = new List<PaymentViewModel>();
-            Members = new List<UserViewModel>();
+            Members = new List<MemberViewModel>();
         }
     }
 }

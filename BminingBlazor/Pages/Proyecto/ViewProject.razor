@@ -81,7 +81,7 @@
             var answer = await MatDialogService.AskAsync(Resource.AreYouSureToDelete, new[] { Resource.Yes, Resource.No });
             if (answer == null || answer == Resource.No)
                 return;
-            await ProjectDataService.DeleteProyecto(idProyecto);
+            await ProjectDataService.DeleteProject(idProyecto);
             NavigationManager.NavigateTo("/proyectos", true);
         }
     }

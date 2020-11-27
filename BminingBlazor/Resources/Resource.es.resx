@@ -157,8 +157,9 @@
   <data name="Reject" xml:space="preserve">
     <value>Rechazar</value>
   </data>
-  <data name="Reasons" xml:space="preserve">
+	<data name="Reasons" xml:space="preserve">
     <value>Razones</value>
+      </data>
   <data name="StatusProject" xml:space="preserve">
     <value>Estado del Proyecto</value>
   </data>

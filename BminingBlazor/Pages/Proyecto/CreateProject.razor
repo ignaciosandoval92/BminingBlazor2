@@ -1,14 +1,16 @@
 ﻿@page "/CrearProyecto"
 @using Models
-@using BminingBlazor.ViewModels.Project
 @using Microsoft.AspNetCore.Http
 @using ProjectModel = Models.ProjectModel
+@using BminingBlazor.ViewModels.Projects
+@using BminingBlazor.ViewModels.User
 
 @inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IHttpContextAccessor HttpContextAccessor
+@inject IClientDataService ClientDataService
 
 @attribute [Authorize(Roles = "Administracion")]
 
@@ -154,8 +156,8 @@
     private ProjectModel _newCreateProjectView = new ProjectModel();
     private List<TipoProyectoModel> tipro;
     private List<UsuarioModel> users;
-    private List<PaymentStatusItemViewModel> _paymentStatusItems;
-    private List<MembersProjectViewModel> _membersProjectItems;
+    private List<PaymentViewModel> _paymentStatusItems;
+    private List<MemberViewModel> _membersProjectItems;
     private List<ClienteModel> clientes;
     private List<StatusProjectModel> _statusProjectModels;
 
@@ -164,7 +166,7 @@
 
     private void AddPaymentStatusCallback()
     {
-        _paymentStatusItems.Add(new PaymentStatusItemViewModel
+        _paymentStatusItems.Add(new PaymentViewModel()
         {
             InvoiceExpirationDate = DateTime.UtcNow,
             IssueExpirationDate = DateTime.UtcNow
@@ -174,16 +176,16 @@
 
     private void AddMembersProjectCallback()
     {
-        _membersProjectItems.Add(new MembersProjectViewModel());
+        _membersProjectItems.Add(new MemberViewModel());
     }
 
 
-    private void DeletePaymentStatus(PaymentStatusItemViewModel paymentStatus)
+    private void DeletePaymentStatus(ProjectViewModel paymentStatus)
     {
         _paymentStatusItems.Remove(paymentStatus);
     }
 
-    private void DeleteMembersProject(MembersProjectViewModel membersProject)
+    private void DeleteMembersProject(MemberViewModel membersProject)
     {
         _membersProjectItems.Remove(membersProject);
     }
@@ -191,7 +193,7 @@
     protected override async Task OnInitializedAsync()
     {
         _statusProjectModels = await ProjectDataService.GetAvailableProjectStatus();
-        clientes = await ProjectDataService.ReadCliente();
+        clientes = await ClientDataService.ReadClient();
         tipro = await ProjectDataService.ReadProjectType();
         users = await UserDataService.ReadUsers();
         _paymentStatusItems = new List<PaymentStatusItemViewModel>();

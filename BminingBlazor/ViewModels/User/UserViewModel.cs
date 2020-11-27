@@ -2,15 +2,16 @@
 {
     public class UserViewModel
     {
-        public int Id { get; set; }
-        public string Email { get; set; }
-        public string Name { get; set; }
-        public string PaternalSurname { get; set; }
-        public string MaternalSurname { get; set; }
-        public string Rut { get; set; }
-        public string Job { get; set; }
-        public string Telephone { get; set; }
-        public string Direction { get; set; }
-        public string ContractType { get; set; }
+        public int MyId { get; set; }
+        public string MyEmail { get; set; }
+        public string MyName { get; set; }
+        public string MyPaternalSurname { get; set; }
+        public string MyMaternalSurname { get; set; }
+        public string MyRut { get; set; }
+        public string MyJob { get; set; }
+        public string MyTelephone { get; set; }
+        public string MyDirection { get; set; }
+        public string MyContractType { get; set; }
+        
     }
 }
