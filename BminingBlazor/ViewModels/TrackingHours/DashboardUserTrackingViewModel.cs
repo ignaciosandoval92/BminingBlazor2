@@ -12,12 +12,7 @@ namespace BminingBlazor.ViewModels.TrackingHours
         public List<WeekDayUserTrackingHoursViewModel> WeekDayUserTrackingHours { get; set; }
         public DashboardUserTrackingViewModel()
         {
-            WeekDayUserTrackingHours = new List<WeekDayUserTrackingHoursViewModel>
-            {
-
-            };
-
-
+            WeekDayUserTrackingHours = new List<WeekDayUserTrackingHoursViewModel>();
         }
 
         public void SetStartDate(DateTime fromTime)

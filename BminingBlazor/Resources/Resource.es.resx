@@ -151,4 +151,13 @@
   <data name="Members" xml:space="preserve">
     <value>Integrantes</value>
   </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Aprobar</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Rechazar</value>
+  </data>
+  <data name="Reasons" xml:space="preserve">
+    <value>Razones</value>
+  </data>
 </root>

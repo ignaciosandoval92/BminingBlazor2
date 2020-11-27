@@ -1,9 +1,11 @@
 ﻿@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}"
 @using BminingBlazor.ViewModels.TrackingHours
 @using Microsoft.AspNetCore.Http
+
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IUserDataService UserDataService
 @inject IProjectDataService ProjectDataService
+@inject ITimeTrackingService TimeTrackingService
 
 <div class="row">
     <div class="col-md-12">
@@ -44,7 +46,6 @@
 
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
 
-  
     protected override async Task OnInitializedAsync()
     {
         var email = HttpContextAccessor.GetEmail();
@@ -53,8 +54,8 @@
         {
             MyTrackingHourDate = new DateTime(Year, Month, Day),
         };
-        
-        var projects = await ProjectDataService.ReadProjectsByUser(userId);
+
+        var projects = await ProjectDataService.ReadProjectsOwnedByUser(userId);
         foreach (var viewProjectModel in projects)
         {
             var projectDetails = new ProjectDetailsViewModel
@@ -70,10 +71,16 @@
             ViewModel.OurAvailableProjects.Add(projectDetails);
         }
     }
-
-
-    private void SubmitCallback()
+    
+    private async Task SubmitCallback()
     {
-       
+        if (!ViewModel.MySelectedProjectId.HasValue)
+            return;
+        var userId = ViewModel.MyUserId;
+        var projectId = ViewModel.MySelectedProjectId.Value;
+        var timeTracking = ViewModel.MyTrackingHourDate;
+        var hours = ViewModel.MyHours;
+        await TimeTrackingService.AddUserTimeTracking
+                    (userId, projectId, timeTracking, hours);
     }
 }

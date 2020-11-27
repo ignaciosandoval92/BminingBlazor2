@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using BminingBlazor.ViewModels.Projects;
+using BminingBlazor.ViewModels.User;
 using Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BminingBlazor.Services
 {
@@ -22,7 +24,15 @@ namespace BminingBlazor.Services
         Task DeleteProyecto(int id_proyecto);
         Task<int> CreateCliente(ClienteModel cliente);
         Task<List<ClienteModel>> ReadCliente();
-        Task<List<ViewProyectoModel>> ReadProjectsByUser(int userId);
+        Task<List<ViewProyectoModel>> ReadProjectsOwnedByUser(int userId);
         Task<List<StatusProjectModel>> GetAvailableProjectStatus();
     }
+
+
+    public interface IFranciscoProjectDataService
+    {
+        Task<List<ProjectViewModel>> ReadProjectsOwnedByUser(int userId);
+        Task<List<UserViewModel>> GetMembersByProject(int projectId);
+    }
+
 }
