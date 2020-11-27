@@ -1,6 +1,7 @@
 ﻿@page "/EditPaymentStatus/{cod_estadopago:int}"
 @using Models
 @using BminingBlazor.Services
+@using BminingBlazor.ViewModels.Projects
 
 @inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
@@ -36,8 +37,8 @@
 </EditForm>
 
 @code {
-    [Parameter]
-    public int cod_estadopago { get; set; }
+        [Parameter]
+        public int cod_estadopago { get; set; }
     private EstadoPagoModel _newEstadoPago = new EstadoPagoModel();
     private List<TipoEstadoPagoModel> _listTipoEstadoPagoModels;
 
@@ -48,12 +49,12 @@
 
     private async Task EditarEstadoPago()
     {
-        var estadopago = new EstadoPagoModel()
-        {
-            Cod_EstadoPago = cod_estadopago,
-            Cod_TipoEstadoPago = _newEstadoPago.Cod_TipoEstadoPago
-        };
-        await ProjectDataService.EditPaymentStatus(estadopago);
-        NavigationManager.NavigateTo("/proyectos");
+        //    var payment = new PaymentViewModel()
+        //    {
+        //        PaymentStatusType = cod_estadopago,
+        //        Cod_TipoEstadoPago = _newEstadoPago.Cod_TipoEstadoPago
+        //    };
+        //    await ProjectDataService.EditPaymentStatus(estadopago);
+        //    NavigationManager.NavigateTo("/proyectos");
     }
 }

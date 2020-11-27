@@ -22,13 +22,13 @@
     <ValidationSummary />
     <div>
         <label for="inputNombres">  Codigo de Proyecto:  </label>
-        <InputText id="Cod_Proyecto" @bind-Value="_newCreateProjectView.Cod_Proyecto" />
+        <InputText id="Cod_Proyecto" @bind-Value="_newCreateProjectView.ProjectCode" />
         <label for="inputNombres">  Nombre de Proyecto:  </label>
-        <InputText id="Nombre_Proyecto" @bind-Value="_newCreateProjectView.Nombre_Proyecto" />
+        <InputText id="Nombre_Proyecto" @bind-Value="_newCreateProjectView.ProjectName" />
     </div>
     <div>
         <label for="inputNombres">Cliente:</label>
-        <select class="form-control" @bind="_newCreateProjectView.Id_Cliente" required>
+        <select class="form-control" @bind="_newCreateProjectView.ClientId" required>
 
             @foreach (var cliente in clientes)
             {
@@ -38,14 +38,14 @@
     </div>
     <div>
         <label for="inputNombres">  Fecha de Inicio:  </label>
-        <InputDate id="Fecha_Inicio" @bind-Value="_newCreateProjectView.Fecha_Inicio" />
+        <InputDate id="Fecha_Inicio" @bind-Value="_newCreateProjectView.StartDate" />
         <label for="inputNombres">  Fecha de Termino:  </label>
-        <InputDate id="Fecha_Fin" @bind-Value="_newCreateProjectView.Fecha_Fin" />
+        <InputDate id="Fecha_Fin" @bind-Value="_newCreateProjectView.EndDate" />
     </div>
     <div>
 
         <label for="inputNombres">  Tipo de Proyecto:  </label>
-        <select class="form-control" @bind="_newCreateProjectView.Cod_TipoProyecto" required>
+        <select class="form-control" @bind="_newCreateProjectView.ProjectType" required>
             @if (tipro != null)
             {
                 @foreach (var tipoproyecto in tipro)
@@ -58,17 +58,19 @@
     </div>
     <div>
         <label for="inputNombres">Estado del Proyecto:</label>
-        <select class="form-control" @bind="_newCreateProjectView.Id_Status" required>
+        <select class="form-control" @bind="_newCreateProjectView.ProjectStatus" required>
+           
 
             @foreach (var project in _statusProjectModels)
             {
                 <option value="@project.Id_Status">@project.Status</option>
+
             }
         </select>
     </div>
     <div>
         <label for="inputNombres">  Email Jefe del Proyecto:  </label>
-        <select class="form-control" @bind="_newCreateProjectView.Id_JefeProyecto" required>
+        <select class="form-control" @bind="_newCreateProjectView.ProjectManager" required>
             @foreach (var boss in users)
             {
                 <option value="@boss.id">@boss.Email_Bmining</option>
@@ -121,7 +123,7 @@
                         <td>
                             <div class="form-group col-md-6">
 
-                                <select class="form-control" @bind="membersProject.Id_Usuario" required>
+                                <select class="form-control" @bind="membersProject.MyEmail" required>
                                     @if (users is null)
                                     {
                                     }
@@ -135,7 +137,7 @@
                                 </select>
                             </div>
                         </td>
-                        <td><input type="number" step="0.1" @bind="@membersProject.HoursProject" /> </td>
+                        <td><input type="number" step="0.1" @bind="@membersProject.MyProjectHours" /> </td>
                         <MatButton Type="button" OnClick="()=>DeleteMembersProject(membersProject)">
                             Eliminar
                         </MatButton>
@@ -153,7 +155,7 @@
 @code {
 
 
-    private ProjectModel _newCreateProjectView = new ProjectModel();
+    private ProjectViewModel _newCreateProjectView = new ProjectViewModel();
     private List<TipoProyectoModel> tipro;
     private List<UsuarioModel> users;
     private List<PaymentViewModel> _paymentStatusItems;
@@ -180,7 +182,7 @@
     }
 
 
-    private void DeletePaymentStatus(ProjectViewModel paymentStatus)
+    private void DeletePaymentStatus(PaymentViewModel paymentStatus)
     {
         _paymentStatusItems.Remove(paymentStatus);
     }
@@ -196,8 +198,8 @@
         clientes = await ClientDataService.ReadClient();
         tipro = await ProjectDataService.ReadProjectType();
         users = await UserDataService.ReadUsers();
-        _paymentStatusItems = new List<PaymentStatusItemViewModel>();
-        _membersProjectItems = new List<MembersProjectViewModel>();
+        _paymentStatusItems = new List<PaymentViewModel>();
+        _membersProjectItems = new List<MemberViewModel>();
         string user = HttpContextAccessor.HttpContext.User.Identity.Name;
 
     }
@@ -206,8 +208,8 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _newCreateProjectView.Fecha_Inicio = DateTime.Today;
-        _newCreateProjectView.Fecha_Fin = DateTime.Today;
+        _newCreateProjectView.StartDate = DateTime.Today;
+        _newCreateProjectView.EndDate = DateTime.Today;
 
 
 
@@ -217,46 +219,47 @@
     {
         string user = HttpContextAccessor.HttpContext.User.Identity.Name;
         var id_Creador = await UserDataService.GetUserId(user);
-        var project = new CreateProjectViewModel()
+        var project = new ProjectViewModel()
         {
-            Cod_Proyecto = _newCreateProjectView.Cod_Proyecto,
-            Nombre_Proyecto = _newCreateProjectView.Nombre_Proyecto,
-            Cod_TipoProyecto = _newCreateProjectView.Cod_TipoProyecto,
-            Fecha_Inicio = _newCreateProjectView.Fecha_Inicio,
-            Fecha_Fin = _newCreateProjectView.Fecha_Fin,
-            Id_Creador = id_Creador,
-            Id_JefeProyecto = _newCreateProjectView.Id_JefeProyecto,
-            Id_Cliente = _newCreateProjectView.Id_Cliente,
-            Id_Status = _newCreateProjectView.Id_Status
+            ProjectCode = _newCreateProjectView.ProjectCode,
+            ProjectName = _newCreateProjectView.ProjectName,
+            ProjectType = _newCreateProjectView.ProjectType,
+            StartDate = _newCreateProjectView.StartDate,
+            EndDate = _newCreateProjectView.EndDate,
+            Creator =  new UserViewModel(){MyId = id_Creador},
+            ProjectManager =_newCreateProjectView.ProjectManager,
+            ClientId = _newCreateProjectView.ClientId,
+            ProjectStatus = _newCreateProjectView.ProjectStatus
 
 
         };
         var id_proyecto = await ProjectDataService.CreateProject(project);
-        foreach (var members in _membersProjectItems)
-        {
-            {
-                project.Id_Proyecto = id_proyecto;
-                project.Id_Usuario = members.Id_Usuario;
-                project.HoursProject = members.HoursProject;
-            };
-            await ProjectDataService.AddMember(project);
-        }
-        foreach (var estados in _paymentStatusItems)
-        {
-            var status = new EstadoPagoModel()
-            {
-                Id_Proyecto = id_proyecto,
-                Estado_Pago = estados.Name,
-                InvoiceExpirationDate = estados.InvoiceExpirationDate,
-                IssueExpirationDate = estados.IssueExpirationDate,
-                Cod_TipoEstadoPago = 1
-            };
-            await ProjectDataService.AddPaymentStatus(status);
-        }
+        //TODO hacerlo funcional con el nuevo viewmodel ademas de agregar variables faltantes
+        //foreach (var members in _membersProjectItems)
+        //{
+        //    {
+        //        project.Id_Proyecto = id_proyecto;
+        //        project.Id_Usuario = members.Id_Usuario;
+        //        project.HoursProject = members.HoursProject;
+        //    };
+        //    await ProjectDataService.AddMember(project);
+        //}
+        //foreach (var estados in _paymentStatusItems)
+        //{
+        //    var status = new EstadoPagoModel()
+        //    {
+        //        Id_Proyecto = id_proyecto,
+        //        Estado_Pago = estados.Name,
+        //        InvoiceExpirationDate = estados.InvoiceExpirationDate,
+        //        IssueExpirationDate = estados.IssueExpirationDate,
+        //        Cod_TipoEstadoPago = 1
+        //    };
+        //await ProjectDataService.AddPaymentStatus(status);
+    }
 
 
 
-        NavigationManager.NavigateTo("/Proyectos");
+   // NavigationManager.NavigateTo("/Proyectos");
 
     }
 

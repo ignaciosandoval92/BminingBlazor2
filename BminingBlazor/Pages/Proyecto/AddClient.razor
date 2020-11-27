@@ -1,6 +1,7 @@
 ﻿@page "/Cliente"
 @using Models
 @using BminingBlazor.Services
+@inject IClientDataService ClientDataService
 @inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -25,7 +26,7 @@
         {
             Nombre_Cliente = newCliente.Nombre_Cliente,
         };
-        await ProjectDataService.CreateCliente(cliente);
+        await ClientDataService.CreateClient(cliente);
 
         NavigationManager.NavigateTo("/Proyectos");
     }

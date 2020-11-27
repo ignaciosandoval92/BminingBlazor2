@@ -1,5 +1,6 @@
 ﻿@page "/proyectos"
 @using Models
+@using BminingBlazor.ViewModels.Projects
 
 
 @inject IProjectDataService ProjectDataService
@@ -33,15 +34,15 @@
                     @foreach (var p in _projects)
                     {
                     <tr>
-                        <td>@p.Cod_Proyecto</td>
-                        <td>@p.Nombre_Proyecto</td>
-                        <td>@p.EmailProjectManager</td>
-                        <td>@p.Tipo_Proyecto</td>
-                        <td>@p.Nombre_Cliente</td>
-                        <td>@p.Status</td>
-                        <MatButton @onclick=@(()=>ViewIntegrantes(p.Id_Proyecto))>Integrantes</MatButton>
-                        <MatButton @onclick=@(()=>EditEstadoPago(p.Cod_EstadoPago))>Cambiar Estado de pago</MatButton>
-                        <MatButton @onclick=@(()=>Delete(p.Id_Proyecto))>Eliminar</MatButton>
+                        <td>@p.ProjectCode</td>
+                        <td>@p.ProjectName</td>
+                        <td>@p.ProjectManager.MyEmail</td>
+                        <td>@p.ProjectType</td>
+                        <td>@p.ClientName</td>
+                        <td>@p.ProjectStatus</td>
+                        <MatButton @onclick=@(()=>ViewIntegrantes(p.Id))>Integrantes</MatButton>
+                        <MatButton @onclick=@(()=>EditEstadoPago(p.Id))>Cambiar Estado de pago</MatButton>
+                        <MatButton @onclick=@(()=>Delete(p.Id))>Eliminar</MatButton>
                     </tr>
                     }
                     <tr>
@@ -54,7 +55,7 @@
 
 
     @code {
-        private List<ViewProyectoModel> _projects;
+        private List<ProjectViewModel> _projects;
 
         protected override async Task OnInitializedAsync()
         {
