@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Data.TableConstants;
+using UserModel = Models.UserModel;
 
 namespace BminingBlazor.Services
 {
@@ -54,14 +55,13 @@ namespace BminingBlazor.Services
         public async Task<List<UserViewModel>> ReadUsers(IEnumerable<int> ids)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
-            var users = (await queryFactory.Query(UserTable).Where(UserConstants.UserId, ids).GetAsync<UserModel>()).ToList();
-
+            var users = (await queryFactory.Query(UserTable).WhereIn(UserConstants.UserId, ids).GetAsync<UserModel>()).ToList();
             var userViewModels = new List<UserViewModel>();
             foreach (var userModel in users)
             {
                 userViewModels.Add(new UserViewModel
                 {
-                    MyContractType = (ContractTypeEnum) userModel.Cod_TipoContrato,
+                    MyContractType = (ContractTypeEnum)userModel.Cod_TipoContrato,
                     MyDirection = userModel.Direccion,
                     MyEmail = userModel.Email_Bmining,
                     MyId = userModel.id,

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-   public class EstadoPagoModel
+   public class PaymentModel
     {
         public int Cod_EstadoPago { get; set; }
         public string Estado_Pago { get; set; }

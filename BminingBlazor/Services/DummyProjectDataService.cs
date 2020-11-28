@@ -1,13 +1,14 @@
 ﻿using BminingBlazor.Utility;
 using BminingBlazor.ViewModels.Projects;
+using BminingBlazor.ViewModels.User;
 using Data;
 using Microsoft.Extensions.Configuration;
+using Models;
 using Models.Project;
 using SqlKata.Execution;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BminingBlazor.ViewModels.User;
 using static Data.ProjectConstants;
 using static Data.TableConstants;
 
@@ -53,14 +54,11 @@ namespace BminingBlazor.Services
 
                 // Get Members
                 var memberModels = (await queryFactory.Query(MembersTable).Where(MemberConstants.ProjectId, projectViewModel.MyId).GetAsync<MemberModel>()).ToList();
-
-                var userViewModels =await _userDataService.ReadUsers(memberModels.Select(model => model.Id_Usuario));
-
+                var userViewModels = await _userDataService.ReadUsers(memberModels.Select(model => model.Id_Usuario));
 
                 foreach (var userViewModel in userViewModels)
                 {
                     var memberModel = memberModels.First(model => model.Id_Usuario == userViewModel.MyId);
-
                     var memberViewModel = new MemberViewModel
                     {
                         MyId = userViewModel.MyId,
@@ -78,9 +76,23 @@ namespace BminingBlazor.Services
                     };
                     projectViewModel.OurMembers.Add(memberViewModel);
                 }
+                //projectViewModel.MyId
+                var paymentModels = (await queryFactory.Query(PaymentTable).Where(PaymentConstants.ProjectId,1353 ).GetAsync<PaymentModel>()).ToList();
+                
+                var paymentViewModels = new List<PaymentViewModel>();
+                foreach (var paymentModel in paymentModels)
+                {
+                    var paymentViewModel = new PaymentViewModel();
+                    paymentViewModel.ProjectId = paymentModel.Id_Proyecto;
+                    paymentViewModel.Name = paymentModel.
+                    paymentViewModel.PaymentStatusType = (PaymentStatusTypeEnum)projectModel.Cod
+                    paymentViewModels.Add();
+                }
+
                 listOfProjectModels.Add(projectViewModel);
             }
             return listOfProjectModels;
         }
+
     }
 }
