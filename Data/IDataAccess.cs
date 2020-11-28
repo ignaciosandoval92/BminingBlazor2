@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SqlKata.Execution;
 
 namespace Data
 {
@@ -9,5 +10,6 @@ namespace Data
         Task SaveData<T>(string sql, T parameters, string connectionString);
         Task UpdateData<T>(string sql, T parameters, string connectionString);
         Task DeleteData<T>(string sql, T parameters, string connectionString);
+        QueryFactory GetQueryFactory(string connectionString);
     }
 }

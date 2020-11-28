@@ -34,15 +34,15 @@
                     @foreach (var p in _projects)
                     {
                     <tr>
-                        <td>@p.ProjectCode</td>
-                        <td>@p.ProjectName</td>
-                        <td>@p.ProjectManager.MyEmail</td>
-                        <td>@p.ProjectType</td>
-                        <td>@p.ClientName</td>
-                        <td>@p.ProjectStatus</td>
-                        <MatButton @onclick=@(()=>ViewIntegrantes(p.Id))>Integrantes</MatButton>
-                        <MatButton @onclick=@(()=>EditEstadoPago(p.Id))>Cambiar Estado de pago</MatButton>
-                        <MatButton @onclick=@(()=>Delete(p.Id))>Eliminar</MatButton>
+                        <td>@p.MyProjectCode</td>
+                        <td>@p.MyProjectName</td>
+                        <td>@p.MyProjectManager.MyEmail</td>
+                        <td>@p.MyProjectType</td>
+                        <td>@p.MyClientName</td>
+                        <td>@p.MyProjectStatus</td>
+                        <MatButton @onclick=@(()=>ViewIntegrantes(p.MyId))>Integrantes</MatButton>
+                        <MatButton @onclick=@(()=>EditEstadoPago(p.MyId))>Cambiar Estado de pago</MatButton>
+                        <MatButton @onclick=@(()=>Delete(p.MyId))>Eliminar</MatButton>
                     </tr>
                     }
                     <tr>

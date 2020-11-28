@@ -3,6 +3,7 @@ using BminingBlazor.ViewModels.User;
 using Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MemberViewModel = BminingBlazor.ViewModels.User.MemberViewModel;
 
 namespace BminingBlazor.Services
 {

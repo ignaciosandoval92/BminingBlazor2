@@ -7,25 +7,25 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize(Roles = "AdminRRHH,Administracion")]
 <h3>Crear Usuario</h3>
-<EditForm Model="@_newUser" OnValidSubmit="@InsertUsers">
+<EditForm Model="@_newUsuario" OnValidSubmit="@InsertUsers">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <tr>
         <td>
             <label for="inputNombres">Mail:</label>
-            <InputText id="Email_Bmining" @bind-Value="_newUser.Email_Bmining" />
+            <InputText id="Email_Bmining" @bind-Value="_newUsuario.Email_Bmining" />
             <label for="inputNombres">Nombres:</label>
-            <InputText id="Nombre" @bind-Value="_newUser.Nombre" />
+            <InputText id="Nombre" @bind-Value="_newUsuario.Nombre" />
         </td>
     </tr>
     <tr>
         <td>
             <label for="inputNombres">Apellido paterno:</label>
-            <InputText id="Apellido_Paterno" @bind-Value="_newUser.Apellido_Paterno" />
+            <InputText id="Apellido_Paterno" @bind-Value="_newUsuario.Apellido_Paterno" />
             <label for="inputNombres">Apellido materno:</label>
-            <InputText id="Apellido_Materno" @bind-Value="_newUser.Apellido_Materno" />
+            <InputText id="Apellido_Materno" @bind-Value="_newUsuario.Apellido_Materno" />
             <label for="inputNombres">Rut:</label>
-            <InputText id="Rut" @bind-Value="_newUser.Rut" />
+            <InputText id="Rut" @bind-Value="_newUsuario.Rut" />
 
         </td>
     </tr>
@@ -34,17 +34,17 @@
 
 
 @code {
-    private UsuarioModel _newUser = new UsuarioModel();
+    private UsuarioModel _newUsuario = new UsuarioModel();
 
     private async Task InsertUsers()
     {
         var usuario = new UsuarioModel()
         {
-            Email_Bmining = _newUser.Email_Bmining,
-            Nombre = _newUser.Nombre,
-            Apellido_Paterno = _newUser.Apellido_Paterno,
-            Apellido_Materno = _newUser.Apellido_Materno,
-            Rut = _newUser.Rut
+            Email_Bmining = _newUsuario.Email_Bmining,
+            Nombre = _newUsuario.Nombre,
+            Apellido_Paterno = _newUsuario.Apellido_Paterno,
+            Apellido_Materno = _newUsuario.Apellido_Materno,
+            Rut = _newUsuario.Rut
         };
         var id = await UserDataService.CreateUser(usuario);
         NavigationManager.NavigateTo($"editarusuario/{id}");

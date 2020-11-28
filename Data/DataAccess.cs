@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Dapper;
+using MySql.Data.MySqlClient;
+using SqlKata.Compilers;
+using SqlKata.Execution;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Dapper;
-using MySql.Data.MySqlClient;
 
 namespace Data
 {
     public class DataAccess : IDataAccess
     {
-        public async Task<List<T>> LoadData<T, U>(string sql, U parameters, string connectionString)
+      public async Task<List<T>> LoadData<T, U>(string sql, U parameters, string connectionString)
         {
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
@@ -42,6 +42,13 @@ namespace Data
             {
                 return connection.ExecuteAsync(sql, parameters);
             }
+        }
+
+        public QueryFactory GetQueryFactory(string connectionString)
+        {
+            var mySqlConnection =new MySqlConnection(connectionString);
+            var mySqlCompiler = new MySqlCompiler();
+            return new QueryFactory(mySqlConnection, mySqlCompiler);
         }
     }
 }

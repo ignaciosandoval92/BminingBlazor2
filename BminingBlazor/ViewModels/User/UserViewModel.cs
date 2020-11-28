@@ -11,7 +11,7 @@
         public string MyJob { get; set; }
         public string MyTelephone { get; set; }
         public string MyDirection { get; set; }
-        public string MyContractType { get; set; }
+        public ContractTypeEnum MyContractType { get; set; }
         
     }
 }

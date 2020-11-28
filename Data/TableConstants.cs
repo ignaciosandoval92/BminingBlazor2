@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Data
+﻿namespace Data
 {
     public static class TableConstants
     {
-        public const string TablaUsuario = "bminin39_SGPBM.Usuario";
-        public const string TablaContrato = "bminin39_SGPBM.Contrato";
-        public const string TablaProyecto = "bminin39_SGPBM.Proyecto";
-        public const string TablaTipoProyecto = "bminin39_SGPBM.Tipo_Proyecto";
-        public const string TablaTipoEstadoPago = "bminin39_SGPBM.Tipo_EstadoPago";
-        public const string TablaEstadoPago = "bminin39_SGPBM.EstadoPago";
-        public const string TablaIntegrantes = "bminin39_SGPBM.Integrantes_Proyecto";
-        public const string TablaClientes = "bminin39_SGPBM.Cliente";
-        public const string TablaStatusProject = "bminin39_SGPBM.StatusProject";
+        public const string UserTable = "bminin39_SGPBM.Usuario";
+        public const string ContractTable = "bminin39_SGPBM.Contrato";
+        public const string ProjectTable = "bminin39_SGPBM.Proyecto";
+        public const string ProjectTypeTable = "bminin39_SGPBM.Tipo_Proyecto";
+        public const string PaymentTypeTable = "bminin39_SGPBM.Tipo_EstadoPago";
+        public const string PaymentTable = "bminin39_SGPBM.EstadoPago";
+        public const string MembersTable = "bminin39_SGPBM.Integrantes_Proyecto";
+        public const string ClientTable = "bminin39_SGPBM.Cliente";
+        public const string StatusProjectTable = "bminin39_SGPBM.StatusProject";
     }
 }

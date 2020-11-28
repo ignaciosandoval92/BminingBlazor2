@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Models
+﻿namespace Models.Project
 {
-    public class IntegranteModel
+    public class MemberModel
     {
         public int Cod_Integrantes { get; set; }
         public int Id_Usuario { get; set; }

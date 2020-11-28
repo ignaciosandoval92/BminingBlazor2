@@ -27,7 +27,7 @@
         {
             Nombre_Cliente = _newClient.Nombre_Cliente,
         };
-        await ClientDataService.CreateClient(cliente);
+        await ClientDataService.CreateClient(_newClient.Nombre_Cliente);
 
         NavigationManager.NavigateTo("/Proyectos");
     }

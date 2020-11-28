@@ -24,6 +24,17 @@ namespace Bmining.Test
             var clients = await clientDataService.ReadClients();
             var id = clients.First().Id_Cliente;
             var client = await clientDataService.ReadClient(id);
+            id = await clientDataService.CreateClient("Test");
+            await clientDataService.DeleteClient(id);
+        }
+
+        [TestMethod]
+        public async Task ReadProjectDummyFixture()
+        {
+            var dummyProjectDataService = (IDummyProjectDataService)_webHost
+                .Services.GetService(typeof(IDummyProjectDataService));
+            var projectViewModels =await dummyProjectDataService.GetProjectsOwnedById(39);
+
         }
     }
 }
