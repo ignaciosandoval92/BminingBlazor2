@@ -6,25 +6,25 @@ namespace BminingBlazor.ViewModels.Projects
 {
     public class ProjectViewModel
     {
-        public int Id { get; set; }
-        public string ProjectCode { get; set; }
-        public string ProjectName { get; set; }
-        public ProjectStatusEnum ProjectStatus { get; set; }
-        public ProjectTypeEnum ProjectType { get; set; }
-        public List<PaymentViewModel> Payments { get; set; }
-        public UserViewModel ProjectManager { get; set; }
-        public UserViewModel Creator { get; set; }
-        public List<MemberViewModel> Members { get; set; }
-        public string ClientName { get; set; }
-        public int ClientId { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public int MyId { get; set; }
+        public string MyProjectCode { get; set; }
+        public string MyProjectName { get; set; }
+        public ProjectStatusEnum MyProjectStatus { get; set; }
+        public ProjectTypeEnum MyProjectType { get; set; }
+        public List<PaymentViewModel> OurPayments { get; set; }
+        public UserViewModel MyProjectManager { get; set; }
+        public UserViewModel MyCreator { get; set; }
+        public List<MemberViewModel> OurMembers { get; set; }
+        public string MyClientName { get; set; }
+        public int MyClientId { get; set; }
+        public DateTime MyStartDate { get; set; }
+        public DateTime MyEndDate { get; set; }
        
 
         public ProjectViewModel()
         {
-            Payments = new List<PaymentViewModel>();
-            Members = new List<MemberViewModel>();
+            OurPayments = new List<PaymentViewModel>();
+            OurMembers = new List<MemberViewModel>();
         }
     }
 }

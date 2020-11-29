@@ -2,6 +2,7 @@
 
 @using Models
 @using BminingBlazor.Services
+@using Models.Project
 
 @inject IUserDataService UserDataService
 @inject IProjectDataService ProjectDataService
@@ -38,7 +39,7 @@
 @code {
     [Parameter]
     public int id_proyecto { get; set; }
-    private IntegranteModel _newMember = new IntegranteModel();
+    private MemberModel _newMember = new MemberModel();
     private List<UsuarioModel> _users;
     protected override async Task OnInitializedAsync()
     {
@@ -46,7 +47,7 @@
     }
     private async Task InsertIntegrante()
     {
-        var integrante = new IntegranteModel()
+        var integrante = new MemberModel()
         {
             Id_Usuario = _newMember.Id_Usuario,
             Id_Proyecto = id_proyecto

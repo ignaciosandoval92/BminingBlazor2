@@ -1,9 +1,11 @@
 ﻿@page "/CrearProyecto"
 @using Models
 @using Microsoft.AspNetCore.Http
-@using ProjectModel = Models.ProjectModel
+@using ProjectModel = Models.Project.ProjectModel
 @using BminingBlazor.ViewModels.Projects
 @using BminingBlazor.ViewModels.User
+@using Models.Project
+@using MemberViewModel = BminingBlazor.ViewModels.User.MemberViewModel
 
 @inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
@@ -22,13 +24,13 @@
     <ValidationSummary />
     <div>
         <label for="inputNombres">  Codigo de Proyecto:  </label>
-        <InputText id="Cod_Proyecto" @bind-Value="_newCreateProjectView.ProjectCode" />
+        <InputText id="Cod_Proyecto" @bind-Value="_newCreateProjectView.MyProjectCode" />
         <label for="inputNombres">  Nombre de Proyecto:  </label>
-        <InputText id="Nombre_Proyecto" @bind-Value="_newCreateProjectView.ProjectName" />
+        <InputText id="Nombre_Proyecto" @bind-Value="_newCreateProjectView.MyProjectName" />
     </div>
     <div>
         <label for="inputNombres">Cliente:</label>
-        <select class="form-control" @bind="_newCreateProjectView.ClientId" required>
+        <select class="form-control" @bind="_newCreateProjectView.MyClientId" required>
 
             @foreach (var cliente in clientes)
             {
@@ -38,14 +40,14 @@
     </div>
     <div>
         <label for="inputNombres">  Fecha de Inicio:  </label>
-        <InputDate id="Fecha_Inicio" @bind-Value="_newCreateProjectView.StartDate" />
+        <InputDate id="Fecha_Inicio" @bind-Value="_newCreateProjectView.MyStartDate" />
         <label for="inputNombres">  Fecha de Termino:  </label>
-        <InputDate id="Fecha_Fin" @bind-Value="_newCreateProjectView.EndDate" />
+        <InputDate id="Fecha_Fin" @bind-Value="_newCreateProjectView.MyEndDate" />
     </div>
     <div>
 
         <label for="inputNombres">  Tipo de Proyecto:  </label>
-        <select class="form-control" @bind="_newCreateProjectView.ProjectType" required>
+        <select class="form-control" @bind="_newCreateProjectView.MyProjectType" required>
             @if (tipro != null)
             {
                 @foreach (var tipoproyecto in tipro)
@@ -58,7 +60,7 @@
     </div>
     <div>
         <label for="inputNombres">Estado del Proyecto:</label>
-        <select class="form-control" @bind="_newCreateProjectView.ProjectStatus" required>
+        <select class="form-control" @bind="_newCreateProjectView.MyProjectStatus" required>
            
 
             @foreach (var project in _statusProjectModels)
@@ -70,7 +72,7 @@
     </div>
     <div>
         <label for="inputNombres">  Email Jefe del Proyecto:  </label>
-        <select class="form-control" @bind="_newCreateProjectView.ProjectManager" required>
+        <select class="form-control" @bind="_newCreateProjectView.MyProjectManager" required>
             @foreach (var boss in users)
             {
                 <option value="@boss.id">@boss.Email_Bmining</option>
@@ -160,7 +162,7 @@
     private List<UsuarioModel> users;
     private List<PaymentViewModel> _paymentStatusItems;
     private List<MemberViewModel> _membersProjectItems;
-    private List<ClienteModel> clientes;
+    private List<ClientModel> clientes;
     private List<StatusProjectModel> _statusProjectModels;
 
 
@@ -195,7 +197,7 @@
     protected override async Task OnInitializedAsync()
     {
         _statusProjectModels = await ProjectDataService.GetAvailableProjectStatus();
-        clientes = await ClientDataService.ReadClient();
+        clientes = await ClientDataService.ReadClients();
         tipro = await ProjectDataService.ReadProjectType();
         users = await UserDataService.ReadUsers();
         _paymentStatusItems = new List<PaymentViewModel>();
@@ -208,8 +210,8 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _newCreateProjectView.StartDate = DateTime.Today;
-        _newCreateProjectView.EndDate = DateTime.Today;
+        _newCreateProjectView.MyStartDate = DateTime.Today;
+        _newCreateProjectView.MyEndDate = DateTime.Today;
 
 
 
@@ -221,15 +223,15 @@
         var id_Creador = await UserDataService.GetUserId(user);
         var project = new ProjectViewModel()
         {
-            ProjectCode = _newCreateProjectView.ProjectCode,
-            ProjectName = _newCreateProjectView.ProjectName,
-            ProjectType = _newCreateProjectView.ProjectType,
-            StartDate = _newCreateProjectView.StartDate,
-            EndDate = _newCreateProjectView.EndDate,
-            Creator =  new UserViewModel(){MyId = id_Creador},
-            ProjectManager =_newCreateProjectView.ProjectManager,
-            ClientId = _newCreateProjectView.ClientId,
-            ProjectStatus = _newCreateProjectView.ProjectStatus
+            MyProjectCode = _newCreateProjectView.MyProjectCode,
+            MyProjectName = _newCreateProjectView.MyProjectName,
+            MyProjectType = _newCreateProjectView.MyProjectType,
+            MyStartDate = _newCreateProjectView.MyStartDate,
+            MyEndDate = _newCreateProjectView.MyEndDate,
+            MyCreator =  new UserViewModel(){MyId = id_Creador},
+            MyProjectManager =_newCreateProjectView.MyProjectManager,
+            MyClientId = _newCreateProjectView.MyClientId,
+            MyProjectStatus = _newCreateProjectView.MyProjectStatus
 
 
         };

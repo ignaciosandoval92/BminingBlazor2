@@ -10,13 +10,13 @@
 
 <h3>Estados de Pago</h3>
 
-<EditForm Model="@_newEstadoPago" OnValidSubmit="@EditarEstadoPago">
+<EditForm Model="@_newPayment" OnValidSubmit="@EditarEstadoPago">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="form-group col-md-6">
         <label for="inputTContrato">Estado de Pago:</label>
-        <select class="form-control" @bind="_newEstadoPago.Cod_TipoEstadoPago" required>
+        <select class="form-control" @bind="_newPayment.Cod_TipoEstadoPago" required>
             @if (_listTipoEstadoPagoModels is null)
             {
                 
@@ -39,7 +39,7 @@
 @code {
         [Parameter]
         public int cod_estadopago { get; set; }
-    private EstadoPagoModel _newEstadoPago = new EstadoPagoModel();
+    private PaymentModel _newPayment = new PaymentModel();
     private List<TipoEstadoPagoModel> _listTipoEstadoPagoModels;
 
     protected override async Task OnInitializedAsync()

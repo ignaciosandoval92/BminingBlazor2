@@ -60,13 +60,13 @@
         {
             var projectDetails = new ProjectDetailsViewModel
             {
-                MyProjectName = viewProjectModel.ProjectName,
-                MyProjectCode = viewProjectModel.ProjectCode,
-                MyProjectId = viewProjectModel.Id,
-                MyProjectManagerEmail = viewProjectModel.ProjectManager.MyEmail,
+                MyProjectName = viewProjectModel.MyProjectName,
+                MyProjectCode = viewProjectModel.MyProjectCode,
+                MyProjectId = viewProjectModel.MyId,
+                MyProjectManagerEmail = viewProjectModel.MyProjectManager.MyEmail,
                 MyProjectManagerId = 0,
-                MyProjectManagerName = viewProjectModel.ProjectManager.MyName,
-                MyProjectManagerSurname = viewProjectModel.ProjectManager.MyPaternalSurname,
+                MyProjectManagerName = viewProjectModel.MyProjectManager.MyName,
+                MyProjectManagerSurname = viewProjectModel.MyProjectManager.MyPaternalSurname,
             };
             ViewModel.OurAvailableProjects.Add(projectDetails);
         }
