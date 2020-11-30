@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using SqlKata.Execution;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SqlKata.Extensions;
 
 namespace BminingBlazor.Services
 {
@@ -33,19 +32,23 @@ namespace BminingBlazor.Services
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
 
             var listOfProjectModels = new List<ProjectViewModel>();
-           
-            var projectQuery = queryFactory.Query(TableConstants.ProjectTable).Where(ProjectConstants.ProjectManagerId, userId);
-            var  paymentQuery =  queryFactory.Query(TableConstants.PaymentTable);
-            var membersQuery = queryFactory.Query(TableConstants.MembersTable).Join(TableConstants.UserTable,$"{UserConstants.UserId}", $"{MemberConstants.UserId}");
+
+            var projectQuery = queryFactory.Query(TableConstants.ProjectTable).Where(ProjectConstants.ProjectManagerId, userId)
+                .Join(TableConstants.ClientTable, TableConstants.ClientTable + "." + ClientConstants.ClientId, TableConstants.ProjectTable+ "." + ProjectConstants.ClientId).
+                Select($"{TableConstants.ProjectTable}.{{*}}",
+                      $"{TableConstants.ClientTable}.{{Nombre_Cliente}}");
+            var paymentQuery = queryFactory.Query(TableConstants.PaymentTable);
+            var membersQuery = queryFactory.Query(TableConstants.MembersTable).Join(TableConstants.UserTable, $"{UserConstants.UserId}", $"{MemberConstants.UserId}");
+            var clientQuery = queryFactory.Query(TableConstants.ClientTable);
             var usersQuery = queryFactory.Query(TableConstants.UserTable);
 
- 
 
-            var items =await projectQuery
-                            .IncludeMany(TableConstants.PaymentTable, paymentQuery,ProjectConstants.ProjectId, PaymentConstants.ProjectId)
-                            .IncludeMany(TableConstants.MembersTable, membersQuery,ProjectConstants.ProjectId, MemberConstants.ProjectId)
-                   .GetAsync();
-        
+
+            var items = await projectQuery
+                            .IncludeMany(TableConstants.PaymentTable, paymentQuery, ProjectConstants.ProjectId, PaymentConstants.ProjectId)
+                            .IncludeMany(TableConstants.MembersTable, membersQuery, ProjectConstants.ProjectId, MemberConstants.ProjectId)
+                            .GetAsync();
+
 
             return new List<ProjectViewModel>();
             //var projectModels = (await queryFactory.Query(ProjectTable)
