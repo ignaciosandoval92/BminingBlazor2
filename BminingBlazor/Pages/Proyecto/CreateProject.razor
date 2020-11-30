@@ -51,20 +51,25 @@
 
             @foreach (var typeProject in Enum.GetValues(typeof(ProjectTypeEnum)))
             {
-                <option value="@typeProject">
-                    @{
-                        switch (typeProject)
-                        {
-                            case ProjectTypeEnum.Commercial:
-                                        <p>Comercial</p>
-                             break;
+            <option value="@typeProject">
+                @{
+                    switch (typeProject)
+                    {
+                        case ProjectTypeEnum.Commercial:
+                            <p>Comercial</p>
+                            break;
+                        case ProjectTypeEnum.Internal:
+                            <p>Interno</p>
+                            break;
+                        case ProjectTypeEnum.Thesis:
+                            <p>Memoria</p>
+                            break;
 
 
-                            default:
-                                break;
-                        }
+                        
                     }
-                </option>
+                }
+            </option>
             }
 
         </InputSelect>
