@@ -1,6 +1,7 @@
 ﻿@page "/viewusers"
 @using Models
 @using BminingBlazor.Services
+@using BminingBlazor.ViewModels.User
 
 @inject IUserDataService UserDataService
 @inject NavigationManager NavigationManager
@@ -35,17 +36,17 @@ else
                 @foreach (var p in users)
                 {
                     <tr>
-                        <td>@p.Email_Bmining</td>
-                        <td>@p.Nombre</td>
-                        <td>@p.Apellido_Paterno</td>
-                        <td>@p.Apellido_Materno</td>
-                        <td>@p.Rut</td>
-                        <td>@p.Cargo</td>
-                        <td>@p.Telefono</td>
-                        <td>@p.Direccion</td>
-                        <td>@p.Cod_TipoContrato</td>
-                        <MatButton @onclick=@(()=>EditCallback(p.id))>Editar</MatButton>
-                        <MatButton @onclick=@(()=>Delete(p.id))>Eliminar</MatButton>
+                        <td>@p.MyEmail</td>
+                        <td>@p.MyName</td>
+                        <td>@p.MyPaternalSurname</td>
+                        <td>@p.MyMaternalSurname</td>
+                        <td>@p.MyRut</td>
+                        <td>@p.MyJob</td>
+                        <td>@p.MyTelephone</td>
+                        <td>@p.MyDirection</td>
+                        <td>@p.MyContractType</td>
+                        <MatButton @onclick=@(()=>EditCallback(p.MyId))>Editar</MatButton>
+                        <MatButton @onclick=@(()=>Delete(p.MyId))>Eliminar</MatButton>
                     </tr>
                 }
                 <tr>
@@ -57,7 +58,7 @@ else
 }
 
 @code {
-    private List<UsuarioModel> users;
+    private List<UserViewModel> users;
 
     public void NewUser()
     {

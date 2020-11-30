@@ -34,7 +34,7 @@
 
             @foreach (var cliente in clientes)
             {
-                <option value="@cliente.Id_Cliente">@cliente.Nombre_Cliente</option>
+                <option value="@cliente.ClientId">@cliente.ClientName</option>
             }
         </select>
     </div>
@@ -47,37 +47,47 @@
     <div>
 
         <label for="inputNombres">  Tipo de Proyecto:  </label>
-        <select class="form-control" @bind="_newCreateProjectView.MyProjectType" required>
-            @if (tipro != null)
+        <InputSelect class="form-control" @bind-Value="_newCreateProjectView.MyProjectType" required>
+
+            @foreach (var typeProject in Enum.GetValues(typeof(ProjectTypeEnum)))
             {
-                @foreach (var tipoproyecto in tipro)
-                {
-                    <option value="@tipoproyecto.Cod_TipoProyecto">@tipoproyecto.Tipo_Proyecto</option>
-                }
+                <option value="@typeProject">
+                    @{
+                        switch (typeProject)
+                        {
+                            case ProjectTypeEnum.Commercial:
+                                        <p>Comercial</p>
+                             break;
+
+
+                            default:
+                                break;
+                        }
+                    }
+                </option>
             }
-        </select>
+
+        </InputSelect>
 
     </div>
     <div>
         <label for="inputNombres">Estado del Proyecto:</label>
-        <select class="form-control" @bind="_newCreateProjectView.MyProjectStatus" required>
-           
+        <InputSelect class="form-control" @bind-Value="_newCreateProjectView.MyProjectStatus" required>
 
-            @foreach (var project in _statusProjectModels)
+            @foreach (var typestatus in Enum.GetValues(typeof(ProjectStatusEnum)))
             {
-                <option value="@project.Id_Status">@project.Status</option>
-
+                <option value="@typestatus">@typestatus</option>
             }
-        </select>
+        </InputSelect>
     </div>
     <div>
-        <label for="inputNombres">  Email Jefe del Proyecto:  </label>
-        <select class="form-control" @bind="_newCreateProjectView.MyProjectManager" required>
-            @foreach (var boss in users)
-            {
-                <option value="@boss.id">@boss.Email_Bmining</option>
-            }
-        </select>
+        @*<label for="inputNombres">  Email Jefe del Proyecto:  </label>
+            <select class="form-control" @bind="_newCreateProjectView.MyProjectManager" required>
+                @foreach (var boss in users)
+                {
+                    <option value="@boss.MyId">@boss.MyEmail</option>
+                }
+            </select>*@
     </div>
     <div>
         <MatButton Type="button" OnClick="AddPaymentStatusCallback">
@@ -133,7 +143,7 @@
                                     {
                                         @foreach (var emails in users)
                                         {
-                                            <option value="@emails.id">@emails.Email_Bmining</option>
+                                            <option value="@emails.MyId">@emails.MyEmail</option>
                                         }
                                     }
                                 </select>
@@ -159,7 +169,7 @@
 
     private ProjectViewModel _newCreateProjectView = new ProjectViewModel();
     private List<TipoProyectoModel> tipro;
-    private List<UsuarioModel> users;
+    private List<UserViewModel> users;
     private List<PaymentViewModel> _paymentStatusItems;
     private List<MemberViewModel> _membersProjectItems;
     private List<ClientModel> clientes;
@@ -197,8 +207,8 @@
     protected override async Task OnInitializedAsync()
     {
         _statusProjectModels = await ProjectDataService.GetAvailableProjectStatus();
-        clientes = await ClientDataService.ReadClients();
         tipro = await ProjectDataService.ReadProjectType();
+        clientes = await ClientDataService.ReadClients();
         users = await UserDataService.ReadUsers();
         _paymentStatusItems = new List<PaymentViewModel>();
         _membersProjectItems = new List<MemberViewModel>();
@@ -228,42 +238,38 @@
             MyProjectType = _newCreateProjectView.MyProjectType,
             MyStartDate = _newCreateProjectView.MyStartDate,
             MyEndDate = _newCreateProjectView.MyEndDate,
-            MyCreator =  new UserViewModel(){MyId = id_Creador},
-            MyProjectManager =_newCreateProjectView.MyProjectManager,
+            MyCreator = new UserViewModel() { MyId = id_Creador },
+            MyProjectManager = _newCreateProjectView.MyProjectManager,
             MyClientId = _newCreateProjectView.MyClientId,
             MyProjectStatus = _newCreateProjectView.MyProjectStatus
 
 
         };
+
         var id_proyecto = await ProjectDataService.CreateProject(project);
-        //TODO hacerlo funcional con el nuevo viewmodel ademas de agregar variables faltantes
-        //foreach (var members in _membersProjectItems)
-        //{
-        //    {
-        //        project.Id_Proyecto = id_proyecto;
-        //        project.Id_Usuario = members.Id_Usuario;
-        //        project.HoursProject = members.HoursProject;
-        //    };
-        //    await ProjectDataService.AddMember(project);
-        //}
+        foreach (var members in _membersProjectItems)
+        {
+            {
+                project.OurMembers.Add(members);
+
+            };
+
+        }
         //foreach (var estados in _paymentStatusItems)
         //{
-        //    var status = new EstadoPagoModel()
+
         //    {
-        //        Id_Proyecto = id_proyecto,
-        //        Estado_Pago = estados.Name,
-        //        InvoiceExpirationDate = estados.InvoiceExpirationDate,
-        //        IssueExpirationDate = estados.IssueExpirationDate,
-        //        Cod_TipoEstadoPago = 1
+        //        project.OurPayments.Add(estados);
         //    };
-        //await ProjectDataService.AddPaymentStatus(status);
-    }
-
-
-
-   // NavigationManager.NavigateTo("/Proyectos");
 
     }
+
+
+
+
+    // NavigationManager.NavigateTo("/Proyectos");
+
+}
 
 
 

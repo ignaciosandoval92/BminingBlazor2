@@ -13,7 +13,7 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
     <label for="inputNombres">Nombre Cliente:</label>
-    <InputText id="Nombre_Cliente" @bind-Value="_newClient.Nombre_Cliente" />
+    <InputText id="Nombre_Cliente" @bind-Value="_newClient.ClientName" />
     <MatButton type="submit" class="btn btn-primary">Guardar</MatButton>
 
 </EditForm>
@@ -25,9 +25,9 @@
     {
         var cliente = new ClientModel()
         {
-            Nombre_Cliente = _newClient.Nombre_Cliente,
+            ClientName = _newClient.ClientName,
         };
-        await ClientDataService.CreateClient(_newClient.Nombre_Cliente);
+        await ClientDataService.CreateClient(_newClient.ClientName);
 
         NavigationManager.NavigateTo("/Proyectos");
     }

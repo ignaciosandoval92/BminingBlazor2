@@ -11,7 +11,7 @@
 
 <h3>Estados de Pago</h3>
 
-<EditForm Model="@_newPayment" OnValidSubmit="@EditarEstadoPago">
+@*<EditForm Model="@_newPayment" OnValidSubmit="@EditarEstadoPago">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -32,14 +32,14 @@
         </select>
     </div>
 
-    <MatButton type="submit" class="btn btn-primary">Cambiar</MatButton>
+    <MatButton type="submit" class="btn btn-primary">Cambiar</MatButton>*@
 
 
-</EditForm>
+@*</EditForm>*@
 
 @code {
-        [Parameter]
-        public int cod_estadopago { get; set; }
+    [Parameter]
+    public int cod_estadopago { get; set; }
     private PaymentModel _newPayment = new PaymentModel();
     private List<TipoEstadoPagoModel> _listTipoEstadoPagoModels;
 
@@ -48,14 +48,15 @@
         _listTipoEstadoPagoModels = await ProjectDataService.ReadPaymentStatusType();
     }
 
-    private async Task EditarEstadoPago()
-    {
-        //    var payment = new PaymentViewModel()
-        //    {
-        //        PaymentStatusType = cod_estadopago,
-        //        Cod_TipoEstadoPago = _newEstadoPago.Cod_TipoEstadoPago
-        //    };
-        //    await ProjectDataService.EditPaymentStatus(estadopago);
-        //    NavigationManager.NavigateTo("/proyectos");
-    }
+    //private async Task EditarEstadoPago()
+    //{
+    //    //    var payment = new PaymentViewModel()
+    //    //    {
+    //    //        PaymentStatusType = cod_estadopago,
+    //    //        Cod_TipoEstadoPago = _newEstadoPago.Cod_TipoEstadoPago
+    //    //    };
+    //    //    await ProjectDataService.EditPaymentStatus(estadopago);
+    //    //    NavigationManager.NavigateTo("/proyectos");
+
+    //}
 }

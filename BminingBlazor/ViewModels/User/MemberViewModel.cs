@@ -2,7 +2,7 @@
 {
     public class MemberViewModel : UserViewModel
     {
-        public int MyProjectId { get; set; }
+        public int MyProjectId { get; set; }        
         public double MyProjectHours { get; set; }
     }
 }

@@ -84,12 +84,12 @@ else
     public int IdProject { get; set; }
     private List<MemberProjectEditModel> _boss;
     private List<MemberProjectEditModel> _members;
-    protected override async Task OnInitializedAsync()
-    {
-        //var id = await ProjectDataService.ReadIdProjectManager(IdProject);
-        //_boss = await UserDataService.ReadUser(id);
-        //_members = await ProjectDataService.ReadMembers(IdProject);
-    }
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    //var id = await ProjectDataService.ReadIdProjectManager(IdProject);
+    //    //_boss = await UserDataService.ReadUser(id);
+    //    //_members = await ProjectDataService.ReadMembers(IdProject);
+    //}
     public void AddMember()
     {
         NavigationManager.NavigateTo($"/AddMembers/{IdProject}");

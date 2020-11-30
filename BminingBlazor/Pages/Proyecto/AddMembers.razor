@@ -3,6 +3,7 @@
 @using Models
 @using BminingBlazor.Services
 @using Models.Project
+@using ViewModels.User
 
 @inject IUserDataService UserDataService
 @inject IProjectDataService ProjectDataService
@@ -13,7 +14,7 @@
 
 <h3>Integrantes</h3>
 
-<EditForm Model="@_newMember" OnValidSubmit="@InsertIntegrante">
+@*<EditForm Model="@_newMember" OnValidSubmit="@InsertIntegrante">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="form-group col-md-6">
@@ -34,25 +35,25 @@
         <input type="number" step="0.1" class="form-control" id="inputHours" placeholder="Horas invertidas" @bind="_newMember.Project_Hours" >
     </div>
     <MatButton type="submit" class="btn btn-primary">Agregar</MatButton>
-</EditForm>
+</EditForm>*@
 
 @code {
     [Parameter]
     public int id_proyecto { get; set; }
     private MemberModel _newMember = new MemberModel();
-    private List<UsuarioModel> _users;
+    private List<UserViewModel> _users;
     protected override async Task OnInitializedAsync()
     {
         _users = await UserDataService.ReadUsers();
     }
-    private async Task InsertIntegrante()
-    {
-        var integrante = new MemberModel()
-        {
-            Id_Usuario = _newMember.Id_Usuario,
-            Id_Proyecto = id_proyecto
-        };
-       // await ProjectDataService.AddMember(member);
-        NavigationManager.NavigateTo($"/ViewMembers/{id_proyecto}");
+    //private async Task InsertIntegrante()
+    //{
+    //    var integrante = new MemberModel()
+    //    {
+    //        Id_Usuario = _newMember.Id_Usuario,
+    //        Id_Proyecto = id_proyecto
+    //    };
+    // await ProjectDataService.AddMember(member);
+    //NavigationManager.NavigateTo($"/ViewMembers/{id_proyecto}");
     }
 }

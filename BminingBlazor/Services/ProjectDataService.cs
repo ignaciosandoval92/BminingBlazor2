@@ -54,26 +54,14 @@ namespace BminingBlazor.Services
 
         }
         //TODO Insertar metodos add en create project
-        public async Task<int> AddProjectCreator(ProjectModel createProjectView)
-        {
-            var sql =
-                "Update Proyecto" +
-                " set Proyecto.Id_Creador=@Id_Creador" +
-                " where Proyecto.Id_Proyecto=@Id_proyecto ";
-            await _dataAccess.UpdateData(sql, createProjectView, _configuration.GetConnectionString("default"));
-
-
-
-            return 0;
-
-        }
+        
         //TODO Insertar metodos add en create project
         public async Task<int> AddJefeProyecto(ProjectModel createProjectView)
         {
             var sql =
-                "Update Proyecto" +
-                " set Proyecto.Id_JefeProyecto=@Id_JefeProyecto" +
-                " where Proyecto.Id_Proyecto=@Id_proyecto ";
+                "Update Project" +
+                " set projectManagerId=@Id_JefeProyecto" +
+                " where Project.projectId=@Id_proyecto ";
             await _dataAccess.UpdateData(sql, createProjectView, _configuration.GetConnectionString("default"));
 
 
@@ -82,26 +70,14 @@ namespace BminingBlazor.Services
 
         }
         //TODO Insertar metodos add en create project
-        public async Task<int> AddCliente(ProjectModel createProjectView)
-        {
-            var sql =
-                "Update Proyecto" +
-                " set Proyecto.Id_Cliente=@Id_Cliente" +
-                " where Proyecto.Id_Proyecto=@Id_proyecto ";
-            await _dataAccess.UpdateData(sql, createProjectView, _configuration.GetConnectionString("default"));
-
-
-
-            return 1;
-
-        }
+        
         //TODO viewmodel de entrada sin (retorno numerico?)
         public async Task<int> EditPaymentStatus(PaymentModel estadopago)
         {
             var sql =
-                "Update EstadoPago" +
-                " set EstadoPago.Cod_TipoEstadoPago=@Cod_TipoEstadoPago" +
-                " where EstadoPago.Cod_EstadoPago=@Cod_EstadoPago ";
+                "Update PaymentStatus" +
+                " set PaymentStatus.codPaymentStatus=@Cod_TipoEstadoPago" +
+                " where PaymentStatus.codPaymentStatus=@Cod_EstadoPago ";
             ;
             await _dataAccess.UpdateData(sql, estadopago, _configuration.GetConnectionString("default"));
             return 1;
@@ -171,9 +147,9 @@ namespace BminingBlazor.Services
 
         public async Task<int> ReadIdProjectManager(int idProject)
         {
-            string sql = "select Proyecto.Id_JefeProyecto " +
+            string sql = "select Project.projectManagerId " +
                          $" from {TableConstants.ProjectTable} " +
-                         $" where Proyecto.Id_Proyecto={idProject}";
+                         $" where projectId={idProject}";
             var idManager =
                 await _dataAccess.LoadData<ProjectModel, dynamic>(sql, new { }, _configuration.GetConnectionString("default"));
             return idManager.First().Id_JefeProyecto;
@@ -238,7 +214,7 @@ namespace BminingBlazor.Services
         public async Task<ProjectViewModel> ReadProject(int projectId)
         {
             string sql = $"select*from{TableConstants.ProjectTable}" +
-                         $" where Proyecto.Id_Proyecto=@projectId";
+                         $" where Project.projectId=@projectId";
             var project = await _dataAccess.LoadData<ProjectViewModel, dynamic>(sql, new { },
                 _configuration.GetConnectionString("default"));
             return project.First();

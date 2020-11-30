@@ -23,12 +23,12 @@ namespace BminingBlazor.Services
             _configuration = configuration;
             _connectionString = configuration.GetConnectionString("default");
         }
-        public async Task<List<UsuarioModel>> ReadUsers()
+        public async Task<List<UserViewModel>> ReadUsers()
         {
-            string sql = "select Usuario.Id, Usuario.Email_Bmining,Usuario.Nombre ,Usuario.Apellido_Paterno,Usuario.Apellido_Materno,Usuario.Rut,Usuario.Cargo,Usuario.Telefono,Usuario.Direccion ,Contrato.TipoContrato as Cod_TipoContrato " +
+            string sql = "select User.UserId as MyID, User.EmailBmining as MyEmail,User.Name as MyName ,User.PaternalLastName as MyPaternalSurname,User.MaternalLastName as MyMaternalSurname,User.Rut as MyRut,User.Job as MyJob,User.Phone as MyTelephone,User.HomeAdress as MyDirection,User.CodContractType as MyContractType " +
                          $"from {UserTable},{ContractTable} " +
-                         " where Usuario.Cod_TipoContrato=Contrato.Cod_TipoContrato;";
-            var users = await _dataAccess.LoadData<UsuarioModel, dynamic>(sql, new { }, _configuration.GetConnectionString("default"));
+                         " where User.CodContractType=Contract.CodContractType;";
+            var users = await _dataAccess.LoadData<UserViewModel, dynamic>(sql, new { }, _configuration.GetConnectionString("default"));
             return users;
         }
 
@@ -46,35 +46,35 @@ namespace BminingBlazor.Services
         {
             string sql = "select * " +
                          $" from {UserTable}" +
-                         $" where Usuario.Id={id}";
+                         $" where User.userId={id}";
             var user = await _dataAccess.LoadData<MemberProjectEditModel, dynamic>(sql, new { },
                    _configuration.GetConnectionString("default"));
             return user;
         }
 
-        public async Task<List<UserViewModel>> ReadUsers(IEnumerable<int> ids)
-        {
-            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
-            var users = (await queryFactory.Query(UserTable).WhereIn(UserConstants.UserId, ids).GetAsync<UserModel>()).ToList();
-            var userViewModels = new List<UserViewModel>();
-            foreach (var userModel in users)
-            {
-                userViewModels.Add(new UserViewModel
-                {
-                    MyContractType = (ContractTypeEnum)userModel.Cod_TipoContrato,
-                    MyDirection = userModel.Direccion,
-                    MyEmail = userModel.Email_Bmining,
-                    MyId = userModel.id,
-                    MyJob = userModel.Cargo,
-                    MyMaternalSurname = userModel.Apellido_Materno,
-                    MyName = userModel.Nombre,
-                    MyPaternalSurname = userModel.Apellido_Paterno,
-                    MyRut = userModel.Rut,
-                    MyTelephone = userModel.Telefono
-                });
-            }
-            return userViewModels;
-        }
+        //public async Task<List<UserViewModel>> ReadUsers(IEnumerable<int> ids)
+        //{
+        //    var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+        //    var users = (await queryFactory.Query(UserTable).WhereIn(UserConstants.UserId, ids).GetAsync<UserModel>()).ToList();
+        //    var userViewModels = new List<UserViewModel>();
+        //    foreach (var userModel in users)
+        //    {
+        //        userViewModels.Add(new UserViewModel
+        //        {
+        //            MyContractType = (ContractTypeEnum)userModel.Cod_TipoContrato,
+        //            MyDirection = userModel.Direccion,
+        //            MyEmail = userModel.Email_Bmining,
+        //            MyId = userModel.id,
+        //            MyJob = userModel.Cargo,
+        //            MyMaternalSurname = userModel.Apellido_Materno,
+        //            MyName = userModel.Nombre,
+        //            MyPaternalSurname = userModel.Apellido_Paterno,
+        //            MyRut = userModel.Rut,
+        //            MyTelephone = userModel.Telefono
+        //        });
+        //    }
+        //    return userViewModels;
+        //}
 
 
 
@@ -101,9 +101,9 @@ namespace BminingBlazor.Services
         public async Task<int> GetUserId(string email)
         {
             string sql =
-                "select Usuario.Id " +
+                "select User.userId" +
                 $"from {UserTable} " +
-                $"  where Usuario.Email_Bmining = '{email}';";
+                $"  where User.emailBmining = '{email}';";
 
 
             var items = await _dataAccess.LoadData<UsuarioModel, dynamic>(sql, new { },
