@@ -2,7 +2,7 @@
 {
     public static class ClientConstants
     {
-        public const string ClientId = "Id_Cliente";
-        public const string ClientName = "Nombre_Cliente";
+        public const string ClientId = "ClientId";
+        public const string ClientName = "ClientName";
     }
 }
