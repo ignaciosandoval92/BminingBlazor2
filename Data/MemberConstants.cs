@@ -2,8 +2,8 @@
 {
     public static class MemberConstants
     {
-        public const string UserId = "Id_Usuario";
-        public const string ProjectId = "Id_Proyecto";
-        public const string ProjectHours = "Project_Hours";
+        public const string UserId = "UserId";
+        public const string ProjectId = "ProjectId";
+        public const string ProjectHours = "ProjectHours";
     }
 }

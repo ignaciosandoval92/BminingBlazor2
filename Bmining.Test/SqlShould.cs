@@ -22,7 +22,7 @@ namespace Bmining.Test
         {
             var clientDataService = (IClientDataService)_webHost.Services.GetService(typeof(IClientDataService));
             var clients = await clientDataService.ReadClients();
-            var id = clients.First().Id_Cliente;
+            var id = clients.First().ClientId;
             var client = await clientDataService.ReadClient(id);
             id = await clientDataService.CreateClient("Test");
             await clientDataService.DeleteClient(id);
