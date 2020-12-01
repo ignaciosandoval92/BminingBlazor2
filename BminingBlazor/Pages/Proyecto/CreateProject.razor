@@ -110,7 +110,7 @@
                 @foreach (var paymentStatus in _paymentStatusItems)
                 {
                     <tr>
-                        <td><InputText @bind-Value="@paymentStatus.Name" /></td>
+                        <td><InputText @bind-Value="@paymentStatus.MyName" /></td>
                         <td><InputDate @bind-Value="@paymentStatus.IssueExpirationDate"></InputDate></td>
                         <td><InputDate @bind-Value="@paymentStatus.InvoiceExpirationDate"></InputDate></td>
                         <MatButton Type="button" OnClick="()=>DeletePaymentStatus(paymentStatus)">

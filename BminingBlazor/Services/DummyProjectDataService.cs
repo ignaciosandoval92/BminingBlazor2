@@ -1,4 +1,5 @@
 ﻿using BminingBlazor.ViewModels.Projects;
+using BminingBlazor.ViewModels.User;
 using Data;
 using Microsoft.Extensions.Configuration;
 using SqlKata.Execution;
@@ -35,7 +36,6 @@ namespace BminingBlazor.Services
 
             var listOfProjectModels = new List<ProjectViewModel>();
 
-
             var paymentQuery = queryFactory.Query(TableConstants.PaymentTable);
             var membersQuery = queryFactory.Query(TableConstants.MembersTable)
                 .Join(TableConstants.UserTable, $"{TableConstants.UserTable}.{UserConstants.UserId}",
@@ -58,13 +58,12 @@ namespace BminingBlazor.Services
             var items = (await projectQuery
                             .IncludeMany(TableConstants.PaymentTable, paymentQuery, ProjectConstants.ProjectId, PaymentConstants.ProjectId)
                             .IncludeMany(TableConstants.MembersTable, membersQuery, ProjectConstants.ProjectId, MemberConstants.ProjectId)
-                            .GetAsync()).Cast<IDictionary<string,object>>().ToList();
+                            .GetAsync()).Cast<IDictionary<string, object>>().ToList();
 
             var projects = new List<ProjectViewModel>();
 
             foreach (var item in items)
             {
-                var hola = item as IDictionary<string, object>;
                 var project = new ProjectViewModel
                 {
                     MyId = (int)item[ProjectConstants.ProjectId],
@@ -73,13 +72,82 @@ namespace BminingBlazor.Services
                     MyClientName = (string)item[ClientConstants.ClientName],
                     MyEndDate = (DateTime)item[ProjectConstants.EndDate],
                     MyStartDate = (DateTime)item[ProjectConstants.StartDate],
-                    //MyId = (int)item.ProjectId,
-                    //MyProjectName = (string)item.ProjectName,
-                    //MyClientId = (int)item.ClientId,
-                    //MyClientName = (string)item.ClientName,
-                    //MyEndDate = (DateTime)item.EndDate,
-                    //MyStartDate = (DateTime)item.StartDate,
+                    MyProjectCode = (string)item[ProjectConstants.ProjectCode],
+                    MyProjectStatus = (ProjectStatusEnum)item[ProjectConstants.ProjectStatus],
+                    MyProjectType = (ProjectTypeEnum)item[ProjectConstants.ProjectType],
                 };
+
+
+                UserViewModel GetUserViewModel(IDictionary<string, object> user)
+                {
+                    return new UserViewModel
+                    {
+                        MyRut = (string)user[UserConstants.Rut],
+                        MyContractType = (ContractTypeEnum)user[UserConstants.CodeContractType],
+                        MyEmail = (string)user[UserConstants.EmailBmining],
+                        MyName = (string)user[UserConstants.Name],
+                        MyPaternalSurname = (string)user[UserConstants.PaternalLastName],
+                        MyMaternalSurname = (string)user[UserConstants.MaternalLastName],
+                        MyJob = (string)user[UserConstants.Job],
+                        MyTelephone = (string)user[UserConstants.Phone],
+                        MyDirection = (string)user[UserConstants.HomeAddress],
+                        MyId = (int)user[UserConstants.UserId]
+                    };
+                }
+
+                MemberViewModel GetMemberViewModel(IDictionary<string, object> user)
+                {
+                    return new MemberViewModel
+                    {
+                        MyRut = (string)user[UserConstants.Rut],
+                        MyContractType = (ContractTypeEnum)user[UserConstants.CodeContractType],
+                        MyEmail = (string)user[UserConstants.EmailBmining],
+                        MyName = (string)user[UserConstants.Name],
+                        MyPaternalSurname = (string)user[UserConstants.PaternalLastName],
+                        MyMaternalSurname = (string)user[UserConstants.MaternalLastName],
+                        MyJob = (string)user[UserConstants.Job],
+                        MyTelephone = (string)user[UserConstants.Phone],
+                        MyDirection = (string)user[UserConstants.HomeAddress],
+                        MyId = (int)user[UserConstants.UserId],
+                        MyProjectHours = (float)user[MemberConstants.ProjectHours],
+                        MyProjectId = (int)user[MemberConstants.ProjectId],
+                        
+                    };
+                }
+
+                PaymentViewModel GetPaymentViewModel(IDictionary<string, object> payment)
+                {
+                    return new PaymentViewModel
+                    {
+                        MyProjectId = (int)payment[PaymentConstants.ProjectId],
+                        PaymentStatusType = (PaymentStatusTypeEnum)payment[PaymentConstants.CodPaymentStatus],
+                        InvoiceExpirationDate = (DateTime)payment[PaymentConstants.InvoiceExpirationDate],
+                        IssueExpirationDate = (DateTime)payment[PaymentConstants.IssueExpirationDate],
+                        Id = (int)payment[PaymentConstants.CodPaymentStatus]
+                    };
+                }
+
+
+                var creator = (IDictionary<string, object>)item[ProjectConstants.Creator];
+                project.MyCreator = GetUserViewModel(creator);
+                var manager = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
+                project.MyProjectManager = GetUserViewModel(manager);
+
+                // Payment
+                var payments = (IEnumerable<IDictionary<string, object>>)item[TableConstants.PaymentTable];
+                var paymentViewModels = new List<PaymentViewModel>();
+                foreach (var payment in payments)
+                    paymentViewModels.Add(GetPaymentViewModel(payment));
+                project.OurPayments.AddRange(paymentViewModels);
+
+                // Member
+                var members = (IEnumerable<IDictionary<string, object>>)item[TableConstants.MembersTable];
+                var memberViewModels = new List<MemberViewModel>();
+                foreach (var member in members)
+                    memberViewModels.Add(GetMemberViewModel(member));
+                project.OurMembers = memberViewModels;
+
+                projects.Add(project);
             }
 
 
