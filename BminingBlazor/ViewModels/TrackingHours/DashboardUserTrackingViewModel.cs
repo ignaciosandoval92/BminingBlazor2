@@ -1,4 +1,5 @@
-﻿using Models.TimeTracking;
+﻿using BminingBlazor.Services;
+using Models.TimeTracking;
 using System;
 using System.Collections.Generic;
 
@@ -6,21 +7,25 @@ namespace BminingBlazor.ViewModels.TrackingHours
 {
     public class DashboardUserTrackingViewModel
     {
+        private readonly ITimeTrackingService _timeTrackingService;
         public DateTime FromTime { get; set; }
         public DateTime ToTime { get; set; }
 
         public List<WeekDayUserTrackingHoursViewModel> WeekDayUserTrackingHours { get; set; }
-        public DashboardUserTrackingViewModel()
+        public DashboardUserTrackingViewModel(ITimeTrackingService timeTrackingService)
         {
+            _timeTrackingService = timeTrackingService;
             WeekDayUserTrackingHours = new List<WeekDayUserTrackingHoursViewModel>();
         }
 
         public void SetStartDate(DateTime fromTime)
         {
             WeekDayUserTrackingHours.Clear();
-
             FromTime = fromTime;
             ToTime = FromTime.AddDays(7);
+
+
+
 
             for (int i = 0; i < 7; i++)
             {
@@ -48,9 +53,7 @@ namespace BminingBlazor.ViewModels.TrackingHours
                         weekDayUserTrackingHoursItem.MyTimeTimeTrackingStatus = TimeTrackingStatusEnum.WaitingForApproval;
 
                     weekDayUserTrackingHoursItem.TimeTrackingDate = FromTime.AddDays(i);
-                    weekDayUserTrackingHours
-                        .WeekDayUserTrackingHourItems
-                            .Add(weekDayUserTrackingHoursItem);
+                    weekDayUserTrackingHours.WeekDayUserTrackingHourItems.Add(weekDayUserTrackingHoursItem);
                 }
             }
         }

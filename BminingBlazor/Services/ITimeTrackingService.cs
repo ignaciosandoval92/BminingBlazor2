@@ -12,6 +12,6 @@ namespace BminingBlazor.Services
         Task ApproveUserTimeTracking(int timeTrackingId);
         Task RejectUserTimeTracking(int timeTrackingId,string reason);
         Task<ProjectManagerTrackingHoursApprovalViewModel> GetPendingTimeTrackingHoursByProjectManager(int projectManagerId);
-        List<TimeTrackingModel> GetUserTrackingModel(int userId, DateTime from, DateTime to);
+        Task<List<TimeTrackingViewModel>> GetUserTrackingModel(int userId, DateTime from, DateTime to);
     }
 }

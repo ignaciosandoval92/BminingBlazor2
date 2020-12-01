@@ -2,20 +2,23 @@
 using Data;
 using Microsoft.Extensions.Configuration;
 using Models.TimeTracking;
+using SqlKata.Execution;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using BminingBlazor.Utility;
 
 namespace BminingBlazor.Services
 {
     public class TimeTrackingService : ITimeTrackingService
     {
         private readonly IDataAccess _dataAccess;
-        private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
         public TimeTrackingService(IDataAccess dataAccess, IConfiguration configuration)
         {
             _dataAccess = dataAccess;
-            _configuration = configuration;
+            _connectionString = configuration.GetConnectionString("default");
 
         }
 
@@ -32,14 +35,14 @@ namespace BminingBlazor.Services
             };
             var sql = "INSERT INTO TimeTracking (TimeTracking.CreationDate,TimeTracking.TimeTrackingDate,TimeTracking.Id_Proyecto,TimeTracking.Id_Usuario,TimeTracking.Id_TimeTrackingStatus,TimeTracking.TrackedHours) " +
                       "VALUES (@CreationDate,@TimeTrackingDate,@ProjectId,@UserId,@TimeTrackingStatus,@TrackedHours);";
-            await _dataAccess.SaveData(sql, trackingHourModel, _configuration.GetConnectionString("default"));
+            await _dataAccess.SaveData(sql, trackingHourModel,  _connectionString);
         }
 
 
         public Task<ProjectManagerTrackingHoursApprovalViewModel> GetPendingTimeTrackingHoursByProjectManager(int projectManagerId)
         {
             var projectManagerTrackingHoursApproval = new ProjectManagerTrackingHoursApprovalViewModel();
-            
+
             // Project 4
             var projectManagerTrackingHoursProject4 = new ProjectManagerTrackingHoursProjectViewModel
             {
@@ -64,7 +67,7 @@ namespace BminingBlazor.Services
                 MyMemberEmail = "test_user2@bmining.cl",
                 MyMemberName = "Test User 2",
                 MyUserId = 5,
-                DateOfHours =  DateTime.Now.AddDays(-1),
+                DateOfHours = DateTime.Now.AddDays(-1),
                 TimeTrackingHoursId = 2,
             });
 
@@ -110,6 +113,47 @@ namespace BminingBlazor.Services
             projectManagerTrackingHoursApproval.OurProjectManagerTrackingHoursProjects.Add(projectManagerTrackingHoursProject2);
             return Task.Run(() => projectManagerTrackingHoursApproval);
         }
+
+        public async Task<List<TimeTrackingViewModel>> GetUserTrackingModel(int userId, DateTime from, DateTime to)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+
+            var userQuery = queryFactory.Query(TableConstants.UserTable);
+
+            var query = queryFactory.Query(TableConstants.TimeTrackingTable)
+                .Where(TimeTrackingConstants.UserId, userId)
+                .WhereBetween(TimeTrackingConstants.TimeTrackingDate,from,to)
+                .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
+                                                   $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")
+                .Include(ProjectConstants.ProjectManager, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
+                .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
+                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}");
+
+
+            var items = (await query.GetAsync()).Cast<IDictionary<string, object>>().ToList();
+
+             var timeTrackingViewModels = new List<TimeTrackingViewModel>();
+            foreach (var item in items)
+            {
+                var projectManagerUser = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
+                var timeTrackingViewModel = new TimeTrackingViewModel
+                {
+                    MyId = (int)item[TimeTrackingConstants.TimeTrackingId],
+                    MyProjectId = (int)item[TimeTrackingConstants.ProjectId],
+                    MyUserId = (int)item[TimeTrackingConstants.UserId],
+                    MyCreationDate = (DateTime)item[TimeTrackingConstants.CreationDate],
+                    MyTimeTrackingDate = (DateTime)item[TimeTrackingConstants.TimeTrackingDate],
+                    MyTimeTrackingStatus = (TimeTrackingStatusEnum)item[TimeTrackingConstants.TimeTrackingStatusId],
+                    MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
+                    MyProjectName = (string)item[ProjectConstants.ProjectName],
+                    MyProjectCode = (string)item[ProjectConstants.ProjectCode],
+                    MyProjectManager = ViewModelConverter.GetUserViewModel(projectManagerUser)
+                };
+                timeTrackingViewModels.Add(timeTrackingViewModel);
+            }
+            return timeTrackingViewModels;
+        }
+
         public Task ApproveUserTimeTracking(int timeTrackingId)
         {
             return Task.Run(() => { });
@@ -117,10 +161,6 @@ namespace BminingBlazor.Services
         public Task RejectUserTimeTracking(int timeTrackingId, string comment)
         {
             return Task.Run(() => { });
-        }
-        public List<TimeTrackingModel> GetUserTrackingModel(int userId, DateTime from, DateTime to)
-        {
-            return new List<TimeTrackingModel>();
         }
     }
 }
