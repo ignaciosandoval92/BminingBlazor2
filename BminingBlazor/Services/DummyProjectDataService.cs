@@ -60,7 +60,7 @@ namespace BminingBlazor.Services
                             .IncludeMany(TableConstants.PaymentTable, paymentQuery, ProjectConstants.ProjectId, PaymentConstants.ProjectId)
                             .IncludeMany(TableConstants.MembersTable, membersQuery, ProjectConstants.ProjectId, MemberConstants.ProjectId)
                             .GetAsync()).Cast<IDictionary<string, object>>().ToList();
-
+            
             var projects = new List<ProjectViewModel>();
 
             foreach (var item in items)
@@ -73,9 +73,9 @@ namespace BminingBlazor.Services
                     MyClientName = (string)item[ClientConstants.ClientName],
                     MyEndDate = (DateTime)item[ProjectConstants.EndDate],
                     MyStartDate = (DateTime)item[ProjectConstants.StartDate],
-                    MyProjectCode = (string)item[ProjectConstants.ProjectCode],
-                    MyProjectStatus = (ProjectStatusEnum)item[ProjectConstants.ProjectStatus],
-                    MyProjectType = (ProjectTypeEnum)item[ProjectConstants.ProjectType],
+                    MyProjectCode = (string)item[ProjectConstants.CodProject],
+                    MyProjectStatus = (ProjectStatusEnum)item[ProjectConstants.StatusId],
+                    MyProjectType = (ProjectTypeEnum)item[ProjectConstants.CodProjectType],
                 };
 
                 PaymentViewModel GetPaymentViewModel(IDictionary<string, object> payment)
@@ -83,10 +83,11 @@ namespace BminingBlazor.Services
                     return new PaymentViewModel
                     {
                         MyProjectId = (int)payment[PaymentConstants.ProjectId],
-                        PaymentStatusType = (PaymentStatusTypeEnum)payment[PaymentConstants.CodPaymentStatus],
+                        PaymentStatusType = (PaymentStatusTypeEnum)payment[PaymentConstants.CodPaymentStatusType],
                         InvoiceExpirationDate = (DateTime)payment[PaymentConstants.InvoiceExpirationDate],
                         IssueExpirationDate = (DateTime)payment[PaymentConstants.IssueExpirationDate],
-                        Id = (int)payment[PaymentConstants.CodPaymentStatus]
+                        Id = (int)payment[PaymentConstants.PaymentId],
+                        MyName = (string)payment[PaymentConstants.PaymentName]
                     };
                 }
 

@@ -32,7 +32,7 @@
         <label for="inputNombres">Cliente:</label>
         <select class="form-control" @bind="_newCreateProjectView.MyClientId" required>
 
-            @foreach (var cliente in clientes)
+            @foreach (var cliente in _clientes)
             {
                 <option value="@cliente.ClientId">@cliente.ClientName</option>
             }
@@ -78,27 +78,27 @@
 
             @foreach (var typeStatus in Enum.GetValues(typeof(ProjectStatusEnum)))
             {
-            <option value="@typeStatus">
-                @{
-                    switch (typeStatus)
-                    {
-                        case ProjectStatusEnum.Active:
-                            <p>Activo</p>
-                            break;
-                        case ProjectStatusEnum.Finished:
-                            <p>Finalizado</p>
-                            break;
+                <option value="@typeStatus">
+                    @{
+                        switch (typeStatus)
+                        {
+                            case ProjectStatusEnum.Active:
+                                <p>Activo</p>
+                                break;
+                            case ProjectStatusEnum.Finished:
+                                <p>Finalizado</p>
+                                break;
+                        }
                     }
-                }
 
-            </option>
+                </option>
             }
         </InputSelect>
     </div>
     <div>
         <label for="inputNombres">  Email Jefe del Proyecto:  </label>
         <select class="form-control" @bind="_newCreateProjectView.MyProjectManager.MyId" required>
-            @foreach (var boss in users)
+            @foreach (var boss in _users)
             {
                 <option value="@boss.MyId">@boss.MyEmail</option>
             }
@@ -117,7 +117,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var paymentStatus in _paymentStatusItems)
+                @foreach (var paymentStatus in _payments)
                 {
                     <tr>
                         <td><InputText @bind-Value="@paymentStatus.MyName" /></td>
@@ -139,7 +139,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Email</th>
+                    <th>@Resource.Email</th>
                     <th>Horas del Proyecto</th>
                 </tr>
             </thead>
@@ -151,12 +151,12 @@
                             <div class="form-group col-md-6">
 
                                 <select class="form-control" @bind="membersProject.MyId" required>
-                                    @if (users is null)
+                                    @if (_users is null)
                                     {
                                     }
                                     else
                                     {
-                                        @foreach (var emails in users)
+                                        @foreach (var emails in _users)
                                         {
                                             <option value="@emails.MyId">@emails.MyEmail</option>
                                         }
@@ -182,20 +182,15 @@
 @code {
 
 
-    private ProjectViewModel _newCreateProjectView = new ProjectViewModel();
-    private List<TipoProyectoModel> tipro;
-    private List<UserViewModel> users;
-    private List<PaymentViewModel> _paymentStatusItems;
+    private readonly ProjectViewModel _newCreateProjectView = new ProjectViewModel();
+    private List<UserViewModel> _users;
+    private List<PaymentViewModel> _payments;
     private List<MemberViewModel> _membersProjectItems;
-    private List<ClientModel> clientes;
-    private List<StatusProjectModel> _statusProjectModels;
-
-
-
+    private List<ClientModel> _clientes;
 
     private void AddPaymentStatusCallback()
     {
-        _paymentStatusItems.Add(new PaymentViewModel()
+        _payments.Add(new PaymentViewModel()
         {
             InvoiceExpirationDate = DateTime.UtcNow,
             IssueExpirationDate = DateTime.UtcNow
@@ -211,7 +206,7 @@
 
     private void DeletePaymentStatus(PaymentViewModel paymentStatus)
     {
-        _paymentStatusItems.Remove(paymentStatus);
+        _payments.Remove(paymentStatus);
     }
 
     private void DeleteMembersProject(MemberViewModel membersProject)
@@ -221,15 +216,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _statusProjectModels = await ProjectDataService.GetAvailableProjectStatus();
-        tipro = await ProjectDataService.ReadProjectType();
-        clientes = await ClientDataService.ReadClients();
-        users = await UserDataService.ReadUsers();
-        _paymentStatusItems = new List<PaymentViewModel>();
+        _clientes = await ClientDataService.ReadClients();
+        _users = await UserDataService.ReadUsers();
+        _payments = new List<PaymentViewModel>();
         _membersProjectItems = new List<MemberViewModel>();
         _newCreateProjectView.MyProjectManager = new UserViewModel();
-        string user = HttpContextAccessor.HttpContext.User.Identity.Name;
-
     }
 
 
@@ -238,15 +229,12 @@
         base.OnInitialized();
         _newCreateProjectView.MyStartDate = DateTime.Today;
         _newCreateProjectView.MyEndDate = DateTime.Today;
-
-
-
     }
 
     private async Task InsertProject()
     {
         string user = HttpContextAccessor.HttpContext.User.Identity.Name;
-        var id_Creador = await UserDataService.GetUserId(user);
+        var creatorId = await UserDataService.GetUserId(user);
         var project = new ProjectViewModel()
         {
             MyProjectCode = _newCreateProjectView.MyProjectCode,
@@ -254,36 +242,20 @@
             MyProjectType = _newCreateProjectView.MyProjectType,
             MyStartDate = _newCreateProjectView.MyStartDate,
             MyEndDate = _newCreateProjectView.MyEndDate,
-            MyCreator = new UserViewModel() { MyId = id_Creador },
+            MyCreator = new UserViewModel() { MyId = creatorId },
             MyProjectManager = _newCreateProjectView.MyProjectManager,
             MyClientId = _newCreateProjectView.MyClientId,
             MyProjectStatus = _newCreateProjectView.MyProjectStatus
-
-
         };
 
-
         foreach (var members in _membersProjectItems)
-        {
-            {
-                project.OurMembers.Add(members);
-
-            };
-
-        }
-
-        foreach (var estados in _paymentStatusItems)
-        {
-
-            {
-                project.OurPayments.Add(estados);
-            };
-
-        }
+            project.OurMembers.Add(members);
+        
+        foreach (var paymentViewModel in _payments)
+            project.OurPayments.Add(paymentViewModel);
 
 
-
-        var id_proyecto = await ProjectDataService.CreateProject(project);
+        var projectId = await ProjectDataService.CreateProject(project);
         // NavigationManager.NavigateTo("/Proyectos");
 
     }

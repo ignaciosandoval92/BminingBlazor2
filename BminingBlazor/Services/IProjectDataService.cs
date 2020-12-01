@@ -17,7 +17,7 @@ namespace BminingBlazor.Services
         Task<int> EditPaymentStatus(PaymentViewModel editPayment);
         Task AddPaymentStatus(PaymentViewModel payment);
         Task DeleteMember(int memberId);
-        Task AddMember(MemberViewModel member);
+        Task AddMember(MemberViewModel memberViewModel);
         Task DeleteProject(int projectId);
         Task<List<StatusProjectModel>> GetAvailableProjectStatus();
         Task<List<ProjectViewModel>> ReadProjectsOwnedByUser(int userId);
