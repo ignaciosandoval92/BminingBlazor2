@@ -2,15 +2,16 @@
 {
     public class UserModel
     {
-        public int id { get; set; }
-        public string Email_Bmining { get; set; }
-        public string Nombre { get; set; }
-        public string Apellido_Paterno { get; set; }
-        public string Apellido_Materno { get; set; }
+        public int UserId { get; set; }
+        public string EmailBmining { get; set; }
+        public string Name { get; set; }
+        public string PaternalLastName { get; set; }
+        public string MaternalLastName { get; set; }
         public string Rut { get; set; }
-        public string Cargo { get; set; }
-        public string Telefono { get; set; }
-        public string Direccion { get; set; }
-        public int Cod_TipoContrato { get; set; }
+        public string Job { get; set; }
+        public string Phone { get; set; }
+        public string HomeAdress { get; set; }
+        public int CodMembers { get; set; }
+        public int CodContractType { get; set; }
     }
 }
