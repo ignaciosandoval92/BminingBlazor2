@@ -2,7 +2,9 @@
 using Data;
 using Microsoft.Extensions.Configuration;
 using SqlKata.Execution;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BminingBlazor.Services
@@ -33,21 +35,52 @@ namespace BminingBlazor.Services
 
             var listOfProjectModels = new List<ProjectViewModel>();
 
-            var projectQuery = queryFactory.Query(TableConstants.ProjectTable).Where(ProjectConstants.ProjectManagerId, userId)
-                .Join(TableConstants.ClientTable, TableConstants.ClientTable + "." + ClientConstants.ClientId, TableConstants.ProjectTable+ "." + ProjectConstants.ClientId).
-                Select($"{TableConstants.ProjectTable}.{{*}}",
-                      $"{TableConstants.ClientTable}.{{Nombre_Cliente}}");
+
             var paymentQuery = queryFactory.Query(TableConstants.PaymentTable);
-            var membersQuery = queryFactory.Query(TableConstants.MembersTable).Join(TableConstants.UserTable, $"{UserConstants.UserId}", $"{MemberConstants.UserId}");
-            var clientQuery = queryFactory.Query(TableConstants.ClientTable);
-            var usersQuery = queryFactory.Query(TableConstants.UserTable);
+            var membersQuery = queryFactory.Query(TableConstants.MembersTable)
+                .Join(TableConstants.UserTable, $"{TableConstants.UserTable}.{UserConstants.UserId}",
+                                                $"{TableConstants.MembersTable}.{MemberConstants.UserId}")
+                                                .Select($"{TableConstants.UserTable}.{{*}}",
+                                                        $"{TableConstants.MembersTable}.{{{MemberConstants.ProjectId}}}",
+                                                        $"{TableConstants.MembersTable}.{{{MemberConstants.ProjectHours}}}");
+            var creatorQuery = queryFactory.Query(TableConstants.UserTable);
+            var projectManagerQuery = queryFactory.Query(TableConstants.UserTable);
 
+            var projectQuery = queryFactory.Query(TableConstants.ProjectTable)
+                .Where(ProjectConstants.ProjectManagerId, userId)
+                .Include(ProjectConstants.Creator, creatorQuery, ProjectConstants.CreatorId, UserConstants.UserId)
+                .Include(ProjectConstants.ProjectManager, projectManagerQuery, ProjectConstants.ProjectManagerId, UserConstants.UserId)
+                .Join(TableConstants.ClientTable, $"{TableConstants.ClientTable}.{ClientConstants.ClientId}",
+                                                  $"{TableConstants.ProjectTable}.{ProjectConstants.ClientId}").
+                Select($"{TableConstants.ProjectTable}.{{*}}",
+                       $"{TableConstants.ClientTable}.{{{ClientConstants.ClientName}}}");
 
-
-            var items = await projectQuery
+            var items = (await projectQuery
                             .IncludeMany(TableConstants.PaymentTable, paymentQuery, ProjectConstants.ProjectId, PaymentConstants.ProjectId)
                             .IncludeMany(TableConstants.MembersTable, membersQuery, ProjectConstants.ProjectId, MemberConstants.ProjectId)
-                            .GetAsync();
+                            .GetAsync()).Cast<IDictionary<string,object>>().ToList();
+
+            var projects = new List<ProjectViewModel>();
+
+            foreach (var item in items)
+            {
+                var hola = item as IDictionary<string, object>;
+                var project = new ProjectViewModel
+                {
+                    MyId = (int)item[ProjectConstants.ProjectId],
+                    MyProjectName = (string)item[ProjectConstants.ProjectName],
+                    MyClientId = (int)item[ProjectConstants.ClientId],
+                    MyClientName = (string)item[ClientConstants.ClientName],
+                    MyEndDate = (DateTime)item[ProjectConstants.EndDate],
+                    MyStartDate = (DateTime)item[ProjectConstants.StartDate],
+                    //MyId = (int)item.ProjectId,
+                    //MyProjectName = (string)item.ProjectName,
+                    //MyClientId = (int)item.ClientId,
+                    //MyClientName = (string)item.ClientName,
+                    //MyEndDate = (DateTime)item.EndDate,
+                    //MyStartDate = (DateTime)item.StartDate,
+                };
+            }
 
 
             return new List<ProjectViewModel>();

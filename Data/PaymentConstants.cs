@@ -2,6 +2,6 @@
 {
     public class PaymentConstants
     {
-        public const string ProjectId = "Id_Proyecto";
+        public const string ProjectId = "ProjectId";
     }
 }

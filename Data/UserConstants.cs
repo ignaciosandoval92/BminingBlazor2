@@ -2,6 +2,6 @@
 {
     public static class UserConstants
     {
-        public const string UserId = "Id";
+        public const string UserId = "UserId";
     }
 }
