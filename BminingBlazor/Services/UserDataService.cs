@@ -52,29 +52,29 @@ namespace BminingBlazor.Services
             return user;
         }
 
-        //public async Task<List<UserViewModel>> ReadUsers(IEnumerable<int> ids)
-        //{
-        //    var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
-        //    var users = (await queryFactory.Query(UserTable).WhereIn(UserConstants.UserId, ids).GetAsync<UserModel>()).ToList();
-        //    var userViewModels = new List<UserViewModel>();
-        //    foreach (var userModel in users)
-        //    {
-        //        userViewModels.Add(new UserViewModel
-        //        {
-        //            MyContractType = (ContractTypeEnum)userModel.Cod_TipoContrato,
-        //            MyDirection = userModel.Direccion,
-        //            MyEmail = userModel.Email_Bmining,
-        //            MyId = userModel.id,
-        //            MyJob = userModel.Cargo,
-        //            MyMaternalSurname = userModel.Apellido_Materno,
-        //            MyName = userModel.Nombre,
-        //            MyPaternalSurname = userModel.Apellido_Paterno,
-        //            MyRut = userModel.Rut,
-        //            MyTelephone = userModel.Telefono
-        //        });
-        //    }
-        //    return userViewModels;
-        //}
+        public async Task<List<UserViewModel>> ReadUsers(IEnumerable<int> ids)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var users = (await queryFactory.Query(UserTable).WhereIn(UserConstants.UserId, ids).GetAsync<UserModel>()).ToList();
+            var userViewModels = new List<UserViewModel>();
+            foreach (var userModel in users)
+            {
+                userViewModels.Add(new UserViewModel
+                {
+                    MyContractType = (ContractTypeEnum)userModel.CodContractType,
+                    MyDirection = userModel.HomeAdress,
+                    MyEmail = userModel.EmailBmining,
+                    MyId = userModel.UserId,
+                    MyJob = userModel.Job,
+                    MyMaternalSurname = userModel.MaternalLastName,
+                    MyName = userModel.Name,
+                    MyPaternalSurname = userModel.PaternalLastName,
+                    MyRut = userModel.Rut,
+                    MyTelephone = userModel.Phone
+                });
+            }
+            return userViewModels;
+        }
 
 
 

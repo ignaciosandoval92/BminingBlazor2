@@ -20,6 +20,6 @@ namespace BminingBlazor.Services
         Task<List<MemberProjectEditModel>> ReadUser(int id);
         Task DeleteUser(int id);
         Task<int> GetUserId(string email);
-        //Task<List<UserViewModel>> ReadUsers(IEnumerable<int> ids);
+        Task<List<UserViewModel>> ReadUsers(IEnumerable<int> ids);
     }
 }
