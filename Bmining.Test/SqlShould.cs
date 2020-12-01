@@ -36,7 +36,6 @@ namespace Bmining.Test
             var dummyProjectDataService = (IDummyProjectDataService)_webHost
                 .Services.GetService(typeof(IDummyProjectDataService));
             var projectViewModels =await dummyProjectDataService.GetProjectsOwnedById(39);
-
         }
     }
 }
