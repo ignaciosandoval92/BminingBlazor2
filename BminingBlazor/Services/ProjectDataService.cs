@@ -231,11 +231,9 @@ namespace BminingBlazor.Services
 
         public async Task DeleteProject(int projectId)
         {
-            string sql = "Delete " +
-                         $" from {TableConstants.ProjectTable} " +
-                         $" where Proyecto.Id_Proyecto=@id_proyecto";
-            await _dataAccess.DeleteData(sql, new { Id_Proyecto = projectId },
-                _configuration.GetConnectionString("default"));
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            await queryFactory.Query(ProjectTable).Where(ProjectConstants.ProjectId, projectId).DeleteAsync();
+           
         }
 
 
