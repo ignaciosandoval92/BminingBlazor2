@@ -21,11 +21,13 @@ namespace Bmining.Test
         public async Task ClientsFixture()
         {
             var clientDataService = (IClientDataService)_webHost.Services.GetService(typeof(IClientDataService));
+            var projectDataService = (IProjectDataService)_webHost.Services.GetService(typeof(IProjectDataService));
             var clients = await clientDataService.ReadClients();
             var id = clients.First().ClientId;
             var client = await clientDataService.ReadClient(id);
             id = await clientDataService.CreateClient("Test");
             await clientDataService.DeleteClient(id);
+            await projectDataService.ReadProjects();
         }
 
         [TestMethod]

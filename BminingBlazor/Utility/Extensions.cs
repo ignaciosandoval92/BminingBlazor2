@@ -18,11 +18,11 @@ namespace BminingBlazor.Utility
         {
             return new ProjectViewModel
             {
-                MyProjectName = projectModel.Nombre_Proyecto,
-                MyProjectCode = projectModel.Cod_Proyecto,
-                MyClientId = projectModel.Id_Cliente,
+                MyProjectName = projectModel.ProjectName,
+                MyProjectCode = projectModel.CodProject,
+                MyClientId = projectModel.ClientId,
                 OurPayments = new List<PaymentViewModel>(),
-                MyId = projectModel.Id_proyecto,
+                MyId = projectModel.ProjectId,
                 MyStartDate = projectModel.Fecha_Inicio, // TODO: Revisar Los UTC
                 MyEndDate = projectModel.Fecha_Fin
             };

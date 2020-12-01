@@ -100,16 +100,12 @@ namespace BminingBlazor.Services
 
         public async Task<int> GetUserId(string email)
         {
-            string sql =
-                "select User.userId" +
-                $"from {UserTable} " +
-                $"  where User.emailBmining = '{email}';";
-
-
-            var items = await _dataAccess.LoadData<UsuarioModel, dynamic>(sql, new { },
-                _configuration.GetConnectionString("default"));
-
-            return items.First().id;
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var clients = await queryFactory.Query(UserTable)
+                .Select(UserConstants.UserId)
+                .Where(UserConstants.EmailBmining, email)
+                                             .GetAsync<int>();
+            return clients.First();
         }
 
 

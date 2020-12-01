@@ -4,5 +4,6 @@
     {
         public int MyProjectId { get; set; }        
         public double MyProjectHours { get; set; }
+        public int MyCodMember { get; set; }
     }
 }

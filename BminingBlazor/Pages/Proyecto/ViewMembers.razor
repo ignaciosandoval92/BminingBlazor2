@@ -3,6 +3,7 @@
 @using BminingBlazor.Services
 @using Microsoft.AspNetCore.Components
 @using System.Data
+@using ViewModels.User
 
 @inject IMatDialogService MatDialogService
 @inject NavigationManager NavigationManager
@@ -31,11 +32,11 @@ else
                 @foreach (var p in _boss)
                 {
                     <tr>
-                        <td>@p.Email_Bmining</td>
-                        <td>@p.Nombre</td>
-                        <td>@p.Apellido_Paterno</td>
-                        <td>@p.Apellido_Materno</td>
-                        <td>@p.Rut</td>
+                        <td>@p.MyEmail</td>
+                        <td>@p.MyName</td>
+                        <td>@p.MyPaternalSurname</td>
+                        <td>@p.MyMaternalSurname</td>
+                        <td>@p.MyRut</td>
                     </tr>
                 }
             </tbody>
@@ -64,12 +65,12 @@ else
                 @foreach (var i in _members)
                 {
                     <tr>
-                        <td>@i.Email_Bmining</td>
-                        <td>@i.Nombre</td>
-                        <td>@i.Apellido_Paterno</td>
-                        <td>@i.Apellido_Materno</td>
-                        <td>@i.Rut</td>
-                        <MatButton @onclick="()=>Delete(i.Cod_Integrantes)">@Resource.Delete</MatButton>
+                        <td>@i.MyEmail</td>
+                        <td>@i.MyName</td>
+                        <td>@i.MyPaternalSurname</td>
+                        <td>@i.MyMaternalSurname</td>
+                        <td>@i.MyRut</td>
+                        <MatButton @onclick="()=>Delete(i.MyCodMember)">@Resource.Delete</MatButton>
                     </tr>
                 }
             </tbody>
@@ -82,24 +83,24 @@ else
 @code {
     [Parameter]
     public int IdProject { get; set; }
-    private List<MemberProjectEditModel> _boss;
-    private List<MemberProjectEditModel> _members;
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    //var id = await ProjectDataService.ReadIdProjectManager(IdProject);
-    //    //_boss = await UserDataService.ReadUser(id);
-    //    //_members = await ProjectDataService.ReadMembers(IdProject);
-    //}
+    private List<MemberViewModel> _boss;
+    private List<MemberViewModel> _members;
+    protected override async Task OnInitializedAsync()
+    {
+        //    //var id = await ProjectDataService.ReadIdProjectManager(IdProject);
+        //    //_boss = await UserDataService.ReadUser(id);
+        _members = await ProjectDataService.ReadMembers(IdProject);
+    }
     public void AddMember()
     {
         NavigationManager.NavigateTo($"/AddMembers/{IdProject}");
     }
-    public async void Delete(int codmembers)
+    public async void Delete(int codMember)
     {
         var answer = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
         if (!answer) return;
 
-        await ProjectDataService.DeleteMember(codmembers);
+        await ProjectDataService.DeleteMember(codMember);
         NavigationManager.NavigateTo($"/viewMembers/{IdProject}", true);
 
     }

@@ -150,7 +150,7 @@
                         <td>
                             <div class="form-group col-md-6">
 
-                                <select class="form-control" @bind="membersProject.MyEmail" required>
+                                <select class="form-control" @bind="membersProject.MyId" required>
                                     @if (users is null)
                                     {
                                     }
@@ -262,7 +262,7 @@
 
         };
 
-        var id_proyecto = await ProjectDataService.CreateProject(project);
+
         foreach (var members in _membersProjectItems)
         {
             {
@@ -271,21 +271,22 @@
             };
 
         }
-        //foreach (var estados in _paymentStatusItems)
-        //{
 
-        //    {
-        //        project.OurPayments.Add(estados);
-        //    };
+        foreach (var estados in _paymentStatusItems)
+        {
+
+            {
+                project.OurPayments.Add(estados);
+            };
+
+        }
+
+
+
+        var id_proyecto = await ProjectDataService.CreateProject(project);
+        // NavigationManager.NavigateTo("/Proyectos");
 
     }
-
-
-
-
-    // NavigationManager.NavigateTo("/Proyectos");
-
-}
 
 
 
