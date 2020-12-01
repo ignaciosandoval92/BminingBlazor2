@@ -12,13 +12,8 @@
         public const string CodProjectType = "CodProjectType";
         public const string CodProject = "CodProject";
         public const string StatusId = "StatusId";
-        
-
-
-
-
+        public const string ProjectCode = "ProjectCode";
         public const string Creator = "Creator";
         public const string ProjectManager = "ProjectManager";
-
     }
 }
