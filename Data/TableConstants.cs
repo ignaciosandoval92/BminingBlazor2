@@ -11,5 +11,6 @@
         public const string MembersTable = "ProjectMembers";
         public const string ClientTable = "Client";
         public const string StatusProjectTable = "StatusProject";
+        public const string TimeTrackingTable = "TimeTracking";
     }
 }

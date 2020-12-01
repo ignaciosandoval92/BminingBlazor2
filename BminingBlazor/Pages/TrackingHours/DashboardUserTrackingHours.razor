@@ -136,7 +136,7 @@
     {
         base.OnInitialized();
         Email = HttpContextAccessor.GetEmail();
-        DashboardUserTracking = new DashboardUserTrackingViewModel();
+        DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
         if (!Day.HasValue || !Month.HasValue || !Year.HasValue)
             MySelectedDate = DateTime.UtcNow;
         else MySelectedDate = new DateTime(Year.Value, Month.Value, Day.Value);
