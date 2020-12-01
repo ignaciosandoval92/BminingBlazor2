@@ -51,25 +51,22 @@
 
             @foreach (var typeProject in Enum.GetValues(typeof(ProjectTypeEnum)))
             {
-            <option value="@typeProject">
-                @{
-                    switch (typeProject)
-                    {
-                        case ProjectTypeEnum.Commercial:
-                            <p>Comercial</p>
-                            break;
-                        case ProjectTypeEnum.Internal:
-                            <p>Interno</p>
-                            break;
-                        case ProjectTypeEnum.Thesis:
-                            <p>Memoria</p>
-                            break;
-
-
-                        
+                <option value="@typeProject">
+                    @{
+                        switch (typeProject)
+                        {
+                            case ProjectTypeEnum.Commercial:
+                                <p>Comercial</p>
+                                break;
+                            case ProjectTypeEnum.Internal:
+                                <p>Interno</p>
+                                break;
+                            case ProjectTypeEnum.Thesis:
+                                <p>Memoria</p>
+                                break;
+                        }
                     }
-                }
-            </option>
+                </option>
             }
 
         </InputSelect>
@@ -79,20 +76,33 @@
         <label for="inputNombres">Estado del Proyecto:</label>
         <InputSelect class="form-control" @bind-Value="_newCreateProjectView.MyProjectStatus" required>
 
-            @foreach (var typestatus in Enum.GetValues(typeof(ProjectStatusEnum)))
+            @foreach (var typeStatus in Enum.GetValues(typeof(ProjectStatusEnum)))
             {
-                <option value="@typestatus">@typestatus</option>
+            <option value="@typeStatus">
+                @{
+                    switch (typeStatus)
+                    {
+                        case ProjectStatusEnum.Active:
+                            <p>Activo</p>
+                            break;
+                        case ProjectStatusEnum.Finished:
+                            <p>Finalizado</p>
+                            break;
+                    }
+                }
+
+            </option>
             }
         </InputSelect>
     </div>
     <div>
-        @*<label for="inputNombres">  Email Jefe del Proyecto:  </label>
-            <select class="form-control" @bind="_newCreateProjectView.MyProjectManager" required>
-                @foreach (var boss in users)
-                {
-                    <option value="@boss.MyId">@boss.MyEmail</option>
-                }
-            </select>*@
+        <label for="inputNombres">  Email Jefe del Proyecto:  </label>
+        <select class="form-control" @bind="_newCreateProjectView.MyProjectManager.MyId" required>
+            @foreach (var boss in users)
+            {
+                <option value="@boss.MyId">@boss.MyEmail</option>
+            }
+        </select>
     </div>
     <div>
         <MatButton Type="button" OnClick="AddPaymentStatusCallback">
@@ -140,7 +150,7 @@
                         <td>
                             <div class="form-group col-md-6">
 
-                                <select class="form-control" @bind="membersProject.MyEmail" required>
+                                <select class="form-control" @bind="membersProject.MyId" required>
                                     @if (users is null)
                                     {
                                     }
@@ -217,6 +227,7 @@
         users = await UserDataService.ReadUsers();
         _paymentStatusItems = new List<PaymentViewModel>();
         _membersProjectItems = new List<MemberViewModel>();
+        _newCreateProjectView.MyProjectManager = new UserViewModel();
         string user = HttpContextAccessor.HttpContext.User.Identity.Name;
 
     }
@@ -251,7 +262,7 @@
 
         };
 
-        var id_proyecto = await ProjectDataService.CreateProject(project);
+
         foreach (var members in _membersProjectItems)
         {
             {
@@ -260,21 +271,22 @@
             };
 
         }
-        //foreach (var estados in _paymentStatusItems)
-        //{
 
-        //    {
-        //        project.OurPayments.Add(estados);
-        //    };
+        foreach (var estados in _paymentStatusItems)
+        {
+
+            {
+                project.OurPayments.Add(estados);
+            };
+
+        }
+
+
+
+        var id_proyecto = await ProjectDataService.CreateProject(project);
+        // NavigationManager.NavigateTo("/Proyectos");
 
     }
-
-
-
-
-    // NavigationManager.NavigateTo("/Proyectos");
-
-}
 
 
 

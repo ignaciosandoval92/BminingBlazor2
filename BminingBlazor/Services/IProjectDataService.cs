@@ -21,5 +21,6 @@ namespace BminingBlazor.Services
         Task DeleteProject(int projectId);
         Task<List<StatusProjectModel>> GetAvailableProjectStatus();
         Task<List<ProjectViewModel>> ReadProjectsOwnedByUser(int userId);
+        Task<List<MemberViewModel>> ReadMembers(int idProject);
     }
 }
