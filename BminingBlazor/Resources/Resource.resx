@@ -232,4 +232,7 @@
   <data name="PaymentStatus" xml:space="preserve">
     <value>Payment Status</value>
   </data>
+  <data name="AddUser" xml:space="preserve">
+    <value>Add User</value>
+  </data>
 </root>

@@ -232,4 +232,7 @@
   <data name="PaymentStatus" xml:space="preserve">
     <value>Estados de Pago</value>
   </data>
+  <data name="AddUser" xml:space="preserve">
+    <value>Agregar Usuario</value>
+  </data>
 </root>

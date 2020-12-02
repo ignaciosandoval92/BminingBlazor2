@@ -21,15 +21,15 @@ else
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Email</th>
-                    <th>Nombre</th>
-                    <th>Apellido Paterno</th>
-                    <th>Apellido Materno</th>
-                    <th>Rut</th>
-                    <th>Cargo</th>
-                    <th>Telefono</th>
-                    <th>Dirección</th>
-                    <th>Tipo de Contrato</th>
+                    <th>@Resource.Email</th>
+                    <th>@Resource.Names</th>
+                    <th>@Resource.PaternalLastName</th>
+                    <th>@Resource.MaternalLastName</th>
+                    <th>@Resource.Rut</th>
+                    <th>@Resource.Job</th>
+                    <th>@Resource.Phone</th>
+                    <th>@Resource.HomeAddress</th>
+                    <th>@Resource.ContractType</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,7 +50,7 @@ else
                     </tr>
                 }
                 <tr>
-                    <MatButton type="button" class="btn btn-primary" @onclick="@NewUser">Crear Usuario</MatButton>
+                    <MatButton type="button" class="btn btn-primary" @onclick="@NewUser">@Resource.AddUser</MatButton>
                 </tr>
             </tbody>
         </table>
