@@ -16,7 +16,7 @@ namespace BminingBlazor.Services
         Task EditUser(MemberProjectEditModel memberProject);
         Task<MemberProjectEditModel> EditUsers(string id);
         
-        Task<List<MemberProjectEditModel>> ReadUser(int id);
+        Task<UserViewModel> ReadUser(int id);
         Task DeleteUser(int id);
         Task<int> GetUserId(string email);
         Task<List<UserViewModel>> ReadUsers(IEnumerable<int> ids);

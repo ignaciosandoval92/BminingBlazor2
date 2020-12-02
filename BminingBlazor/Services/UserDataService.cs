@@ -61,14 +61,47 @@ namespace BminingBlazor.Services
             return usersViewModel;            
         }   
 
-        public async Task<List<MemberProjectEditModel>> ReadUser(int id)
+        public async Task<UserViewModel> ReadUser(int id)
         {
-            string sql = "select * " +
-                         $" from {UserTable}" +
-                         $" where User.userId={id}";
-            var user = await _dataAccess.LoadData<MemberProjectEditModel, dynamic>(sql, new { },
-                   _configuration.GetConnectionString("default"));
-            return user;
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var user = (await queryFactory
+                .Query()
+                .From(UserTable)
+                .Select(UserConstants.UserId)
+                .Select(UserConstants.EmailBmining)
+                .Select(UserConstants.Name)
+                .Select(UserConstants.PaternalLastName)
+                .Select(UserConstants.MaternalLastName)
+                .Select(UserConstants.Rut)
+                .Select(UserConstants.Job)
+                .Select(UserConstants.Phone)
+                .Select(UserConstants.HomeAddress)
+                .Select(UserConstants.CodContractType)
+                .Where(UserConstants.UserId,id)
+                .GetAsync<UserModel>()).First();
+            var userViewModel = new UserViewModel()          
+             
+                {
+                    MyId = user.UserId,
+                    MyEmail = user.EmailBmining,
+                    MyName = user.Name,
+                    MyPaternalSurname = user.PaternalLastName,
+                    MyMaternalSurname = user.MaternalLastName,
+                    MyRut = user.Rut,
+                    MyJob = user.Job,
+                    MyTelephone = user.Phone,
+                    MyDirection = user.HomeAddress,
+                    MyContractType = (ContractTypeEnum)user.CodContractType
+
+                };
+            
+            return userViewModel;
+            //string sql = "select * " +
+            //             $" from {UserTable}" +
+            //             $" where User.userId={id}";
+            //var user = await _dataAccess.LoadData<MemberProjectEditModel, dynamic>(sql, new { },
+            //       _configuration.GetConnectionString("default"));
+            //return user;
         }
 
         public async Task<List<UserViewModel>> ReadUsers(IEnumerable<int> ids)

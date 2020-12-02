@@ -85,13 +85,13 @@ namespace BminingBlazor.Services
         }
 
         //TODO Insertar creato debe tener este ademas de existir para agregar estados
-        public async Task AddPaymentStatus(PaymentModel estadopago)
-        {
-            string sql =
-                "insert into EstadoPago (EstadoPago.Estado_Pago,EstadoPago.Id_Proyecto,EstadoPago.Cod_TipoEstadoPago,EstadoPago.IssueExpirationDate,EstadoPago.InvoiceExpirationDate) " +
-                " Values (@Estado_Pago,@Id_Proyecto,@Cod_TipoEstadoPago,@IssueExpirationDate,@InvoiceExpirationDate)";
-            await _dataAccess.SaveData(sql, estadopago, _configuration.GetConnectionString("default"));
-        }
+        //public async Task AddPaymentStatus(PaymentModel estadopago)
+        //{
+        //    string sql =
+        //        "insert into EstadoPago (EstadoPago.Estado_Pago,EstadoPago.Id_Proyecto,EstadoPago.Cod_TipoEstadoPago,EstadoPago.IssueExpirationDate,EstadoPago.InvoiceExpirationDate) " +
+        //        " Values (@Estado_Pago,@Id_Proyecto,@Cod_TipoEstadoPago,@IssueExpirationDate,@InvoiceExpirationDate)";
+        //    await _dataAccess.SaveData(sql, estadopago, _configuration.GetConnectionString("default"));
+        //}
 
         public async Task AddMember(List<MemberViewModel> members, int idProject)
         {
