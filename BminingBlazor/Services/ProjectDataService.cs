@@ -216,6 +216,41 @@ namespace BminingBlazor.Services
 
         public async Task<List<ProjectViewModel>> ReadProjectsOwnedByUser(int userId)
         {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var projects = (await queryFactory
+                .Query()
+                .From(ProjectTable)
+                .Join(UserTable, UserTable + "." + UserConstants.UserId, ProjectTable + "." + ProjectConstants.ProjectManagerId)
+                .Join(ClientTable, ClientTable + "." + ClientConstants.ClientId, ProjectTable + "." + ProjectConstants.ClientId)
+                .Join(MembersTable,MembersTable+"."+MemberConstants.ProjectId, ProjectTable + "." + ProjectConstants.ProjectId)
+                .Select(ProjectTable + "." + ProjectConstants.ProjectId)
+                .Select(ProjectConstants.CodProject)
+                .Select(ProjectConstants.ProjectName)
+                .Select(ProjectConstants.ProjectManagerId)
+                .Select(UserConstants.EmailBmining)
+                .Select(ClientConstants.ClientName)
+                .Select(ProjectConstants.CodProjectType)
+                .Select(ProjectConstants.StatusId)
+                .Select(ClientTable + "." + ClientConstants.ClientId)
+                .Where(MembersTable+"."+MemberConstants.UserId,userId)
+                .GroupBy(ProjectTable+"."+ProjectConstants.ProjectId)
+                .GetAsync<ProjectModel>()).ToList();
+            var projectViewModel = new List<ProjectViewModel>();
+            foreach (var projectModel in projects)
+            {
+                projectViewModel.Add(new ProjectViewModel
+                {
+                    MyId = projectModel.ProjectId,
+                    MyProjectCode = projectModel.CodProject,
+                    MyProjectName = projectModel.ProjectName,
+                    MyProjectStatus = (ProjectStatusEnum)projectModel.StatusId,
+                    MyProjectType = (ProjectTypeEnum)projectModel.CodProjectType,
+                    MyClientId = projectModel.ClientId,
+                    MyClientName = projectModel.ClientName,
+                    MyProjectManager = new UserViewModel { MyId = projectModel.ProjectManagerId, MyEmail = projectModel.EmailBmining },
+                });
+            }
+            return projectViewModel.ToList();
             //string sql =
             //    "select Proyecto.Id_Proyecto,Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,(Usuario.Email_Bmining) as Email_JefeProyecto,Cliente.Nombre_Cliente,Tipo_Proyecto.Tipo_Proyecto,(EstadoPago.Estado_Pago) as Tipo_Pago,Tipo_EstadoPago.TipoEstadoPago,EstadoPago.Cod_EstadoPago " +
             //    $"from {TableConstants.TablaProyecto},{TableConstants.TablaTipoEstadoPago},{TableConstants.TablaTipoProyecto},{TableConstants.TablaEstadoPago},{TableConstants.TablaUsuario},{TableConstants.TablaClientes} " +
@@ -227,7 +262,7 @@ namespace BminingBlazor.Services
             //var projectViewModels = await _dataAccess.LoadData<ViewProyectoModel, dynamic>(sql, new { },
             //        _configuration.GetConnectionString("default"));
             //return projectViewModels;
-            return await Task.Run(() => new List<ProjectViewModel>());
+            //return await Task.Run(() => new List<ProjectViewModel>());
         }
 
         public async Task<List<StatusProjectModel>> GetAvailableProjectStatus()
