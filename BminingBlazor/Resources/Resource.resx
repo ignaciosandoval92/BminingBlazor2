@@ -166,4 +166,43 @@
   <data name="ContractType" xml:space="preserve">
     <value>Contract Type</value>
   </data>
+  <data name="ProjectCode" xml:space="preserve">
+    <value>Project Code</value>
+  </data>
+  <data name="ProjectName" xml:space="preserve">
+    <value>Project Name</value>
+  </data>
+  <data name="Client" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="ProjectStatus" xml:space="preserve">
+    <value>Project Status</value>
+  </data>
+  <data name="ProjectType" xml:space="preserve">
+    <value>Project Type</value>
+  </data>
+  <data name="EmailProjectManager" xml:space="preserve">
+    <value>Email Project Manager</value>
+  </data>
+  <data name="AddPaymentStatus" xml:space="preserve">
+    <value>Add Payment Status</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="BillingDeadline" xml:space="preserve">
+    <value>Billing Deadline</value>
+  </data>
+  <data name="PaymentDeadlineIssued" xml:space="preserve">
+    <value>Payment Deadline Issued</value>
+  </data>
+  <data name="ProjectHours" xml:space="preserve">
+    <value>Project Hours</value>
+  </data>
 </root>

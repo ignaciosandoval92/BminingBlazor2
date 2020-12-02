@@ -9,9 +9,7 @@ namespace BminingBlazor.Services
 {
     public interface IProjectDataService
     {
-        Task<int> CreateProject(ProjectViewModel newProject);
-        Task<List<TipoProyectoModel>> ReadProjectType();
-        Task<List<TipoEstadoPagoModel>> ReadPaymentStatusType();
+        Task<int> CreateProject(ProjectViewModel newProject);       
         Task<List<ProjectViewModel>> ReadProjects();
         Task<ProjectViewModel> ReadProject(int projectId);
         Task<int> EditPaymentStatus(PaymentViewModel editPayment);

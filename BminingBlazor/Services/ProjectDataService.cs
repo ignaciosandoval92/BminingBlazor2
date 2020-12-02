@@ -118,21 +118,8 @@ namespace BminingBlazor.Services
             string sql = "insert into Integrantes_Proyecto (Integrantes_Proyecto.Id_Usuario,Integrantes_Proyecto.Id_Proyecto,Integrantes_Proyecto.Project_Hours) " +
                          " Values (@Id_Usuario,@Id_Proyecto,@HoursProject)";
             await _dataAccess.SaveData(sql, project, _configuration.GetConnectionString("default"));
-        }
-        public async Task<List<TipoProyectoModel>> ReadProjectType()
-        {
-            string sql = $"select*from {TableConstants.ProjectTypeTable}";
-            var tipro = await _dataAccess.LoadData<TipoProyectoModel, dynamic>(sql, new { },
-                _configuration.GetConnectionString("default"));
-            return tipro;
-        }
-        public async Task<List<TipoEstadoPagoModel>> ReadPaymentStatusType()
-        {
-            string sql = $"select*from {TableConstants.PaymentTypeTable}";
-            var tipoep = await _dataAccess.LoadData<TipoEstadoPagoModel, dynamic>(sql, new { },
-                _configuration.GetConnectionString("default"));
-            return tipoep;
-        }
+        }     
+       
         //TODO Insertar mover view model a su carpeta
         public async Task<List<ProjectViewModel>> ReadProjects()
         {

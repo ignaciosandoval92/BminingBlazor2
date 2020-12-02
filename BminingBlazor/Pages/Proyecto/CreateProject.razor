@@ -23,30 +23,29 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div>
-        <label for="inputNombres">  Codigo de Proyecto:  </label>
-        <InputText id="Cod_Proyecto" @bind-Value="_newCreateProjectView.MyProjectCode" />
-        <label for="inputNombres">  Nombre de Proyecto:  </label>
-        <InputText id="Nombre_Proyecto" @bind-Value="_newCreateProjectView.MyProjectName" />
+        <label for="inputNombres">  @Resource.ProjectCode:  </label>
+        <InputText id="MyProjectCode" @bind-Value="_newCreateProjectView.MyProjectCode" />
+        <label for="inputNombres">  @Resource.ProjectName:  </label>
+        <InputText id="MyProjectName" @bind-Value="_newCreateProjectView.MyProjectName" />
     </div>
     <div>
-        <label for="inputNombres">Cliente:</label>
+        <label for="inputNombres">@Resource.Client:</label>
         <select class="form-control" @bind="_newCreateProjectView.MyClientId" required>
 
-            @foreach (var cliente in clientes)
+            @foreach (var client in _clients)
             {
-                <option value="@cliente.ClientId">@cliente.ClientName</option>
+                <option value="@client.ClientId">@client.ClientName</option>
             }
         </select>
     </div>
     <div>
-        <label for="inputNombres">  Fecha de Inicio:  </label>
-        <InputDate id="Fecha_Inicio" @bind-Value="_newCreateProjectView.MyStartDate" />
-        <label for="inputNombres">  Fecha de Termino:  </label>
-        <InputDate id="Fecha_Fin" @bind-Value="_newCreateProjectView.MyEndDate" />
+        <label for="inputNombres">  @Resource.StartDate:  </label>
+        <InputDate id="MyStartDate" @bind-Value="_newCreateProjectView.MyStartDate" />
+        <label for="inputNombres">  @Resource.EndDate:  </label>
+        <InputDate id="MyEndDate" @bind-Value="_newCreateProjectView.MyEndDate" />
     </div>
     <div>
-
-        <label for="inputNombres">  Tipo de Proyecto:  </label>
+        <label for="inputNombres">  @Resource.ProjectType:  </label>
         <InputSelect class="form-control" @bind-Value="_newCreateProjectView.MyProjectType" required>
 
             @foreach (var typeProject in Enum.GetValues(typeof(ProjectTypeEnum)))
@@ -68,37 +67,35 @@
                     }
                 </option>
             }
-
         </InputSelect>
-
     </div>
     <div>
-        <label for="inputNombres">Estado del Proyecto:</label>
+        <label for="inputNombres">@Resource.ProjectStatus:</label>
         <InputSelect class="form-control" @bind-Value="_newCreateProjectView.MyProjectStatus" required>
 
             @foreach (var typeStatus in Enum.GetValues(typeof(ProjectStatusEnum)))
             {
-            <option value="@typeStatus">
-                @{
-                    switch (typeStatus)
-                    {
-                        case ProjectStatusEnum.Active:
-                            <p>Activo</p>
-                            break;
-                        case ProjectStatusEnum.Finished:
-                            <p>Finalizado</p>
-                            break;
+                <option value="@typeStatus">
+                    @{
+                        switch (typeStatus)
+                        {
+                            case ProjectStatusEnum.Active:
+                                <p>Activo</p>
+                                break;
+                            case ProjectStatusEnum.Finished:
+                                <p>Finalizado</p>
+                                break;
+                        }
                     }
-                }
 
-            </option>
+                </option>
             }
         </InputSelect>
     </div>
     <div>
-        <label for="inputNombres">  Email Jefe del Proyecto:  </label>
+        <label for="inputNombres">  @Resource.EmailProjectManager:  </label>
         <select class="form-control" @bind="_newCreateProjectView.MyProjectManager.MyId" required>
-            @foreach (var boss in users)
+            @foreach (var boss in _users)
             {
                 <option value="@boss.MyId">@boss.MyEmail</option>
             }
@@ -106,14 +103,14 @@
     </div>
     <div>
         <MatButton Type="button" OnClick="AddPaymentStatusCallback">
-            Agregar Estado de Pago
+            @Resource.AddPaymentStatus
         </MatButton>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Fecha Limite Pago Emitido</th>
-                    <th>Fecha Limite Facturación </th>
+                    <th>@Resource.Name</th>
+                    <th>@Resource.PaymentDeadlineIssued</th>
+                    <th>@Resource.BillingDeadline </th>
                 </tr>
             </thead>
             <tbody>
@@ -124,7 +121,7 @@
                         <td><InputDate @bind-Value="@paymentStatus.IssueExpirationDate"></InputDate></td>
                         <td><InputDate @bind-Value="@paymentStatus.InvoiceExpirationDate"></InputDate></td>
                         <MatButton Type="button" OnClick="()=>DeletePaymentStatus(paymentStatus)">
-                            Eliminar
+                            @Resource.Delete
                         </MatButton>
                     </tr>
                 }
@@ -133,14 +130,14 @@
     </div>
     <div>
         <MatButton Type="button" OnClick="AddMembersProjectCallback">
-            Agregar Integrantes
+            @Resource.AddMember
         </MatButton>
 
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Email</th>
-                    <th>Horas del Proyecto</th>
+                    <th>@Resource.Email</th>
+                    <th>@Resource.ProjectHours</th>
                 </tr>
             </thead>
             <tbody>
@@ -151,12 +148,12 @@
                             <div class="form-group col-md-6">
 
                                 <select class="form-control" @bind="membersProject.MyId" required>
-                                    @if (users is null)
+                                    @if (_users is null)
                                     {
                                     }
                                     else
                                     {
-                                        @foreach (var emails in users)
+                                        @foreach (var emails in _users)
                                         {
                                             <option value="@emails.MyId">@emails.MyEmail</option>
                                         }
@@ -166,7 +163,7 @@
                         </td>
                         <td><input type="number" step="0.1" @bind="@membersProject.MyProjectHours" /> </td>
                         <MatButton Type="button" OnClick="()=>DeleteMembersProject(membersProject)">
-                            Eliminar
+                            @Resource.Delete
                         </MatButton>
                     </tr>
                 }
@@ -180,18 +177,12 @@
 
 
 @code {
-
-
     private ProjectViewModel _newCreateProjectView = new ProjectViewModel();
-    private List<TipoProyectoModel> tipro;
-    private List<UserViewModel> users;
+    private List<UserViewModel> _users;
     private List<PaymentViewModel> _paymentStatusItems;
     private List<MemberViewModel> _membersProjectItems;
-    private List<ClientModel> clientes;
+    private List<ClientModel> _clients;
     private List<StatusProjectModel> _statusProjectModels;
-
-
-
 
     private void AddPaymentStatusCallback()
     {
@@ -200,7 +191,6 @@
             InvoiceExpirationDate = DateTime.UtcNow,
             IssueExpirationDate = DateTime.UtcNow
         });
-
     }
 
     private void AddMembersProjectCallback()
@@ -222,14 +212,12 @@
     protected override async Task OnInitializedAsync()
     {
         _statusProjectModels = await ProjectDataService.GetAvailableProjectStatus();
-        tipro = await ProjectDataService.ReadProjectType();
-        clientes = await ClientDataService.ReadClients();
-        users = await UserDataService.ReadUsers();
+        _clients = await ClientDataService.ReadClients();
+        _users = await UserDataService.ReadUsers();
         _paymentStatusItems = new List<PaymentViewModel>();
         _membersProjectItems = new List<MemberViewModel>();
         _newCreateProjectView.MyProjectManager = new UserViewModel();
         string user = HttpContextAccessor.HttpContext.User.Identity.Name;
-
     }
 
 
@@ -238,9 +226,6 @@
         base.OnInitialized();
         _newCreateProjectView.MyStartDate = DateTime.Today;
         _newCreateProjectView.MyEndDate = DateTime.Today;
-
-
-
     }
 
     private async Task InsertProject()
@@ -258,38 +243,19 @@
             MyProjectManager = _newCreateProjectView.MyProjectManager,
             MyClientId = _newCreateProjectView.MyClientId,
             MyProjectStatus = _newCreateProjectView.MyProjectStatus
-
-
         };
 
 
         foreach (var members in _membersProjectItems)
         {
-            {
-                project.OurMembers.Add(members);
-
-            };
-
+            project.OurMembers.Add(members);
         }
 
         foreach (var estados in _paymentStatusItems)
         {
-
-            {
-                project.OurPayments.Add(estados);
-            };
-
+            project.OurPayments.Add(estados);
         }
-
-
-
         var id_proyecto = await ProjectDataService.CreateProject(project);
-        // NavigationManager.NavigateTo("/Proyectos");
-
+        NavigationManager.NavigateTo("/Proyectos");
     }
-
-
-
-
-
 }
