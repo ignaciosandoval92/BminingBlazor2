@@ -1,3 +1,4 @@
+using System;
 using BminingBlazor;
 using BminingBlazor.Services;
 using Microsoft.AspNetCore;
@@ -35,7 +36,14 @@ namespace Bmining.Test
         {
             var dummyProjectDataService = (IDummyProjectDataService)_webHost
                 .Services.GetService(typeof(IDummyProjectDataService));
-            var projectViewModels =await dummyProjectDataService.GetProjectsOwnedById(39);
+            var projectViewModels = await dummyProjectDataService.GetProjectsOwnedById(39);
+        }
+        [TestMethod]
+        public async Task ReadTimeTrackingHoursFixture()
+        {
+            var timeTrackingService = (ITimeTrackingService)_webHost.Services.GetService(typeof(ITimeTrackingService));
+            var timeTrackingViewModels = await timeTrackingService.GetUserTrackingModel(39, DateTime.MinValue, DateTime.MaxValue);
+         
         }
     }
 }
