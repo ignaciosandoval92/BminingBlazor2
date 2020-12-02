@@ -13,31 +13,31 @@
     <ValidationSummary />
     <tr>
         <td>
-            <label for="inputNombres">Mail:</label>
+            <label for="inputNombres">@Resource.Email:</label>
             <InputText id="MyEmail" @bind-Value="_newUser.MyEmail" />
-            <label for="inputNombres">Nombres:</label>
-            <InputText id="Nombre" @bind-Value="_newUser.MyName" />
+            <label for="inputNombres">@Resource.Names:</label>
+            <InputText id="MyName" @bind-Value="_newUser.MyName" />
         </td>
     </tr>
     <tr>
         <td>
-            <label for="inputNombres">Apellido paterno:</label>
-            <InputText id="Apellido_Paterno" @bind-Value="_newUser.MyPaternalSurname" />
-            <label for="inputNombres">Apellido materno:</label>
-            <InputText id="Apellido_Materno" @bind-Value="_newUser.MyMaternalSurname" />
-            <label for="inputNombres">Rut:</label>
-            <InputText id="Rut" @bind-Value="_newUser.MyRut" />
+            <label for="inputNombres">@Resource.PaternalLastName:</label>
+            <InputText id="MyPaternalSurname" @bind-Value="_newUser.MyPaternalSurname" />
+            <label for="inputNombres">@Resource.MaternalLastName:</label>
+            <InputText id="MyMaternalSurname" @bind-Value="_newUser.MyMaternalSurname" />
+            <label for="inputNombres">@Resource.Rut:</label>
+            <InputText id="MyRut" @bind-Value="_newUser.MyRut" />
 
         </td>
     </tr>
     <tr>
         <td>
-            <label for="inputNombres">Cargo:</label>
-            <InputText id="Cargo" @bind-Value="_newUser.MyJob" />
-            <label for="inputNombres">Teléfono:</label>
-            <InputText id="Telefono" @bind-Value="_newUser.MyTelephone" />
-            <label for="inputNombres">Dirección:</label>
-            <InputText id="Direccion" @bind-Value="_newUser.MyDirection" />
+            <label for="inputNombres">@Resource.Job:</label>
+            <InputText id="MyJob" @bind-Value="_newUser.MyJob" />
+            <label for="inputNombres">@Resource.Phone:</label>
+            <InputText id="MyTelephone" @bind-Value="_newUser.MyTelephone" />
+            <label for="inputNombres">@Resource.HomeAddress:</label>
+            <InputText id="MyDirection" @bind-Value="_newUser.MyDirection" />
         </td>
     </tr>
     <div>
@@ -52,13 +52,13 @@
                         switch (typeContract)
                         {
                             case ContractTypeEnum.FeeContract:
-                                <p>Contrato de Honorarios</p>
+                                <p>@Resource.FeeContract</p>
                                 break;
                             case ContractTypeEnum.FixedTermContract:
-                                <p>Contrato a PLazo Fijo</p>
+                                <p>@Resource.FixedTermContract</p>
                                 break;
                             case ContractTypeEnum.IndefiniteContract:
-                                <p>Contrato Indefinido</p>
+                                <p>@Resource.IndefiniteContract</p>
                                 break;
                         }
                     }
@@ -68,7 +68,7 @@
         </InputSelect>
 
     </div>
-    <button type="submit" class="btn btn-primary">Crear</button>
+    <button type="submit" class="btn btn-primary">@Resource.Create</button>
 </EditForm>
 
 

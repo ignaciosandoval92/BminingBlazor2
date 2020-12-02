@@ -133,6 +133,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Create.
+        /// </summary>
+        internal static string Create {
+            get {
+                return ResourceManager.GetString("Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Delete.
         /// </summary>
         internal static string Delete {
@@ -169,11 +178,56 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Fee Contract.
+        /// </summary>
+        internal static string FeeContract {
+            get {
+                return ResourceManager.GetString("FeeContract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Fixed Term Contract.
+        /// </summary>
+        internal static string FixedTermContract {
+            get {
+                return ResourceManager.GetString("FixedTermContract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Home Address.
+        /// </summary>
+        internal static string HomeAddress {
+            get {
+                return ResourceManager.GetString("HomeAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Indefinite Contract.
+        /// </summary>
+        internal static string IndefiniteContract {
+            get {
+                return ResourceManager.GetString("IndefiniteContract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Invested hours.
         /// </summary>
         internal static string InvestedHours {
             get {
                 return ResourceManager.GetString("InvestedHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Job.
+        /// </summary>
+        internal static string Job {
+            get {
+                return ResourceManager.GetString("Job", resourceCulture);
             }
         }
         
@@ -268,6 +322,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Phone.
+        /// </summary>
+        internal static string Phone {
+            get {
+                return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Project.
         /// </summary>
         internal static string Project {
@@ -345,6 +408,15 @@ namespace BminingBlazor.Resources {
         internal static string Reject {
             get {
                 return ResourceManager.GetString("Reject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Rut.
+        /// </summary>
+        internal static string Rut {
+            get {
+                return ResourceManager.GetString("Rut", resourceCulture);
             }
         }
         

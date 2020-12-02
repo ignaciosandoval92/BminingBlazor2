@@ -205,4 +205,28 @@
   <data name="ProjectHours" xml:space="preserve">
     <value>Horas del Proyecto</value>
   </data>
+  <data name="Rut" xml:space="preserve">
+    <value>Rut</value>
+  </data>
+  <data name="Job" xml:space="preserve">
+    <value>Cargo</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Teléfono</value>
+  </data>
+  <data name="HomeAddress" xml:space="preserve">
+    <value>Dirección</value>
+  </data>
+  <data name="FeeContract" xml:space="preserve">
+    <value>Contrato a Honorarios</value>
+  </data>
+  <data name="FixedTermContract" xml:space="preserve">
+    <value>Contrato a Plazo Fijo</value>
+  </data>
+  <data name="IndefiniteContract" xml:space="preserve">
+    <value>Contrato Indefinido</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Crear</value>
+  </data>
 </root>
