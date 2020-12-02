@@ -26,7 +26,7 @@ else
                     <th>@Resource.Name</th> 
                     <th>@Resource.BillingDeadline</th>
                     <th>@Resource.PaymentDeadlineIssued</th>
-                    <th>Rut</th>
+                    <th>@Resource.PaymentStatus</th>                   
                 </tr>
             </thead>
             <tbody>
@@ -36,13 +36,13 @@ else
                         <td>@p.MyName</td>
                         <td>@p.InvoiceExpirationDate</td>
                         <td>@p.IssueExpirationDate</td>
-                        
+                        <td>@p.PaymentStatusType</td>
                         <MatButton @onclick="()=>Delete(p.Id)">@Resource.Delete</MatButton>
                     </tr>
                 }
             </tbody>
         </table>
-        <MatButton type="button" class="btn btn-primary" @onclick="@AddMember">@Resource.AddMember</MatButton>
+        <MatButton type="button" class="btn btn-primary" @onclick="@Addpayment">@Resource.AddPaymentStatus</MatButton>
     </div>
 
 }
@@ -52,14 +52,12 @@ else
     public int IdProject { get; set; }
     private List<PaymentViewModel> _payments;
     protected override async Task OnInitializedAsync()
-    {
-        //    //var id = await ProjectDataService.ReadIdProjectManager(IdProject);
-        //    //_boss = await UserDataService.ReadUser(id);
+    {        
         _payments = await ProjectDataService.ReadPaymentStatus(IdProject);
     }
-    public void AddMember()
+    public void Addpayment()
     {
-        NavigationManager.NavigateTo($"/AddMembers/{IdProject}");
+        NavigationManager.NavigateTo($"/AddPaymentStatus/{IdProject}");
     }
     public  void Delete(int codMember)
     {
@@ -67,7 +65,7 @@ else
         //if (!answer) return;
 
         //await ProjectDataService.DeleteMember(codMember);
-        NavigationManager.NavigateTo($"/viewMembers/{IdProject}", true);
+        NavigationManager.NavigateTo($"/viewPaymentStatus/{IdProject}", true);
 
     }
 }

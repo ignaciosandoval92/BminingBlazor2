@@ -1,0 +1,84 @@
+﻿@page "/AddPaymentStatus/{idProject:int}"
+
+@using Models
+@using BminingBlazor.Services
+@using Models.Project
+@using ViewModels.Projects
+
+@inject IUserDataService UserDataService
+@inject IProjectDataService ProjectDataService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "Administracion")]
+
+
+<h3>Integrantes</h3>
+
+<EditForm Model="@_newPaymentStatus" OnValidSubmit="@InsertPayments">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <MatButton Type="button" OnClick="AddPaymentStatusCallback">
+            @Resource.AddPaymentStatus
+        </MatButton>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>@Resource.Name</th>
+                    <th>@Resource.PaymentDeadlineIssued</th>
+                    <th>@Resource.BillingDeadline </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var paymentStatus in _paymentStatusItems)
+                {
+                    <tr>
+                        <td><InputText @bind-Value="@paymentStatus.MyName" /></td>
+                        <td><InputDate @bind-Value="@paymentStatus.IssueExpirationDate"></InputDate></td>
+                        <td><InputDate @bind-Value="@paymentStatus.InvoiceExpirationDate"></InputDate></td>
+                        <MatButton Type="button" OnClick="()=>DeletePaymentStatus(paymentStatus)">
+                            @Resource.Delete
+                        </MatButton>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <MatButton type="submit" class="btn btn-primary">Agregar</MatButton>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int idProject { get; set; }
+    private PaymentViewModel _newPaymentStatus = new PaymentViewModel();
+    private List<PaymentViewModel> _paymentStatusItems;
+
+    protected override  void OnInitialized()
+    {
+
+        _paymentStatusItems = new List<PaymentViewModel>();
+    }
+
+    private void AddPaymentStatusCallback()
+    {
+        _paymentStatusItems.Add(new PaymentViewModel()
+        {
+            InvoiceExpirationDate = DateTime.UtcNow,
+            IssueExpirationDate = DateTime.UtcNow
+        });
+    }
+
+
+
+
+    private void DeletePaymentStatus(PaymentViewModel paymentStatus)
+    {
+        _paymentStatusItems.Remove(paymentStatus);
+    }
+    private async Task InsertPayments()
+    {
+
+        await ProjectDataService.AddPaymentStatus(_paymentStatusItems, idProject);
+        NavigationManager.NavigateTo($"/ViewPaymentStatus/{idProject}");
+    }
+}

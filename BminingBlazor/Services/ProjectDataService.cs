@@ -246,9 +246,21 @@ namespace BminingBlazor.Services
             return project.First();
         }
 
-        public async Task AddPaymentStatus(PaymentViewModel payment)
+        public async Task AddPaymentStatus(List<PaymentViewModel> payments,int idProject)
         {
-            await Task.Run(() => 1);
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            foreach (var payment in payments)
+            {
+                await queryFactory.Query(PaymentTable)
+                .InsertAsync(new Dictionary<string, object>
+                {
+                    {PaymentConstants.ProjectId,idProject },
+                    {PaymentConstants.CodPaymentStatusType,1},
+                    {PaymentConstants.PaymentName,payment.MyName },
+                    {PaymentConstants.InvoiceExpirationDate,payment.InvoiceExpirationDate },
+                    {PaymentConstants.IssueExpirationDate,payment.IssueExpirationDate }
+                });
+            }           
         }
 
         public async Task<int> EditPaymentStatus(PaymentViewModel editPayment)
