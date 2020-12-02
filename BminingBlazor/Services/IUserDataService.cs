@@ -13,7 +13,7 @@ namespace BminingBlazor.Services
         Task<List<UserViewModel>> ReadUsers();
 
         Task<int> CreateUser(UserViewModel createUser);
-        Task EditUser(MemberProjectEditModel memberProject);
+        Task EditUser(UserViewModel user);
         Task<MemberProjectEditModel> EditUsers(string id);
         
         Task<UserViewModel> ReadUser(int id);

@@ -41,25 +41,25 @@ namespace BminingBlazor.Services
                 .Select(UserConstants.CodContractType)
                 .GetAsync<UserModel>()).ToList();
             var usersViewModel = new List<UserViewModel>();
-            foreach(var user in users)
+            foreach (var user in users)
             {
                 usersViewModel.Add(new UserViewModel
                 {
                     MyId = user.UserId,
-                    MyEmail=user.EmailBmining,
-                    MyName=user.Name,
-                    MyPaternalSurname=user.PaternalLastName,
-                    MyMaternalSurname=user.MaternalLastName,
-                    MyRut=user.Rut,
-                    MyJob=user.Job,
-                    MyTelephone=user.Phone,
-                    MyDirection=user.HomeAddress,
-                    MyContractType=(ContractTypeEnum)user.CodContractType
+                    MyEmail = user.EmailBmining,
+                    MyName = user.Name,
+                    MyPaternalSurname = user.PaternalLastName,
+                    MyMaternalSurname = user.MaternalLastName,
+                    MyRut = user.Rut,
+                    MyJob = user.Job,
+                    MyTelephone = user.Phone,
+                    MyDirection = user.HomeAddress,
+                    MyContractType = (ContractTypeEnum)user.CodContractType
 
                 });
             }
-            return usersViewModel;            
-        }   
+            return usersViewModel;
+        }
 
         public async Task<UserViewModel> ReadUser(int id)
         {
@@ -77,24 +77,24 @@ namespace BminingBlazor.Services
                 .Select(UserConstants.Phone)
                 .Select(UserConstants.HomeAddress)
                 .Select(UserConstants.CodContractType)
-                .Where(UserConstants.UserId,id)
+                .Where(UserConstants.UserId, id)
                 .GetAsync<UserModel>()).First();
-            var userViewModel = new UserViewModel()          
-             
-                {
-                    MyId = user.UserId,
-                    MyEmail = user.EmailBmining,
-                    MyName = user.Name,
-                    MyPaternalSurname = user.PaternalLastName,
-                    MyMaternalSurname = user.MaternalLastName,
-                    MyRut = user.Rut,
-                    MyJob = user.Job,
-                    MyTelephone = user.Phone,
-                    MyDirection = user.HomeAddress,
-                    MyContractType = (ContractTypeEnum)user.CodContractType
+            var userViewModel = new UserViewModel()
 
-                };
-            
+            {
+                MyId = user.UserId,
+                MyEmail = user.EmailBmining,
+                MyName = user.Name,
+                MyPaternalSurname = user.PaternalLastName,
+                MyMaternalSurname = user.MaternalLastName,
+                MyRut = user.Rut,
+                MyJob = user.Job,
+                MyTelephone = user.Phone,
+                MyDirection = user.HomeAddress,
+                MyContractType = (ContractTypeEnum)user.CodContractType
+
+            };
+
             return userViewModel;
             //string sql = "select * " +
             //             $" from {UserTable}" +
@@ -143,7 +143,7 @@ namespace BminingBlazor.Services
                                                  {UserConstants.HomeAddress,createUser.MyDirection },
                                                  {UserConstants.CodContractType,createUser.MyContractType }
                                              });
-            return userId;    
+            return userId;
         }
 
         public async Task<int> GetUserId(string email)
@@ -158,19 +158,30 @@ namespace BminingBlazor.Services
 
 
 
-        public async Task EditUser(MemberProjectEditModel usuario2)
+        public async Task EditUser(UserViewModel user)
         {
-            string sql =
-                "update Usuario " +
-                "set Usuario.Cod_TipoContrato=@Cod_TipoContrato,Usuario.Cargo=@Cargo,Usuario.Telefono=@Telefono,Usuario.Direccion=@Direccion " +
-                "where Usuario.Id=@Id;";
-            await _dataAccess.UpdateData(sql, usuario2, _configuration.GetConnectionString("default"));
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var userId = await queryFactory.Query()
+                .From(UserTable)
+                .Where(UserConstants.UserId, user.MyId)
+                .UpdateAsync(new Dictionary<string, object>{
+                { UserConstants.Job,user.MyJob},
+                { UserConstants.Phone,user.MyTelephone},
+                { UserConstants.HomeAddress,user.MyDirection},
+                { UserConstants.CodContractType,user.MyContractType}
+        });
+
+            //string sql =
+            //    "update Usuario " +
+            //    "set Usuario.Cod_TipoContrato=@Cod_TipoContrato,Usuario.Cargo=@Cargo,Usuario.Telefono=@Telefono,Usuario.Direccion=@Direccion " +
+            //    "where Usuario.Id=@Id;";
+            //await _dataAccess.UpdateData(sql, usuario2, _configuration.GetConnectionString("default"));
         }
 
         public async Task DeleteUser(int userId)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
-            await queryFactory.Query(UserTable).Where(UserConstants.UserId, userId).DeleteAsync();           
+            await queryFactory.Query(UserTable).Where(UserConstants.UserId, userId).DeleteAsync();
 
         }
 

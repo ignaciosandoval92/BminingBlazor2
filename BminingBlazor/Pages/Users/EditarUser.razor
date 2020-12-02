@@ -3,6 +3,7 @@
 @using Models
 @using System.Runtime.CompilerServices
 @using System.ComponentModel.DataAnnotations
+@using ViewModels.User
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize(Roles = "AdminRRHH,Administracion")]
@@ -75,15 +76,15 @@
 
     private async Task EditUsers()
     {
-        var usuario2 = new MemberProjectEditModel()
+        var user = new UserViewModel()
         {
-            Cargo = newUser.Cargo,
-            Telefono = newUser.Telefono,
-            Direccion = newUser.Direccion,
-            Cod_TipoContrato = newUser.Cod_TipoContrato,
-            Id = Id
+            MyJob = newUser.Cargo,
+            MyTelephone = newUser.Telefono,
+            MyDirection = newUser.Direccion,
+            MyContractType =(ContractTypeEnum)newUser.Cod_TipoContrato,
+            MyId = Id
         };
-        await UserDataService.EditUser(usuario2);
+        await UserDataService.EditUser(user);
         NavigationManager.NavigateTo("ViewUsers");
     }
 }
