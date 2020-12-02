@@ -229,4 +229,7 @@
   <data name="Create" xml:space="preserve">
     <value>Crear</value>
   </data>
+  <data name="PaymentStatus" xml:space="preserve">
+    <value>Estados de Pago</value>
+  </data>
 </root>

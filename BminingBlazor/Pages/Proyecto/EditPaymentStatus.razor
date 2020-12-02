@@ -43,10 +43,10 @@
     private PaymentModel _newPayment = new PaymentModel();
     private List<TipoEstadoPagoModel> _listTipoEstadoPagoModels;
 
-    protected override async Task OnInitializedAsync()
-    {
-        _listTipoEstadoPagoModels = await ProjectDataService.ReadPaymentStatusType();
-    }
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    _listTipoEstadoPagoModels = await ProjectDataService.ReadPaymentStatusType();
+    //}
 
     //private async Task EditarEstadoPago()
     //{

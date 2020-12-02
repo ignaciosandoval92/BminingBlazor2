@@ -63,26 +63,26 @@
             _projects = await ProjectDataService.ReadProjects();
         }
 
-        public void EditEstadoPago(int Cod_EstadoPago)
+        public void EditEstadoPago(int idProject)
         {
-            NavigationManager.NavigateTo($"/EditPaymentStatus/{Cod_EstadoPago}");
+            NavigationManager.NavigateTo($"/ViewPaymentStatus/{idProject}");
         }
 
         public void NewProyecto()
         {
             NavigationManager.NavigateTo("/CrearProyecto");
         }
-        public void ViewIntegrantes(int idProyecto)
+        public void ViewIntegrantes(int idProject)
         {
-            NavigationManager.NavigateTo($"ViewMembers/{idProyecto}");
+            NavigationManager.NavigateTo($"ViewMembers/{idProject}");
         }
 
-        public async void Delete(int idProyecto)
+        public async void Delete(int idProject)
         {
             var answer = await MatDialogService.AskAsync(Resource.AreYouSureToDelete, new[] { Resource.Yes, Resource.No });
             if (answer == null || answer == Resource.No)
                 return;
-            await ProjectDataService.DeleteProject(idProyecto);
+            await ProjectDataService.DeleteProject(idProject);
             NavigationManager.NavigateTo("/proyectos", true);
         }
     }

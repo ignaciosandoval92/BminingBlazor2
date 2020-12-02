@@ -11,7 +11,7 @@ namespace BminingBlazor.Utility
             return new UserViewModel
             {
                 MyRut = (string)user[UserConstants.Rut],
-                MyContractType = (ContractTypeEnum)user[UserConstants.CodeContractType],
+                MyContractType = (ContractTypeEnum)user[UserConstants.CodContractType],
                 MyEmail = (string)user[UserConstants.EmailBmining],
                 MyName = (string)user[UserConstants.Name],
                 MyPaternalSurname = (string)user[UserConstants.PaternalLastName],
@@ -27,7 +27,7 @@ namespace BminingBlazor.Utility
             return new MemberViewModel
             {
                 MyRut = (string)user[UserConstants.Rut],
-                MyContractType = (ContractTypeEnum)user[UserConstants.CodeContractType],
+                MyContractType = (ContractTypeEnum)user[UserConstants.CodContractType],
                 MyEmail = (string)user[UserConstants.EmailBmining],
                 MyName = (string)user[UserConstants.Name],
                 MyPaternalSurname = (string)user[UserConstants.PaternalLastName],

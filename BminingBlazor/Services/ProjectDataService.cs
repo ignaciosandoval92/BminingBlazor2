@@ -61,35 +61,17 @@ namespace BminingBlazor.Services
                 .InsertAsync(new Dictionary<string, object>
                 {
                     {PaymentConstants.ProjectId,projectId },
-                    {PaymentConstants.PaymentStatus,payments.MyName },
+                    {PaymentConstants.PaymentName,payments.MyName },
                     {PaymentConstants.CodPaymentStatusType,1 },
                     {PaymentConstants.InvoiceExpirationDate,payments.InvoiceExpirationDate },
                     {PaymentConstants.IssueExpirationDate,payments.IssueExpirationDate }
                 });
             }
 
-            return projectId;           
+            return projectId;
 
         }
-        //TODO Insertar metodos add en create project
 
-        //TODO Insertar metodos add en create project
-        public async Task<int> AddJefeProyecto(ProjectModel createProjectView)
-        {
-            var sql =
-                "Update Project" +
-                " set projectManagerId=@Id_JefeProyecto" +
-                " where Project.projectId=@Id_proyecto ";
-            await _dataAccess.UpdateData(sql, createProjectView, _configuration.GetConnectionString("default"));
-
-
-
-            return 0;
-
-        }
-        //TODO Insertar metodos add en create project
-
-        //TODO viewmodel de entrada sin (retorno numerico?)
         public async Task<int> EditPaymentStatus(PaymentModel estadopago)
         {
             var sql =
@@ -102,8 +84,6 @@ namespace BminingBlazor.Services
 
         }
 
-
-
         //TODO Insertar creato debe tener este ademas de existir para agregar estados
         public async Task AddPaymentStatus(PaymentModel estadopago)
         {
@@ -113,14 +93,23 @@ namespace BminingBlazor.Services
             await _dataAccess.SaveData(sql, estadopago, _configuration.GetConnectionString("default"));
         }
 
-        public async Task AddMember(MemberViewModel project)
+        public async Task AddMember(List<MemberViewModel> members, int idProject)
         {
-            string sql = "insert into Integrantes_Proyecto (Integrantes_Proyecto.Id_Usuario,Integrantes_Proyecto.Id_Proyecto,Integrantes_Proyecto.Project_Hours) " +
-                         " Values (@Id_Usuario,@Id_Proyecto,@HoursProject)";
-            await _dataAccess.SaveData(sql, project, _configuration.GetConnectionString("default"));
-        }     
-       
-        //TODO Insertar mover view model a su carpeta
+
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            foreach (var member in members)
+            {
+                await queryFactory.Query(MembersTable)
+                .InsertAsync(new Dictionary<string, object>
+                {
+                    {MemberConstants.ProjectId,idProject },
+                    {MemberConstants.UserId,member.MyId },
+                    {MemberConstants.ProjectHours,member.MyProjectHours }
+                });
+            }
+        }
+
+
         public async Task<List<ProjectViewModel>> ReadProjects()
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
@@ -189,7 +178,7 @@ namespace BminingBlazor.Services
                 .GroupBy(UserConstants.Name)
                 .GetAsync<UserModel>()).ToList();
             var membersViewModel = new List<MemberViewModel>();
-            foreach(var member in members)
+            foreach (var member in members)
             {
                 membersViewModel.Add(new MemberViewModel
                 {
@@ -204,13 +193,13 @@ namespace BminingBlazor.Services
 
                 });
             }
-            return membersViewModel;       
+            return membersViewModel;
         }
         public async Task DeleteMember(int memberId)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
-             await queryFactory.Query(MembersTable).Where(MemberConstants.CodMembers, memberId).DeleteAsync();
-            
+            await queryFactory.Query(MembersTable).Where(MemberConstants.CodMembers, memberId).DeleteAsync();
+
 
         }
 
@@ -218,7 +207,7 @@ namespace BminingBlazor.Services
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             await queryFactory.Query(ProjectTable).Where(ProjectConstants.ProjectId, projectId).DeleteAsync();
-           
+
         }
 
 
@@ -265,6 +254,37 @@ namespace BminingBlazor.Services
         public async Task<int> EditPaymentStatus(PaymentViewModel editPayment)
         {
             return await Task.Run(() => 1);
+        }
+        public async Task<List<PaymentViewModel>> ReadPaymentStatus(int idProject)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var payments = (await queryFactory
+                .Query()
+                .From(PaymentTable)
+                .Join(PaymentTypeTable, PaymentTypeTable + "." + PaymentTypeConstants.CodPaymentStatusType, PaymentTable + "." + PaymentConstants.CodPaymentStatusType)
+                .Select(PaymentTable + "." + PaymentConstants.CodPaymentStatusType)
+                .Select(PaymentConstants.PaymentName)
+                .Select(PaymentConstants.ProjectId)                
+                .Select(PaymentConstants.InvoiceExpirationDate)
+                .Select(PaymentConstants.IssueExpirationDate)
+                .Select(PaymentConstants.PaymentId)
+                .Where(PaymentTable + "." + PaymentConstants.ProjectId, idProject)
+                .GroupBy(PaymentConstants.PaymentId)
+                .GetAsync<PaymentModel>()).ToList();
+            var paymentsViewModel = new List<PaymentViewModel>();
+            foreach (var payment in payments)
+            {
+                paymentsViewModel.Add(new PaymentViewModel
+                {
+                    MyName = payment.PaymentName,
+                    MyProjectId = payment.ProjectId,
+                    PaymentStatusType = (PaymentStatusTypeEnum)payment.CodPaymentStatusType,
+                    Id = payment.PaymentId,
+                    InvoiceExpirationDate = payment.InvoiceExpirationDate,
+                    IssueExpirationDate = payment.IssueExpirationDate
+                });
+            }
+            return paymentsViewModel;
         }
 
     }

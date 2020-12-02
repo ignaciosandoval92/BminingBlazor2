@@ -2,7 +2,7 @@
 {
     public class PaymentTypeConstants
     {
-        public const string CodPaymenStatusType = "PaymentStatusType.CodPaymenStatusType";
+        public const string CodPaymentStatusType = "CodPaymentStatusType";
 
     }
 }

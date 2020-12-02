@@ -15,10 +15,11 @@ namespace BminingBlazor.Services
         Task<int> EditPaymentStatus(PaymentViewModel editPayment);
         Task AddPaymentStatus(PaymentViewModel payment);
         Task DeleteMember(int memberId);
-        Task AddMember(MemberViewModel member);
+        Task AddMember(List<MemberViewModel> member,int idProject);
         Task DeleteProject(int projectId);
         Task<List<StatusProjectModel>> GetAvailableProjectStatus();
         Task<List<ProjectViewModel>> ReadProjectsOwnedByUser(int userId);
         Task<List<MemberViewModel>> ReadMembers(int idProject);
+        Task<List<PaymentViewModel>> ReadPaymentStatus(int idProject);
     }
 }

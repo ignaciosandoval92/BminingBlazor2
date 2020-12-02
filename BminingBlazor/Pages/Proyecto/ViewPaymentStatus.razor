@@ -1,0 +1,74 @@
+﻿@page "/ViewPaymentStatus/{idproject:int}"
+@using Models
+@using BminingBlazor.Services
+@using Microsoft.AspNetCore.Components
+@using System.Data
+@using ViewModels.Projects
+
+@inject IMatDialogService MatDialogService
+@inject NavigationManager NavigationManager
+@inject IProjectDataService ProjectDataService
+@inject IUserDataService UserDataService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "Administracion")]
+
+
+<h3>@Resource.PaymentStatus</h3>
+@if (_payments == null)
+{
+}
+else
+{
+    <div class="table-responsive{-sm|-md|-lg|-xl}">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>@Resource.Name</th> 
+                    <th>@Resource.BillingDeadline</th>
+                    <th>@Resource.PaymentDeadlineIssued</th>
+                    <th>Rut</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in _payments)
+                {
+                    <tr>
+                        <td>@p.MyName</td>
+                        <td>@p.InvoiceExpirationDate</td>
+                        <td>@p.IssueExpirationDate</td>
+                        
+                        <MatButton @onclick="()=>Delete(p.Id)">@Resource.Delete</MatButton>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <MatButton type="button" class="btn btn-primary" @onclick="@AddMember">@Resource.AddMember</MatButton>
+    </div>
+
+}
+
+@code {
+    [Parameter]
+    public int IdProject { get; set; }
+    private List<PaymentViewModel> _payments;
+    protected override async Task OnInitializedAsync()
+    {
+        //    //var id = await ProjectDataService.ReadIdProjectManager(IdProject);
+        //    //_boss = await UserDataService.ReadUser(id);
+        _payments = await ProjectDataService.ReadPaymentStatus(IdProject);
+    }
+    public void AddMember()
+    {
+        NavigationManager.NavigateTo($"/AddMembers/{IdProject}");
+    }
+    public  void Delete(int codMember)
+    {
+        //var answer = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
+        //if (!answer) return;
+
+        //await ProjectDataService.DeleteMember(codMember);
+        NavigationManager.NavigateTo($"/viewMembers/{IdProject}", true);
+
+    }
+}
+

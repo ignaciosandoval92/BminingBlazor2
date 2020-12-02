@@ -1,4 +1,4 @@
-﻿@page "/AddMembers/{id_proyecto:int}"
+﻿@page "/AddMembers/{idProject:int}"
 
 @using Models
 @using BminingBlazor.Services
@@ -14,46 +14,81 @@
 
 <h3>Integrantes</h3>
 
-@*<EditForm Model="@_newMember" OnValidSubmit="@InsertIntegrante">
+<EditForm Model="@_newMember" OnValidSubmit="@InsertIntegrante">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <div class="form-group col-md-6">
-        <label for="inputTContrato">Integrante del Proyecto:</label>
-        <select class="form-control" @bind="_newMember.Id_Usuario" required>
-            @if (_users is null)
-            {
-            }
-            else
-            {
-                @foreach (var emails in _users)
+    <div>
+        <MatButton Type="button" OnClick="AddMembersProjectCallback">
+            @Resource.AddMember
+        </MatButton>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>@Resource.Email</th>
+                    <th>@Resource.ProjectHours</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var membersProject in _membersItems)
                 {
-                    <option value="@emails.id">@emails.Email_Bmining</option>
+                    <tr>
+                        <td>
+                            <div class="form-group col-md-6">
+
+                                <select class="form-control" @bind="membersProject.MyId" required>
+                                    @if (_users is null)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        @foreach (var emails in _users)
+                                        {
+                                            <option value="@emails.MyId">@emails.MyEmail</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </td>
+                        <td><input type="number" step="0.1" @bind="@membersProject.MyProjectHours" /> </td>
+                        <MatButton Type="button" OnClick="()=>DeleteMembersProject(membersProject)">
+                            @Resource.Delete
+                        </MatButton>
+                    </tr>
                 }
-            }
-        </select>
-        <label for="inputHours">Horas invertidas</label>
-        <input type="number" step="0.1" class="form-control" id="inputHours" placeholder="Horas invertidas" @bind="_newMember.Project_Hours" >
+            </tbody>
+        </table>
     </div>
     <MatButton type="submit" class="btn btn-primary">Agregar</MatButton>
-</EditForm>*@
+</EditForm>
 
 @code {
     [Parameter]
-    public int id_proyecto { get; set; }
-    private MemberModel _newMember = new MemberModel();
+    public int idProject { get; set; }
+    private MemberViewModel _newMember = new MemberViewModel();
+    private List<MemberViewModel> _membersItems;
     private List<UserViewModel> _users;
     protected override async Task OnInitializedAsync()
     {
         _users = await UserDataService.ReadUsers();
+        _membersItems = new List<MemberViewModel>();
     }
-    //private async Task InsertIntegrante()
-    //{
-    //    var integrante = new MemberModel()
-    //    {
-    //        Id_Usuario = _newMember.Id_Usuario,
-    //        Id_Proyecto = id_proyecto
-    //    };
-    // await ProjectDataService.AddMember(member);
-    //NavigationManager.NavigateTo($"/ViewMembers/{id_proyecto}");
+
+    private void AddMembersProjectCallback()
+    {
+        _membersItems.Add(new MemberViewModel());
+    }
+
+    
+
+    private void DeleteMembersProject(MemberViewModel membersProject)
+    {
+        _membersItems.Remove(membersProject);
+    }
+    private async Task InsertIntegrante()
+    {
+
+        await ProjectDataService.AddMember(_membersItems, idProject);
+        NavigationManager.NavigateTo($"/ViewMembers/{idProject}");
     }
 }
