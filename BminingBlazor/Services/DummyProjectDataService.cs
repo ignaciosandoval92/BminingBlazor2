@@ -72,9 +72,9 @@ namespace BminingBlazor.Services
                     MyClientName = (string)item[ClientConstants.ClientName],
                     MyEndDate = (DateTime)item[ProjectConstants.EndDate],
                     MyStartDate = (DateTime)item[ProjectConstants.StartDate],
-                    MyProjectCode = (string)item[ProjectConstants.ProjectCode],
-                    MyProjectStatus = (ProjectStatusEnum)item[ProjectConstants.ProjectStatus],
-                    MyProjectType = (ProjectTypeEnum)item[ProjectConstants.ProjectType],
+                    MyProjectCode = (string)item[ProjectConstants.CodProject],
+                    MyProjectStatus = (ProjectStatusEnum)item[ProjectConstants.StatusId],
+                    MyProjectType = (ProjectTypeEnum)item[ProjectConstants.CodProjectType],
                 };
 
 
@@ -83,7 +83,7 @@ namespace BminingBlazor.Services
                     return new UserViewModel
                     {
                         MyRut = (string)user[UserConstants.Rut],
-                        MyContractType = (ContractTypeEnum)user[UserConstants.CodeContractType],
+                        MyContractType = (ContractTypeEnum)user[UserConstants.CodContractType],
                         MyEmail = (string)user[UserConstants.EmailBmining],
                         MyName = (string)user[UserConstants.Name],
                         MyPaternalSurname = (string)user[UserConstants.PaternalLastName],
@@ -100,7 +100,7 @@ namespace BminingBlazor.Services
                     return new MemberViewModel
                     {
                         MyRut = (string)user[UserConstants.Rut],
-                        MyContractType = (ContractTypeEnum)user[UserConstants.CodeContractType],
+                        MyContractType = (ContractTypeEnum)user[UserConstants.CodContractType],
                         MyEmail = (string)user[UserConstants.EmailBmining],
                         MyName = (string)user[UserConstants.Name],
                         MyPaternalSurname = (string)user[UserConstants.PaternalLastName],
@@ -120,10 +120,10 @@ namespace BminingBlazor.Services
                     return new PaymentViewModel
                     {
                         MyProjectId = (int)payment[PaymentConstants.ProjectId],
-                        PaymentStatusType = (PaymentStatusTypeEnum)payment[PaymentConstants.CodPaymentStatus],
+                        PaymentStatusType = (PaymentStatusTypeEnum)payment[PaymentConstants.CodPaymentStatusType],
                         InvoiceExpirationDate = (DateTime)payment[PaymentConstants.InvoiceExpirationDate],
                         IssueExpirationDate = (DateTime)payment[PaymentConstants.IssueExpirationDate],
-                        Id = (int)payment[PaymentConstants.CodPaymentStatus]
+                        Id = (int)payment[PaymentConstants.ProjectId]
                     };
                 }
 

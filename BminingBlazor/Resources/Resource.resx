@@ -157,10 +157,13 @@
   <data name="Reject" xml:space="preserve">
     <value>Reject</value>
   </data>
-	<data name="Reasons" xml:space="preserve">
+  <data name="Reasons" xml:space="preserve">
     <value>Reasons</value>
       </data>
   <data name="StatusProject" xml:space="preserve">
     <value>Status Project</value>
+  </data>
+  <data name="ContractType" xml:space="preserve">
+    <value>Contract Type</value>
   </data>
 </root>

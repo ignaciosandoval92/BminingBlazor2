@@ -50,22 +50,22 @@
 
     private MemberProjectEditModel newUser = new MemberProjectEditModel();
     private List<ContratoModel> _listOfContratoModels;
-    
+
     protected override async Task OnInitializedAsync()
     {
-        _listOfContratoModels = await UserDataService.ReadContrato();
-        var userEditModels = await UserDataService.ReadUser(Id);
-        var user = userEditModels.First();
-        newUser.Email_Bmining = user.Email_Bmining;
-        newUser.Nombre = user.Nombre;
-        newUser.Apellido_Paterno = user.Apellido_Paterno;
-        newUser.Apellido_Materno = user.Apellido_Materno;
-        newUser.Rut = user.Rut;
-        newUser.Cod_TipoContrato = user.Cod_TipoContrato;
-        newUser.Cargo = user.Cargo;
-        newUser.Telefono = user.Telefono;
-        newUser.Direccion = user.Direccion;
-        Email = user.Email_Bmining;
+        //_listOfContratoModels = await UserDataService.ReadContrato();
+        //var userEditModels = await UserDataService.ReadUser(Id);
+        //var user = userEditModels.First();
+        //newUser.Email_Bmining = user.Email_Bmining;
+        //newUser.Nombre = user.Nombre;
+        //newUser.Apellido_Paterno = user.Apellido_Paterno;
+        //newUser.Apellido_Materno = user.Apellido_Materno;
+        //newUser.Rut = user.Rut;
+        //newUser.Cod_TipoContrato = user.Cod_TipoContrato;
+        //newUser.Cargo = user.Cargo;
+        //newUser.Telefono = user.Telefono;
+        //newUser.Direccion = user.Direccion;
+        //Email = user.Email_Bmining;
 
     }
     protected override async Task OnParametersSetAsync()

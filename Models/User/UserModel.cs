@@ -10,7 +10,7 @@
         public string Rut { get; set; }
         public string Job { get; set; }
         public string Phone { get; set; }
-        public string HomeAdress { get; set; }
+        public string HomeAddress { get; set; }
         public int CodMembers { get; set; }
         public int CodContractType { get; set; }
     }

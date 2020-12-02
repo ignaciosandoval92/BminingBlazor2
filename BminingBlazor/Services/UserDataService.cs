@@ -25,22 +25,41 @@ namespace BminingBlazor.Services
         }
         public async Task<List<UserViewModel>> ReadUsers()
         {
-            string sql = "select User.UserId as MyID, User.EmailBmining as MyEmail,User.Name as MyName ,User.PaternalLastName as MyPaternalSurname,User.MaternalLastName as MyMaternalSurname,User.Rut as MyRut,User.Job as MyJob,User.Phone as MyTelephone,User.HomeAdress as MyDirection,User.CodContractType as MyContractType " +
-                         $"from {UserTable},{ContractTable} " +
-                         " where User.CodContractType=Contract.CodContractType;";
-            var users = await _dataAccess.LoadData<UserViewModel, dynamic>(sql, new { }, _configuration.GetConnectionString("default"));
-            return users;
-        }
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var users = (await queryFactory
+                .Query()
+                .From(UserTable)
+                .Select(UserConstants.UserId)
+                .Select(UserConstants.EmailBmining)
+                .Select(UserConstants.Name)
+                .Select(UserConstants.PaternalLastName)
+                .Select(UserConstants.MaternalLastName)
+                .Select(UserConstants.Rut)
+                .Select(UserConstants.Job)
+                .Select(UserConstants.Phone)
+                .Select(UserConstants.HomeAddress)
+                .Select(UserConstants.CodContractType)
+                .GetAsync<UserModel>()).ToList();
+            var usersViewModel = new List<UserViewModel>();
+            foreach(var user in users)
+            {
+                usersViewModel.Add(new UserViewModel
+                {
+                    MyId = user.UserId,
+                    MyEmail=user.EmailBmining,
+                    MyName=user.Name,
+                    MyPaternalSurname=user.PaternalLastName,
+                    MyMaternalSurname=user.MaternalLastName,
+                    MyRut=user.Rut,
+                    MyJob=user.Job,
+                    MyTelephone=user.Phone,
+                    MyDirection=user.HomeAddress,
+                    MyContractType=(ContractTypeEnum)user.CodContractType
 
-
-
-        public async Task<List<ContratoModel>> ReadContrato()
-        {
-            string sql = $"select*from {ContractTable}";
-            var tc = await _dataAccess.LoadData<ContratoModel, dynamic>(sql, new { },
-                _configuration.GetConnectionString("default"));
-            return tc;
-        }
+                });
+            }
+            return usersViewModel;            
+        }   
 
         public async Task<List<MemberProjectEditModel>> ReadUser(int id)
         {
@@ -62,7 +81,7 @@ namespace BminingBlazor.Services
                 userViewModels.Add(new UserViewModel
                 {
                     MyContractType = (ContractTypeEnum)userModel.CodContractType,
-                    MyDirection = userModel.HomeAdress,
+                    MyDirection = userModel.HomeAddress,
                     MyEmail = userModel.EmailBmining,
                     MyId = userModel.UserId,
                     MyJob = userModel.Job,
@@ -75,27 +94,23 @@ namespace BminingBlazor.Services
             }
             return userViewModels;
         }
-
-
-
-        public async Task<int> CreateUser(UsuarioModel usuario)
+        public async Task<int> CreateUser(UserViewModel createUser)
         {
-            var sql =
-                "insert into Usuario (Usuario.Email_Bmining,Usuario.Nombre,Usuario.Apellido_Paterno,Usuario.Apellido_Materno,Usuario.Rut) " +
-                "values (@Email_Bmining,@Nombre,@Apellido_Paterno,@Apellido_Materno,@Rut)";
-            await _dataAccess.SaveData(sql, usuario, _configuration.GetConnectionString("default"));
-
-            sql =
-                "select Usuario.Id " +
-                $"from {UserTable} " +
-                $"  where Usuario.Email_Bmining = '{usuario.Email_Bmining}';";
-
-            //    $"where Usuario.Email_Bmining={usuario.Email_Bmining};";
-            var items = await _dataAccess.LoadData<UsuarioModel, dynamic>(sql, new { },
-                _configuration.GetConnectionString("default"));
-
-            return items.First().id;
-
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var userId = await queryFactory.Query(UserTable)
+                                             .InsertGetIdAsync<int>(new Dictionary<string, object>
+                                             {
+                                                 {UserConstants.EmailBmining,createUser.MyEmail },
+                                                 {UserConstants.Name,createUser.MyName },
+                                                 {UserConstants.PaternalLastName,createUser.MyPaternalSurname },
+                                                 {UserConstants.MaternalLastName,createUser.MyMaternalSurname },
+                                                 {UserConstants.Rut,createUser.MyRut },
+                                                 {UserConstants.Job,createUser.MyJob },
+                                                 {UserConstants.Phone,createUser.MyTelephone },
+                                                 {UserConstants.HomeAddress,createUser.MyDirection },
+                                                 {UserConstants.CodContractType,createUser.MyContractType }
+                                             });
+            return userId;    
         }
 
         public async Task<int> GetUserId(string email)
@@ -119,12 +134,10 @@ namespace BminingBlazor.Services
             await _dataAccess.UpdateData(sql, usuario2, _configuration.GetConnectionString("default"));
         }
 
-        public async Task DeleteUser(int id)
+        public async Task DeleteUser(int userId)
         {
-            string sql = "Delete " +
-                         $"from {UserTable} " +
-                         $"where Usuario.Id=@Id";
-            await _dataAccess.DeleteData(sql, new { Id = id }, _configuration.GetConnectionString("default"));
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            await queryFactory.Query(UserTable).Where(UserConstants.UserId, userId).DeleteAsync();           
 
         }
 

@@ -97,6 +97,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Contract Type.
+        /// </summary>
+        internal static string ContractType {
+            get {
+                return ResourceManager.GetString("ContractType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Delete.
         /// </summary>
         internal static string Delete {

@@ -1,52 +1,96 @@
 ﻿@page "/crearuser"
 @using BminingBlazor.Services
 @using Models
+@using ViewModels.User
 @inject NavigationManager NavigationManager
 
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize(Roles = "AdminRRHH,Administracion")]
 <h3>Crear Usuario</h3>
-<EditForm Model="@_newUsuario" OnValidSubmit="@InsertUsers">
+<EditForm Model="@_newUser" OnValidSubmit="@InsertUsers">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <tr>
         <td>
             <label for="inputNombres">Mail:</label>
-            <InputText id="Email_Bmining" @bind-Value="_newUsuario.Email_Bmining" />
+            <InputText id="MyEmail" @bind-Value="_newUser.MyEmail" />
             <label for="inputNombres">Nombres:</label>
-            <InputText id="Nombre" @bind-Value="_newUsuario.Nombre" />
+            <InputText id="Nombre" @bind-Value="_newUser.MyName" />
         </td>
     </tr>
     <tr>
         <td>
             <label for="inputNombres">Apellido paterno:</label>
-            <InputText id="Apellido_Paterno" @bind-Value="_newUsuario.Apellido_Paterno" />
+            <InputText id="Apellido_Paterno" @bind-Value="_newUser.MyPaternalSurname" />
             <label for="inputNombres">Apellido materno:</label>
-            <InputText id="Apellido_Materno" @bind-Value="_newUsuario.Apellido_Materno" />
+            <InputText id="Apellido_Materno" @bind-Value="_newUser.MyMaternalSurname" />
             <label for="inputNombres">Rut:</label>
-            <InputText id="Rut" @bind-Value="_newUsuario.Rut" />
+            <InputText id="Rut" @bind-Value="_newUser.MyRut" />
 
         </td>
     </tr>
+    <tr>
+        <td>
+            <label for="inputNombres">Cargo:</label>
+            <InputText id="Cargo" @bind-Value="_newUser.MyJob" />
+            <label for="inputNombres">Teléfono:</label>
+            <InputText id="Telefono" @bind-Value="_newUser.MyTelephone" />
+            <label for="inputNombres">Dirección:</label>
+            <InputText id="Direccion" @bind-Value="_newUser.MyDirection" />
+        </td>
+    </tr>
+    <div>
+
+        <label for="inputNombres">  @Resource.ContractType:  </label>
+        <InputSelect class="form-control" @bind-Value="_newUser.MyContractType" required>
+
+            @foreach (var typeContract in Enum.GetValues(typeof(ContractTypeEnum)))
+            {
+                <option value="@typeContract">
+                    @{
+                        switch (typeContract)
+                        {
+                            case ContractTypeEnum.FeeContract:
+                                <p>Contrato de Honorarios</p>
+                                break;
+                            case ContractTypeEnum.FixedTermContract:
+                                <p>Contrato a PLazo Fijo</p>
+                                break;
+                            case ContractTypeEnum.IndefiniteContract:
+                                <p>Contrato Indefinido</p>
+                                break;
+                        }
+                    }
+                </option>
+            }
+
+        </InputSelect>
+
+    </div>
     <button type="submit" class="btn btn-primary">Crear</button>
 </EditForm>
 
 
 @code {
-    private UsuarioModel _newUsuario = new UsuarioModel();
+    private UserViewModel _newUser = new UserViewModel();
 
     private async Task InsertUsers()
     {
-        var usuario = new UsuarioModel()
+        var user = new UserViewModel()
         {
-            Email_Bmining = _newUsuario.Email_Bmining,
-            Nombre = _newUsuario.Nombre,
-            Apellido_Paterno = _newUsuario.Apellido_Paterno,
-            Apellido_Materno = _newUsuario.Apellido_Materno,
-            Rut = _newUsuario.Rut
+            MyEmail = _newUser.MyEmail,
+            MyName = _newUser.MyName,
+            MyPaternalSurname = _newUser.MyPaternalSurname,
+            MyMaternalSurname = _newUser.MyMaternalSurname,
+            MyRut = _newUser.MyRut,
+            MyJob = _newUser.MyJob,
+            MyTelephone = _newUser.MyTelephone,
+            MyDirection = _newUser.MyDirection,
+            MyContractType=_newUser.MyContractType
         };
-        var id = await UserDataService.CreateUser(usuario);
-        NavigationManager.NavigateTo($"editarusuario/{id}");
+        var id = await UserDataService.CreateUser(user);
+
+        NavigationManager.NavigateTo("/viewUsers");
     }
 }

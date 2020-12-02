@@ -61,7 +61,7 @@ namespace BminingBlazor.Services
                 .InsertAsync(new Dictionary<string, object>
                 {
                     {PaymentConstants.ProjectId,projectId },
-                    {PaymentConstants.PaymentStatus,payments.Name },
+                    {PaymentConstants.PaymentStatus,payments.MyName },
                     {PaymentConstants.CodPaymentStatusType,1 },
                     {PaymentConstants.InvoiceExpirationDate,payments.InvoiceExpirationDate },
                     {PaymentConstants.IssueExpirationDate,payments.IssueExpirationDate }
@@ -196,7 +196,7 @@ namespace BminingBlazor.Services
                 .Select(UserConstants.Rut)
                 .Select(UserConstants.Job)
                 .Select(UserConstants.Phone)
-                .Select(UserConstants.HomeAdress)
+                .Select(UserConstants.HomeAddress)
                 .Select(MemberConstants.CodMembers)
                 .Where(MembersTable + "." + MemberConstants.ProjectId, idProject)
                 .GroupBy(UserConstants.Name)
@@ -207,7 +207,7 @@ namespace BminingBlazor.Services
                 membersViewModel.Add(new MemberViewModel
                 {
                     MyCodMember = member.CodMembers,
-                    MyDirection = member.HomeAdress,
+                    MyDirection = member.HomeAddress,
                     MyEmail = member.EmailBmining,
                     MyId = member.UserId,
                     MyJob = member.Job,
@@ -217,9 +217,7 @@ namespace BminingBlazor.Services
 
                 });
             }
-            return membersViewModel;
-
-       
+            return membersViewModel;       
         }
         public async Task DeleteMember(int memberId)
         {
