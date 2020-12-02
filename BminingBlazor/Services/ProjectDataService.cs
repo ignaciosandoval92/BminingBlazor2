@@ -239,11 +239,42 @@ namespace BminingBlazor.Services
         }
         public async Task<ProjectViewModel> ReadProject(int projectId)
         {
-            string sql = $"select*from{TableConstants.ProjectTable}" +
-                         $" where Project.projectId=@projectId";
-            var project = await _dataAccess.LoadData<ProjectViewModel, dynamic>(sql, new { },
-                _configuration.GetConnectionString("default"));
-            return project.First();
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var projects = (await queryFactory
+                .Query()
+                .From(ProjectTable)
+                .Join(UserTable, UserTable + "." + UserConstants.UserId, ProjectTable + "." + ProjectConstants.ProjectManagerId)
+                .Join(ClientTable, ClientTable + "." + ClientConstants.ClientId, ProjectTable + "." + ProjectConstants.ClientId)
+                .Select(ProjectTable + "." + ProjectConstants.ProjectId)
+                .Select(ProjectConstants.CodProject)
+                .Select(ProjectConstants.ProjectName)
+                .Select(ProjectConstants.ProjectManagerId)
+                .Select(UserConstants.EmailBmining)
+                .Select(ClientConstants.ClientName)
+                .Select(ProjectConstants.CodProjectType)
+                .Select(ProjectConstants.StatusId)
+                .Select(ClientTable + "." + ClientConstants.ClientId)
+                .Where(ProjectTable+"."+ProjectConstants.ProjectId,projectId)
+                .GetAsync<ProjectModel>()).First();
+            var projectViewModel = new ProjectViewModel()
+            {
+                MyId = projectId,
+                MyProjectCode = projects.CodProject,
+                MyProjectName = projects.ProjectName,
+                MyProjectStatus = (ProjectStatusEnum)projects.StatusId,
+                MyProjectType = (ProjectTypeEnum)projects.CodProjectType,
+                MyClientId = projects.ClientId,
+                MyClientName = projects.ClientName,
+                MyProjectManager = new UserViewModel { MyId = projects.ProjectManagerId, MyEmail = projects.EmailBmining },
+            };
+            return projectViewModel;
+         
+           
+            //string sql = $"select*from{TableConstants.ProjectTable}" +
+            //             $" where Project.projectId=@projectId";
+            //var project = await _dataAccess.LoadData<ProjectViewModel, dynamic>(sql, new { },
+            //    _configuration.GetConnectionString("default"));
+            //return project.First();
         }
 
         public async Task AddPaymentStatus(List<PaymentViewModel> payments,int idProject)
