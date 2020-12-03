@@ -1,6 +1,7 @@
 ﻿using Models.Project;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BminingBlazor.ViewModels.Projects;
 
 namespace BminingBlazor.Services
 {
@@ -8,7 +9,7 @@ namespace BminingBlazor.Services
     {
         Task<int> CreateClient(string name);
         Task<int> DeleteClient(int id);
-        Task<List<ClientModel>> ReadClients();
-        Task<ClientModel> ReadClient(int id);
+        Task<List<ClientViewModel>> ReadClients();
+        Task<ClientViewModel> ReadClient(int id);
     }
 }

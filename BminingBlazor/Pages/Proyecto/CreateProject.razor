@@ -35,7 +35,7 @@
             @foreach (var client in _clients)
 
             {
-                <option value="@client.ClientId">@client.ClientName</option>
+                <option value="@client.MyId">@client.MyName</option>
             }
         </select>
     </div>
@@ -183,7 +183,7 @@
     private List<UserViewModel> _users;
     private List<PaymentViewModel> _paymentStatusItems;
     private List<MemberViewModel> _membersProjectItems;
-    private List<ClientModel> _clients;
+    private List<ClientViewModel> _clients;
     private List<StatusProjectModel> _statusProjectModels;
 
 

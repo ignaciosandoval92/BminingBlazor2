@@ -5,6 +5,7 @@ using SqlKata.Execution;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BminingBlazor.ViewModels.Projects;
 using static Data.ClientConstants;
 using static Data.TableConstants;
 
@@ -37,25 +38,39 @@ namespace BminingBlazor.Services
         public async Task<int> DeleteClient(int id)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
-            var affected = await queryFactory.Query(ClientTable).Where(ClientId,id).DeleteAsync();
+            var affected = await queryFactory.Query(ClientTable).Where(ClientId, id).DeleteAsync();
             return affected;
         }
         //TODO cambiar ViewModel
-        public async Task<List<ClientModel>> ReadClients()
+        public async Task<List<ClientViewModel>> ReadClients()
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
-            var clients = await queryFactory.Query(ClientTable).
-                                             GetAsync<ClientModel>();
-            return clients.ToList();
+            var clients = (await queryFactory.Query(ClientTable).
+                                             GetAsync<ClientModel>()).ToList();
+            var clientsViewModel = new List<ClientViewModel>();
+            foreach (var client in clients)
+            {
+                clientsViewModel.Add(new ClientViewModel
+                {
+                    MyId = client.ClientId,
+                    MyName = client.ClientName
+                });
+            }
+            return clientsViewModel;
         }
-        public async Task<ClientModel> ReadClient(int id)
+        public async Task<ClientViewModel> ReadClient(int id)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
-            var clientModels = await queryFactory
+            var client= (await queryFactory
                                 .Query(ClientTable)
                                 .Where(ClientId, id)
-                                .GetAsync<ClientModel>();
-            return clientModels.First();
+                                .GetAsync<ClientModel>()).First();
+            var clientViewModel = new ClientViewModel()
+            {
+                MyId = client.ClientId,
+                MyName = client.ClientName
+            };
+            return clientViewModel;
         }
     }
 }
