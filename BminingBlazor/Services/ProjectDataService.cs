@@ -188,7 +188,8 @@ namespace BminingBlazor.Services
                     MyJob = member.Job,
                     MyMaternalSurname = member.MaternalLastName,
                     MyName = member.Name,
-                    MyPaternalSurname = member.PaternalLastName
+                    MyPaternalSurname = member.PaternalLastName,
+                    MyRut=member.Rut
 
                 });
             }
