@@ -41,10 +41,10 @@ app {
             margin-left: 1.5rem;
         }
 
-.main .top-row a:first-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .main .top-row a:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
@@ -129,12 +129,12 @@ app {
     z-index: 1000;
 }
 
-#blazor-error-ui .dismiss {
-    cursor: pointer;
-    position: absolute;
-    right: 0.75rem;
-    top: 0.5rem;
-}
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
 
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
@@ -194,4 +194,134 @@ legend.scheduler-border {
     width: inherit; /* Or auto */
     padding: 0 10px; /* To give a bit of padding on the left and right */
     border-bottom: none;
+}
+
+.bmining-app {
+    color: #282828;
+    margin: 0 auto;
+    width: 100%;
+    padding: 30px 0;
+    max-width: 1024px
+}
+
+.bmining-button {
+    background-color: #002060;
+    border: none;
+    color: white;
+    padding: 6px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 10px;
+    max-height: 5px;
+}
+
+.bmining-butto:hover {
+    background-color: #1A3670;
+}
+
+.bmining-btn-icon {
+    background-color: #002060;
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 4px;
+    border-radius: 50%;
+}
+
+.main-break {
+    width: 100%;
+    height: 4px;
+    background-color: #009B8E;
+    position: relative;
+    margin: 10px
+}
+
+.main-circle {
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    background-color: #009B8E;
+    border-radius: 50%;
+    position: absolute;
+    top: calc(-16px/2);
+    left: calc(-15px/2);
+}
+
+.alternate1-break {
+    width: 100%;
+    height: 2px;
+    background-color: #009B8E;
+    position: relative;
+    margin: 5px
+}
+
+.alternate2-break {
+    width: 100%;
+    height: 1px;
+    background-color: #009B8E;
+    position: relative;
+    margin: 3px
+}
+
+
+table {
+    width: 100%;
+    /*border-collapse: collapse;*/
+    /*border-color: red*/
+}
+
+td, th {
+    border: 1px solid #002060;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #D9DEE7;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    color: #002060
+}
+
+.bmining-btn-icon:hover {
+    background-color: #1A3670;
+}
+
+.bg-bmining-success {
+    background-color: #00AA00;
+}
+
+.bg-bmining-error {
+    background-color: #AA0000;
+}
+
+.bg-bmining-warning {
+    background-color: #AAAA00;
+}
+
+.bd-bmining-info {
+    border-color: #009B8E;
+}
+
+.bd-bmining-success {
+    border-color: #00AA00;
+}
+
+.bd-bmining-error {
+    border-color: #AA0000;
+}
+
+.bd-bmining-warning {
+    border-color: #AAAA00;
+}
+
+.bg-bmining-info {
+    background-color: #009B8E;
 }

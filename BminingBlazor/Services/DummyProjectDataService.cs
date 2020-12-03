@@ -34,9 +34,7 @@ namespace BminingBlazor.Services
         public async Task<List<ProjectViewModel>> GetProjectsOwnedById(int userId)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
-
-            var listOfProjectModels = new List<ProjectViewModel>();
-
+            
             var paymentQuery = queryFactory.Query(TableConstants.PaymentTable);
             var membersQuery = queryFactory.Query(TableConstants.MembersTable)
                 .Join(TableConstants.UserTable, $"{TableConstants.UserTable}.{UserConstants.UserId}",
@@ -73,7 +71,7 @@ namespace BminingBlazor.Services
                     MyClientName = (string)item[ClientConstants.ClientName],
                     MyEndDate = (DateTime)item[ProjectConstants.EndDate],
                     MyStartDate = (DateTime)item[ProjectConstants.StartDate],
-                    MyProjectCode = (string)item[ProjectConstants.CodProject],
+                    MyProjectCode = (string)item[ProjectConstants.ProjectCode],
                     MyProjectStatus = (ProjectStatusEnum)item[ProjectConstants.StatusId],
                     MyProjectType = (ProjectTypeEnum)item[ProjectConstants.CodProjectType],
                 };
@@ -109,6 +107,32 @@ namespace BminingBlazor.Services
                 foreach (var member in members)
                     memberViewModels.Add(ViewModelConverter.GetMemberViewModel(member));
                 project.OurMembers = memberViewModels;
+
+                projects.Add(project);
+            }
+            return projects;
+        }
+
+        public async Task<List<ProjectResumeViewModel>> GetProjectWhereBelongsUserId(int userId)
+        {
+
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var membersQuery = queryFactory.Query(TableConstants.MembersTable)
+                .Where(MemberConstants.UserId, userId)
+                .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
+                    $"{TableConstants.MembersTable}.{MemberConstants.ProjectId}");
+
+            var items = (await membersQuery.GetAsync()).Cast<IDictionary<string, object>>().ToList();
+
+            var projects = new List<ProjectResumeViewModel>();
+            foreach (var item in items)
+            {
+                var project = new ProjectResumeViewModel()
+                {
+                    MyProjectId = (int) item[ProjectConstants.ProjectId],
+                    MyProjectName = (string) item[ProjectConstants.ProjectName],
+                    MyProjectCode = (string) item[ProjectConstants.ProjectCode],
+                };
 
                 projects.Add(project);
             }

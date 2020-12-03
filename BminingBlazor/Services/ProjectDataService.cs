@@ -32,7 +32,7 @@ namespace BminingBlazor.Services
             var projectId = await queryFactory.Query(ProjectTable)
                                              .InsertGetIdAsync<int>(new Dictionary<string, object>
                                              {
-                                                 {ProjectConstants.CodProject,createProject.MyProjectCode},
+                                                 {ProjectConstants.ProjectCode,createProject.MyProjectCode},
                                                  {ProjectConstants.ClientId,createProject.MyClientId },
                                                  {ProjectConstants.CodProjectType,createProject.MyProjectType },
                                                  {ProjectConstants.ProjectName,createProject.MyProjectName },
@@ -125,7 +125,7 @@ namespace BminingBlazor.Services
                 .Join(UserTable, UserTable + "." + UserConstants.UserId, ProjectTable + "." + ProjectConstants.ProjectManagerId)
                 .Join(ClientTable, ClientTable + "." + ClientConstants.ClientId, ProjectTable + "." + ProjectConstants.ClientId)
                 .Select(ProjectTable + "." + ProjectConstants.ProjectId)
-                .Select(ProjectConstants.CodProject)
+                .Select(ProjectConstants.ProjectCode)
                 .Select(ProjectConstants.ProjectName)
                 .Select(ProjectConstants.ProjectManagerId)
                 .Select(UserConstants.EmailBmining)
@@ -176,7 +176,7 @@ namespace BminingBlazor.Services
                 .Select(UserConstants.Rut)
                 .Select(UserConstants.Job)
                 .Select(UserConstants.Phone)
-                .Select(UserConstants.HomeAdress)
+                .Select(UserConstants.HomeAddress)
                 .Select(MemberConstants.CodMembers)
                 .Where(MembersTable + "." + MemberConstants.ProjectId, idProject)
                 .GroupBy(UserConstants.Name)

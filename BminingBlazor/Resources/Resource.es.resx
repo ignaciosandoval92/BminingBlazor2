@@ -157,10 +157,34 @@
   <data name="Reject" xml:space="preserve">
     <value>Rechazar</value>
   </data>
-	<data name="Reasons" xml:space="preserve">
+  <data name="Reasons" xml:space="preserve">
     <value>Razones</value>
       </data>
   <data name="StatusProject" xml:space="preserve">
     <value>Estado del Proyecto</value>
+  </data>
+  <data name="NewHours" xml:space="preserve">
+    <value>Nuevas Horas</value>
+  </data>
+  <data name="InvalidNumber" xml:space="preserve">
+    <value>Número inválido</value>
+  </data>
+  <data name="DashboardHours" xml:space="preserve">
+    <value>Dashboard horas</value>
+  </data>
+  <data name="DashboardProjectManager" xml:space="preserve">
+    <value>Dashboard jefe de proyecto</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Acciones</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>Horas</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Fecha</value>
   </data>
 </root>
