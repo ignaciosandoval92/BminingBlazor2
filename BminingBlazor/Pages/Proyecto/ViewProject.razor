@@ -39,13 +39,13 @@
                         <td>@p.MyProjectType</td>
                         <td>@p.MyClientName</td>
                         <td>@p.MyProjectStatus</td>
-                        <MatButton @onclick=@(()=>ViewIntegrantes(p.MyId))>@Resource.Members</MatButton>
-                        <MatButton @onclick=@(()=>EditEstadoPago(p.MyId))>@Resource.EditPaymentStatus</MatButton>
-                        <MatButton @onclick=@(()=>Delete(p.MyId))>@Resource.Delete</MatButton>
+                        <button class="bmining-button" @onclick=@(()=>ViewIntegrantes(p.MyId))>@Resource.Members</button>
+                        <button class="bmining-button" @onclick=@(()=>EditEstadoPago(p.MyId))>@Resource.EditPaymentStatus</button>
+                        <button class="bmining-button" @onclick=@(()=>Delete(p.MyId))>@Resource.Delete</button>
                     </tr>
                     }
                     <tr>
-                        <MatButton type="button" class="btn btn-primary" @onclick="@NewProyecto">@Resource.AddProject</MatButton>
+                        <button type="button" class="bmining-button" @onclick="@NewProyecto">@Resource.AddProject</button>
                     </tr>
                 </tbody>
             </table>

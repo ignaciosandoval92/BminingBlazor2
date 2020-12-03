@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Models;
 using Models.Project;
 using SqlKata.Execution;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -78,20 +79,10 @@ namespace BminingBlazor.Services
                 { PaymentConstants.CodPaymentStatusType,paymentStatus.PaymentStatusType}
 
         });
-<<<<<<< HEAD
-
-            return 1;
-=======
->>>>>>> pr/11
-
-            return 1;
+            return 1;         
         }
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> pr/11
         public async Task AddMember(List<MemberViewModel> members, int idProject)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
@@ -111,7 +102,7 @@ namespace BminingBlazor.Services
         public async Task<List<ProjectViewModel>> ReadProjects()
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
-<<<<<<< HEAD
+
 
             var listOfProjectModels = new List<ProjectViewModel>();
 
@@ -141,25 +132,6 @@ namespace BminingBlazor.Services
             var projects = new List<ProjectViewModel>();
 
             foreach (var item in items)
-=======
-            var projects = (await queryFactory
-                .Query()
-                .From(ProjectTable)
-                .Join(UserTable, UserTable + "." + UserConstants.UserId, ProjectTable + "." + ProjectConstants.ProjectManagerId)
-                .Join(ClientTable, ClientTable + "." + ClientConstants.ClientId, ProjectTable + "." + ProjectConstants.ClientId)
-                .Select(ProjectTable + "." + ProjectConstants.ProjectId)
-                .Select(ProjectConstants.ProjectCode)
-                .Select(ProjectConstants.ProjectName)
-                .Select(ProjectConstants.ProjectManagerId)
-                .Select(UserConstants.EmailBmining)
-                .Select(ClientConstants.ClientName)
-                .Select(ProjectConstants.CodProjectType)
-                .Select(ProjectConstants.StatusId)
-                .Select(ClientTable + "." + ClientConstants.ClientId)
-                .GetAsync<ProjectModel>()).ToList();
-            var projectViewModel = new List<ProjectViewModel>();
-            foreach (var projectModel in projects)
->>>>>>> pr/11
             {
                 var project = new ProjectViewModel
                 {
@@ -169,7 +141,7 @@ namespace BminingBlazor.Services
                     MyClientName = (string)item[ClientConstants.ClientName],
                     MyEndDate = (DateTime)item[ProjectConstants.EndDate],
                     MyStartDate = (DateTime)item[ProjectConstants.StartDate],
-                    MyProjectCode = (string)item[ProjectConstants.CodProject],
+                    MyProjectCode = (string)item[ProjectConstants.ProjectCode],
                     MyProjectStatus = (ProjectStatusEnum)item[ProjectConstants.StatusId],
                     MyProjectType = (ProjectTypeEnum)item[ProjectConstants.CodProjectType],
                 };

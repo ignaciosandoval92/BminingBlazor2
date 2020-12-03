@@ -40,7 +40,7 @@ namespace BminingBlazor.Services
             var affected = await queryFactory.Query(ClientTable).Where(ClientId,id).DeleteAsync();
             return affected;
         }
-
+        //TODO cambiar ViewModel
         public async Task<List<ClientModel>> ReadClients()
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
