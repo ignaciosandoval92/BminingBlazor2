@@ -5,14 +5,13 @@ namespace BminingBlazor.ViewModels.TrackingHours
 {
     public class WeekDayUserTrackingHoursItemViewModel
     {
-        public int Id { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime TimeTrackingDate { get; set; }
-        public int ProjectId { get; set; }
-        public string ProjectName { get; set; }
-        public string ProjectCode { get; set; }
+        public int MyId { get; set; }
+        public DateTime MyCreationDate { get; set; }
+        public DateTime MyTimeTrackingDate { get; set; }
+        public int MyProjectId { get; set; }
+        public string MyProjectName { get; set; }
+        public string MyProjectCode { get; set; }
       
-
         private TimeTrackingStatusEnum _myTimeTimeTrackingStatus;
         public TimeTrackingStatusEnum MyTimeTimeTrackingStatus
         {
@@ -23,13 +22,13 @@ namespace BminingBlazor.ViewModels.TrackingHours
                 switch (value)
                 {
                     case TimeTrackingStatusEnum.WaitingForApproval:
-                        MyTrackingStatusClass = "list-group-item-dark";
+                        MyTrackingStatusClass = "bd-bmining-info";
                         break;
                     case TimeTrackingStatusEnum.Approved:
-                        MyTrackingStatusClass = "list-group-item-success";
+                        MyTrackingStatusClass = "bd-bmining-success";
                         break;
                     case TimeTrackingStatusEnum.Rejected:
-                        MyTrackingStatusClass = "list-group-item-danger";
+                        MyTrackingStatusClass = "bd-bmining-error";
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);
@@ -38,9 +37,7 @@ namespace BminingBlazor.ViewModels.TrackingHours
 
             }
         }
-
-
         public string MyTrackingStatusClass { get; set; }
-        public double TrackedHours { get; set; }
+        public double MyTrackedHours { get; set; }
     }
 }

@@ -1,18 +1,15 @@
-﻿using Data;
+﻿using BminingBlazor.ViewModels.Projects;
+using BminingBlazor.ViewModels.User;
+using Data;
 using Microsoft.Extensions.Configuration;
 using Models;
-using System;
+using Models.Project;
+using SqlKata.Execution;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using BminingBlazor.ViewModels.Projects;
-using BminingBlazor.ViewModels.User;
-using Models.Project;
-using MemberViewModel = BminingBlazor.ViewModels.User.MemberViewModel;
 using static Data.TableConstants;
-using SqlKata;
-using SqlKata.Execution;
+using MemberViewModel = BminingBlazor.ViewModels.User.MemberViewModel;
 
 
 
@@ -35,7 +32,7 @@ namespace BminingBlazor.Services
             var projectId = await queryFactory.Query(ProjectTable)
                                              .InsertGetIdAsync<int>(new Dictionary<string, object>
                                              {
-                                                 {ProjectConstants.CodProject,createProject.MyProjectCode},
+                                                 {ProjectConstants.ProjectCode,createProject.MyProjectCode},
                                                  {ProjectConstants.ClientId,createProject.MyClientId },
                                                  {ProjectConstants.CodProjectType,createProject.MyProjectType },
                                                  {ProjectConstants.ProjectName,createProject.MyProjectName },
@@ -62,9 +59,10 @@ namespace BminingBlazor.Services
                 {
                     {PaymentConstants.ProjectId,projectId },
                     {PaymentConstants.PaymentName,payments.MyName },
+                    {PaymentConstants.PaymentName,paymentViewModel.MyName },
                     {PaymentConstants.CodPaymentStatusType,1 },
-                    {PaymentConstants.InvoiceExpirationDate,payments.InvoiceExpirationDate },
-                    {PaymentConstants.IssueExpirationDate,payments.IssueExpirationDate }
+                    {PaymentConstants.InvoiceExpirationDate,paymentViewModel.InvoiceExpirationDate },
+                    {PaymentConstants.IssueExpirationDate,paymentViewModel.IssueExpirationDate }
                 });
             }
 
@@ -83,10 +81,21 @@ namespace BminingBlazor.Services
                 
         });
      
+=======
+       
+        // TODO: 
+        public async Task<int> EditPaymentStatus(PaymentModel estadopago)
+        {
+            var sql =
+                "Update PaymentStatus" +
+                " set PaymentStatus.codPaymentStatus=@Cod_TipoEstadoPago" +
+                " where PaymentStatus.codPaymentStatus=@Cod_EstadoPago ";
+            await _dataAccess.UpdateData(sql, estadopago, _configuration.GetConnectionString("default"));
+>>>>>>> master
             return 1;
-
         }
 
+<<<<<<< HEAD
    
 
         public async Task AddMember(List<MemberViewModel> members, int idProject)
@@ -103,6 +112,42 @@ namespace BminingBlazor.Services
                     {MemberConstants.ProjectHours,member.MyProjectHours }
                 });
             }
+=======
+        //TODO Insertar creato debe tener este ademas de existir para agregar estados
+        public async Task AddPaymentStatus(PaymentModel estadopago)
+        {
+            var sql =
+                "insert into EstadoPago (EstadoPago.Estado_Pago,EstadoPago.Id_Proyecto,EstadoPago.Cod_TipoEstadoPago,EstadoPago.IssueExpirationDate,EstadoPago.InvoiceExpirationDate) " +
+                " Values (@Estado_Pago,@Id_Proyecto,@Cod_TipoEstadoPago,@IssueExpirationDate,@InvoiceExpirationDate)";
+            await _dataAccess.SaveData(sql, estadopago, _configuration.GetConnectionString("default"));
+        }
+
+        public async Task AddMember(MemberViewModel memberViewModel)
+        {
+            var sql = "insert into Integrantes_Proyecto (Integrantes_Proyecto.Id_Usuario,Integrantes_Proyecto.Id_Proyecto,Integrantes_Proyecto.Project_Hours) " +
+                      "Values (@Id_Usuario,@Id_Proyecto,@HoursProject)";
+            await _dataAccess.SaveData(sql, memberViewModel, _configuration.GetConnectionString("default"));
+        }
+
+        public async Task DeleteMember(int memberId)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            await queryFactory.Query(MembersTable).Where(MemberConstants.CodMembers, memberId).DeleteAsync();
+        }
+        public async Task<List<TipoProyectoModel>> ReadProjectType()
+        {
+            var sql = $"select*from {TableConstants.ProjectTypeTable}";
+            var tipro = await _dataAccess.LoadData<TipoProyectoModel, dynamic>(sql, new { },
+                _configuration.GetConnectionString("default"));
+            return tipro;
+        }
+        public async Task<List<TipoEstadoPagoModel>> ReadPaymentStatusType()
+        {
+            string sql = $"select*from {TableConstants.PaymentTypeTable}";
+            var tipoep = await _dataAccess.LoadData<TipoEstadoPagoModel, dynamic>(sql, new { },
+                _configuration.GetConnectionString("default"));
+            return tipoep;
+>>>>>>> master
         }
 
 
@@ -115,7 +160,7 @@ namespace BminingBlazor.Services
                 .Join(UserTable, UserTable + "." + UserConstants.UserId, ProjectTable + "." + ProjectConstants.ProjectManagerId)
                 .Join(ClientTable, ClientTable + "." + ClientConstants.ClientId, ProjectTable + "." + ProjectConstants.ClientId)
                 .Select(ProjectTable + "." + ProjectConstants.ProjectId)
-                .Select(ProjectConstants.CodProject)
+                .Select(ProjectConstants.ProjectCode)
                 .Select(ProjectConstants.ProjectName)
                 .Select(ProjectConstants.ProjectManagerId)
                 .Select(UserConstants.EmailBmining)
@@ -141,9 +186,6 @@ namespace BminingBlazor.Services
             }
             return projectViewModel.ToList();
         }
-
-
-
         public async Task<int> ReadIdProjectManager(int idProject)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
@@ -156,6 +198,7 @@ namespace BminingBlazor.Services
           
             return project.ProjectManagerId;        
         }
+
         public async Task<List<MemberViewModel>> ReadMembers(int idProject)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
@@ -202,6 +245,9 @@ namespace BminingBlazor.Services
 
 
         }
+=======
+    
+>>>>>>> master
 
         public async Task DeleteProject(int projectId)
         {
@@ -375,6 +421,5 @@ namespace BminingBlazor.Services
             
             return paymentViewModel;
         }
-
     }
 }

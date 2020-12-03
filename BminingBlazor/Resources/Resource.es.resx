@@ -163,6 +163,7 @@
   <data name="StatusProject" xml:space="preserve">
     <value>Estado del Proyecto</value>
   </data>
+<<<<<<< HEAD
   <data name="ContractType" xml:space="preserve">
     <value>Tipo de Contrato</value>
   </data>
@@ -192,10 +193,27 @@
   </data>
   <data name="AddPaymentStatus" xml:space="preserve">
     <value>Agregar Estado de Pago</value>
+=======
+  <data name="NewHours" xml:space="preserve">
+    <value>Nuevas Horas</value>
+  </data>
+  <data name="InvalidNumber" xml:space="preserve">
+    <value>Número inválido</value>
+  </data>
+  <data name="DashboardHours" xml:space="preserve">
+    <value>Dashboard horas</value>
+  </data>
+  <data name="DashboardProjectManager" xml:space="preserve">
+    <value>Dashboard jefe de proyecto</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Acciones</value>
+>>>>>>> master
   </data>
   <data name="Name" xml:space="preserve">
     <value>Nombre</value>
   </data>
+<<<<<<< HEAD
   <data name="BillingDeadline" xml:space="preserve">
     <value>Fecha Límite de Facturación</value>
   </data>
@@ -282,5 +300,12 @@
   </data>
   <data name="Change" xml:space="preserve">
     <value>Cambiar</value>
+=======
+  <data name="Hours" xml:space="preserve">
+    <value>Horas</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Fecha</value>
+>>>>>>> master
   </data>
 </root>

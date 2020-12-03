@@ -6,11 +6,11 @@ namespace BminingBlazor.ViewModels.TrackingHours
     public class WeekDayUserTrackingHoursViewModel
     {
         public DateTime ItemTime { get; set; }
-        public List<WeekDayUserTrackingHoursItemViewModel> WeekDayUserTrackingHourItems { get; set; }
+        public List<WeekDayUserTrackingHoursItemViewModel> OurWeekDayUserTrackingHourItems { get; set; }
 
         public WeekDayUserTrackingHoursViewModel()
         {
-            WeekDayUserTrackingHourItems = new List<WeekDayUserTrackingHoursItemViewModel>();
+            OurWeekDayUserTrackingHourItems = new List<WeekDayUserTrackingHoursItemViewModel>();
         }
     }
 }

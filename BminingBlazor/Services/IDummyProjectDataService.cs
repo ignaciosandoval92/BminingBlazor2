@@ -7,5 +7,6 @@ namespace BminingBlazor.Services
     public interface IDummyProjectDataService
     {
         Task<List<ProjectViewModel>> GetProjectsOwnedById(int userId);
+        Task<List<ProjectResumeViewModel>> GetProjectWhereBelongsUserId(int userId);
     }
 }
