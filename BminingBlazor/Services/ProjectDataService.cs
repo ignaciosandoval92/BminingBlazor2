@@ -146,12 +146,15 @@ namespace BminingBlazor.Services
 
         public async Task<int> ReadIdProjectManager(int idProject)
         {
-            string sql = "select Project.projectManagerId " +
-                         $" from {TableConstants.ProjectTable} " +
-                         $" where projectId={idProject}";
-            var idManager =
-                await _dataAccess.LoadData<ProjectModel, dynamic>(sql, new { }, _configuration.GetConnectionString("default"));
-            return idManager.First().ProjectManagerId;
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var project = (await queryFactory
+                .Query()
+                .From(ProjectTable)
+                .Select(ProjectConstants.ProjectManagerId)               
+                .Where(ProjectConstants.ProjectId, idProject)
+                .GetAsync<ProjectModel>()).First();
+          
+            return project.ProjectManagerId;        
         }
         public async Task<List<MemberViewModel>> ReadMembers(int idProject)
         {

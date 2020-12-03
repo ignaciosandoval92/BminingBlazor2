@@ -22,5 +22,6 @@ namespace BminingBlazor.Services
         Task<List<PaymentViewModel>> ReadPaymentStatus(int idProject);
         Task AddPaymentStatus(List<PaymentViewModel> payments, int idProject);
         Task<PaymentViewModel> ReadPaymentStatu(int paymentId);
+        Task<int> ReadIdProjectManager(int idProject);
     }
 }

@@ -29,16 +29,15 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var p in _boss)
-                {
+               
                     <tr>
-                        <td>@p.MyEmail</td>
-                        <td>@p.MyName</td>
-                        <td>@p.MyPaternalSurname</td>
-                        <td>@p.MyMaternalSurname</td>
-                        <td>@p.MyRut</td>
+                        <td>@_boss.MyEmail</td>
+                        <td>@_boss.MyName</td>
+                        <td>@_boss.MyPaternalSurname</td>
+                        <td>@_boss.MyMaternalSurname</td>
+                        <td>@_boss.MyRut</td>
                     </tr>
-                }
+              
             </tbody>
         </table>
     </div>
@@ -58,7 +57,7 @@ else
                     <th>@Resource.Names</th>
                     <th>@Resource.PaternalLastName</th>
                     <th>@Resource.MaternalLastName</th>
-                    <th>Rut</th>
+                    <th>@Resource.Rut</th>
                 </tr>
             </thead>
             <tbody>
@@ -83,12 +82,12 @@ else
 @code {
     [Parameter]
     public int IdProject { get; set; }
-    private List<MemberViewModel> _boss;
+    private UserViewModel _boss;
     private List<MemberViewModel> _members;
     protected override async Task OnInitializedAsync()
     {
-        //    //var id = await ProjectDataService.ReadIdProjectManager(IdProject);
-        //    //_boss = await UserDataService.ReadUser(id);
+        var id = await ProjectDataService.ReadIdProjectManager(IdProject);
+        _boss = await UserDataService.ReadUser(id);
         _members = await ProjectDataService.ReadMembers(IdProject);
     }
     public void AddMember()
