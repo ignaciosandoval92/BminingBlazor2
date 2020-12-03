@@ -1,5 +1,5 @@
 ﻿@page "/dashboard_tracking_hours"
-@*@page "/dashboard_tracking_hours/{day:int}/{month:int}/{year:int}"*@
+@page "/dashboard_tracking_hours/{day:int}/{month:int}/{year:int}"
 @using BminingBlazor.ViewModels.TrackingHours
 @using Microsoft.AspNetCore.Http
 @using Models.TimeTracking
@@ -61,36 +61,42 @@
 </style>
 
 <div class="bmining-app">
-    <h1 class="header-break">@Resource.DashboardHours</h1>
-    <div class="main-break">
-        <div class="main-circle"></div>
-    </div>
 
-    <div class="week-header-container">
-        <div class="week-header-item">
-            <button class="bmining-btn-icon week-header-bmining-button" @onclick="@PreviousWeek">
-                <i class="fa fa-caret-left"></i>
-            </button>
+    @if (IsLoading)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
+        <h1 class="header-break">@Resource.DashboardHours</h1>
+        <div class="main-break">
+            <div class="main-circle"></div>
         </div>
-        <div class="week-header-item">
-            <button class="bmining-btn-icon week-header-bmining-button" @onclick="@NextWeek">
-                <i class="fa fa-caret-right"></i>
-            </button>
-        </div>
-        <div class="week-header-item">
-            <MatDatePicker @bind-Value="@MySelectedDate"/>
-        </div>
-        <div class="week-header-item">
-            <h4 class="m-2">@Resource.Week @MyStartOfWeek.ToLongDateString()</h4>
-        </div>
-    </div>
 
-    <div class="alternate1-break">
+        <div class="week-header-container">
+            <div class="week-header-item">
+                <button class="bmining-btn-icon week-header-bmining-button" @onclick="@PreviousWeek">
+                    <i class="fa fa-caret-left"></i>
+                </button>
+            </div>
+            <div class="week-header-item">
+                <button class="bmining-btn-icon week-header-bmining-button" @onclick="@NextWeek">
+                    <i class="fa fa-caret-right"></i>
+                </button>
+            </div>
+            <div class="week-header-item">
+                <MatDatePicker @bind-Value="@MySelectedDate" />
+            </div>
+            <div class="week-header-item">
+                <h4 class="m-2">@Resource.Week @MyStartOfWeek.ToLongDateString()</h4>
+            </div>
+        </div>
 
-    </div>
+        <div class="alternate1-break">
 
-    <div class="container-fluid w-100 d-flex">
-        <div class="col">
+        </div>
+
+        <div class="w-100">
             @if (DashboardUserTracking != null)
             {
                 @foreach (var weekDayUserTrackingHours in DashboardUserTracking.WeekDayUserTrackingHours)
@@ -140,20 +146,14 @@
                                 </div>
                             }
                         </div>
-
-
                         <div class="alternate2-break"></div>
                     </div>
                 }
             }
-            else
-            {
-                <MatProgressBar Indeterminate="true" />
-            }
-
         </div>
-    </div>
+    }
 </div>
+
 @code {
     [Parameter]
     public int? Day { get; set; }
@@ -163,22 +163,22 @@
     public int? Year { get; set; }
 
 
+    public bool IsLoading { get; set; }
     public string Email { get; set; }
 
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
 
+    private bool _firstRender = true;
+    private int _currentDateSet = 0;
     private DateTime _mySelectedDate;
     public DateTime MySelectedDate
     {
         get { return _mySelectedDate; }
         set
         {
-            //if (_mySelectedDate == value)
-            //    return;
             _mySelectedDate = value;
-            return;
             var dayOfWeek = value.DayOfWeek;
-            var numberOfDay = 1;
+            int numberOfDay;
             switch (dayOfWeek)
             {
                 case DayOfWeek.Sunday:
@@ -208,24 +208,46 @@
 
             MyStartOfWeek = MySelectedDate.AddDays(-numberOfDay);
 
-
-            //SetDate(MyStartOfWeek);
-
+            this.StateHasChanged();
+            SetDate(MyStartOfWeek).Wait();
+            IsLoading = false;
         }
     }
 
     public DateTime MyStartOfWeek { get; set; }
 
+    protected override void OnInitialized()
+    {
+        //MySelectedDate = DateTime.Now;
+        base.OnInitialized();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsLoading = true;
+        await base.OnInitializedAsync();
+    }
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        Email = HttpContextAccessor.GetEmail();
-        var userId = await UserDataService.GetUserId(Email);
-        DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
-        DashboardUserTracking.MyUserId = userId;
-        if (!Day.HasValue || !Month.HasValue || !Year.HasValue)
-            MySelectedDate = DateTime.UtcNow;
-        else MySelectedDate = new DateTime(Year.Value, Month.Value, Day.Value);
+
+        if (firstRender)
+        {
+            Email = HttpContextAccessor.GetEmail();
+            var userId = await UserDataService.GetUserId(Email);
+            DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
+            DashboardUserTracking.MyUserId = userId;
+            if (!Day.HasValue || !Month.HasValue || !Year.HasValue)
+            {
+                var date = DateTime.UtcNow.ToLocalTime();
+                MySelectedDate = new DateTime(date.Year, date.Month, date.Day);
+            }
+            else MySelectedDate = new DateTime(Year.Value, Month.Value, Day.Value);
+            this.StateHasChanged();
+        }
+
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
