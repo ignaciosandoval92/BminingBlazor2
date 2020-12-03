@@ -80,14 +80,14 @@ namespace BminingBlazor.Services
                 .Where(PaymentConstants.PaymentId, paymentStatus.Id)
                 .UpdateAsync(new Dictionary<string, object>{
                 { PaymentConstants.CodPaymentStatusType,paymentStatus.PaymentStatusType}
-                
+
         });
-     
+
             return 1;
 
         }
 
-   
+
 
         public async Task AddMember(List<MemberViewModel> members, int idProject)
         {
@@ -109,37 +109,122 @@ namespace BminingBlazor.Services
         public async Task<List<ProjectViewModel>> ReadProjects()
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
-            var projects = (await queryFactory
-                .Query()
-                .From(ProjectTable)
-                .Join(UserTable, UserTable + "." + UserConstants.UserId, ProjectTable + "." + ProjectConstants.ProjectManagerId)
-                .Join(ClientTable, ClientTable + "." + ClientConstants.ClientId, ProjectTable + "." + ProjectConstants.ClientId)
-                .Select(ProjectTable + "." + ProjectConstants.ProjectId)
-                .Select(ProjectConstants.CodProject)
-                .Select(ProjectConstants.ProjectName)
-                .Select(ProjectConstants.ProjectManagerId)
-                .Select(UserConstants.EmailBmining)
-                .Select(ClientConstants.ClientName)
-                .Select(ProjectConstants.CodProjectType)
-                .Select(ProjectConstants.StatusId)
-                .Select(ClientTable + "." + ClientConstants.ClientId)
-                .GetAsync<ProjectModel>()).ToList();
-            var projectViewModel = new List<ProjectViewModel>();
-            foreach (var projectModel in projects)
+
+            var listOfProjectModels = new List<ProjectViewModel>();
+
+            var paymentQuery = queryFactory.Query(TableConstants.PaymentTable);
+            var membersQuery = queryFactory.Query(TableConstants.MembersTable)
+                .Join(TableConstants.UserTable, $"{TableConstants.UserTable}.{UserConstants.UserId}",
+                                                $"{TableConstants.MembersTable}.{MemberConstants.UserId}")
+                                                .Select($"{TableConstants.UserTable}.{{*}}",
+                                                        $"{TableConstants.MembersTable}.{{{MemberConstants.ProjectId}}}",
+                                                        $"{TableConstants.MembersTable}.{{{MemberConstants.ProjectHours}}}");
+            var creatorQuery = queryFactory.Query(TableConstants.UserTable);
+            var projectManagerQuery = queryFactory.Query(TableConstants.UserTable);
+
+            var projectQuery = queryFactory.Query(TableConstants.ProjectTable)              
+                .Include(ProjectConstants.Creator, creatorQuery, ProjectConstants.CreatorId, UserConstants.UserId)
+                .Include(ProjectConstants.ProjectManager, projectManagerQuery, ProjectConstants.ProjectManagerId, UserConstants.UserId)
+                .Join(TableConstants.ClientTable, $"{TableConstants.ClientTable}.{ClientConstants.ClientId}",
+                                                  $"{TableConstants.ProjectTable}.{ProjectConstants.ClientId}").
+                Select($"{TableConstants.ProjectTable}.{{*}}",
+                       $"{TableConstants.ClientTable}.{{{ClientConstants.ClientName}}}");
+
+            var items = (await projectQuery
+                            .IncludeMany(TableConstants.PaymentTable, paymentQuery, ProjectConstants.ProjectId, PaymentConstants.ProjectId)
+                            .IncludeMany(TableConstants.MembersTable, membersQuery, ProjectConstants.ProjectId, MemberConstants.ProjectId)
+                            .GetAsync()).Cast<IDictionary<string, object>>().ToList();
+
+            var projects = new List<ProjectViewModel>();
+
+            foreach (var item in items)
             {
-                projectViewModel.Add(new ProjectViewModel
+                var project = new ProjectViewModel
                 {
-                    MyId = projectModel.ProjectId,
-                    MyProjectCode = projectModel.CodProject,
-                    MyProjectName = projectModel.ProjectName,
-                    MyProjectStatus = (ProjectStatusEnum)projectModel.StatusId,
-                    MyProjectType = (ProjectTypeEnum)projectModel.CodProjectType,
-                    MyClientId = projectModel.ClientId,
-                    MyClientName = projectModel.ClientName,
-                    MyProjectManager = new UserViewModel { MyId = projectModel.ProjectManagerId, MyEmail = projectModel.EmailBmining },
-                });
+                    MyId = (int)item[ProjectConstants.ProjectId],
+                    MyProjectName = (string)item[ProjectConstants.ProjectName],
+                    MyClientId = (int)item[ProjectConstants.ClientId],
+                    MyClientName = (string)item[ClientConstants.ClientName],
+                    MyEndDate = (DateTime)item[ProjectConstants.EndDate],
+                    MyStartDate = (DateTime)item[ProjectConstants.StartDate],
+                    MyProjectCode = (string)item[ProjectConstants.CodProject],
+                    MyProjectStatus = (ProjectStatusEnum)item[ProjectConstants.StatusId],
+                    MyProjectType = (ProjectTypeEnum)item[ProjectConstants.CodProjectType],
+                };
+
+
+                UserViewModel GetUserViewModel(IDictionary<string, object> user)
+                {
+                    return new UserViewModel
+                    {
+                        MyRut = (string)user[UserConstants.Rut],
+                        MyContractType = (ContractTypeEnum)user[UserConstants.CodContractType],
+                        MyEmail = (string)user[UserConstants.EmailBmining],
+                        MyName = (string)user[UserConstants.Name],
+                        MyPaternalSurname = (string)user[UserConstants.PaternalLastName],
+                        MyMaternalSurname = (string)user[UserConstants.MaternalLastName],
+                        MyJob = (string)user[UserConstants.Job],
+                        MyTelephone = (string)user[UserConstants.Phone],
+                        MyDirection = (string)user[UserConstants.HomeAddress],
+                        MyId = (int)user[UserConstants.UserId]
+                    };
+                }
+
+                MemberViewModel GetMemberViewModel(IDictionary<string, object> user)
+                {
+                    return new MemberViewModel
+                    {
+                        MyRut = (string)user[UserConstants.Rut],
+                        MyContractType = (ContractTypeEnum)user[UserConstants.CodContractType],
+                        MyEmail = (string)user[UserConstants.EmailBmining],
+                        MyName = (string)user[UserConstants.Name],
+                        MyPaternalSurname = (string)user[UserConstants.PaternalLastName],
+                        MyMaternalSurname = (string)user[UserConstants.MaternalLastName],
+                        MyJob = (string)user[UserConstants.Job],
+                        MyTelephone = (string)user[UserConstants.Phone],
+                        MyDirection = (string)user[UserConstants.HomeAddress],
+                        MyId = (int)user[UserConstants.UserId],
+                        MyProjectHours = (float)user[MemberConstants.ProjectHours],
+                        MyProjectId = (int)user[MemberConstants.ProjectId],
+
+                    };
+                }
+
+                PaymentViewModel GetPaymentViewModel(IDictionary<string, object> payment)
+                {
+                    return new PaymentViewModel
+                    {
+                        MyProjectId = (int)payment[PaymentConstants.ProjectId],
+                        PaymentStatusType = (PaymentStatusTypeEnum)payment[PaymentConstants.CodPaymentStatusType],
+                        InvoiceExpirationDate = (DateTime)payment[PaymentConstants.InvoiceExpirationDate],
+                        IssueExpirationDate = (DateTime)payment[PaymentConstants.IssueExpirationDate],
+                        Id = (int)payment[PaymentConstants.ProjectId]
+                    };
+                }
+
+
+                var creator = (IDictionary<string, object>)item[ProjectConstants.Creator];
+                project.MyCreator = GetUserViewModel(creator);
+                var manager = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
+                project.MyProjectManager = GetUserViewModel(manager);
+
+                // Payment
+                var payments = (IEnumerable<IDictionary<string, object>>)item[TableConstants.PaymentTable];
+                var paymentViewModels = new List<PaymentViewModel>();
+                foreach (var payment in payments)
+                    paymentViewModels.Add(GetPaymentViewModel(payment));
+                project.OurPayments.AddRange(paymentViewModels);
+
+                // Member
+                var members = (IEnumerable<IDictionary<string, object>>)item[TableConstants.MembersTable];
+                var memberViewModels = new List<MemberViewModel>();
+                foreach (var member in members)
+                    memberViewModels.Add(GetMemberViewModel(member));
+                project.OurMembers = memberViewModels;
+
+                projects.Add(project);
             }
-            return projectViewModel.ToList();
+            return projects;
         }
 
 
@@ -150,11 +235,11 @@ namespace BminingBlazor.Services
             var project = (await queryFactory
                 .Query()
                 .From(ProjectTable)
-                .Select(ProjectConstants.ProjectManagerId)               
+                .Select(ProjectConstants.ProjectManagerId)
                 .Where(ProjectConstants.ProjectId, idProject)
                 .GetAsync<ProjectModel>()).First();
-          
-            return project.ProjectManagerId;        
+
+            return project.ProjectManagerId;
         }
         public async Task<List<MemberViewModel>> ReadMembers(int idProject)
         {
@@ -189,7 +274,7 @@ namespace BminingBlazor.Services
                     MyMaternalSurname = member.MaternalLastName,
                     MyName = member.Name,
                     MyPaternalSurname = member.PaternalLastName,
-                    MyRut=member.Rut
+                    MyRut = member.Rut
 
                 });
             }
@@ -222,7 +307,7 @@ namespace BminingBlazor.Services
                 .From(ProjectTable)
                 .Join(UserTable, UserTable + "." + UserConstants.UserId, ProjectTable + "." + ProjectConstants.ProjectManagerId)
                 .Join(ClientTable, ClientTable + "." + ClientConstants.ClientId, ProjectTable + "." + ProjectConstants.ClientId)
-                .Join(MembersTable,MembersTable+"."+MemberConstants.ProjectId, ProjectTable + "." + ProjectConstants.ProjectId)
+                .Join(MembersTable, MembersTable + "." + MemberConstants.ProjectId, ProjectTable + "." + ProjectConstants.ProjectId)
                 .Select(ProjectTable + "." + ProjectConstants.ProjectId)
                 .Select(ProjectConstants.CodProject)
                 .Select(ProjectConstants.ProjectName)
@@ -232,8 +317,8 @@ namespace BminingBlazor.Services
                 .Select(ProjectConstants.CodProjectType)
                 .Select(ProjectConstants.StatusId)
                 .Select(ClientTable + "." + ClientConstants.ClientId)
-                .Where(MembersTable+"."+MemberConstants.UserId,userId)
-                .GroupBy(ProjectTable+"."+ProjectConstants.ProjectId)
+                .Where(MembersTable + "." + MemberConstants.UserId, userId)
+                .GroupBy(ProjectTable + "." + ProjectConstants.ProjectId)
                 .GetAsync<ProjectModel>()).ToList();
             var projectViewModel = new List<ProjectViewModel>();
             foreach (var projectModel in projects)
@@ -251,7 +336,7 @@ namespace BminingBlazor.Services
                 });
             }
             return projectViewModel.ToList();
-         
+
         }
 
         public async Task<List<StatusProjectModel>> GetAvailableProjectStatus()
@@ -278,7 +363,7 @@ namespace BminingBlazor.Services
                 .Select(ProjectConstants.CodProjectType)
                 .Select(ProjectConstants.StatusId)
                 .Select(ClientTable + "." + ClientConstants.ClientId)
-                .Where(ProjectTable+"."+ProjectConstants.ProjectId,projectId)
+                .Where(ProjectTable + "." + ProjectConstants.ProjectId, projectId)
                 .GetAsync<ProjectModel>()).First();
             var projectViewModel = new ProjectViewModel()
             {
@@ -292,12 +377,12 @@ namespace BminingBlazor.Services
                 MyProjectManager = new UserViewModel { MyId = projects.ProjectManagerId, MyEmail = projects.EmailBmining },
             };
             return projectViewModel;
-         
-           
-            
+
+
+
         }
 
-        public async Task AddPaymentStatus(List<PaymentViewModel> payments,int idProject)
+        public async Task AddPaymentStatus(List<PaymentViewModel> payments, int idProject)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             foreach (var payment in payments)
@@ -311,10 +396,10 @@ namespace BminingBlazor.Services
                     {PaymentConstants.InvoiceExpirationDate,payment.InvoiceExpirationDate },
                     {PaymentConstants.IssueExpirationDate,payment.IssueExpirationDate }
                 });
-            }           
+            }
         }
 
-      
+
         public async Task<List<PaymentViewModel>> ReadPaymentStatus(int idProject)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
@@ -324,7 +409,7 @@ namespace BminingBlazor.Services
                 .Join(PaymentTypeTable, PaymentTypeTable + "." + PaymentTypeConstants.CodPaymentStatusType, PaymentTable + "." + PaymentConstants.CodPaymentStatusType)
                 .Select(PaymentTable + "." + PaymentConstants.CodPaymentStatusType)
                 .Select(PaymentConstants.PaymentName)
-                .Select(PaymentConstants.ProjectId)                
+                .Select(PaymentConstants.ProjectId)
                 .Select(PaymentConstants.InvoiceExpirationDate)
                 .Select(PaymentConstants.IssueExpirationDate)
                 .Select(PaymentConstants.PaymentId)
@@ -362,17 +447,17 @@ namespace BminingBlazor.Services
                 .Where(PaymentTable + "." + PaymentConstants.PaymentId, paymentId)
                 .GroupBy(PaymentConstants.PaymentId)
                 .GetAsync<PaymentModel>()).First();
-            var paymentViewModel = new PaymentViewModel()        
-           
-               {
-                    MyName = payment.PaymentName,
-                    MyProjectId = payment.ProjectId,
-                    PaymentStatusType = (PaymentStatusTypeEnum)payment.CodPaymentStatusType,
-                    Id = payment.PaymentId,
-                    InvoiceExpirationDate = payment.InvoiceExpirationDate,
-                    IssueExpirationDate = payment.IssueExpirationDate
-                };
-            
+            var paymentViewModel = new PaymentViewModel()
+
+            {
+                MyName = payment.PaymentName,
+                MyProjectId = payment.ProjectId,
+                PaymentStatusType = (PaymentStatusTypeEnum)payment.CodPaymentStatusType,
+                Id = payment.PaymentId,
+                InvoiceExpirationDate = payment.InvoiceExpirationDate,
+                IssueExpirationDate = payment.IssueExpirationDate
+            };
+
             return paymentViewModel;
         }
 

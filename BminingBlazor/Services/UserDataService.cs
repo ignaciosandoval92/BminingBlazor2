@@ -173,10 +173,7 @@ namespace BminingBlazor.Services
 
         }
 
-        public Task<MemberProjectEditModel> EditUsers(string id)
-        {
-            throw new System.NotImplementedException();
-        }
+      
 
     }
 }
