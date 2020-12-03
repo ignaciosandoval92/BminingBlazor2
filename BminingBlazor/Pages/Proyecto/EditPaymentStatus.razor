@@ -9,7 +9,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize(Roles = "Administracion")]
 
-<h3>Estados de Pago</h3>
+<h3>@Resource.PaymentStatus</h3>
 
 <EditForm Model="@_newPayment" OnValidSubmit="@EditarEstadoPago">
     <DataAnnotationsValidator />
@@ -56,7 +56,7 @@
 
     </div>
 
-    <MatButton type="submit" class="btn btn-primary">Cambiar</MatButton>
+    <MatButton type="submit" class="btn btn-primary">@Resource.Change</MatButton>
 
 
 </EditForm>

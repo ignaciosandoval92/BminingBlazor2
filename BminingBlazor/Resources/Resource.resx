@@ -280,4 +280,7 @@
   <data name="NotApply" xml:space="preserve">
     <value>Not Apply</value>
   </data>
+  <data name="Change" xml:space="preserve">
+    <value>Change</value>
+  </data>
 </root>
