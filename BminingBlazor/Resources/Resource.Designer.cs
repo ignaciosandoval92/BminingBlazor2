@@ -61,6 +61,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Add.
+        /// </summary>
+        internal static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Add Member.
         /// </summary>
         internal static string AddMember {
@@ -79,6 +88,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Add Project.
+        /// </summary>
+        internal static string AddProject {
+            get {
+                return ResourceManager.GetString("AddProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Add User.
         /// </summary>
         internal static string AddUser {
@@ -93,6 +111,15 @@ namespace BminingBlazor.Resources {
         internal static string Approve {
             get {
                 return ResourceManager.GetString("Approve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Approved.
+        /// </summary>
+        internal static string Approved {
+            get {
+                return ResourceManager.GetString("Approved", resourceCulture);
             }
         }
         
@@ -151,6 +178,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Create Project.
+        /// </summary>
+        internal static string CreateProject {
+            get {
+                return ResourceManager.GetString("CreateProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Create User.
         /// </summary>
         internal static string CreateUser {
@@ -169,6 +205,24 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Edit.
+        /// </summary>
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Edit Payment Status.
+        /// </summary>
+        internal static string EditPaymentStatus {
+            get {
+                return ResourceManager.GetString("EditPaymentStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Email.
         /// </summary>
         internal static string Email {
@@ -183,6 +237,15 @@ namespace BminingBlazor.Resources {
         internal static string EmailProjectManager {
             get {
                 return ResourceManager.GetString("EmailProjectManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Emitted.
+        /// </summary>
+        internal static string Emitted {
+            get {
+                return ResourceManager.GetString("Emitted", resourceCulture);
             }
         }
         
@@ -237,6 +300,15 @@ namespace BminingBlazor.Resources {
         internal static string InvestedHours {
             get {
                 return ResourceManager.GetString("InvestedHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Invoiced.
+        /// </summary>
+        internal static string Invoiced {
+            get {
+                return ResourceManager.GetString("Invoiced", resourceCulture);
             }
         }
         
@@ -322,11 +394,38 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Not Apply.
+        /// </summary>
+        internal static string NotApply {
+            get {
+                return ResourceManager.GetString("NotApply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Not Initiated.
+        /// </summary>
+        internal static string NotInitiated {
+            get {
+                return ResourceManager.GetString("NotInitiated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Paternal Last Name.
         /// </summary>
         internal static string PaternalLastName {
             get {
                 return ResourceManager.GetString("PaternalLastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Payed.
+        /// </summary>
+        internal static string Payed {
+            get {
+                return ResourceManager.GetString("Payed", resourceCulture);
             }
         }
         
@@ -403,6 +502,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Projects.
+        /// </summary>
+        internal static string Projects {
+            get {
+                return ResourceManager.GetString("Projects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Project Status.
         /// </summary>
         internal static string ProjectStatus {
@@ -435,6 +543,15 @@ namespace BminingBlazor.Resources {
         internal static string Reject {
             get {
                 return ResourceManager.GetString("Reject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Rejected.
+        /// </summary>
+        internal static string Rejected {
+            get {
+                return ResourceManager.GetString("Rejected", resourceCulture);
             }
         }
         

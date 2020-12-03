@@ -94,14 +94,7 @@ namespace BminingBlazor.Services
                 MyContractType = (ContractTypeEnum)user.CodContractType
 
             };
-
-            return userViewModel;
-            //string sql = "select * " +
-            //             $" from {UserTable}" +
-            //             $" where User.userId={id}";
-            //var user = await _dataAccess.LoadData<MemberProjectEditModel, dynamic>(sql, new { },
-            //       _configuration.GetConnectionString("default"));
-            //return user;
+            return userViewModel;        
         }
 
         public async Task<List<UserViewModel>> ReadUsers(IEnumerable<int> ids)

@@ -37,7 +37,7 @@ else
                         <td>@p.InvoiceExpirationDate</td>
                         <td>@p.IssueExpirationDate</td>
                         <td>@p.PaymentStatusType</td>
-                        <MatButton @onclick="()=>Delete(p.Id)">@Resource.Delete</MatButton>
+                        <MatButton @onclick="()=>EditPaymentStatus(p.Id)">@Resource.Edit</MatButton>
                     </tr>
                 }
             </tbody>
@@ -52,21 +52,17 @@ else
     public int IdProject { get; set; }
     private List<PaymentViewModel> _payments;
     protected override async Task OnInitializedAsync()
-    {        
+    {
         _payments = await ProjectDataService.ReadPaymentStatus(IdProject);
     }
     public void Addpayment()
     {
         NavigationManager.NavigateTo($"/AddPaymentStatus/{IdProject}");
     }
-    public  void Delete(int codMember)
+   
+    public void EditPaymentStatus(int paymentId)
     {
-        //var answer = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
-        //if (!answer) return;
-
-        //await ProjectDataService.DeleteMember(codMember);
-        NavigationManager.NavigateTo($"/viewPaymentStatus/{IdProject}", true);
-
+        NavigationManager.NavigateTo($"/EditPaymentStatus/{paymentId}");
     }
 }
 

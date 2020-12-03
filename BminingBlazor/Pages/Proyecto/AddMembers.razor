@@ -12,7 +12,7 @@
 @attribute [Authorize(Roles = "Administracion")]
 
 
-<h3>Integrantes</h3>
+<h3>@Resource.Members</h3>
 
 <EditForm Model="@_newMember" OnValidSubmit="@InsertIntegrante">
     <DataAnnotationsValidator />
@@ -59,7 +59,7 @@
             </tbody>
         </table>
     </div>
-    <MatButton type="submit" class="btn btn-primary">Agregar</MatButton>
+    <MatButton type="submit" class="btn btn-primary">@Resource.Add</MatButton>
 </EditForm>
 
 @code {

@@ -1,4 +1,4 @@
-﻿@page "/EditPaymentStatus/{cod_estadopago:int}"
+﻿@page "/EditPaymentStatus/{paymentId:int}"
 @using Models
 @using BminingBlazor.Services
 @using BminingBlazor.ViewModels.Projects
@@ -11,52 +11,81 @@
 
 <h3>Estados de Pago</h3>
 
-@*<EditForm Model="@_newPayment" OnValidSubmit="@EditarEstadoPago">
+<EditForm Model="@_newPayment" OnValidSubmit="@EditarEstadoPago">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div class="form-group col-md-6">
-        <label for="inputTContrato">Estado de Pago:</label>
-        <select class="form-control" @bind="_newPayment.Cod_TipoEstadoPago" required>
-            @if (_listTipoEstadoPagoModels is null)
+    <div>
+
+        <label for="inputNombres">  @Resource.ContractType:  </label>
+        <InputSelect class="form-control" @bind-Value="_newPayment.PaymentStatusType" required>
+
+            @foreach (var typePayment in Enum.GetValues(typeof(PaymentStatusTypeEnum)))
             {
-                
-            }
-            else
-            {
-                @foreach (var estado in _listTipoEstadoPagoModels)
-                {
-                    <option value="@estado.Cod_TipoEstadoPago">@estado.TipoEstadoPago</option>
+            <option value="@typePayment">
+                @{
+                    switch (typePayment)
+                    {
+                        case PaymentStatusTypeEnum.NotInitiated:
+                            <p>@Resource.NotInitiated</p>
+                            break;
+                        case PaymentStatusTypeEnum.Emitted:
+                            <p>@Resource.Emitted</p>
+                            break;
+                        case PaymentStatusTypeEnum.Approved:
+                            <p>@Resource.Approved</p>
+                            break;
+                        case PaymentStatusTypeEnum.Rejected:
+                            <p>@Resource.Rejected</p>
+                            break;
+                        case PaymentStatusTypeEnum.Invoiced:
+                            <p>@Resource.Invoiced</p>
+                            break;
+                        case PaymentStatusTypeEnum.Payed:
+                            <p>@Resource.Payed</p>
+                            break;
+                        case PaymentStatusTypeEnum.NotApply:
+                            <p>@Resource.NotApply</p>
+                            break;
+                    }
                 }
+            </option>
             }
-        </select>
+
+        </InputSelect>
+
     </div>
 
-    <MatButton type="submit" class="btn btn-primary">Cambiar</MatButton>*@
+    <MatButton type="submit" class="btn btn-primary">Cambiar</MatButton>
 
 
-@*</EditForm>*@
+</EditForm>
 
 @code {
-    [Parameter]
-    public int cod_estadopago { get; set; }
-    private PaymentModel _newPayment = new PaymentModel();
-    private List<TipoEstadoPagoModel> _listTipoEstadoPagoModels;
+        [Parameter]
+        public int paymentId { get; set; }
+    private PaymentViewModel _newPayment = new PaymentViewModel();
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    _listTipoEstadoPagoModels = await ProjectDataService.ReadPaymentStatusType();
-    //}
 
-    //private async Task EditarEstadoPago()
-    //{
-    //    //    var payment = new PaymentViewModel()
-    //    //    {
-    //    //        PaymentStatusType = cod_estadopago,
-    //    //        Cod_TipoEstadoPago = _newEstadoPago.Cod_TipoEstadoPago
-    //    //    };
-    //    //    await ProjectDataService.EditPaymentStatus(estadopago);
-    //    //    NavigationManager.NavigateTo("/proyectos");
+    protected override async Task OnInitializedAsync()
+    {
+        var viewPaymentStatus = await ProjectDataService.ReadPaymentStatu(paymentId);
+        _newPayment.Id = paymentId;
+        _newPayment.PaymentStatusType = viewPaymentStatus.PaymentStatusType;
+        _newPayment.MyProjectId = viewPaymentStatus.MyProjectId;
+    }
 
-    //}
+    private async Task EditarEstadoPago()
+    {
+        var payment = new PaymentViewModel()
+        {
+            PaymentStatusType = _newPayment.PaymentStatusType,
+            Id = _newPayment.Id,
+            MyProjectId=_newPayment.MyProjectId
+        };
+        await ProjectDataService.EditPaymentStatus(payment);
+        NavigationManager.NavigateTo($"ViewPaymentStatus/{payment.MyProjectId}");
+            
+
+    }
 }

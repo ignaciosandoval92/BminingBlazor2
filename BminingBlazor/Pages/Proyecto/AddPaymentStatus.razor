@@ -12,7 +12,7 @@
 @attribute [Authorize(Roles = "Administracion")]
 
 
-<h3>Integrantes</h3>
+<h3>@Resource.PaymentStatus</h3>
 
 <EditForm Model="@_newPaymentStatus" OnValidSubmit="@InsertPayments">
     <DataAnnotationsValidator />

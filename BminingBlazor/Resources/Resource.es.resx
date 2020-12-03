@@ -241,4 +241,43 @@
   <data name="CreateUser" xml:space="preserve">
     <value>Crear Usuario</value>
   </data>
+  <data name="Projects" xml:space="preserve">
+    <value>Proyectos</value>
+  </data>
+  <data name="AddProject" xml:space="preserve">
+    <value>Agregar Proyecto</value>
+  </data>
+  <data name="EditPaymentStatus" xml:space="preserve">
+    <value>Editar Estados de Pagos</value>
+  </data>
+  <data name="CreateProject" xml:space="preserve">
+    <value>Crear Proyecto</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Agregar</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="NotInitiated" xml:space="preserve">
+    <value>No Iniciado</value>
+  </data>
+  <data name="Emitted" xml:space="preserve">
+    <value>Emitido</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Aprobado</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>Rechazado</value>
+  </data>
+  <data name="Invoiced" xml:space="preserve">
+    <value>Facturado</value>
+  </data>
+  <data name="Payed" xml:space="preserve">
+    <value>Pagado</value>
+  </data>
+  <data name="NotApply" xml:space="preserve">
+    <value>No Aplica</value>
+  </data>
 </root>

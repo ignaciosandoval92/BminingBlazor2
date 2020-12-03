@@ -1,4 +1,4 @@
-﻿@page "/CrearProyecto"
+﻿@page "/CreateProject"
 @using Models
 @using Microsoft.AspNetCore.Http
 @using ProjectModel = Models.Project.ProjectModel
@@ -17,7 +17,7 @@
 @attribute [Authorize(Roles = "Administracion")]
 
 
-<h3>CrearProyecto</h3>
+<h3>@Resource.CreateProject</h3>
 
 <EditForm Model="@_newCreateProjectView" OnValidSubmit="@InsertProject">
     <DataAnnotationsValidator />
@@ -256,6 +256,6 @@
             project.OurPayments.Add(estados);
         }
         var id_proyecto = await ProjectDataService.CreateProject(project);
-        NavigationManager.NavigateTo("/Proyectos");
+        NavigationManager.NavigateTo("/ViewProject");
     }
 }

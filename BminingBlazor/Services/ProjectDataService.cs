@@ -72,14 +72,22 @@ namespace BminingBlazor.Services
 
         }
 
-        public async Task<int> EditPaymentStatus(PaymentModel estadopago)
+        public async Task<int> EditPaymentStatus(PaymentViewModel paymentStatus)
         {
-            var sql =
-                "Update PaymentStatus" +
-                " set PaymentStatus.codPaymentStatus=@Cod_TipoEstadoPago" +
-                " where PaymentStatus.codPaymentStatus=@Cod_EstadoPago ";
-            ;
-            await _dataAccess.UpdateData(sql, estadopago, _configuration.GetConnectionString("default"));
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var userId = await queryFactory.Query()
+                .From(PaymentTable)
+                .Where(PaymentConstants.PaymentId, paymentStatus.Id)
+                .UpdateAsync(new Dictionary<string, object>{
+                { PaymentConstants.CodPaymentStatusType,paymentStatus.PaymentStatusType}
+                
+        });
+            //var sql =
+            //    "Update PaymentStatus" +
+            //    " set PaymentStatus.codPaymentStatus=@Cod_TipoEstadoPago" +
+            //    " where PaymentStatus.codPaymentStatus=@Cod_EstadoPago ";
+            //;
+            //await _dataAccess.UpdateData(sql, estadopago, _configuration.GetConnectionString("default"));
             return 1;
 
         }
@@ -329,10 +337,10 @@ namespace BminingBlazor.Services
             }           
         }
 
-        public async Task<int> EditPaymentStatus(PaymentViewModel editPayment)
-        {
-            return await Task.Run(() => 1);
-        }
+        //public async Task<int> EditPaymentStatus(PaymentViewModel editPayment)
+        //{
+        //    return await Task.Run(() => 1);
+        //}
         public async Task<List<PaymentViewModel>> ReadPaymentStatus(int idProject)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
@@ -363,6 +371,35 @@ namespace BminingBlazor.Services
                 });
             }
             return paymentsViewModel;
+        }
+        public async Task<PaymentViewModel> ReadPaymentStatu(int paymentId)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var payment = (await queryFactory
+                .Query()
+                .From(PaymentTable)
+                .Join(PaymentTypeTable, PaymentTypeTable + "." + PaymentTypeConstants.CodPaymentStatusType, PaymentTable + "." + PaymentConstants.CodPaymentStatusType)
+                .Select(PaymentTable + "." + PaymentConstants.CodPaymentStatusType)
+                .Select(PaymentConstants.PaymentName)
+                .Select(PaymentConstants.ProjectId)
+                .Select(PaymentConstants.InvoiceExpirationDate)
+                .Select(PaymentConstants.IssueExpirationDate)
+                .Select(PaymentConstants.PaymentId)
+                .Where(PaymentTable + "." + PaymentConstants.PaymentId, paymentId)
+                .GroupBy(PaymentConstants.PaymentId)
+                .GetAsync<PaymentModel>()).First();
+            var paymentViewModel = new PaymentViewModel()        
+           
+               {
+                    MyName = payment.PaymentName,
+                    MyProjectId = payment.ProjectId,
+                    PaymentStatusType = (PaymentStatusTypeEnum)payment.CodPaymentStatusType,
+                    Id = payment.PaymentId,
+                    InvoiceExpirationDate = payment.InvoiceExpirationDate,
+                    IssueExpirationDate = payment.IssueExpirationDate
+                };
+            
+            return paymentViewModel;
         }
 
     }

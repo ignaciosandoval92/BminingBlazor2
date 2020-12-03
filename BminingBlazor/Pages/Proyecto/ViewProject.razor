@@ -1,4 +1,4 @@
-﻿@page "/proyectos"
+﻿@page "/ViewProject"
 @using Models
 @using BminingBlazor.ViewModels.Projects
 
@@ -10,11 +10,10 @@
 @attribute [Authorize(Roles = "Administracion")]
 
 
-    <h3>Proyectos </h3>
+    <h3>@Resource.Projects </h3>
     >
     @if (_projects == null)
-    {
-        <p><em>Cargando...</em></p>
+    {        
     }
     else
     {
@@ -22,11 +21,11 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Codigo Proyecto</th>
-                        <th>Nombre Proyecto</th>
-                        <th>Email Jefe de Proyecto</th>
-                        <th>Tipo de Proyecto</th>
-                        <th>Cliente</th>
+                        <th>@Resource.ProjectCode</th>
+                        <th>@Resource.ProjectName</th>
+                        <th>@Resource.EmailProjectManager</th>
+                        <th>@Resource.ProjectType</th>
+                        <th>@Resource.Client</th>
                         <th>@Resource.StatusProject </th>
                     </tr>
                 </thead>
@@ -40,13 +39,13 @@
                         <td>@p.MyProjectType</td>
                         <td>@p.MyClientName</td>
                         <td>@p.MyProjectStatus</td>
-                        <MatButton @onclick=@(()=>ViewIntegrantes(p.MyId))>Integrantes</MatButton>
-                        <MatButton @onclick=@(()=>EditEstadoPago(p.MyId))>Cambiar Estado de pago</MatButton>
-                        <MatButton @onclick=@(()=>Delete(p.MyId))>Eliminar</MatButton>
+                        <MatButton @onclick=@(()=>ViewIntegrantes(p.MyId))>@Resource.Members</MatButton>
+                        <MatButton @onclick=@(()=>EditEstadoPago(p.MyId))>@Resource.EditPaymentStatus</MatButton>
+                        <MatButton @onclick=@(()=>Delete(p.MyId))>@Resource.Delete</MatButton>
                     </tr>
                     }
                     <tr>
-                        <MatButton type="button" class="btn btn-primary" @onclick="@NewProyecto">Agregar Proyecto</MatButton>
+                        <MatButton type="button" class="btn btn-primary" @onclick="@NewProyecto">@Resource.AddProject</MatButton>
                     </tr>
                 </tbody>
             </table>
@@ -70,7 +69,7 @@
 
         public void NewProyecto()
         {
-            NavigationManager.NavigateTo("/CrearProyecto");
+            NavigationManager.NavigateTo("/CreateProject");
         }
         public void ViewIntegrantes(int idProject)
         {
@@ -83,6 +82,6 @@
             if (answer == null || answer == Resource.No)
                 return;
             await ProjectDataService.DeleteProject(idProject);
-            NavigationManager.NavigateTo("/proyectos", true);
+            NavigationManager.NavigateTo("/ViewProject", true);
         }
     }
