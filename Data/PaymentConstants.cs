@@ -8,6 +8,5 @@
         public const string PaymentName = "PaymentName";
         public const string IssueExpirationDate = "IssueExpirationDate";
         public const string InvoiceExpirationDate = "InvoiceExpirationDate";
-        public const string PaymentId = "PaymentId";
     }
 }

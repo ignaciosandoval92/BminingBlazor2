@@ -32,11 +32,8 @@
         <label for="inputNombres">@Resource.Client:</label>
         <select class="form-control" @bind="_newCreateProjectView.MyClientId" required>
 
-<<<<<<< HEAD
             @foreach (var client in _clients)
-=======
-            @foreach (var cliente in _clientes)
->>>>>>> master
+
             {
                 <option value="@client.ClientId">@client.ClientName</option>
             }
@@ -118,7 +115,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var paymentStatus in _payments)
+                @foreach (var paymentStatus in _paymentStatusItems)
                 {
                     <tr>
                         <td><InputText @bind-Value="@paymentStatus.MyName" /></td>
@@ -141,11 +138,7 @@
             <thead>
                 <tr>
                     <th>@Resource.Email</th>
-<<<<<<< HEAD
                     <th>@Resource.ProjectHours</th>
-=======
-                    <th>Horas del Proyecto</th>
->>>>>>> master
                 </tr>
             </thead>
             <tbody>
@@ -185,26 +178,18 @@
 
 
 @code {
-<<<<<<< HEAD
+
     private ProjectViewModel _newCreateProjectView = new ProjectViewModel();
     private List<UserViewModel> _users;
     private List<PaymentViewModel> _paymentStatusItems;
     private List<MemberViewModel> _membersProjectItems;
     private List<ClientModel> _clients;
     private List<StatusProjectModel> _statusProjectModels;
-=======
 
-
-    private readonly ProjectViewModel _newCreateProjectView = new ProjectViewModel();
-    private List<UserViewModel> _users;
-    private List<PaymentViewModel> _payments;
-    private List<MemberViewModel> _membersProjectItems;
-    private List<ClientModel> _clientes;
->>>>>>> master
 
     private void AddPaymentStatusCallback()
     {
-        _payments.Add(new PaymentViewModel()
+        _paymentStatusItems.Add(new PaymentViewModel()
         {
             InvoiceExpirationDate = DateTime.UtcNow,
             IssueExpirationDate = DateTime.UtcNow
@@ -219,7 +204,7 @@
 
     private void DeletePaymentStatus(PaymentViewModel paymentStatus)
     {
-        _payments.Remove(paymentStatus);
+        _paymentStatusItems.Remove(paymentStatus);
     }
 
     private void DeleteMembersProject(MemberViewModel membersProject)
@@ -229,7 +214,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-<<<<<<< HEAD
         _statusProjectModels = await ProjectDataService.GetAvailableProjectStatus();
         _clients = await ClientDataService.ReadClients();
         _users = await UserDataService.ReadUsers();
@@ -237,13 +221,6 @@
         _membersProjectItems = new List<MemberViewModel>();
         _newCreateProjectView.MyProjectManager = new UserViewModel();
         string user = HttpContextAccessor.HttpContext.User.Identity.Name;
-=======
-        _clientes = await ClientDataService.ReadClients();
-        _users = await UserDataService.ReadUsers();
-        _payments = new List<PaymentViewModel>();
-        _membersProjectItems = new List<MemberViewModel>();
-        _newCreateProjectView.MyProjectManager = new UserViewModel();
->>>>>>> master
     }
 
 
@@ -272,7 +249,6 @@
         };
 
         foreach (var members in _membersProjectItems)
-<<<<<<< HEAD
         {
             project.OurMembers.Add(members);
         }
@@ -281,18 +257,6 @@
         {
             project.OurPayments.Add(estados);
         }
-        var id_proyecto = await ProjectDataService.CreateProject(project);
         NavigationManager.NavigateTo("/ViewProject");
-=======
-            project.OurMembers.Add(members);
-        
-        foreach (var paymentViewModel in _payments)
-            project.OurPayments.Add(paymentViewModel);
-
-
-        var projectId = await ProjectDataService.CreateProject(project);
-        // NavigationManager.NavigateTo("/Proyectos");
-
->>>>>>> master
     }
 }

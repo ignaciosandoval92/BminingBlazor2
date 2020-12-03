@@ -103,7 +103,7 @@ namespace BminingBlazor.Services
                                                   $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")
                 .Include(ProjectConstants.ProjectManager, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
-                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.CodProject}}}");
+                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}");
 
 
             var items = (await query.GetAsync()).Cast<IDictionary<string, object>>().ToList();
@@ -122,7 +122,7 @@ namespace BminingBlazor.Services
                     MyTimeTrackingStatus = (TimeTrackingStatusEnum)item[TimeTrackingConstants.TimeTrackingStatusId],
                     MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
                     MyProjectName = (string)item[ProjectConstants.ProjectName],
-                    MyProjectCode = (string)item[ProjectConstants.CodProject],
+                    MyProjectCode = (string)item[ProjectConstants.ProjectCode],
                     MyProjectManager = ViewModelConverter.GetUserViewModel(projectManagerUser)
                 };
                 timeTrackingViewModels.Add(timeTrackingViewModel);

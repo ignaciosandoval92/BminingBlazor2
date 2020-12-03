@@ -70,11 +70,7 @@ namespace BminingBlazor.Services
                     MyClientName = (string)item[ClientConstants.ClientName],
                     MyEndDate = (DateTime)item[ProjectConstants.EndDate],
                     MyStartDate = (DateTime)item[ProjectConstants.StartDate],
-<<<<<<< HEAD
-                    MyProjectCode = (string)item[ProjectConstants.CodProject],
-=======
-                    MyProjectCode = (string)item[ProjectConstants.ProjectCode],
->>>>>>> master
+                    MyProjectCode = (string)item[ProjectConstants.ProjectCode], 
                     MyProjectStatus = (ProjectStatusEnum)item[ProjectConstants.StatusId],
                     MyProjectType = (ProjectTypeEnum)item[ProjectConstants.CodProjectType],
                 };
@@ -125,12 +121,8 @@ namespace BminingBlazor.Services
                         PaymentStatusType = (PaymentStatusTypeEnum)payment[PaymentConstants.CodPaymentStatusType],
                         InvoiceExpirationDate = (DateTime)payment[PaymentConstants.InvoiceExpirationDate],
                         IssueExpirationDate = (DateTime)payment[PaymentConstants.IssueExpirationDate],
-<<<<<<< HEAD
-                        Id = (int)payment[PaymentConstants.ProjectId]
-=======
                         Id = (int)payment[PaymentConstants.PaymentId],
                         MyName = (string)payment[PaymentConstants.PaymentName]
->>>>>>> master
                     };
                 }
 
@@ -219,9 +211,6 @@ namespace BminingBlazor.Services
             //}
             //return listOfProjectModels;
         }
-
-<<<<<<< HEAD
-=======
         public async Task<List<ProjectResumeViewModel>> GetProjectWhereBelongsUserId(int userId)
         {
 
@@ -247,6 +236,5 @@ namespace BminingBlazor.Services
             }
             return projects;
         }
->>>>>>> master
     }
 }
