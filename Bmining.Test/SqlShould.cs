@@ -1,9 +1,9 @@
-using System;
 using BminingBlazor;
 using BminingBlazor.Services;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -43,7 +43,26 @@ namespace Bmining.Test
         {
             var timeTrackingService = (ITimeTrackingService)_webHost.Services.GetService(typeof(ITimeTrackingService));
             var timeTrackingViewModels = await timeTrackingService.GetUserTrackingModel(39, DateTime.MinValue, DateTime.MaxValue);
-         
+        }
+        [TestMethod]
+        public async Task AddTimeTrackingHoursFixture()
+        {
+            var timeTrackingService = (ITimeTrackingService)_webHost.Services.GetService(typeof(ITimeTrackingService));
+            var dateTime = DateTime.Now;
+            var timeTrackingViewModels = await timeTrackingService.AddUserTimeTracking(39, 32, dateTime, 7.5);
+        }
+
+        [TestMethod]
+        public async Task ReadProjectsWhereBelongsUserIdFixture()
+        {
+            var dummyProjectDataService = (IDummyProjectDataService)_webHost.Services.GetService(typeof(IDummyProjectDataService));
+            var projectResumeViewModels = await dummyProjectDataService.GetProjectWhereBelongsUserId(39);
+        }
+        [TestMethod]
+        public async Task GetPendingTimeTrackingHoursByProjectManagerFixture()
+        {
+            var timeTrackingService = (ITimeTrackingService)_webHost.Services.GetService(typeof(ITimeTrackingService));
+            var items = await timeTrackingService.GetPendingTimeTrackingHoursByProjectManager(39);
         }
     }
 }

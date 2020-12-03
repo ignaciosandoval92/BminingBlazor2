@@ -12,5 +12,6 @@
         public const string Phone = "Phone";
         public const string HomeAddress = "HomeAddress";
         public const string CodContractType = "CodContractType";
+        public const string CodeContractType = "CodContractType";
     }
 }

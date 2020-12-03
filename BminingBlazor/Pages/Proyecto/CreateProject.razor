@@ -33,6 +33,7 @@
         <select class="form-control" @bind="_newCreateProjectView.MyClientId" required>
 
             @foreach (var client in _clients)
+
             {
                 <option value="@client.ClientId">@client.ClientName</option>
             }
@@ -177,12 +178,14 @@
 
 
 @code {
+
     private ProjectViewModel _newCreateProjectView = new ProjectViewModel();
     private List<UserViewModel> _users;
     private List<PaymentViewModel> _paymentStatusItems;
     private List<MemberViewModel> _membersProjectItems;
     private List<ClientModel> _clients;
     private List<StatusProjectModel> _statusProjectModels;
+
 
     private void AddPaymentStatusCallback()
     {
@@ -231,7 +234,7 @@
     private async Task InsertProject()
     {
         string user = HttpContextAccessor.HttpContext.User.Identity.Name;
-        var id_Creador = await UserDataService.GetUserId(user);
+        var creatorId = await UserDataService.GetUserId(user);
         var project = new ProjectViewModel()
         {
             MyProjectCode = _newCreateProjectView.MyProjectCode,
@@ -239,12 +242,11 @@
             MyProjectType = _newCreateProjectView.MyProjectType,
             MyStartDate = _newCreateProjectView.MyStartDate,
             MyEndDate = _newCreateProjectView.MyEndDate,
-            MyCreator = new UserViewModel() { MyId = id_Creador },
+            MyCreator = new UserViewModel() { MyId = creatorId },
             MyProjectManager = _newCreateProjectView.MyProjectManager,
             MyClientId = _newCreateProjectView.MyClientId,
             MyProjectStatus = _newCreateProjectView.MyProjectStatus
         };
-
 
         foreach (var members in _membersProjectItems)
         {
@@ -255,7 +257,6 @@
         {
             project.OurPayments.Add(estados);
         }
-        var id_proyecto = await ProjectDataService.CreateProject(project);
         NavigationManager.NavigateTo("/ViewProject");
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Data
 {
-    public class PaymentConstants
+    public static class PaymentConstants
     {
         public const string ProjectId = "ProjectId";
         public const string PaymentId = "PaymentId";

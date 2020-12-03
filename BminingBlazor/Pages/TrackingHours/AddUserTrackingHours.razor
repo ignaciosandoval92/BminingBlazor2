@@ -6,34 +6,44 @@
 @inject IUserDataService UserDataService
 @inject IProjectDataService ProjectDataService
 @inject ITimeTrackingService TimeTrackingService
+@inject NavigationManager NavigationManager
+@inject IDummyProjectDataService DummyProjectDataService
 
-<div class="row">
-    <div class="col-md-12">
-        <div>
-            <fieldset class="scheduler-border">
-                <legend class="scheduler-border">@Resource.LoadHours @ViewModel.MyTrackingHourDate.ToShortDateString()</legend>
-                <EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
-                    <div class="form-group">
-                        <label for="inputHours">@Resource.InvestedHours</label>
-                        <input type="number" step="0.1" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputProject">@Resource.Project</label>
-                        <select @bind="@ViewModel.MySelectedProjectId" class="form-control" id="inputProject">
+<div class="bmining-app">
+    @if (!IsLoading)
+    {
+        <div class="col-md-12">
+            <div>
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">@Resource.LoadHours @ViewModel.MyTrackingHourDate.ToShortDateString()</legend>
+                    <EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
+                        <div class="form-group">
+                            <label for="inputHours">@Resource.InvestedHours</label>
+                            <input type="number" @bind="@ViewModel.MyHours" step="0.1" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputProject">@Resource.Project</label>
+                            <select @bind="@ViewModel.MySelectedProjectId" class="form-control" id="inputProject">
 
-                            @foreach (var projectDetailsViewModel in ViewModel?.OurAvailableProjects)
-                            {
-                                <option value="@projectDetailsViewModel.MyProjectId">
-                                    @projectDetailsViewModel.MyProjectCode - @projectDetailsViewModel.MyProjectName
-                                </option>
-                            }
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary float-lg-right">@Resource.Load</button>
-                </EditForm>
-            </fieldset>
+                                @foreach (var projectDetailsViewModel in ViewModel?.OurAvailableProjects)
+                                {
+                                    <option value="@projectDetailsViewModel.MyProjectId">
+                                        @projectDetailsViewModel.MyProjectCode - @projectDetailsViewModel.MyProjectName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary float-lg-right">@Resource.Load</button>
+                    </EditForm>
+                </fieldset>
+            </div>
         </div>
-    </div>
+    }
+    else
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    
 </div>
 
 @code {
@@ -44,43 +54,38 @@
     [Parameter]
     public int Year { get; set; }
 
+
+    public bool IsLoading { get; set; }
+
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         var email = HttpContextAccessor.GetEmail();
         var userId = await UserDataService.GetUserId(email);
+
+        var  projectsBelongsUserId= await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
+
         ViewModel = new AddUserTimeTrackingViewModel(userId)
         {
             MyTrackingHourDate = new DateTime(Year, Month, Day),
         };
-
-        var projects = await ProjectDataService.ReadProjectsOwnedByUser(userId);
-        foreach (var viewProjectModel in projects)
-        {
-            var projectDetails = new ProjectDetailsViewModel
-            {
-                MyProjectName = viewProjectModel.MyProjectName,
-                MyProjectCode = viewProjectModel.MyProjectCode,
-                MyProjectId = viewProjectModel.MyId,
-                MyProjectManagerEmail = viewProjectModel.MyProjectManager.MyEmail,
-                MyProjectManagerId = 0,
-                MyProjectManagerName = viewProjectModel.MyProjectManager.MyName,
-                MyProjectManagerSurname = viewProjectModel.MyProjectManager.MyPaternalSurname,
-            };
-            ViewModel.OurAvailableProjects.Add(projectDetails);
-        }
+        ViewModel.OurAvailableProjects.AddRange(projectsBelongsUserId);
+        ViewModel.MySelectedProjectId = projectsBelongsUserId.FirstOrDefault()?.MyProjectId;
     }
-    
+
     private async Task SubmitCallback()
     {
         if (!ViewModel.MySelectedProjectId.HasValue)
             return;
-        var userId = ViewModel.MyUserId;
+        if (ViewModel.MyHours <= 0)
+            return;
+        IsLoading = true;
+        var userId = ViewModel.UserId;
         var projectId = ViewModel.MySelectedProjectId.Value;
         var timeTracking = ViewModel.MyTrackingHourDate;
         var hours = ViewModel.MyHours;
-        await TimeTrackingService.AddUserTimeTracking
-                    (userId, projectId, timeTracking, hours);
+        await TimeTrackingService.AddUserTimeTracking(userId, projectId, timeTracking, hours);
+        NavigationManager.NavigateTo($"/dashboard_tracking_hours/{Day}/{Month}/{Year}");
     }
 }

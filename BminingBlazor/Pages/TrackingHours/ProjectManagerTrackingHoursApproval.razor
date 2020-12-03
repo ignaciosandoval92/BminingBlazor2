@@ -7,31 +7,68 @@
 @inject IUserDataService UserDataService
 @inject IHttpContextAccessor HttpContextAccessor
 
-<div>
+<style>
+    .item-dashboard-container {
+        display: inline-grid;
+        grid-template-columns: auto 1fr auto;
+        grid-column-gap: 0px;
+        align-items: center
+    }
+
+    .item-dashboard-item {
+        vertical-align: middle;
+        display: inline;
+        text-align: center;
+        padding: 5px
+    }
+</style>
+
+
+<div class="bmining-app">
+    <h1 class="header-break">@Resource.DashboardProjectManager</h1>
+
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+
     @foreach (var projectManagerTrackingHoursProject in ViewModel.OurProjectManagerTrackingHoursProjects)
     {
         <h3>@projectManagerTrackingHoursProject.MyProjectName</h3>
-        <hr>
-        @foreach (var projectManagerTrackingHoursProjectMember in projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers)
-        {
-            <div class="d-flex w-100">
-                <div class="col">
-                    @projectManagerTrackingHoursProjectMember.MyMemberName
-                </div>
-                <div class="col">
-                    @projectManagerTrackingHoursProjectMember.MyHoursLoaded
-                </div>
-                <div class="col">
-                    @projectManagerTrackingHoursProjectMember.DateOfHours.ToLongDateString()
-                </div>
-                <div class="col">
-                    <button @onclick="()=> ApproveHours(projectManagerTrackingHoursProjectMember)">@Resource.Approve</button>
-                    <button @onclick="()=> RejectHours(projectManagerTrackingHoursProjectMember)">@Resource.Reject</button>
-                </div>
-            </div>
-        }
+        <table>
+            <tr>
+                <th>@Resource.Name</th>
+                <th>@Resource.Hours</th>
+                <th>@Resource.Date</th>
+                <th>@Resource.Actions</th>
+            </tr>
+
+            @foreach (var projectManagerTrackingHoursProjectMember in projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers)
+            {
+                <tr>
+                    <td>
+                        @projectManagerTrackingHoursProjectMember.MyMemberName
+                    </td>
+                    <td>
+                        @projectManagerTrackingHoursProjectMember.MyHoursLoaded
+                    </td>
+                    <td>
+                        @projectManagerTrackingHoursProjectMember.DateOfHours.ToLongDateString()
+                    </td>
+                    <td>
+                        <button @onclick="() => RejectHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon">
+                            <i class="fa fa-thumbs-down"></i>
+                        </button>
+                        <button @onclick="() => ApproveHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon">
+                            <i class="fa fa-thumbs-up"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+        <div class="alternate1-break"></div>
     }
 </div>
+
 
 @code {
     public ProjectManagerTrackingHoursApprovalViewModel ViewModel { get; set; }
@@ -50,14 +87,18 @@
         await base.OnInitializedAsync();
     }
 
-    private async Task ApproveHours(ProjectManagerTrackingHoursProjectMemberViewModel projectManagerTrackingHoursProjectMember)
+    private async Task ApproveHours(ProjectManagerTrackingHoursProjectViewModel projectManagerTrackingHoursProject,
+                                    ProjectManagerTrackingHoursProjectMemberViewModel projectManagerTrackingHoursProjectMember)
     {
         await TimeTrackingService.ApproveUserTimeTracking(projectManagerTrackingHoursProjectMember.TimeTrackingHoursId);
+        projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers.Remove(projectManagerTrackingHoursProjectMember);
     }
 
-    private async Task RejectHours(ProjectManagerTrackingHoursProjectMemberViewModel projectManagerTrackingHoursProjectMember)
+    private async Task RejectHours(ProjectManagerTrackingHoursProjectViewModel projectManagerTrackingHoursProject,
+                                   ProjectManagerTrackingHoursProjectMemberViewModel projectManagerTrackingHoursProjectMember)
     {
         var reasons = await MatDialogService.PromptAsync(Resource.Reasons);
         await TimeTrackingService.RejectUserTimeTracking(projectManagerTrackingHoursProjectMember.TimeTrackingHoursId, reasons);
+        projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers.Remove(projectManagerTrackingHoursProjectMember);
     }
 }
