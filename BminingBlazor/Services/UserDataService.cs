@@ -163,12 +163,7 @@ namespace BminingBlazor.Services
                 { UserConstants.HomeAddress,user.MyDirection},
                 { UserConstants.CodContractType,user.MyContractType}
         });
-
-            //string sql =
-            //    "update Usuario " +
-            //    "set Usuario.Cod_TipoContrato=@Cod_TipoContrato,Usuario.Cargo=@Cargo,Usuario.Telefono=@Telefono,Usuario.Direccion=@Direccion " +
-            //    "where Usuario.Id=@Id;";
-            //await _dataAccess.UpdateData(sql, usuario2, _configuration.GetConnectionString("default"));
+                     
         }
 
         public async Task DeleteUser(int userId)

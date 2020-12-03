@@ -82,24 +82,12 @@ namespace BminingBlazor.Services
                 { PaymentConstants.CodPaymentStatusType,paymentStatus.PaymentStatusType}
                 
         });
-            //var sql =
-            //    "Update PaymentStatus" +
-            //    " set PaymentStatus.codPaymentStatus=@Cod_TipoEstadoPago" +
-            //    " where PaymentStatus.codPaymentStatus=@Cod_EstadoPago ";
-            //;
-            //await _dataAccess.UpdateData(sql, estadopago, _configuration.GetConnectionString("default"));
+     
             return 1;
 
         }
 
-        //TODO Insertar creato debe tener este ademas de existir para agregar estados
-        //public async Task AddPaymentStatus(PaymentModel estadopago)
-        //{
-        //    string sql =
-        //        "insert into EstadoPago (EstadoPago.Estado_Pago,EstadoPago.Id_Proyecto,EstadoPago.Cod_TipoEstadoPago,EstadoPago.IssueExpirationDate,EstadoPago.InvoiceExpirationDate) " +
-        //        " Values (@Estado_Pago,@Id_Proyecto,@Cod_TipoEstadoPago,@IssueExpirationDate,@InvoiceExpirationDate)";
-        //    await _dataAccess.SaveData(sql, estadopago, _configuration.GetConnectionString("default"));
-        //}
+   
 
         public async Task AddMember(List<MemberViewModel> members, int idProject)
         {
@@ -259,18 +247,7 @@ namespace BminingBlazor.Services
                 });
             }
             return projectViewModel.ToList();
-            //string sql =
-            //    "select Proyecto.Id_Proyecto,Proyecto.Cod_Proyecto,Proyecto.Nombre_Proyecto,(Usuario.Email_Bmining) as Email_JefeProyecto,Cliente.Nombre_Cliente,Tipo_Proyecto.Tipo_Proyecto,(EstadoPago.Estado_Pago) as Tipo_Pago,Tipo_EstadoPago.TipoEstadoPago,EstadoPago.Cod_EstadoPago " +
-            //    $"from {TableConstants.TablaProyecto},{TableConstants.TablaTipoEstadoPago},{TableConstants.TablaTipoProyecto},{TableConstants.TablaEstadoPago},{TableConstants.TablaUsuario},{TableConstants.TablaClientes} " +
-            //    $"where Proyecto.Id_Proyecto=EstadoPago.Id_Proyecto " +
-            //    $"and EstadoPago.Cod_TipoEstadoPago=Tipo_EstadoPago.Cod_TipoEstadoPago " +
-            //    $"and Proyecto.Cod_TipoProyecto=Tipo_Proyecto.Cod_TipoProyecto " +
-            //    $"and Usuario.Id=Proyecto.Id_JefeProyecto " +
-            //    $"and Proyecto.Id_Cliente=Cliente.Id_Cliente";
-            //var projectViewModels = await _dataAccess.LoadData<ViewProyectoModel, dynamic>(sql, new { },
-            //        _configuration.GetConnectionString("default"));
-            //return projectViewModels;
-            //return await Task.Run(() => new List<ProjectViewModel>());
+         
         }
 
         public async Task<List<StatusProjectModel>> GetAvailableProjectStatus()
@@ -313,11 +290,7 @@ namespace BminingBlazor.Services
             return projectViewModel;
          
            
-            //string sql = $"select*from{TableConstants.ProjectTable}" +
-            //             $" where Project.projectId=@projectId";
-            //var project = await _dataAccess.LoadData<ProjectViewModel, dynamic>(sql, new { },
-            //    _configuration.GetConnectionString("default"));
-            //return project.First();
+            
         }
 
         public async Task AddPaymentStatus(List<PaymentViewModel> payments,int idProject)
@@ -337,10 +310,7 @@ namespace BminingBlazor.Services
             }           
         }
 
-        //public async Task<int> EditPaymentStatus(PaymentViewModel editPayment)
-        //{
-        //    return await Task.Run(() => 1);
-        //}
+      
         public async Task<List<PaymentViewModel>> ReadPaymentStatus(int idProject)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
