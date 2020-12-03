@@ -235,4 +235,10 @@
   <data name="AddUser" xml:space="preserve">
     <value>Add User</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="CreateUser" xml:space="preserve">
+    <value>Create User</value>
+  </data>
 </root>

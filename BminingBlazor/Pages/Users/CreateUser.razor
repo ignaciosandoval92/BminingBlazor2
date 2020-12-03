@@ -1,4 +1,4 @@
-﻿@page "/crearuser"
+﻿@page "/CreateUser"
 @using BminingBlazor.Services
 @using Models
 @using ViewModels.User
@@ -7,7 +7,7 @@
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize(Roles = "AdminRRHH,Administracion")]
-<h3>Crear Usuario</h3>
+<h3>@Resource.CreateUser</h3>
 <EditForm Model="@_newUser" OnValidSubmit="@InsertUsers">
     <DataAnnotationsValidator />
     <ValidationSummary />

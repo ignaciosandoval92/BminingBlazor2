@@ -1,0 +1,101 @@
+﻿@page "/EditUser/{id:int}"
+@using BminingBlazor.Services
+@using Models
+@using System.Runtime.CompilerServices
+@using System.ComponentModel.DataAnnotations
+@using ViewModels.User
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = "AdminRRHH,Administracion")]
+
+@inject IUserDataService UserDataService
+<h3>Editar a @Email</h3>
+<EditForm Model="@userEdit" OnValidSubmit="@EditUsers">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+
+        <label for="inputNombres">  @Resource.ContractType:  </label>
+        <InputSelect class="form-control" @bind-Value="userEdit.MyContractType" required>
+
+            @foreach (var typeContract in Enum.GetValues(typeof(ContractTypeEnum)))
+            {
+                <option value="@typeContract">
+                    @{
+                        switch (typeContract)
+                        {
+                            case ContractTypeEnum.FeeContract:
+                                <p>@Resource.FeeContract</p>
+                                break;
+                            case ContractTypeEnum.FixedTermContract:
+                                <p>@Resource.FixedTermContract</p>
+                                break;
+                            case ContractTypeEnum.IndefiniteContract:
+                                <p>@Resource.IndefiniteContract</p>
+                                break;
+                        }
+                    }
+                </option>
+            }
+
+        </InputSelect>
+
+    </div>
+    <tr>
+        <td>
+            <label for="inputNombres">@Resource.Job:</label>
+            <InputText id="Cargo" @bind-Value="userEdit.MyJob" />
+            <label for="inputNombres">Teléfono:</label>
+            <InputText id="Telefono" @bind-Value="userEdit.MyTelephone" />
+            <label for="inputNombres">Dirección:</label>
+            <InputText id="Direccion" @bind-Value="userEdit.MyDirection" />
+        </td>
+    </tr>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public string Email { get; set; }
+
+    private UserViewModel userEdit = new UserViewModel();
+   
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var userEditModels = await UserDataService.ReadUser(Id);
+        userEdit.MyEmail = userEditModels.MyEmail;
+        userEdit.MyName = userEditModels.MyName;
+        userEdit.MyPaternalSurname = userEditModels.MyPaternalSurname;
+        userEdit.MyMaternalSurname = userEditModels.MyMaternalSurname;
+        userEdit.MyRut = userEditModels.MyRut;
+        userEdit.MyContractType = userEditModels.MyContractType;
+        userEdit.MyJob = userEditModels.MyJob;
+        userEdit.MyTelephone = userEditModels.MyTelephone;
+        userEdit.MyDirection= userEditModels.MyDirection;
+        Email = userEditModels.MyEmail;
+
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        var user = await UserDataService.ReadUsers();
+    }
+
+    private async Task EditUsers()
+    {
+        var user = new UserViewModel()
+        {
+            MyJob = userEdit.MyJob,
+            MyTelephone = userEdit.MyTelephone,
+            MyDirection = userEdit.MyDirection,
+            MyContractType =userEdit.MyContractType,
+            MyId = Id
+        };
+        await UserDataService.EditUser(user);
+        NavigationManager.NavigateTo("ViewUsers");
+    }
+}

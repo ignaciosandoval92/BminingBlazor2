@@ -10,10 +10,9 @@
 
 
 @attribute [Authorize(Roles = "AdminRRHH,Administracion")]
-<h3>Usuarios</h3>
+<h3>@Resource.Users</h3>
 @if (users == null)
 {
-    <p><em>Cargando...</em></p>
 }
 else
 {
@@ -62,7 +61,7 @@ else
 
     public void NewUser()
     {
-        NavigationManager.NavigateTo("CrearUser");
+        NavigationManager.NavigateTo("/CreateUser");
     }
 
     public async void Delete(int id)
@@ -77,7 +76,7 @@ else
 
     public void EditCallback(int id)
     {
-        NavigationManager.NavigateTo($"editarusuario/{id}");
+        NavigationManager.NavigateTo($"EditUser/{id}");
     }
 
     protected override async Task OnInitializedAsync()
