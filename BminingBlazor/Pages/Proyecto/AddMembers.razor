@@ -16,9 +16,9 @@
 
 <EditForm Model="@_newMember" >
     <div>
-        <MatButton Type="button" OnClick="AddMembersProjectCallback">
-            @Resource.AddMember
-        </MatButton>
+        <button class="bmining-btn-icon" @onclick="AddMembersProjectCallback">
+            <i class="oi-plus"></i>
+        </button>
 
         <table class="table table-striped">
             <thead>
@@ -49,15 +49,15 @@
                             </div>
                         </td>
                         <td><input type="number" step="0.1" @bind="@membersProject.MyProjectHours" /> </td>
-                        <MatButton Type="button" OnClick="()=>DeleteMembersProject(membersProject)">
-                            @Resource.Delete
-                        </MatButton>
+                        <button class="bmining-btn-icon" @onclick="()=>DeleteMembersProject(membersProject)">
+                            <i class="oi-trash"></i>
+                        </button>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    <button type="submit" class="bmining-button float-right" @onclick="@InsertMember">@Resource.Add</button>
+    <button  class="bmining-button float-right" @onclick="@InsertMember">@Resource.Add</button>
 </EditForm>
 
 @code {

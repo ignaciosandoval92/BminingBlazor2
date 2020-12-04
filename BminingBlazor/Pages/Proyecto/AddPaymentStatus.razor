@@ -34,15 +34,15 @@
                         <td><InputText @bind-Value="@paymentStatus.MyName" /></td>
                         <td><InputDate @bind-Value="@paymentStatus.IssueExpirationDate"></InputDate></td>
                         <td><InputDate @bind-Value="@paymentStatus.InvoiceExpirationDate"></InputDate></td>
-                        <MatButton Type="button" OnClick="()=>DeletePaymentStatus(paymentStatus)">
-                            @Resource.Delete
-                        </MatButton>
+                        <button class="bmining-btn-icon" @onclick="()=>DeletePaymentStatus(paymentStatus)">
+                           <i class="oi-trash"></i>
+                        </button>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    <button type="submit" class="bmining-button float-right" @onclick="@InsertPayments">@Resource.Add</button>
+    <button  class="bmining-button float-right" @onclick="@InsertPayments">@Resource.Add</button>
 </EditForm>
 
 @code {
