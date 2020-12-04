@@ -22,7 +22,7 @@ namespace BminingBlazor.ViewModels.TrackingHours
                 switch (value)
                 {
                     case TimeTrackingStatusEnum.WaitingForApproval:
-                        MyTrackingStatusClass = "bd-bmining-info";
+                        MyTrackingStatusClass = "bd-bmining-warning";
                         break;
                     case TimeTrackingStatusEnum.Approved:
                         MyTrackingStatusClass = "bd-bmining-success";

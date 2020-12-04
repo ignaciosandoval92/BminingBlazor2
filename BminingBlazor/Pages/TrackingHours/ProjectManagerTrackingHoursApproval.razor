@@ -54,8 +54,8 @@
                     <td>
                         @projectManagerTrackingHoursProjectMember.DateOfHours.ToLongDateString()
                     </td>
-                    <td>
-                        <button @onclick="() => RejectHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon">
+                    <td class="text-center">
+                        <button @onclick="() => RejectHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon bg-bmining-error">
                             <i class="fa fa-thumbs-down"></i>
                         </button>
                         <button @onclick="() => ApproveHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon">
