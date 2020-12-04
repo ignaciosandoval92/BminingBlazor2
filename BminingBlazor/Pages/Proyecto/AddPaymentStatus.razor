@@ -14,9 +14,7 @@
 
 <h3>@Resource.PaymentStatus</h3>
 
-<EditForm Model="@_newPaymentStatus" OnValidSubmit="@InsertPayments">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<EditForm Model="@_newPaymentStatus" >
     <div>
         <MatButton Type="button" OnClick="AddPaymentStatusCallback">
             @Resource.AddPaymentStatus
@@ -44,7 +42,7 @@
             </tbody>
         </table>
     </div>
-    <MatButton type="submit" class="btn btn-primary">Agregar</MatButton>
+    <button type="submit" class="bmining-button float-right" @onclick="@InsertPayments">@Resource.Add</button>
 </EditForm>
 
 @code {
