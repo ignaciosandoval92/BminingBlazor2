@@ -69,12 +69,14 @@ else
                         <td>@i.MyPaternalSurname</td>
                         <td>@i.MyMaternalSurname</td>
                         <td>@i.MyRut</td>
-                        <MatButton @onclick="()=>Delete(i.MyCodMember)">@Resource.Delete</MatButton>
+                        <button class="bmining-btn-icon" @onclick="()=>Delete(i.MyCodMember)">
+                            <i class="fa fa-trash"></i>
+                        </button>
                     </tr>
                 }
             </tbody>
         </table>
-        <MatButton type="button" class="btn btn-primary" @onclick="@AddMember">@Resource.AddMember</MatButton>
+        <button  class="bmining-button float-right" @onclick="@AddMember">@Resource.AddMember</button>
     </div>
 
 }

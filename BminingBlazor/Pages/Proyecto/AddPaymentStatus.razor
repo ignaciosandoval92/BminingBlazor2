@@ -16,9 +16,9 @@
 
 <EditForm Model="@_newPaymentStatus" >
     <div>
-        <MatButton Type="button" OnClick="AddPaymentStatusCallback">
-            @Resource.AddPaymentStatus
-        </MatButton>
+        <button class="bmining-btn-icon" OnClick="AddPaymentStatusCallback">
+           <i class="fa fa-plus"></i>
+        </button>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -35,7 +35,7 @@
                         <td><InputDate @bind-Value="@paymentStatus.IssueExpirationDate"></InputDate></td>
                         <td><InputDate @bind-Value="@paymentStatus.InvoiceExpirationDate"></InputDate></td>
                         <button class="bmining-btn-icon" @onclick="()=>DeletePaymentStatus(paymentStatus)">
-                           <i class="oi-trash"></i>
+                           <i class="fa fa-trash"></i>
                         </button>
                     </tr>
                 }

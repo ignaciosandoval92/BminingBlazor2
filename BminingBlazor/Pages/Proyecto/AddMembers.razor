@@ -17,7 +17,7 @@
 <EditForm Model="@_newMember" >
     <div>
         <button class="bmining-btn-icon" @onclick="AddMembersProjectCallback">
-            <i class="oi-plus"></i>
+            <i class="fa fa-plus"></i>
         </button>
 
         <table class="table table-striped">
@@ -50,7 +50,7 @@
                         </td>
                         <td><input type="number" step="0.1" @bind="@membersProject.MyProjectHours" /> </td>
                         <button class="bmining-btn-icon" @onclick="()=>DeleteMembersProject(membersProject)">
-                            <i class="oi-trash"></i>
+                            <i class="fa fa-trash"></i>
                         </button>
                     </tr>
                 }
