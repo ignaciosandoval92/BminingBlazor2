@@ -11,59 +11,114 @@
 
 <h3>@Resource.PaymentStatus</h3>
 
-<EditForm Model="@_newPayment" OnValidSubmit="@EditarEstadoPago">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+@*@if (DashboardPayment != null)
+{
+    @foreach (var namePayment in DashboardPayment.MyName)
+    {
+        <div class="col">
+            <div class="d-flex flex-row w-100 justify-content-between">
+                <div class="d-inline-block">
+                    <h5 class="font-weight-bold">@namePayment</h5>
+                </div>
+                <div class="d-inline-block">
+                    <button @onclick="() => AddItem(namePayment)" class="bmining-btn-icon">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="list-group">
+                @foreach (var dayUserTrackingHourItem in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
+                {
+                    <div class="item-dashboard-container item-dashboard-border @dayUserTrackingHourItem.MyTrackingStatusClass">
 
-    <div>
+                        <h5 class="item-dashboard-item">
+                            @dayUserTrackingHourItem.MyProjectName
+                        </h5>
+                        <div class="item-dashboard-item w-100">
 
-        <label for="inputNombres">  @Resource.ContractType:  </label>
-        <InputSelect class="form-control" @bind-Value="_newPayment.PaymentStatusType" required>
-
-            @foreach (var typePayment in Enum.GetValues(typeof(PaymentStatusTypeEnum)))
-            {
-            <option value="@typePayment">
-                @{
-                    switch (typePayment)
-                    {
-                        case PaymentStatusTypeEnum.NotInitiated:
-                            <p>@Resource.NotInitiated</p>
-                            break;
-                        case PaymentStatusTypeEnum.Emitted:
-                            <p>@Resource.Emitted</p>
-                            break;
-                        case PaymentStatusTypeEnum.Approved:
-                            <p>@Resource.Approved</p>
-                            break;
-                        case PaymentStatusTypeEnum.Rejected:
-                            <p>@Resource.Rejected</p>
-                            break;
-                        case PaymentStatusTypeEnum.Invoiced:
-                            <p>@Resource.Invoiced</p>
-                            break;
-                        case PaymentStatusTypeEnum.Payed:
-                            <p>@Resource.Payed</p>
-                            break;
-                        case PaymentStatusTypeEnum.NotApply:
-                            <p>@Resource.NotApply</p>
-                            break;
-                    }
+                        </div>
+                        <div class="item-dashboard-item">
+                            <span class="badge badge-primary badge-pill m-1 bg-bmining-info">
+                                @dayUserTrackingHourItem.MyTrackedHours
+                            </span>
+                            @if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.WaitingForApproval)
+                            {
+                                <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="bmining-btn-icon">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            }
+                            else if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.Rejected)
+                            {
+                                <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            }
+                        </div>
+                    </div>
                 }
-            </option>
-            }
+            </div>
+            <div class="alternate2-break"></div>
+        </div>
+    }
+}
+        </div>
+    }
+</div>*@
+<EditForm Model="@_newPayment" >
 
-        </InputSelect>
+        <div>
 
-    </div>
+            <label for="inputNombres">  @Resource.ContractType:  </label>
+            <InputSelect class="form-control" @bind-Value="_newPayment.PaymentStatusType" required>
 
-    <MatButton type="submit" class="btn btn-primary">@Resource.Change</MatButton>
+                @foreach (var typePayment in Enum.GetValues(typeof(PaymentStatusTypeEnum)))
+                {
+                <option value="@typePayment">
+                    @{
+                        switch (typePayment)
+                        {
+                            case PaymentStatusTypeEnum.NotInitiated:
+                                <p>@Resource.NotInitiated</p>
+                                break;
+                            case PaymentStatusTypeEnum.Emitted:
+                                <p>@Resource.Emitted</p>
+                                break;
+                            case PaymentStatusTypeEnum.Approved:
+                                <p>@Resource.Approved</p>
+                                break;
+                            case PaymentStatusTypeEnum.Rejected:
+                                <p>@Resource.Rejected</p>
+                                break;
+                            case PaymentStatusTypeEnum.Invoiced:
+                                <p>@Resource.Invoiced</p>
+                                break;
+                            case PaymentStatusTypeEnum.Payed:
+                                <p>@Resource.Payed</p>
+                                break;
+                            case PaymentStatusTypeEnum.NotApply:
+                                <p>@Resource.NotApply</p>
+                                break;
+                        }
+                    }
+                </option>
+                }
+
+            </InputSelect>
+
+        </div>
+
+        <button class="bmining-button float-right" @onclick="@EditPayments">@Resource.Change</button>
 
 
-</EditForm>
+    </EditForm>
 
 @code {
-        [Parameter]
-        public int paymentId { get; set; }
+    [Parameter]
+    public int paymentId { get; set; }
+    public PaymentViewModel DashboardPayment { get; set; }
     private PaymentViewModel _newPayment = new PaymentViewModel();
 
 
@@ -75,17 +130,17 @@
         _newPayment.MyProjectId = viewPaymentStatus.MyProjectId;
     }
 
-    private async Task EditarEstadoPago()
+    private async Task EditPayments()
     {
         var payment = new PaymentViewModel()
         {
             PaymentStatusType = _newPayment.PaymentStatusType,
             Id = _newPayment.Id,
-            MyProjectId=_newPayment.MyProjectId
+            MyProjectId = _newPayment.MyProjectId
         };
         await ProjectDataService.EditPaymentStatus(payment);
         NavigationManager.NavigateTo($"ViewPaymentStatus/{payment.MyProjectId}");
-            
+
 
     }
 }

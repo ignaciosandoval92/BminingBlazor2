@@ -304,14 +304,11 @@
   <data name="DashboardProjectManager" xml:space="preserve">
     <value>Dashboard project manager</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="MissingProject" xml:space="preserve">
-    <value>Missing project</value>
-  </data>
-  <data name="Bmining" xml:space="preserve">
-    <value>Bmining</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>User</value>
+    <value>MissingProject</value>
   </data>
   <data name="LogIn" xml:space="preserve">
     <value>Log In</value>
@@ -319,19 +316,25 @@
   <data name="LogOut" xml:space="preserve">
     <value>Log Out</value>
   </data>
-  <data name="Thesis" xml:space="preserve">
-    <value>Thesis</value>
+  <data name="Bmining" xml:space="preserve">
+    <value>Bmining</value>
   </data>
-  <data name="Intern" xml:space="preserve">
-    <value>Intern</value>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
   </data>
   <data name="Commercial" xml:space="preserve">
     <value>Commercial</value>
+  </data>
+  <data name="Intern" xml:space="preserve">
+    <value>Intern</value>
   </data>
   <data name="Active" xml:space="preserve">
     <value>Active</value>
   </data>
   <data name="Finished" xml:space="preserve">
     <value>Finished</value>
+  </data>
+  <data name="Thesis" xml:space="preserve">
+    <value>Thesis</value>
   </data>
 </root>

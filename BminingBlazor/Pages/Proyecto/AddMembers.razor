@@ -14,9 +14,7 @@
 
 <h3>@Resource.Members</h3>
 
-<EditForm Model="@_newMember" OnValidSubmit="@InsertIntegrante">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<EditForm Model="@_newMember" >
     <div>
         <MatButton Type="button" OnClick="AddMembersProjectCallback">
             @Resource.AddMember
@@ -59,7 +57,7 @@
             </tbody>
         </table>
     </div>
-    <MatButton type="submit" class="btn btn-primary">@Resource.Add</MatButton>
+    <button type="submit" class="bmining-button float-right" @onclick="@InsertMember">@Resource.Add</button>
 </EditForm>
 
 @code {
@@ -85,7 +83,7 @@
     {
         _membersItems.Remove(membersProject);
     }
-    private async Task InsertIntegrante()
+    private async Task InsertMember()
     {
 
         await ProjectDataService.AddMember(_membersItems, idProject);

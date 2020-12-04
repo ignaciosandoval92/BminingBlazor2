@@ -8,9 +8,8 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize(Roles = "AdminRRHH,Administracion")]
 <h3>@Resource.CreateUser</h3>
-<EditForm Model="@_newUser" OnValidSubmit="@InsertUsers">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<EditForm Model="@_newUser" >
+    
     <tr>
         <td>
             <label for="inputNombres">@Resource.Email:</label>
@@ -68,7 +67,7 @@
         </InputSelect>
 
     </div>
-    <button type="submit" class="btn btn-primary">@Resource.Create</button>
+    <button  class="bmining-button float-right" @onclick="@InsertUsers">@Resource.Create</button>
 </EditForm>
 
 

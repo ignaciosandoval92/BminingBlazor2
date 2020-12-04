@@ -10,9 +10,7 @@
 
 @inject IUserDataService UserDataService
 <h3>Editar a @Email</h3>
-<EditForm Model="@userEdit" OnValidSubmit="@EditUsers">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<EditForm Model="@userEdit" >
 
     <div>
 
@@ -52,7 +50,7 @@
             <InputText id="Direccion" @bind-Value="userEdit.MyDirection" />
         </td>
     </tr>
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button class="bmining-button float-right" @onclick="@EditUsers">@Resource.Save</button>
 </EditForm>
 
 @code {

@@ -50,198 +50,195 @@
     <h2>@Resource.CreateProject</h2>
     <div class="main-break">
         <div class="main-circle"></div>
->>>>>>> pr/12
     </div>
     @if (_clients != null && _users != null)
     {
-        <EditForm Model="@_newCreateProjectView" OnValidSubmit="@InsertProject">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
+<EditForm Model="@_newCreateProjectView">
 
-            <div class="project-header-container">
-                <div class="project-header-item">
-                    <label for="inputCode">@Resource.ProjectCode:</label>
-                </div>
-                <div class="project-header-item">
-                    <InputText class="w-100" id="inputCode" @bind-Value="_newCreateProjectView.MyProjectCode" />
-                </div>
-                <div class="project-header-item">
-                    <label for="inputProjectName"> @Resource.ProjectName: </label>
-                </div>
-                <div class="project-header-item">
-                    <InputText class="w-100" id="inputProjectName" @bind-Value="_newCreateProjectView.MyProjectName" />
-                </div>
-            </div>
-            <div>
-                <label for="inputClient">@Resource.Client:</label>
-                <select id="inputClient" class="form-control" @bind="_newCreateProjectView.MyClientId" required>
-                    @foreach (var client in _clients)
+    <div class="project-header-container">
+        <div class="project-header-item">
+            <label for="inputCode">@Resource.ProjectCode:</label>
+        </div>
+        <div class="project-header-item">
+            <InputText class="w-100" id="inputCode" @bind-Value="_newCreateProjectView.MyProjectCode" />
+        </div>
+        <div class="project-header-item">
+            <label for="inputProjectName"> @Resource.ProjectName: </label>
+        </div>
+        <div class="project-header-item">
+            <InputText class="w-100" id="inputProjectName" @bind-Value="_newCreateProjectView.MyProjectName" />
+        </div>
+    </div>
+    <div>
+        <label for="inputClient">@Resource.Client:</label>
+        <select id="inputClient" class="form-control" @bind="_newCreateProjectView.MyClientId" required>
+            @foreach (var client in _clients)
+            {
+                <option value="@client.MyId">@client.MyName</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label for="inputStartDate">  @Resource.StartDate:  </label>
+        <InputDate id="inputStartDate" @bind-Value="_newCreateProjectView.MyStartDate" />
+        <label for="inputEndDate">  @Resource.EndDate:  </label>
+        <InputDate id="inputEndDate" @bind-Value="_newCreateProjectView.MyEndDate" />
+    </div>
+    <div class="project-status-container">
+        <div class="project-status-item">
+            <label class="float-left" for="inputProjectType">@Resource.ProjectType:</label>
+            <InputSelect id="inputProjectType" class="form-control" @bind-Value="_newCreateProjectView.MyProjectType" required>
+                @foreach (var typeProject in Enum.GetValues(typeof(ProjectTypeEnum)))
                     {
-                        <option value="@client.MyId">@client.MyName</option>
-                    }
-                </select>
-            </div>
-            <div>
-                <label for="inputStartDate">  @Resource.StartDate:  </label>
-                <InputDate id="inputStartDate" @bind-Value="_newCreateProjectView.MyStartDate" />
-                <label for="inputEndDate">  @Resource.EndDate:  </label>
-                <InputDate id="inputEndDate" @bind-Value="_newCreateProjectView.MyEndDate" />
-            </div>
-            <div class="project-status-container">
-                <div class="project-status-item">
-                    <label class="float-left" for="inputProjectType">@Resource.ProjectType:</label>
-                    <InputSelect id="inputProjectType" class="form-control" @bind-Value="_newCreateProjectView.MyProjectType" required>
-                        @foreach (var typeProject in Enum.GetValues(typeof(ProjectTypeEnum)))
-                            {
-                            <option value="@typeProject">
-                                @{
-                                        switch (typeProject)
-                                        {
-                                            case ProjectTypeEnum.Commercial:
-                                            @Resource.Commercial
-                                                break;
-                                            case ProjectTypeEnum.Internal:
-                                            @Resource.Intern
-                                                break;
-                                            case ProjectTypeEnum.Thesis:
-                                            @Resource.Thesis
-                                                break;
-                                        }
+                    <option value="@typeProject">
+                        @{
+                                switch (typeProject)
+                                {
+                                    case ProjectTypeEnum.Commercial:
+                                    @Resource.Commercial
+                                        break;
+                                    case ProjectTypeEnum.Internal:
+                                    @Resource.Intern
+                                        break;
+                                    case ProjectTypeEnum.Thesis:
+                                    @Resource.Thesis
+                                        break;
                                 }
-                            </option>
-                            }
-                    </InputSelect>
-                </div>
-                <div class="project-status-item">
-                    <label class="float-left" for="projectStatus">@Resource.ProjectStatus:</label>
-                    <InputSelect id="projectStatus" class="form-control" @bind-Value="_newCreateProjectView.MyProjectStatus" required>
-
-                        @foreach (var typeStatus in Enum.GetValues(typeof(ProjectStatusEnum)))
-                            {
-                            <option value="@typeStatus">
-                                @{
-                                        switch (typeStatus)
-                                        {
-                                            case ProjectStatusEnum.Active:
-                                            @Resource.Active
-                                                break;
-                                            case ProjectStatusEnum.Finished:
-                                            @Resource.Finished
-                                                break;
-                                        }
-                                }
-                            </option>
-                            }
-                    </InputSelect>
-                </div>
-                <div class="project-status-item">
-                    <label class="float-left" for="inputEmail">  @Resource.EmailProjectManager:  </label>
-                    <select id="inputEmail" class="form-control" @bind="_newCreateProjectView.MyProjectManager.MyId" required>
-                        @foreach (var boss in _users)
-                        {
-                            <option value="@boss.MyId">@boss.MyEmail</option>
                         }
-                    </select>
-                </div>
-            </div>
+                    </option>
+                    }
+            </InputSelect>
+        </div>
+        <div class="project-status-item">
+            <label class="float-left" for="projectStatus">@Resource.ProjectStatus:</label>
+            <InputSelect id="projectStatus" class="form-control" @bind-Value="_newCreateProjectView.MyProjectStatus" required>
 
-            <div class="alternate1-break"></div>
-
-            <div>
-                <div class="d-flex justify-content-between">
-                    <h4>@Resource.PaymentStatus</h4>
-                    <button class="bmining-btn-icon" @onclick="AddPaymentStatusCallback">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </div>
-                @if (_paymentStatusItems.Any())
+                @foreach (var typeStatus in Enum.GetValues(typeof(ProjectStatusEnum)))
+                    {
+                    <option value="@typeStatus">
+                        @{
+                                switch (typeStatus)
+                                {
+                                    case ProjectStatusEnum.Active:
+                                    @Resource.Active
+                                        break;
+                                    case ProjectStatusEnum.Finished:
+                                    @Resource.Finished
+                                        break;
+                                }
+                        }
+                    </option>
+                    }
+            </InputSelect>
+        </div>
+        <div class="project-status-item">
+            <label class="float-left" for="inputEmail">  @Resource.EmailProjectManager:  </label>
+            <select id="inputEmail" class="form-control" @bind="_newCreateProjectView.MyProjectManager.MyId" required>
+                @foreach (var boss in _users)
                 {
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>@Resource.Name</th>
-                                <th>@Resource.PaymentDeadlineIssued</th>
-                                <th>@Resource.BillingDeadline</th>
-                                <th>@Resource.Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var paymentStatus in _paymentStatusItems)
-                            {
-                                <tr>
-                                    <td>
-                                        <InputText @bind-Value="@paymentStatus.MyName" />
-                                    </td>
-                                    <td>
-                                        <InputDate @bind-Value="@paymentStatus.IssueExpirationDate"></InputDate>
-                                    </td>
-                                    <td>
-                                        <InputDate @bind-Value="@paymentStatus.InvoiceExpirationDate"></InputDate>
-                                    </td>
-                                    <td>
-                                        <button class="bmining-button bg-bmining-error" @onclick="() => DeletePaymentStatus(paymentStatus)">
-                                            @Resource.Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                    <option value="@boss.MyId">@boss.MyEmail</option>
                 }
-            </div>
-            <div class="alternate1-break"></div>
-            <div>
-                <div class="d-flex justify-content-between">
-                    <h4>@Resource.Members</h4>
-                    <button class="bmining-btn-icon" @onclick="AddMembersProjectCallback">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </div>
-                @if (_membersProjectItems.Any())
-                {
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>@Resource.Email</th>
-                                <th>@Resource.ProjectHours</th>
-                                <th>@Resource.Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var membersProject in _membersProjectItems)
-                            {
-                                <tr>
-                                    <td>
-                                        <div class="form-group col-md-6">
-                                            <select class="form-control" @bind="membersProject.MyId" required>
-                                                @if (_users != null)
-                                                {
-                                                    @foreach (var emails in _users)
-                                                    {
-                                                        <option value="@emails.MyId">@emails.MyEmail</option>
-                                                    }
-                                                }
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input type="number" step="0.1" @bind="@membersProject.MyProjectHours" />
-                                    </td>
+            </select>
+        </div>
+    </div>
 
-                                    <td>
-                                        <button class="bmining-button bg-bmining-error" Type="button" @onclick="()=>DeleteMembersProject(membersProject)">
-                                            @Resource.Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
-            </div>
-            <div class="alternate1-break"></div>
-            <button class="bmining-button float-right" type="submit">@Resource.Create</button>
-        </EditForm>
+    <div class="alternate1-break"></div>
+
+    <div>
+        <div class="d-flex justify-content-between">
+            <h4>@Resource.PaymentStatus</h4>
+            <button class="bmining-btn-icon" @onclick="AddPaymentStatusCallback">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+        @if (_paymentStatusItems.Any())
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>@Resource.Name</th>
+                        <th>@Resource.PaymentDeadlineIssued</th>
+                        <th>@Resource.BillingDeadline</th>
+                        <th>@Resource.Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var paymentStatus in _paymentStatusItems)
+                    {
+                        <tr>
+                            <td>
+                                <InputText @bind-Value="@paymentStatus.MyName" />
+                            </td>
+                            <td>
+                                <InputDate @bind-Value="@paymentStatus.IssueExpirationDate"></InputDate>
+                            </td>
+                            <td>
+                                <InputDate @bind-Value="@paymentStatus.InvoiceExpirationDate"></InputDate>
+                            </td>
+                            <td>
+                                <button class="bmining-btn-icon" @onclick="() => DeletePaymentStatus(paymentStatus)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    <div class="alternate1-break"></div>
+    <div>
+        <div class="d-flex justify-content-between">
+            <h4>@Resource.Members</h4>
+            <button class="bmining-btn-icon" @onclick="AddMembersProjectCallback">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+        @if (_membersProjectItems.Any())
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>@Resource.Email</th>
+                        <th>@Resource.ProjectHours</th>
+                        <th>@Resource.Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var membersProject in _membersProjectItems)
+                    {
+                        <tr>
+                            <td>
+                                <div class="form-group col-md-6">
+                                    <select class="form-control" @bind="membersProject.MyId" required>
+                                        @if (_users != null)
+                                        {
+                                            @foreach (var emails in _users)
+                                            {
+                                                <option value="@emails.MyId">@emails.MyEmail</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="number" step="0.1" @bind="@membersProject.MyProjectHours" />
+                            </td>
+
+                            <td>
+                                <button class="bmining-btn-icon" Type="button" @onclick="()=>DeleteMembersProject(membersProject)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    <div class="alternate1-break"></div>
+    <button class="bmining-button float-right" @onclick=@InsertProject>@Resource.Create </button>
+</EditForm>
     }
     else
     {
@@ -337,6 +334,7 @@
         {
             project.OurPayments.Add(paymentViewModel);
         }
+        await ProjectDataService.CreateProject(project);
         NavigationManager.NavigateTo("/ViewProject");
     }
 }

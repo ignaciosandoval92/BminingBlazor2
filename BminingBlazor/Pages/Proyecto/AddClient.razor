@@ -9,19 +9,17 @@
 @attribute [Authorize(Roles = "Administracion")]
 <h3>Agregar Cliente</h3>
 
-<EditForm Model="@_newClient" OnValidSubmit="@InsertCliente">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<EditForm Model="@_newClient" >
     <label for="inputNombres">Nombre Cliente:</label>
     <InputText id="Nombre_Cliente" @bind-Value="_newClient.ClientName" />
-    <MatButton type="submit" class="btn btn-primary">Guardar</MatButton>
+    <button  class="bmining-button float-right" @onclick="@InsertClient">@Resource.Save</button>
 
 </EditForm>
 
 @code {
     private ClientModel _newClient = new ClientModel();
 
-    private async Task InsertCliente()
+    private async Task InsertClient()
     {
         var cliente = new ClientModel()
         {
