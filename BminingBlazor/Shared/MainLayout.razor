@@ -1,5 +1,6 @@
-﻿@using BminingBlazor.Services
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
+
+<MatThemeProvider Theme="@_matTheme">
 
 
 <div class="sidebar">
@@ -7,15 +8,23 @@
 </div>
 
 <div class="main">
-    <div class="top-row px-4">
-        <LoginDisplay></LoginDisplay>
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
-
     <div class="content px-4">
-        <MatToastContainer />
+        <MatToastContainer/>
         @Body
-        <MatPortalHost></MatPortalHost>
+        <MatPortalHost/>
     </div>
 </div>
+</MatThemeProvider>
 
+@code
+{
+    private MatTheme _matTheme = new MatTheme();
+
+    protected override void OnInitialized()
+    {
+        _matTheme.Primary = MatThemeColors.BlueGrey._500.Value;
+        _matTheme.Secondary = MatThemeColors.Yellow._500.Value;
+        base.OnInitialized();
+    }
+
+}

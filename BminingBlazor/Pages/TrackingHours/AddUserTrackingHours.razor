@@ -8,42 +8,62 @@
 @inject ITimeTrackingService TimeTrackingService
 @inject NavigationManager NavigationManager
 @inject IDummyProjectDataService DummyProjectDataService
+@inject IMatDialogService MatDialogService
+
+<style>
+    .load-hours-container {
+        display: inline-grid;
+        grid-template-rows: auto 1fr auto 1fr;
+    }
+
+    .load-hours-item {
+        display: inline;
+    }
+
+
+    .load-hours-label {
+        font-size: 22px
+    }
+</style>
 
 <div class="bmining-app">
+
+    <h1 class="header-break">@Resource.LoadHours @ViewModel.MyTrackingHourDate.ToShortDateString()</h1>
+
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+
+
     @if (!IsLoading)
     {
-        <div class="col-md-12">
-            <div>
-                <fieldset class="scheduler-border">
-                    <legend class="scheduler-border">@Resource.LoadHours @ViewModel.MyTrackingHourDate.ToShortDateString()</legend>
-                    <EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
-                        <div class="form-group">
-                            <label for="inputHours">@Resource.InvestedHours</label>
-                            <input type="number" @bind="@ViewModel.MyHours" step="0.1" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputProject">@Resource.Project</label>
-                            <select @bind="@ViewModel.MySelectedProjectId" class="form-control" id="inputProject">
-
-                                @foreach (var projectDetailsViewModel in ViewModel?.OurAvailableProjects)
-                                {
-                                    <option value="@projectDetailsViewModel.MyProjectId">
-                                        @projectDetailsViewModel.MyProjectCode - @projectDetailsViewModel.MyProjectName
-                                    </option>
-                                }
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary float-lg-right">@Resource.Load</button>
-                    </EditForm>
-                </fieldset>
+        <EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
+            <div class="form-group">
+                <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
+                <input type="number" @bind="@ViewModel.MyHours" step="0.1" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
             </div>
-        </div>
+            <div class="form-group">
+                <label for="inputProject" class="load-hours-label">@Resource.Project</label>
+                <select @bind="@ViewModel.MySelectedProjectId" class="form-control" id="inputProject">
+
+                    @foreach (var projectDetailsViewModel in ViewModel?.OurAvailableProjects)
+                    {
+                        <option value="@projectDetailsViewModel.MyProjectId">
+                            @projectDetailsViewModel.MyProjectCode - @projectDetailsViewModel.MyProjectName
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="w-100">
+                <button type="submit" class="bmining-button float-right">@Resource.Load</button>
+            </div>
+        </EditForm>
     }
     else
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
-    
+
 </div>
 
 @code {
@@ -64,7 +84,7 @@
         var email = HttpContextAccessor.GetEmail();
         var userId = await UserDataService.GetUserId(email);
 
-        var  projectsBelongsUserId= await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
+        var projectsBelongsUserId = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
 
         ViewModel = new AddUserTimeTrackingViewModel(userId)
         {
@@ -77,9 +97,17 @@
     private async Task SubmitCallback()
     {
         if (!ViewModel.MySelectedProjectId.HasValue)
+        {
+            await MatDialogService.AlertAsync(@Resource.MissingProject);
             return;
+        }
+
         if (ViewModel.MyHours <= 0)
+        {
+            await MatDialogService.AlertAsync(@Resource.InvalidNumber);
             return;
+        }
+
         IsLoading = true;
         var userId = ViewModel.UserId;
         var projectId = ViewModel.MySelectedProjectId.Value;

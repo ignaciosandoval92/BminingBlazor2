@@ -70,6 +70,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        internal static string Active {
+            get {
+                return ResourceManager.GetString("Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         internal static string Add {
@@ -151,6 +160,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bmining.
+        /// </summary>
+        internal static string Bmining {
+            get {
+                return ResourceManager.GetString("Bmining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
@@ -174,6 +192,15 @@ namespace BminingBlazor.Resources {
         internal static string Client {
             get {
                 return ResourceManager.GetString("Client", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commercial.
+        /// </summary>
+        internal static string Commercial {
+            get {
+                return ResourceManager.GetString("Commercial", resourceCulture);
             }
         }
         
@@ -313,6 +340,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finished.
+        /// </summary>
+        internal static string Finished {
+            get {
+                return ResourceManager.GetString("Finished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fixed Term Contract.
         /// </summary>
         internal static string FixedTermContract {
@@ -345,6 +381,15 @@ namespace BminingBlazor.Resources {
         internal static string IndefiniteContract {
             get {
                 return ResourceManager.GetString("IndefiniteContract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Intern.
+        /// </summary>
+        internal static string Intern {
+            get {
+                return ResourceManager.GetString("Intern", resourceCulture);
             }
         }
         
@@ -403,6 +448,24 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log In.
+        /// </summary>
+        internal static string LogIn {
+            get {
+                return ResourceManager.GetString("LogIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Out.
+        /// </summary>
+        internal static string LogOut {
+            get {
+                return ResourceManager.GetString("LogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maternal Last Name.
         /// </summary>
         internal static string MaternalLastName {
@@ -417,6 +480,15 @@ namespace BminingBlazor.Resources {
         internal static string Members {
             get {
                 return ResourceManager.GetString("Members", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing project.
+        /// </summary>
+        internal static string MissingProject {
+            get {
+                return ResourceManager.GetString("MissingProject", resourceCulture);
             }
         }
         
@@ -651,6 +723,24 @@ namespace BminingBlazor.Resources {
         internal static string StatusProject {
             get {
                 return ResourceManager.GetString("StatusProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thesis.
+        /// </summary>
+        internal static string Thesis {
+            get {
+                return ResourceManager.GetString("Thesis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        internal static string User {
+            get {
+                return ResourceManager.GetString("User", resourceCulture);
             }
         }
         

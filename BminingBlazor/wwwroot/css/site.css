@@ -47,7 +47,7 @@ app {
         }
 
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-color: #343A40;
 }
 
     .sidebar .top-row {
@@ -55,7 +55,10 @@ app {
     }
 
     .sidebar .navbar-brand {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: whitesmoke
+
     }
 
     .sidebar .oi {
@@ -214,8 +217,6 @@ legend.scheduler-border {
     display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
-    border-radius: 10px;
-    max-height: 5px;
 }
 
 .bmining-button:hover {
@@ -244,13 +245,13 @@ legend.scheduler-border {
 .main-circle {
     display: inline-block;
     vertical-align: middle;
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     background-color: #009B8E;
     border-radius: 50%;
     position: absolute;
-    top: calc(-16px/2);
-    left: calc(-15px/2);
+    top: calc(-10px/2);
+    left: calc(-10px/2);
 }
 
 .alternate1-break {
@@ -258,7 +259,7 @@ legend.scheduler-border {
     height: 2px;
     background-color: #009B8E;
     position: relative;
-    margin: 5px
+    margin: 4px;
 }
 
 .alternate2-break {
@@ -266,14 +267,12 @@ legend.scheduler-border {
     height: 1px;
     background-color: #009B8E;
     position: relative;
-    margin: 3px
+    margin: 4px;
 }
 
 
 table {
     width: 100%;
-    /*border-collapse: collapse;*/
-    /*border-color: red*/
 }
 
 td, th {
@@ -324,4 +323,8 @@ h1,h2,h3,h4,h5,h6 {
 
 .bg-bmining-info {
     background-color: #009B8E;
+}
+
+.bg-bmining-error:hover {
+    background-color: #B21A1A;
 }

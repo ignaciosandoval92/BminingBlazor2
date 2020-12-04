@@ -304,4 +304,34 @@
   <data name="DashboardProjectManager" xml:space="preserve">
     <value>Dashboard Jefe de Proyecto</value>
   </data>
+  <data name="MissingProject" xml:space="preserve">
+    <value>Sin proyecto</value>
+  </data>
+  <data name="Bmining" xml:space="preserve">
+    <value>Bmining</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Usuarios</value>
+  </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Cerrar sesión</value>
+  </data>
+  <data name="Commercial" xml:space="preserve">
+    <value>Comercial</value>
+  </data>
+  <data name="Thesis" xml:space="preserve">
+    <value>Memoria</value>
+  </data>
+  <data name="Intern" xml:space="preserve">
+    <value>Interno</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Activo</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Finalizado</value>
+  </data>
 </root>

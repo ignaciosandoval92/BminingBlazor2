@@ -1,5 +1,31 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Bmining</a>
+﻿<style>
+    .bm-grid-container {
+        display: inline-grid;
+        grid-template-columns: auto 1fr;
+        grid-column-gap: 4px;
+        align-items: center;
+    }
+
+    .bm-grid-item {
+        vertical-align: middle;
+        display: inline;
+        text-align: center;
+        color: whitesmoke
+    }
+
+    .bm-image {
+        background-color: whitesmoke;
+        border-radius: 100%;
+    }
+</style>
+
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <div class="bm-grid-container">
+        <img width="32" height="32" class="bm-image bm-grid-item" src="https://i.ibb.co/d2qxL9p/bmining-logo.png" />
+        <div class=" bm-grid-item navbar-brand">@Resource.Bmining</div>
+    </div>
+
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -27,7 +53,31 @@
                 <span class="oi oi-plus" aria-hidden="true"></span> Agregar Clientes
             </NavLink>
         </li>
+        <li class="nav-item px-3">
+            <div class="alternate2-break"></div>
+        </li>
+        <li class="nav-item px-3">
+            <AuthorizeView>
+                <Authorized>
+                    <NavLink class="nav-link">
+                        <span class="oi oi-person" aria-hidden="true"></span>
+                        @context.User.Identity.Name
+                    </NavLink>
+                    <NavLink class="nav-link" href="AzureAD/Account/SignOut">
+                        <span class="oi oi-account-logout" aria-hidden="true"></span>
+                        @Resource.LogOut
+                    </NavLink>
+                </Authorized>
+                <NotAuthorized>
+                    <NavLink class="nav-link" href="AzureAD/Account/SignIn">
+                        <span class="oi oi-account-login" aria-hidden="true"></span>
+                        @Resource.LogIn
+                    </NavLink>
+                </NotAuthorized>
+            </AuthorizeView>
+        </li>
     </ul>
+
 </div>
 
 @code {
