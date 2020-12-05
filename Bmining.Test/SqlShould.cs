@@ -24,7 +24,7 @@ namespace Bmining.Test
             var clientDataService = (IClientDataService)_webHost.Services.GetService(typeof(IClientDataService));
             var projectDataService = (IProjectDataService)_webHost.Services.GetService(typeof(IProjectDataService));
             var clients = await clientDataService.ReadClients();
-            var id = clients.First().ClientId;
+            var id = clients.First().MyId;
             var client = await clientDataService.ReadClient(id);
             id = await clientDataService.CreateClient("Test");
             await clientDataService.DeleteClient(id);

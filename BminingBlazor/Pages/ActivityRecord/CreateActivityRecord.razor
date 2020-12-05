@@ -1,0 +1,151 @@
+﻿@page "/createactivityrecord"
+@using BminingBlazor.ViewModels.ActivityRecord
+@using BminingBlazor.Pages.TrackingHours
+@using BminingBlazor.ViewModels.User
+@inject IMatDialogService MatDialogService
+@inject IUserDataService UserDataService
+
+<div class="bmining-app">
+    <h1>@Resource.CreateActivityRecord</h1>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+
+    <label for="title">@Resource.Title</label>
+    <input type="text" id="title" @bind-value="@ViewModel.MyTitle" />
+
+    <label for="date">@Resource.Date</label>
+    <input type="date" id="date" @bind-value="@ViewModel.MyDate" />
+
+    <label for="duration">@Resource.DurationHours</label>
+    <input type="number" id="duration" @bind-value="@ViewModel.MyDurationHours" />
+
+    <label for="place">@Resource.Place</label>
+    <input type="text" id="place" @bind-value="@ViewModel.MyPlace" />
+
+
+
+    <div class="d-flex justify-content-between">
+        <h3>@Resource.Members</h3>
+        <button class="bmining-btn-icon" @onclick="@AddMember">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+
+
+    <div class="d-flex justify-content-between">
+        <h3>@Resource.Commitments</h3>
+        <button class="bmining-btn-icon" @onclick="@AddCommitment">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+
+
+    <h3>@Resource.SecurityReflection</h3>
+    <BlazoredTextEditor @ref="@_quillSecurityReflectionHtml" Placeholder="">
+        <ToolbarContent>
+            <select class="ql-header">
+                <option selected=""></option>
+                <option value="1"></option>
+                <option value="2"></option>
+                <option value="3"></option>
+                <option value="4"></option>
+                <option value="5"></option>
+            </select>
+            <span class="ql-formats">
+                <button class="ql-bold"></button>
+                <button class="ql-italic"></button>
+                <button class="ql-underline"></button>
+                <button class="ql-strike"></button>
+            </span>
+            <span class="ql-formats">
+                <select class="ql-color"></select>
+                <select class="ql-background"></select>
+            </span>
+            <span class="ql-formats">
+                <button class="ql-list" value="ordered"></button>
+                <button class="ql-list" value="bullet"></button>
+            </span>
+            <span class="ql-formats">
+                <button class="ql-link"></button>
+            </span>
+        </ToolbarContent>
+        <EditorContent>
+        </EditorContent>
+    </BlazoredTextEditor>
+
+    <h3>@Resource.Notes</h3>
+    <BlazoredTextEditor @ref="@_quillNotesHtml" Placeholder="">
+        <ToolbarContent>
+            <select class="ql-header">
+                <option selected=""></option>
+                <option value="1"></option>
+                <option value="2"></option>
+                <option value="3"></option>
+                <option value="4"></option>
+                <option value="5"></option>
+            </select>
+            <span class="ql-formats">
+                <button class="ql-bold"></button>
+                <button class="ql-italic"></button>
+                <button class="ql-underline"></button>
+                <button class="ql-strike"></button>
+            </span>
+            <span class="ql-formats">
+                <select class="ql-color"></select>
+                <select class="ql-background"></select>
+            </span>
+            <span class="ql-formats">
+                <button class="ql-list" value="ordered"></button>
+                <button class="ql-list" value="bullet"></button>
+            </span>
+            <span class="ql-formats">
+                <button class="ql-link"></button>
+            </span>
+        </ToolbarContent>
+        <EditorContent>
+        </EditorContent>
+    </BlazoredTextEditor>
+
+</div>
+@code {
+
+    public ActivityRecordViewModel ViewModel { get; set; }
+
+    private readonly List<UserViewModel> _users = new List<UserViewModel>();
+
+
+    private BlazoredTextEditor _quillSecurityReflectionHtml;
+    private BlazoredTextEditor _quillNotesHtml;
+
+
+    protected override Task OnInitializedAsync()
+    {
+        ViewModel = new ActivityRecordViewModel();
+        return base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+            _users.AddRange(await UserDataService.ReadUsers());
+    }
+
+    private async Task AddMember()
+    {
+        await MatDialogService.OpenAsync(typeof(AddActivityRecordMember), new MatDialogOptions
+        {
+            CanBeClosed = false,
+            Attributes = new Dictionary<string, object>
+            {
+                {nameof(AddActivityRecordMember.OurBMiningEmails), _users}
+            }
+        });
+    }
+
+    private void AddCommitment()
+    {
+
+    }
+}

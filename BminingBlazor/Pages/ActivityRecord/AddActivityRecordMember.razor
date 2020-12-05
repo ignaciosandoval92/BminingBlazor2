@@ -1,0 +1,37 @@
+﻿@using BminingBlazor.ViewModels.User
+<h3>@Resource.Add</h3>
+
+
+<select @bind="@MySelectedUser">
+    @foreach (var userViewModel in OurBMiningEmails)
+    {
+        <option value="@userViewModel.MyEmail">
+            @userViewModel.MyEmail
+        </option>
+    }
+</select>
+
+<button @onclick="@Close">Close</button>
+
+
+
+
+@code {
+    [CascadingParameter]
+    public MatDialogReference DialogReference { get; set; }
+
+    [Parameter]
+    public List<UserViewModel> OurBMiningEmails { get; set; }
+
+    public string MySelectedUser { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    private void Close()
+    {
+        DialogReference.Close(null);
+    }
+}
