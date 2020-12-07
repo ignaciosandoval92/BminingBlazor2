@@ -44,8 +44,8 @@ else
                         <td>@p.MyTelephone</td>
                         <td>@p.MyDirection</td>
                         <td>@p.MyContractType</td>
-                        <MatButton @onclick=@(()=>EditCallback(p.MyId))>Editar</MatButton>
-                        <MatButton @onclick=@(()=>Delete(p.MyId))>Eliminar</MatButton>
+                        <button class="bmining-button" @onclick=@(()=>EditCallback(p.MyId))>Editar</button>
+                        <button class="bmining-button" @onclick=@(()=>Delete(p.MyId))>Eliminar</button>
                     </tr>
                 }
                 <tr>

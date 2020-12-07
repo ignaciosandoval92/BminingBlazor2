@@ -337,7 +337,7 @@
   <data name="Thesis" xml:space="preserve">
     <value>Thesis</value>
   </data>
-<<<<<<< HEAD
+
   <data name="AddClient" xml:space="preserve">
     <value>Add Client</value>
   </data>
@@ -349,7 +349,8 @@
   </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
-=======
+</data>
+
   <data name="CreateActivityRecord" xml:space="preserve">
     <value>Create activity record</value>
   </data>
@@ -406,6 +407,5 @@
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
->>>>>>> a9f9df286c147ae7380c2ff3fe86fa45a7af73b8
   </data>
 </root>

@@ -337,7 +337,7 @@
   <data name="Thesis" xml:space="preserve">
     <value>Memoria</value>
   </data>
-<<<<<<< HEAD
+
   <data name="AddClient" xml:space="preserve">
     <value>Agregar Clientes</value>
   </data>
@@ -347,9 +347,9 @@
   <data name="ViewUsers" xml:space="preserve">
     <value>Ver Usuarios</value>
   </data>
-  <data name="Start" xml:space="preserve">
+	<data name="Start" xml:space="preserve">
     <value>Inicio</value>
-=======
+</data>
   <data name="CreateActivityRecord" xml:space="preserve">
     <value>Crear registro de actividad</value>
   </data>
