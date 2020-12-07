@@ -337,4 +337,61 @@
   <data name="Thesis" xml:space="preserve">
     <value>Thesis</value>
   </data>
+  <data name="CreateActivityRecord" xml:space="preserve">
+    <value>Create activity record</value>
+  </data>
+  <data name="SecurityReflection" xml:space="preserve">
+    <value>Security reflection</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="DurationHours" xml:space="preserve">
+    <value>Duration hours</value>
+  </data>
+  <data name="Place" xml:space="preserve">
+    <value>Place</value>
+  </data>
+  <data name="Commitments" xml:space="preserve">
+    <value>Commitments</value>
+  </data>
+  <data name="ExternalUser" xml:space="preserve">
+    <value>External User</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Surname</value>
+  </data>
+  <data name="Enterprise" xml:space="preserve">
+    <value>Enterprise</value>
+  </data>
+  <data name="BminingUser" xml:space="preserve">
+    <value>Bmining user</value>
+  </data>
+  <data name="MissingInformation" xml:space="preserve">
+    <value>Missing information</value>
+  </data>
+  <data name="AddCommitment" xml:space="preserve">
+    <value>Add commitment</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Commitment" xml:space="preserve">
+    <value>Commitment</value>
+  </data>
+  <data name="Responsible" xml:space="preserve">
+    <value>Responsible</value>
+  </data>
+  <data name="EditActivityRecord" xml:space="preserve">
+    <value>Edit Activity Record</value>
+  </data>
+  <data name="ActivityRecords" xml:space="preserve">
+    <value>Activity Records</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
 </root>

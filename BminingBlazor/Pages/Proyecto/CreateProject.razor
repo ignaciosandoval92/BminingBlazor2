@@ -14,7 +14,6 @@
 @inject IClientDataService ClientDataService
 @*@attribute [Authorize(Roles = "Administracion")]*@
 
-
 <style>
 
     .project-status-container {
@@ -251,14 +250,11 @@
 
 
 @code {
-
     private readonly ProjectViewModel _newCreateProjectView = new ProjectViewModel();
     private List<UserViewModel> _users;
     private List<PaymentViewModel> _paymentStatusItems;
     private List<MemberViewModel> _membersProjectItems;
     private List<ClientViewModel> _clients;
-    private List<StatusProjectModel> _statusProjectModels;
-
 
 
     private void AddPaymentStatusCallback()
@@ -274,7 +270,6 @@
     {
         _membersProjectItems.Add(new MemberViewModel());
     }
-
 
     private void DeletePaymentStatus(PaymentViewModel paymentStatus)
     {
@@ -293,8 +288,6 @@
         _newCreateProjectView.MyEndDate = DateTime.Today;
     }
 
-
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -304,9 +297,8 @@
         _paymentStatusItems = new List<PaymentViewModel>();
         _membersProjectItems = new List<MemberViewModel>();
         _newCreateProjectView.MyProjectManager = new UserViewModel();
-        this.StateHasChanged();
+        StateHasChanged();
     }
-
 
     private async Task InsertProject()
     {

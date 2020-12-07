@@ -98,6 +98,7 @@
                                    ProjectManagerTrackingHoursProjectMemberViewModel projectManagerTrackingHoursProjectMember)
     {
         var reasons = await MatDialogService.PromptAsync(Resource.Reasons);
+        if (string.IsNullOrEmpty(reasons)) return;
         await TimeTrackingService.RejectUserTimeTracking(projectManagerTrackingHoursProjectMember.TimeTrackingHoursId, reasons);
         projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers.Remove(projectManagerTrackingHoursProjectMember);
     }

@@ -12,5 +12,8 @@
         public const string ClientTable = "Client";
         public const string StatusProjectTable = "StatusProject";
         public const string TimeTrackingTable = "TimeTracking";
+        public const string ActivityRecordTable = "ActivityRecord";
+        public const string ActivityRecordMemberTable = "ActivityRecordMember";
+        public const string ActivityRecordCommitmentTable = "ActivityRecordCommitment";
     }
 }

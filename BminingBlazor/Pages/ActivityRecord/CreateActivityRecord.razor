@@ -1,0 +1,42 @@
+﻿@page "/createactivityrecord"
+@using Microsoft.AspNetCore.Http
+@inject IActivityRecordService ActivityRecordService
+@inject IUserDataService UserDataService
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavigationManager
+
+<div class="bmining-app">
+    <h2>@Resource.CreateActivityRecord</h2>
+    <div class="main-break">
+        <div class="main-circle">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="title">@Resource.Title</label>
+        <input class="form-control" id="title" type="text" @bind-value="@MyTitle" />
+    </div>
+
+    <button class="bmining-button float-right" @onclick="Create">@Resource.Create</button>
+</div>
+
+@code {
+    public string MyTitle { get; set; }
+    public int MyCreatorId { get; set; }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (!firstRender) return;
+        var email = HttpContextAccessor.GetEmail();
+        var id = await UserDataService.GetUserId(email);
+        MyCreatorId = id;
+    }
+
+    private async Task Create()
+    {
+        var activityRecordId = await ActivityRecordService.CreateActivityRecordAsync(MyTitle, MyCreatorId);
+        NavigationManager.NavigateTo($"/editactivityrecord/{activityRecordId}");
+    }
+}
