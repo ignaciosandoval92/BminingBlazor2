@@ -1,20 +1,69 @@
 ﻿@using BminingBlazor.ViewModels.User
-<h3>@Resource.Add</h3>
+@using BminingBlazor.ViewModels.ActivityRecord
+@inject IMatDialogService MatDialogService
 
 
-<select @bind="@MySelectedUser">
-    @foreach (var userViewModel in OurBMiningEmails)
-    {
-        <option value="@userViewModel.MyEmail">
-            @userViewModel.MyEmail
-        </option>
-    }
-</select>
+<div class="bmining-dialog">
+    <div class="bmining-dialog-inner">
 
-<button @onclick="@Close">Close</button>
+        <h3>@Resource.AddMember</h3>
+        <div class="alternate1-break"></div>
 
+        <MatRadioGroup @bind-Value="@MySelectedOption" TValue="string" Class="align-middle">
+            <MatRadioButton Class="align-middle" Value="@Resource.BminingUser" TValue="string">
+                @Resource.BminingUser
+            </MatRadioButton>
+            <MatRadioButton Class="align-middle" Value="@Resource.ExternalUser" TValue="string">
+                @Resource.ExternalUser
+            </MatRadioButton>
+        </MatRadioGroup>
+        <div class="alternate2-break"></div>
+        @if (MySelectedOption == Resource.BminingUser)
+        {
+            <div class="form-group">
+                <label for="userSelect">@Resource.Bmining</label>
+                <select class="form-control" id="userSelect" @bind="@MySelectedUser">
+                    @foreach (var userViewModel in OurBMiningEmails)
+                    {
+                        <option value="@userViewModel.MyEmail">
+                            @userViewModel.MyEmail
+                        </option>
+                    }
+                </select>
+            </div>
+        }
+        else if (MySelectedOption == Resource.ExternalUser)
+        {
+            <div>
+                <div class="form-group">
+                    <label for="email">@Resource.Email</label>
+                    <input class="form-control" id="email" type="text" @bind-value="@MyExternalEmail" />
+                </div>
 
+                <div class="form-group">
+                    <label for="name">@Resource.Name</label>
+                    <input class="form-control" id="name" type="text" @bind-value="@MyExternalName" />
+                </div>
 
+                <div class="form-group">
+                    <label for="surname">@Resource.Surname</label>
+                    <input class="form-control" id="surname" type="text" @bind-value="@MyExternalSurname" />
+                </div>
+
+                <div class="form-group">
+                    <label for="rut">@Resource.Rut</label>
+                    <input class="form-control" id="rut" type="text" @bind-value="@MyExternalRut" />
+                </div>
+
+                <div class="form-group">
+                    <label for="enterprise">@Resource.Enterprise</label>
+                    <input class="form-control" id="enterprise" type="text" @bind-value="@MyExternalEnterprise" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<button class="bmining-button float-right" @onclick="@AddMember">@Resource.Add</button>
 
 @code {
     [CascadingParameter]
@@ -23,15 +72,68 @@
     [Parameter]
     public List<UserViewModel> OurBMiningEmails { get; set; }
 
+    public string MySelectedOption { get; set; }
+
     public string MySelectedUser { get; set; }
+    public string MyExternalEmail { get; set; }
+    public string MyExternalEnterprise { get; set; }
+    public string MyExternalName { get; set; }
+    public string MyExternalSurname { get; set; }
+    public string MyExternalRut { get; set; }
 
     protected override Task OnInitializedAsync()
     {
+        MySelectedOption = Resource.BminingUser;
+        MySelectedUser = OurBMiningEmails.FirstOrDefault()?.MyEmail;
         return base.OnInitializedAsync();
     }
 
-    private void Close()
+    private async Task AddMember()
     {
+        if (MySelectedOption == Resource.BminingUser)
+        {
+            if (MySelectedOption == null)
+            {
+                await MatDialogService.AlertAsync(Resource.MissingInformation);
+                return;
+            }
+            var userViewModel = OurBMiningEmails.First(model => model.MyEmail == MySelectedUser);
+            var activityRecordMember = new ActivityRecordMemberViewModel
+            {
+                MyRut = userViewModel.MyRut,
+                MyEmail = userViewModel.MyEmail,
+                IsBminingMember = true,
+                MyBminingId = userViewModel.MyId,
+                MyEnterprise = Resource.Bmining,
+                MyName = userViewModel.MyName,
+                MySurname = userViewModel.MyPaternalSurname
+            };
+            DialogReference.Close(activityRecordMember);
+        }
+        else if (MySelectedOption == Resource.ExternalUser)
+        {
+            if (string.IsNullOrEmpty(MyExternalName) ||
+                string.IsNullOrEmpty(MyExternalSurname) ||
+                string.IsNullOrEmpty(MyExternalEnterprise) ||
+                string.IsNullOrEmpty(MyExternalEmail) ||
+                string.IsNullOrEmpty(MyExternalRut))
+            {
+                await MatDialogService.AlertAsync(Resource.MissingInformation);
+                return;
+            }
+
+            var activityRecordMember = new ActivityRecordMemberViewModel
+            {
+                MyRut = MyExternalRut,
+                MyEmail = MyExternalEmail,
+                IsBminingMember = false,
+                MyBminingId = 0,
+                MyEnterprise = MyExternalEnterprise,
+                MyName = MyExternalName,
+                MySurname = MyExternalSurname
+            };
+            DialogReference.Close(activityRecordMember);
+        }
         DialogReference.Close(null);
     }
 }

@@ -1,0 +1,96 @@
+﻿@page "/dashboardactivityrecord"
+@using BminingBlazor.ViewModels.ActivityRecord
+@inject IActivityRecordService ActivityRecordService
+@inject IMatDialogService MatDialogService
+@inject NavigationManager NavigationManager
+<div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.ActivityRecords</h2>
+        </div>
+        <div class="d-inline-block">
+            <button @onclick="Create" class="bmining-btn-icon">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+
+
+    @if (ViewModel != null)
+    {
+        <table>
+            <tr>
+                <th>@Resource.Id</th>
+                <th>@Resource.Title</th>
+                <th>@Resource.Date</th>
+                <th>@Resource.Delete</th>
+            </tr>
+
+            @foreach (var dashboardActivityRecordItem in ViewModel.OurDashboardActivityRecords)
+            {
+                <tr>
+                    <td>
+                        @dashboardActivityRecordItem.MyId
+                    </td>
+                    <td>
+                        @dashboardActivityRecordItem.MyTitle
+                    </td>
+                    <td>
+                        @dashboardActivityRecordItem.MyDate
+                    </td>
+                    <td class="text-center">
+                        <button @onclick="() => Edit(dashboardActivityRecordItem)" class="bmining-btn-icon">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button @onclick="() => Remove(dashboardActivityRecordItem)" class="bmining-btn-icon bg-bmining-error">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+</div>
+@code {
+
+
+    public DashboardActivityRecordViewModel ViewModel { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            ViewModel = await ActivityRecordService.GetActivityRecords();
+            StateHasChanged();
+        }
+    }
+
+    private async Task Remove(DashboardActivityRecordItemViewModel dashboardActivityRecordItem)
+    {
+        var status = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
+        if (!status) return;
+        await ActivityRecordService.DeleteActivityRecord(dashboardActivityRecordItem.MyId);
+        ViewModel.OurDashboardActivityRecords.Remove(dashboardActivityRecordItem);
+        StateHasChanged();
+    }
+
+    private void Edit(DashboardActivityRecordItemViewModel dashboardActivityRecordItem)
+    {
+        NavigationManager.NavigateTo($"/editactivityrecord/{dashboardActivityRecordItem.MyId}");
+    }
+
+    private void Create()
+    {
+        NavigationManager.NavigateTo("/createactivityrecord");
+    }
+}

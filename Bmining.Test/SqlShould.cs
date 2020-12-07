@@ -64,5 +64,20 @@ namespace Bmining.Test
             var timeTrackingService = (ITimeTrackingService)_webHost.Services.GetService(typeof(ITimeTrackingService));
             var items = await timeTrackingService.GetPendingTimeTrackingHoursByProjectManager(39);
         }
+        [TestMethod]
+        public async Task GetActivityRecordFixture()
+        {
+            var activityRecordService = (IActivityRecordService)_webHost.Services.GetService(typeof(IActivityRecordService));
+            var  activityRecordViewModel=await activityRecordService.GetActivityRecord(5);
+            activityRecordViewModel.MyDurationHours = 4;
+            await activityRecordService.EditActivityRecord(activityRecordViewModel);
+        }
+
+        [TestMethod]
+        public async Task GetAllActivityRecordsFixture()
+        {
+            var activityRecordService = (IActivityRecordService)_webHost.Services.GetService(typeof(IActivityRecordService));
+            var activityRecordViewModel = await activityRecordService.GetActivityRecords();
+        }
     }
 }

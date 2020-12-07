@@ -358,4 +358,40 @@
   <data name="Commitments" xml:space="preserve">
     <value>Compromisos</value>
   </data>
+  <data name="ExternalUser" xml:space="preserve">
+    <value>Usuario externo</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Apelliido</value>
+  </data>
+  <data name="Enterprise" xml:space="preserve">
+    <value>Empresa</value>
+  </data>
+  <data name="BminingUser" xml:space="preserve">
+    <value>Usuario Bmining</value>
+  </data>
+  <data name="MissingInformation" xml:space="preserve">
+    <value>Falta información</value>
+  </data>
+  <data name="AddCommitment" xml:space="preserve">
+    <value>Añadir compromiso</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Descripción</value>
+  </data>
+  <data name="Commitment" xml:space="preserve">
+    <value>Compromiso</value>
+  </data>
+  <data name="Responsible" xml:space="preserve">
+    <value>Responsable</value>
+  </data>
+  <data name="EditActivityRecord" xml:space="preserve">
+    <value>Editar Registro de Actividad</value>
+  </data>
+  <data name="ActivityRecords" xml:space="preserve">
+    <value>Registros de Actividad</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
 </root>
