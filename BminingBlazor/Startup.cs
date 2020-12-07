@@ -42,6 +42,7 @@ namespace BminingBlazor
             services.AddTransient<ITimeTrackingService, TimeTrackingService>();
             services.AddTransient<IClientDataService, ClientDataService>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IActivityRecordService, ActivityRecordService>();
             services.AddTransient<IDummyProjectDataService, DummyProjectDataService>();
             services.AddMatBlazor();
             services.AddAuthentication(AzureADDefaults.AuthenticationScheme)

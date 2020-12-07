@@ -1,0 +1,271 @@
+﻿@page "/editactivityrecord/{id:int}"
+@using BminingBlazor.ViewModels.ActivityRecord
+@using BminingBlazor.ViewModels.User
+@using System.Threading
+@inject IMatDialogService MatDialogService
+@inject IUserDataService UserDataService
+@inject IActivityRecordService ActivityRecordService
+
+<div class="bmining-app">
+    <h1>@Resource.EditActivityRecord</h1>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+
+    @if (ViewModel != null)
+    {
+        <div>
+            <div class="form-group">
+                <label for="title">@Resource.Title</label>
+                <input class="form-control" type="text" id="title" @bind-value="@ViewModel.MyTitle" />
+            </div>
+
+            <div class="form-group">
+                <label for="date">@Resource.Date</label>
+                <input class="form-control" type="date" id="date" @bind-value="@ViewModel.MyDate" />
+            </div>
+
+            <div class="form-group">
+                <label for="duration">@Resource.DurationHours</label>
+                <input class="form-control" step="0.1" type="number" id="duration" @bind-value="@ViewModel.MyDurationHours" />
+            </div>
+
+            <div class="form-group">
+                <label for="place">@Resource.Place</label>
+                <input class="form-control" type="text" id="place" @bind-value="@ViewModel.MyPlace" />
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <h3>@Resource.Members</h3>
+                <button class="bmining-btn-icon" @onclick="@AddMember">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+            @if (ViewModel.OurMembers.Any())
+            {
+                <table>
+                    <tr>
+                        <th>@Resource.Name</th>
+                        <th>@Resource.Email</th>
+                        <th>@Resource.Enterprise</th>
+                        <th>@Resource.Actions</th>
+                    </tr>
+
+                    @foreach (var activityRecordMember in ViewModel.OurMembers)
+                    {
+                        <tr>
+                            <td>
+                                @($"{activityRecordMember.MyName} {activityRecordMember.MySurname}")
+                            </td>
+                            <td>
+                                @activityRecordMember.MyEmail
+                            </td>
+                            <td>
+                                @activityRecordMember.MyEnterprise
+                            </td>
+                            <td class="text-center">
+                                <button @onclick="() => RemoveMember(activityRecordMember)" class="bmining-btn-icon bg-bmining-error">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+
+            <div class="d-flex justify-content-between">
+                <h3>@Resource.Commitments</h3>
+                <button class="bmining-btn-icon" @onclick="@AddCommitment">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+            @if (ViewModel.OurCommitments.Any())
+            {
+                <div>
+                    <table>
+                        <tr>
+                            <th>@Resource.Responsible</th>
+                            <th>@Resource.EndDate</th>
+                            <th>@Resource.Commitment</th>
+                            <th>@Resource.Actions</th>
+                        </tr>
+
+                        @foreach (var activityRecordCommitment in ViewModel.OurCommitments)
+                        {
+                            <tr>
+                                <td>
+                                    @($"{activityRecordCommitment.MyResponsible}")
+                                </td>
+                                <td>
+                                    @($"{activityRecordCommitment.MyCommitmentDate.ToShortDateString()}")
+                                </td>
+                                <td>
+                                    @($"{activityRecordCommitment.MyCommitment}")
+                                </td>
+                                <td class="text-center">
+                                    <button @onclick="() => RemoveCommitment(activityRecordCommitment)" class="bmining-btn-icon bg-bmining-error">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+
+            <h3>@Resource.SecurityReflection</h3>
+            <BlazoredTextEditor @ref="@_quillSecurityReflectionHtml" Placeholder="">
+                <ToolbarContent>
+                    <select class="ql-header">
+                        <option selected=""></option>
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                        <option value="4"></option>
+                        <option value="5"></option>
+                    </select>
+                    <span class="ql-formats">
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <select class="ql-color"></select>
+                        <select class="ql-background"></select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-link"></button>
+                    </span>
+                </ToolbarContent>
+                <EditorContent>
+                </EditorContent>
+            </BlazoredTextEditor>
+
+            <h3>@Resource.Notes</h3>
+            <BlazoredTextEditor @ref="@_quillNotesHtml" Placeholder="">
+                <ToolbarContent>
+                    <select class="ql-header">
+                        <option selected=""></option>
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                        <option value="4"></option>
+                        <option value="5"></option>
+                    </select>
+                    <span class="ql-formats">
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <select class="ql-color"></select>
+                        <select class="ql-background"></select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-link"></button>
+                    </span>
+                </ToolbarContent>
+                <EditorContent>
+                </EditorContent>
+            </BlazoredTextEditor>
+        </div>
+        <button class="bmining-button float-right" @onclick="Save">@Resource.Save</button>
+    }
+    else
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+</div>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public ActivityRecordViewModel ViewModel { get; set; }
+    private readonly List<UserViewModel> _users = new List<UserViewModel>();
+
+    private BlazoredTextEditor _quillSecurityReflectionHtml;
+    private BlazoredTextEditor _quillNotesHtml;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            _users.AddRange(await UserDataService.ReadUsers());
+            ViewModel = await ActivityRecordService.GetActivityRecord(Id);
+            StateHasChanged();
+            await Task.Delay(1000);
+            await _quillNotesHtml.LoadHTMLContent(ViewModel.MyNotes);
+            await _quillSecurityReflectionHtml.LoadHTMLContent(ViewModel.MySecurityReflection); 
+        }
+    }
+
+    private async Task AddMember()
+    {
+        var item = await MatDialogService.OpenAsync(typeof(AddActivityRecordMember), new MatDialogOptions
+        {
+            CanBeClosed = true,
+            Attributes = new Dictionary<string, object>
+{
+                {nameof(AddActivityRecordMember.OurBMiningEmails), _users}
+            }
+        });
+        if (item == null)
+            return;
+        if (item is ActivityRecordMemberViewModel activityRecordMember)
+        {
+            activityRecordMember.MyActivityRecordId = Id;
+            await ActivityRecordService.AddActivityRecordMember(activityRecordMember);
+            ViewModel.OurMembers.Add(activityRecordMember);
+        }
+
+    }
+
+    private async Task AddCommitment()
+    {
+        var item = await MatDialogService.OpenAsync(typeof(AddActivityRecordCommitment), new MatDialogOptions
+        {
+            CanBeClosed = true
+        });
+        if (item == null)
+            return;
+        if (item is ActivityRecordCommitmentViewModel activityRecordCommitment)
+        {
+            activityRecordCommitment.MyActivityRecordId = Id;
+            await ActivityRecordService.AddActivityRecordCommitment(activityRecordCommitment);
+            ViewModel.OurCommitments.Add(activityRecordCommitment);
+        }
+    }
+
+    private async Task RemoveMember(ActivityRecordMemberViewModel activityRecordMember)
+    {
+        await ActivityRecordService.DeleteActivityRecordMember(activityRecordMember.MyId);
+        ViewModel.OurMembers.Remove(activityRecordMember);
+        StateHasChanged();
+    }
+
+    private async Task RemoveCommitment(ActivityRecordCommitmentViewModel activityRecordCommitment)
+    {
+        await ActivityRecordService.DeleteActivityRecordCommitment(activityRecordCommitment.MyId);
+        ViewModel.OurCommitments.Remove(activityRecordCommitment);
+        StateHasChanged();
+    }
+
+    private async Task Save()
+    {
+        ViewModel.MyNotes = await _quillNotesHtml.GetHTML();
+        ViewModel.MySecurityReflection = await _quillSecurityReflectionHtml.GetHTML();
+        await ActivityRecordService.EditActivityRecord(ViewModel);
+    }
+
+}

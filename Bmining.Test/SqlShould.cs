@@ -24,7 +24,7 @@ namespace Bmining.Test
             var clientDataService = (IClientDataService)_webHost.Services.GetService(typeof(IClientDataService));
             var projectDataService = (IProjectDataService)_webHost.Services.GetService(typeof(IProjectDataService));
             var clients = await clientDataService.ReadClients();
-            var id = clients.First().ClientId;
+            var id = clients.First().MyId;
             var client = await clientDataService.ReadClient(id);
             id = await clientDataService.CreateClient("Test");
             await clientDataService.DeleteClient(id);
@@ -63,6 +63,21 @@ namespace Bmining.Test
         {
             var timeTrackingService = (ITimeTrackingService)_webHost.Services.GetService(typeof(ITimeTrackingService));
             var items = await timeTrackingService.GetPendingTimeTrackingHoursByProjectManager(39);
+        }
+        [TestMethod]
+        public async Task GetActivityRecordFixture()
+        {
+            var activityRecordService = (IActivityRecordService)_webHost.Services.GetService(typeof(IActivityRecordService));
+            var  activityRecordViewModel=await activityRecordService.GetActivityRecord(5);
+            activityRecordViewModel.MyDurationHours = 4;
+            await activityRecordService.EditActivityRecord(activityRecordViewModel);
+        }
+
+        [TestMethod]
+        public async Task GetAllActivityRecordsFixture()
+        {
+            var activityRecordService = (IActivityRecordService)_webHost.Services.GetService(typeof(IActivityRecordService));
+            var activityRecordViewModel = await activityRecordService.GetActivityRecords();
         }
     }
 }

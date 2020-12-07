@@ -1,0 +1,61 @@
+﻿@using BminingBlazor.ViewModels.ActivityRecord
+@inject IMatDialogService MatDialogService
+
+
+<div class="bmining-dialog">
+    <div class="bmining-dialog-inner">
+
+        <h3>@Resource.AddCommitment</h3>
+        <div class="alternate2-break"></div>
+
+        <div>
+            <div class="form-group">
+                <label for="responsible">@Resource.Responsible</label>
+                <input class="form-control" id="responsible" type="text" @bind-value="@MyResponsible" />
+            </div>
+            <div class="form-group">
+                <label for="name">@Resource.EndDate</label>
+                <input class="form-control" id="name" type="date" @bind-value="@MyCommitmentDate" />
+            </div>
+            <div class="form-group">
+                <label for="email">@Resource.Commitment</label>
+                <textarea class="form-control" rows="4" id="email" @bind="@MyCommitment" ></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<button class="bmining-button float-right" @onclick="@AddCommitment">@Resource.Add</button>
+
+@code {
+    [CascadingParameter]
+    public MatDialogReference DialogReference { get; set; }
+
+
+    public string MyCommitment { get; set; }
+    public DateTime MyCommitmentDate { get; set; }
+    public string MyResponsible { get; set; }
+
+    protected override void OnInitialized()
+    {
+        MyCommitmentDate = DateTime.Today;
+        base.OnInitialized();
+    }
+
+    
+    private async Task AddCommitment()
+    {
+
+        if (string.IsNullOrEmpty(MyCommitment) ||
+            string.IsNullOrEmpty(MyResponsible))
+        {
+           await MatDialogService.AlertAsync(Resource.MissingInformation);
+            return;
+        }
+        DialogReference.Close(new ActivityRecordCommitmentViewModel
+        {
+            MyCommitmentDate = MyCommitmentDate,
+            MyResponsible = MyResponsible,
+            MyCommitment = MyCommitment
+        });
+    }
+}
