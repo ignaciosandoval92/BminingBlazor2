@@ -25,7 +25,6 @@ namespace BminingBlazor.Services
         }
         public async Task<int> CreateClient(string name)
         {
-
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             var clientId = await queryFactory.Query(ClientTable)
                                              .InsertGetIdAsync<int>(new Dictionary<string, object>

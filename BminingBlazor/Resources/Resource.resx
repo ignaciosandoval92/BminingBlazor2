@@ -394,4 +394,22 @@
   <data name="Id" xml:space="preserve">
     <value>Id</value>
   </data>
+  <data name="ActivityRecord" xml:space="preserve">
+    <value>Activity Record</value>
+  </data>
+  <data name="AuditHours" xml:space="preserve">
+    <value>Audit Hours</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="AddClient" xml:space="preserve">
+    <value>Add Client</value>
+  </data>
+  <data name="ClientName" xml:space="preserve">
+    <value>Client Name</value>
+  </data>
+  <data name="Cellphone" xml:space="preserve">
+    <value>Cellphone</value>
+  </data>
 </root>

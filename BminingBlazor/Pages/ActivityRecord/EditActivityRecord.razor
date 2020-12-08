@@ -1,4 +1,4 @@
-﻿@page "/editactivityrecord/{id:int}"
+﻿@page "/edit_activity_record/{id:int}"
 @using BminingBlazor.ViewModels.ActivityRecord
 @using BminingBlazor.ViewModels.User
 @using System.Threading
@@ -7,7 +7,7 @@
 @inject IActivityRecordService ActivityRecordService
 
 <div class="bmining-app">
-    <h1>@Resource.EditActivityRecord</h1>
+    <h2>@Resource.EditActivityRecord</h2>
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
@@ -36,7 +36,7 @@
             </div>
 
             <div class="d-flex justify-content-between">
-                <h3>@Resource.Members</h3>
+                <h4>@Resource.Members</h4>
                 <button class="bmining-btn-icon" @onclick="@AddMember">
                     <i class="fa fa-plus"></i>
                 </button>
@@ -74,7 +74,7 @@
             }
 
             <div class="d-flex justify-content-between">
-                <h3>@Resource.Commitments</h3>
+                <h4>@Resource.Commitments</h4>
                 <button class="bmining-btn-icon" @onclick="@AddCommitment">
                     <i class="fa fa-plus"></i>
                 </button>
@@ -113,7 +113,7 @@
                 </div>
             }
 
-            <h3>@Resource.SecurityReflection</h3>
+            <h4>@Resource.SecurityReflection</h4>
             <BlazoredTextEditor @ref="@_quillSecurityReflectionHtml" Placeholder="">
                 <ToolbarContent>
                     <select class="ql-header">
@@ -146,7 +146,7 @@
                 </EditorContent>
             </BlazoredTextEditor>
 
-            <h3>@Resource.Notes</h3>
+            <h4>@Resource.Notes</h4>
             <BlazoredTextEditor @ref="@_quillNotesHtml" Placeholder="">
                 <ToolbarContent>
                     <select class="ql-header">

@@ -53,7 +53,7 @@ namespace BminingBlazor.Services
                     MyRut = user.Rut,
                     MyJob = user.Job,
                     MyTelephone = user.Phone,
-                    MyDirection = user.HomeAddress,
+                    MyAddress = user.HomeAddress,
                     MyContractType = (ContractTypeEnum)user.CodContractType
 
                 });
@@ -90,7 +90,7 @@ namespace BminingBlazor.Services
                 MyRut = user.Rut,
                 MyJob = user.Job,
                 MyTelephone = user.Phone,
-                MyDirection = user.HomeAddress,
+                MyAddress = user.HomeAddress,
                 MyContractType = (ContractTypeEnum)user.CodContractType
 
             };
@@ -107,7 +107,7 @@ namespace BminingBlazor.Services
                 userViewModels.Add(new UserViewModel
                 {
                     MyContractType = (ContractTypeEnum)userModel.CodContractType,
-                    MyDirection = userModel.HomeAddress,
+                    MyAddress = userModel.HomeAddress,
                     MyEmail = userModel.EmailBmining,
                     MyId = userModel.UserId,
                     MyJob = userModel.Job,
@@ -133,7 +133,7 @@ namespace BminingBlazor.Services
                                                  {UserConstants.Rut,createUser.MyRut },
                                                  {UserConstants.Job,createUser.MyJob },
                                                  {UserConstants.Phone,createUser.MyTelephone },
-                                                 {UserConstants.HomeAddress,createUser.MyDirection },
+                                                 {UserConstants.HomeAddress,createUser.MyAddress },
                                                  {UserConstants.CodContractType,createUser.MyContractType }
                                              });
             return userId;
@@ -160,7 +160,7 @@ namespace BminingBlazor.Services
                 .UpdateAsync(new Dictionary<string, object>{
                 { UserConstants.Job,user.MyJob},
                 { UserConstants.Phone,user.MyTelephone},
-                { UserConstants.HomeAddress,user.MyDirection},
+                { UserConstants.HomeAddress,user.MyAddress},
                 { UserConstants.CodContractType,user.MyContractType}
         });
                      

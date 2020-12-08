@@ -79,6 +79,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activity Record.
+        /// </summary>
+        internal static string ActivityRecord {
+            get {
+                return ResourceManager.GetString("ActivityRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activity Records.
         /// </summary>
         internal static string ActivityRecords {
@@ -93,6 +102,15 @@ namespace BminingBlazor.Resources {
         internal static string Add {
             get {
                 return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Client.
+        /// </summary>
+        internal static string AddClient {
+            get {
+                return ResourceManager.GetString("AddClient", resourceCulture);
             }
         }
         
@@ -169,6 +187,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audit Hours.
+        /// </summary>
+        internal static string AuditHours {
+            get {
+                return ResourceManager.GetString("AuditHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Billing Deadline.
         /// </summary>
         internal static string BillingDeadline {
@@ -205,6 +232,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cellphone.
+        /// </summary>
+        internal static string Cellphone {
+            get {
+                return ResourceManager.GetString("Cellphone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change.
         /// </summary>
         internal static string Change {
@@ -219,6 +255,15 @@ namespace BminingBlazor.Resources {
         internal static string Client {
             get {
                 return ResourceManager.GetString("Client", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client Name.
+        /// </summary>
+        internal static string ClientName {
+            get {
+                return ResourceManager.GetString("ClientName", resourceCulture);
             }
         }
         
@@ -453,6 +498,15 @@ namespace BminingBlazor.Resources {
         internal static string FixedTermContract {
             get {
                 return ResourceManager.GetString("FixedTermContract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        internal static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
             }
         }
         

@@ -10,7 +10,7 @@
         public string MyRut { get; set; }
         public string MyJob { get; set; }
         public string MyTelephone { get; set; }
-        public string MyDirection { get; set; }
+        public string MyAddress { get; set; }
         public ContractTypeEnum MyContractType { get; set; }
         
     }

@@ -1,49 +1,57 @@
 ﻿@page "/CreateUser"
-@using BminingBlazor.Services
-@using Models
 @using ViewModels.User
 @inject NavigationManager NavigationManager
 
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@attribute [Authorize(Roles = "AdminRRHH,Administracion")]
-<h3>@Resource.CreateUser</h3>
-<EditForm Model="@_newUser" >
-    
-    <tr>
-        <td>
-            <label for="inputNombres">@Resource.Email:</label>
-            <InputText id="MyEmail" @bind-Value="_newUser.MyEmail" />
-            <label for="inputNombres">@Resource.Names:</label>
-            <InputText id="MyName" @bind-Value="_newUser.MyName" />
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="inputNombres">@Resource.PaternalLastName:</label>
-            <InputText id="MyPaternalSurname" @bind-Value="_newUser.MyPaternalSurname" />
-            <label for="inputNombres">@Resource.MaternalLastName:</label>
-            <InputText id="MyMaternalSurname" @bind-Value="_newUser.MyMaternalSurname" />
-            <label for="inputNombres">@Resource.Rut:</label>
-            <InputText id="MyRut" @bind-Value="_newUser.MyRut" />
+@inject IMatDialogService MatDialogService
+@*@attribute [Authorize(Roles = "AdminRRHH,Administracion")]*@
 
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="inputNombres">@Resource.Job:</label>
-            <InputText id="MyJob" @bind-Value="_newUser.MyJob" />
-            <label for="inputNombres">@Resource.Phone:</label>
-            <InputText id="MyTelephone" @bind-Value="_newUser.MyTelephone" />
-            <label for="inputNombres">@Resource.HomeAddress:</label>
-            <InputText id="MyDirection" @bind-Value="_newUser.MyDirection" />
-        </td>
-    </tr>
-    <div>
+<div class="bmining-app">
+    <h2>@Resource.CreateUser</h2>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
-        <label for="inputNombres">  @Resource.ContractType:  </label>
-        <InputSelect class="form-control" @bind-Value="_newUser.MyContractType" required>
 
+
+    <div class="form-group">
+        <label for="email">@Resource.Email</label>
+        <input class="form-control" id="email" @bind="_newUser.MyEmail" />
+    </div>
+    <div class="form-group">
+        <label for="name">@Resource.Names</label>
+        <input class="form-control" id="name" @bind="_newUser.MyName" />
+    </div>
+    <div class="form-group">
+        <label for="paternalSurname">@Resource.PaternalLastName</label>
+        <input class="form-control" id="paternalSurname" @bind="_newUser.MyPaternalSurname" />
+    </div>
+
+    <div class="form-group">
+        <label for="maternalSurname">@Resource.MaternalLastName</label>
+        <input class="form-control" id="maternalSurname" @bind="_newUser.MyMaternalSurname" />
+    </div>
+    <div class="form-group">
+        <label for="rut">@Resource.Rut</label>
+        <input class="form-control" id="rut" @bind="_newUser.MyRut" />
+    </div>
+    <div class="form-group">
+        <label for="job">@Resource.Job</label>
+        <input class="form-control" id="job" @bind="_newUser.MyJob" />
+    </div>
+    <div class="form-group">
+        <label for="cellphone">@Resource.Cellphone</label>
+        <input class="form-control" id="cellphone" @bind="_newUser.MyTelephone" />
+    </div>
+    <div class="form-group">
+        <label for="direction">@Resource.HomeAddress</label>
+        <input class="form-control" id="direction" @bind="_newUser.MyAddress" />
+    </div>
+
+    <div class="form-group">
+        <label for="contract">@Resource.ContractType</label>
+        <select class="form-control" id="contract" @bind="_newUser.MyContractType" required>
             @foreach (var typeContract in Enum.GetValues(typeof(ContractTypeEnum)))
             {
                 <option value="@typeContract">
@@ -51,28 +59,25 @@
                         switch (typeContract)
                         {
                             case ContractTypeEnum.FeeContract:
-                                <p>@Resource.FeeContract</p>
+                                @Resource.FeeContract
                                 break;
                             case ContractTypeEnum.FixedTermContract:
-                                <p>@Resource.FixedTermContract</p>
+                                @Resource.FixedTermContract
                                 break;
                             case ContractTypeEnum.IndefiniteContract:
-                                <p>@Resource.IndefiniteContract</p>
+                                @Resource.IndefiniteContract
                                 break;
                         }
                     }
                 </option>
             }
-
-        </InputSelect>
-
+        </select>
     </div>
-    <button  class="bmining-button float-right" @onclick="@InsertUsers">@Resource.Create</button>
-</EditForm>
-
+    <button class="bmining-button float-right" @onclick="@InsertUsers">@Resource.Create</button>
+</div>
 
 @code {
-    private UserViewModel _newUser = new UserViewModel();
+    private readonly UserViewModel _newUser = new UserViewModel();
 
     private async Task InsertUsers()
     {
@@ -85,11 +90,24 @@
             MyRut = _newUser.MyRut,
             MyJob = _newUser.MyJob,
             MyTelephone = _newUser.MyTelephone,
-            MyDirection = _newUser.MyDirection,
-            MyContractType=_newUser.MyContractType
+            MyAddress = _newUser.MyAddress,
+            MyContractType = _newUser.MyContractType
         };
-        var id = await UserDataService.CreateUser(user);
 
+        if (string.IsNullOrEmpty(user.MyName) ||
+            string.IsNullOrEmpty(user.MyEmail) ||
+            string.IsNullOrEmpty(user.MyPaternalSurname) ||
+            string.IsNullOrEmpty(user.MyMaternalSurname) ||
+            string.IsNullOrEmpty(user.MyRut) ||
+            string.IsNullOrEmpty(user.MyJob) ||
+            string.IsNullOrEmpty(user.MyTelephone) ||
+            string.IsNullOrEmpty(user.MyAddress))
+        {
+            await MatDialogService.AlertAsync(Resource.MissingInformation);
+            return;
+        }
+
+        var id = await UserDataService.CreateUser(user);
         NavigationManager.NavigateTo("/viewUsers");
     }
 }

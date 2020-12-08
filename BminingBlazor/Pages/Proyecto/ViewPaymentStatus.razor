@@ -1,8 +1,4 @@
 ﻿@page "/ViewPaymentStatus/{idproject:int}"
-@using Models
-@using BminingBlazor.Services
-@using Microsoft.AspNetCore.Components
-@using System.Data
 @using ViewModels.Projects
 
 @inject IMatDialogService MatDialogService
@@ -10,56 +6,98 @@
 @inject IProjectDataService ProjectDataService
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@attribute [Authorize(Roles = "Administracion")]
+@*@attribute [Authorize(Roles = "Administracion")]*@
 
-
-<h3>@Resource.PaymentStatus</h3>
-@if (_payments == null)
-{
-}
-else
-{
-    <div class="table-responsive{-sm|-md|-lg|-xl}">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>@Resource.Name</th> 
-                    <th>@Resource.BillingDeadline</th>
-                    <th>@Resource.PaymentDeadlineIssued</th>
-                    <th>@Resource.PaymentStatus</th>                   
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var p in _payments)
-                {
-                    <tr>
-                        <td>@p.MyName</td>
-                        <td>@p.InvoiceExpirationDate</td>
-                        <td>@p.IssueExpirationDate</td>
-                        <td>@p.PaymentStatusType</td>
-                        <MatButton @onclick="()=>EditPaymentStatus(p.Id)">@Resource.Edit</MatButton>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <MatButton type="button" class="btn btn-primary" @onclick="@Addpayment">@Resource.AddPaymentStatus</MatButton>
+<div class="bmining-app">
+    <h2>@Resource.PaymentStatus</h2>
+    <div class="main-break">
+        <div class="main-circle"></div>
     </div>
-
-}
+    @if (_payments == null)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>@Resource.Name</th>
+                        <th>@Resource.BillingDeadline</th>
+                        <th>@Resource.PaymentDeadlineIssued</th>
+                        <th>@Resource.PaymentStatus</th>
+                        <th>@Resource.Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var payment in _payments)
+                    {
+                        <tr>
+                            <td>@payment.MyName</td>
+                            <td>@payment.InvoiceExpirationDate</td>
+                            <td>@payment.IssueExpirationDate</td>
+                            <td>
+                                @{
+                                    switch (payment.PaymentStatusType)
+                                    {
+                                        case PaymentStatusTypeEnum.NotInitiated:
+                                            <p>@Resource.NotInitiated</p>
+                                            break;
+                                        case PaymentStatusTypeEnum.Emitted:
+                                            <p>@Resource.Emitted</p>
+                                            break;
+                                        case PaymentStatusTypeEnum.Approved:
+                                            <p>@Resource.Approved</p>
+                                            break;
+                                        case PaymentStatusTypeEnum.Rejected:
+                                            <p>@Resource.Rejected</p>
+                                            break;
+                                        case PaymentStatusTypeEnum.Invoiced:
+                                            <p>@Resource.Invoiced</p>
+                                            break;
+                                        case PaymentStatusTypeEnum.Payed:
+                                            <p>@Resource.Payed</p>
+                                            break;
+                                        case PaymentStatusTypeEnum.NotApply:
+                                            <p>@Resource.NotApply</p>
+                                            break;
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <button class="bmining-button" @onclick="()=>EditPaymentStatus(payment.Id)">@Resource.Edit</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button type="button" class="bmining-button float-right" @onclick="@AddPayment">@Resource.AddPaymentStatus</button>
+        </div>
+    }
+</div>
 
 @code {
     [Parameter]
     public int IdProject { get; set; }
+
     private List<PaymentViewModel> _payments;
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _payments = await ProjectDataService.ReadPaymentStatus(IdProject);
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            _payments = await ProjectDataService.ReadPaymentStatusOfProject(IdProject);
+            StateHasChanged();
+        }
     }
-    public void Addpayment()
+
+    public void AddPayment()
     {
         NavigationManager.NavigateTo($"/AddPaymentStatus/{IdProject}");
     }
-   
+
     public void EditPaymentStatus(int paymentId)
     {
         NavigationManager.NavigateTo($"/EditPaymentStatus/{paymentId}");
