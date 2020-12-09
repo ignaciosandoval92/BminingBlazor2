@@ -8,52 +8,7 @@
 @*@attribute [Authorize(Roles = "AdminRRHH,Administracion")]*@
 
 
-<<<<<<< HEAD
-@attribute [Authorize(Roles = "AdminRRHH,Administracion")]
-<h3>@Resource.Users</h3>
-@if (users == null)
-{
-}
-else
-{
-    <div class="table-responsive{-sm|-md|-lg|-xl}">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>@Resource.Email</th>
-                    <th>@Resource.Names</th>
-                    <th>@Resource.PaternalLastName</th>
-                    <th>@Resource.MaternalLastName</th>
-                    <th>@Resource.Rut</th>
-                    <th>@Resource.Job</th>
-                    <th>@Resource.Phone</th>
-                    <th>@Resource.HomeAddress</th>
-                    <th>@Resource.ContractType</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var p in users)
-                {
-                    <tr>
-                        <td>@p.MyEmail</td>
-                        <td>@p.MyName</td>
-                        <td>@p.MyPaternalSurname</td>
-                        <td>@p.MyMaternalSurname</td>
-                        <td>@p.MyRut</td>
-                        <td>@p.MyJob</td>
-                        <td>@p.MyTelephone</td>
-                        <td>@p.MyDirection</td>
-                        <td>@p.MyContractType</td>
-                        <button class="bmining-button" @onclick=@(()=>EditCallback(p.MyId))>Editar</button>
-                        <button class="bmining-button" @onclick=@(()=>Delete(p.MyId))>Eliminar</button>
-                    </tr>
-                }
-                <tr>
-                    <MatButton type="button" class="btn btn-primary" @onclick="@NewUser">@Resource.AddUser</MatButton>
-                </tr>
-            </tbody>
-        </table>
-=======
+
 <div class="bmining-app">
     <div class="d-flex flex-row w-100 justify-content-between">
         <div class="d-inline-block">
@@ -64,7 +19,6 @@ else
                 <i class="fa fa-plus"></i>
             </button>
         </div>
->>>>>>> pr/14
     </div>
 
     <div class="main-break">
