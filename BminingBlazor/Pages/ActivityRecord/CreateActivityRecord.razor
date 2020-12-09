@@ -1,4 +1,4 @@
-﻿@page "/createactivityrecord"
+﻿@page "/create_activity_record"
 @using Microsoft.AspNetCore.Http
 @inject IActivityRecordService ActivityRecordService
 @inject IUserDataService UserDataService
@@ -37,6 +37,6 @@
     private async Task Create()
     {
         var activityRecordId = await ActivityRecordService.CreateActivityRecordAsync(MyTitle, MyCreatorId);
-        NavigationManager.NavigateTo($"/editactivityrecord/{activityRecordId}");
+        NavigationManager.NavigateTo($"/edit_activity_record/{activityRecordId}");
     }
 }

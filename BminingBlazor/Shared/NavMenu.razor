@@ -22,7 +22,7 @@
 
 <div class="top-row pl-4 navbar navbar-dark">
     <div class="bm-grid-container">
-        <img width="32" height="32" class="bm-image bm-grid-item" src="https://i.ibb.co/d2qxL9p/bmining-logo.png" />
+        <img width="32" height="32" class="bm-image bm-grid-item" src="https://i.ibb.co/d2qxL9p/bmining-logo.png"/>
         <div class=" bm-grid-item navbar-brand">@Resource.Bmining</div>
     </div>
 
@@ -35,12 +35,20 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+<<<<<<< HEAD
                 <span class="oi oi-home" aria-hidden="true"></span> @Resource.Start
+=======
+                <span class="oi oi-home" aria-hidden="true"></span> @Resource.Home
+>>>>>>> pr/14
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="ViewUsers">
+<<<<<<< HEAD
                 <span class="oi oi-list-rich" aria-hidden="true"></span> @Resource.ViewUsers
+=======
+                <span class="oi oi-people"></span>@Resource.Users
+>>>>>>> pr/14
             </NavLink>
         </li>
         <li class="nav-item px-3">
@@ -54,10 +62,45 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
+<<<<<<< HEAD
             <NavLink class="nav-link" href="dashboard_tracking_hours/">
                 <span class="oi oi-plus" aria-hidden="true"></span> @Resource.AddHours
+=======
+            <NavLink class="nav-link" href="/dashboard_tracking_hours">
+                <span class="oi oi-calendar" aria-hidden="true"></span> @Resource.DashboardHours
+>>>>>>> pr/14
             </NavLink>
         </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/project_manager_dashboard">
+                <span class="oi oi-thumb-up" aria-hidden="true"></span> @Resource.AuditHours
+            </NavLink>
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link pointer-hover" @onclick="() => _expandActivityRecord = !_expandActivityRecord">
+                @if (!_expandActivityRecord)
+                {
+                    <span class="oi oi-caret-right" aria-hidden="true"></span>
+                }
+                else
+                {
+                    <span class="oi oi-caret-bottom" aria-hidden="true"></span>
+                }
+                @Resource.ActivityRecord
+            </NavLink>
+            @if (_expandActivityRecord)
+            {
+                <NavLink class="nav-link" href="/dashboard_activity_record">
+                    @Resource.ActivityRecords
+                </NavLink>
+                <NavLink class="nav-link" href="/create_activity_record">
+                    @Resource.CreateActivityRecord
+                </NavLink>
+            }
+        </li>
+
         <li class="nav-item px-3">
             <div class="alternate2-break"></div>
         </li>
@@ -85,12 +128,13 @@
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+    private bool _collapseNavMenu = true;
+    private bool _expandActivityRecord = false;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
     }
 }

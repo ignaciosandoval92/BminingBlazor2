@@ -408,4 +408,22 @@
     <value>Id</value>
 >>>>>>> a9f9df286c147ae7380c2ff3fe86fa45a7af73b8
   </data>
+  <data name="ActivityRecord" xml:space="preserve">
+    <value>Registro de actividad</value>
+  </data>
+  <data name="AuditHours" xml:space="preserve">
+    <value>Auditar Horas</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Inicio</value>
+  </data>
+  <data name="AddClient" xml:space="preserve">
+    <value>Añadir Cliente</value>
+  </data>
+  <data name="ClientName" xml:space="preserve">
+    <value>Nombre del Cliente</value>
+  </data>
+  <data name="Cellphone" xml:space="preserve">
+    <value>Celular</value>
+  </data>
 </root>

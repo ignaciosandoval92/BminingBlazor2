@@ -18,7 +18,7 @@ namespace BminingBlazor.Utility
                 MyMaternalSurname = (string)user[UserConstants.MaternalLastName],
                 MyJob = (string)user[UserConstants.Job],
                 MyTelephone = (string)user[UserConstants.Phone],
-                MyDirection = (string)user[UserConstants.HomeAddress],
+                MyAddress = (string)user[UserConstants.HomeAddress],
                 MyId = (int)user[UserConstants.UserId]
             };
         }
@@ -34,7 +34,7 @@ namespace BminingBlazor.Utility
                 MyMaternalSurname = (string)user[UserConstants.MaternalLastName],
                 MyJob = (string)user[UserConstants.Job],
                 MyTelephone = (string)user[UserConstants.Phone],
-                MyDirection = (string)user[UserConstants.HomeAddress],
+                MyAddress = (string)user[UserConstants.HomeAddress],
                 MyId = (int)user[UserConstants.UserId],
                 MyProjectHours = (float)user[MemberConstants.ProjectHours],
                 MyProjectId = (int)user[MemberConstants.ProjectId],

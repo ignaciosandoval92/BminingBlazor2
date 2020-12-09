@@ -1,75 +1,81 @@
 ﻿@page "/AddMembers/{idProject:int}"
 
-@using Models
-@using BminingBlazor.Services
-@using Models.Project
 @using ViewModels.User
-
 @inject IUserDataService UserDataService
 @inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@attribute [Authorize(Roles = "Administracion")]
+@*@attribute [Authorize(Roles = "Administracion")]*@
 
 
-<h3>@Resource.Members</h3>
+<div class="bmining-app">
+    <h2>@Resource.Members</h2>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
-<EditForm Model="@_newMember" >
-    <div>
-        <button class="bmining-btn-icon" @onclick="AddMembersProjectCallback">
-            <i class="fa fa-plus"></i>
-        </button>
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>@Resource.Email</th>
-                    <th>@Resource.ProjectHours</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var membersProject in _membersItems)
-                {
+    @if (_users != null)
+    {
+        <div>
+            <button class="bmining-btn-icon" @onclick="AddMembersProjectCallback">
+                <i class="fa fa-plus"></i>
+            </button>
+
+            <table>
+                <thead>
                     <tr>
-                        <td>
-                            <div class="form-group col-md-6">
-
-                                <select class="form-control" @bind="membersProject.MyId" required>
-                                    @if (_users is null)
-                                    {
-                                    }
-                                    else
-                                    {
+                        <th>@Resource.Email</th>
+                        <th>@Resource.ProjectHours</th>
+                        <th>@Resource.Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var membersProject in _membersItems)
+                    {
+                        <tr>
+                            <td>
+                                <div class="form-group col-md-6">
+                                    <select class="form-control" @bind="membersProject.MyId" required>
                                         @foreach (var emails in _users)
                                         {
                                             <option value="@emails.MyId">@emails.MyEmail</option>
                                         }
-                                    }
-                                </select>
-                            </div>
-                        </td>
-                        <td><input type="number" step="0.1" @bind="@membersProject.MyProjectHours" /> </td>
-                        <button class="bmining-btn-icon" @onclick="()=>DeleteMembersProject(membersProject)">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <button  class="bmining-button float-right" @onclick="@InsertMember">@Resource.Add</button>
-</EditForm>
+                                    </select>
+                                </div>
+                            </td>
+                            <td><input type="number" step="0.1" @bind="@membersProject.MyProjectHours" /> </td>
+                            <td>
+                                <button class="bmining-btn-icon bg-bmining-error" @onclick="()=>DeleteMembersProject(membersProject)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <button class="bmining-button float-right" @onclick="@InsertMember">@Resource.Add</button>
+    }
+</div>
 
 @code {
     [Parameter]
-    public int idProject { get; set; }
-    private MemberViewModel _newMember = new MemberViewModel();
+    public int IdProject { get; set; }
     private List<MemberViewModel> _membersItems;
     private List<UserViewModel> _users;
-    protected override async Task OnInitializedAsync()
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _users = await UserDataService.ReadUsers();
-        _membersItems = new List<MemberViewModel>();
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            _users = await UserDataService.ReadUsers();
+            _membersItems = new List<MemberViewModel>();
+            StateHasChanged();
+        }
     }
 
     private void AddMembersProjectCallback()
@@ -77,16 +83,14 @@
         _membersItems.Add(new MemberViewModel());
     }
 
-    
-
     private void DeleteMembersProject(MemberViewModel membersProject)
     {
         _membersItems.Remove(membersProject);
     }
+
     private async Task InsertMember()
     {
-
-        await ProjectDataService.AddMember(_membersItems, idProject);
-        NavigationManager.NavigateTo($"/ViewMembers/{idProject}");
+        await ProjectDataService.AddMember(_membersItems, IdProject);
+        NavigationManager.NavigateTo($"/ViewMembers/{IdProject}");
     }
 }

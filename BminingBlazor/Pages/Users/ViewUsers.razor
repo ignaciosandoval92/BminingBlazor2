@@ -1,14 +1,14 @@
 ﻿@page "/viewusers"
-@using Models
-@using BminingBlazor.Services
 @using BminingBlazor.ViewModels.User
 
 @inject IUserDataService UserDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMatDialogService MatDialogService;
+@*@attribute [Authorize(Roles = "AdminRRHH,Administracion")]*@
 
 
+<<<<<<< HEAD
 @attribute [Authorize(Roles = "AdminRRHH,Administracion")]
 <h3>@Resource.Users</h3>
 @if (users == null)
@@ -53,21 +53,88 @@ else
                 </tr>
             </tbody>
         </table>
+=======
+<div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.Users</h2>
+        </div>
+        <div class="d-inline-block">
+            <button @onclick="NewUser" class="bmining-btn-icon">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+>>>>>>> pr/14
     </div>
-}
 
+    <div class="main-break">
+        <div class="main-circle">
+        </div>
+    </div>
+    @if (_users == null)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
+        <div class="table-responsive{-sm|-md|-lg|-xl}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>@Resource.Email</th>
+                        <th>@Resource.Names</th>
+                        <th>@Resource.Surname</th>
+                        <th>@Resource.Job</th>
+                        <th>@Resource.ContractType</th>
+                        <th>@Resource.Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in _users)
+                    {
+                        <tr>
+                            <td>@user.MyEmail</td>
+                            <td>@user.MyName</td>
+                            <td>@user.MyPaternalSurname</td>
+                            <td>@user.MyJob</td>
+                            <td>@user.MyContractType</td>
+                            <td>
+                                <button class="bmining-btn-icon" @onclick=@(() => EditCallback(user.MyId))>
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button class="bmining-btn-icon bg-bmining-error" @onclick=@(() => Delete(user.MyId))>
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
 @code {
-    private List<UserViewModel> users;
+    private List<UserViewModel> _users;
 
-    public void NewUser()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            _users = await UserDataService.ReadUsers();
+            StateHasChanged();
+        }
+    }
+
+    private void NewUser()
     {
         NavigationManager.NavigateTo("/CreateUser");
     }
 
-    public async void Delete(int id)
+    private async void Delete(int id)
     {
-        var answer = await MatDialogService.AskAsync($"¿Seguro de borrar el proyecto {id}?", new List<string> { "Sí", "No" });
-        if (answer == null || answer == "No")
+        var answer = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
+        if (!answer)
             return;
         await UserDataService.DeleteUser(id);
         NavigationManager.NavigateTo("ViewUsers", true);
@@ -79,13 +146,5 @@ else
         NavigationManager.NavigateTo($"EditUser/{id}");
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        users = await UserDataService.ReadUsers();
-    }
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-    }
 }

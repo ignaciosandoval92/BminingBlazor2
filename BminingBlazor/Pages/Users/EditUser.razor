@@ -1,57 +1,70 @@
 ﻿@page "/EditUser/{id:int}"
-@using BminingBlazor.Services
-@using Models
-@using System.Runtime.CompilerServices
-@using System.ComponentModel.DataAnnotations
 @using ViewModels.User
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@attribute [Authorize(Roles = "AdminRRHH,Administracion")]
-
 @inject IUserDataService UserDataService
-<h3>Editar a @Email</h3>
-<EditForm Model="@userEdit" >
+@*@attribute [Authorize(Roles = "AdminRRHH,Administracion")]*@
 
-    <div>
 
-        <label for="inputNombres">  @Resource.ContractType:  </label>
-        <InputSelect class="form-control" @bind-Value="userEdit.MyContractType" required>
-
-            @foreach (var typeContract in Enum.GetValues(typeof(ContractTypeEnum)))
-            {
-                <option value="@typeContract">
-                    @{
-                        switch (typeContract)
-                        {
-                            case ContractTypeEnum.FeeContract:
-                                <p>@Resource.FeeContract</p>
-                                break;
-                            case ContractTypeEnum.FixedTermContract:
-                                <p>@Resource.FixedTermContract</p>
-                                break;
-                            case ContractTypeEnum.IndefiniteContract:
-                                <p>@Resource.IndefiniteContract</p>
-                                break;
-                        }
-                    }
-                </option>
-            }
-
-        </InputSelect>
-
+<div class="bmining-app">
+    <h2>@Resource.Edit @Email</h2>
+    <div class="main-break">
+        <div class="main-circle">
+        </div>
     </div>
-    <tr>
-        <td>
-            <label for="inputNombres">@Resource.Job:</label>
-            <InputText id="Cargo" @bind-Value="userEdit.MyJob" />
-            <label for="inputNombres">Teléfono:</label>
-            <InputText id="Telefono" @bind-Value="userEdit.MyTelephone" />
-            <label for="inputNombres">Dirección:</label>
-            <InputText id="Direccion" @bind-Value="userEdit.MyDirection" />
-        </td>
-    </tr>
-    <button class="bmining-button float-right" @onclick="@EditUsers">@Resource.Save</button>
-</EditForm>
+
+    @if (_userEdit != null)
+    {
+        <div>
+            <div class="form-group">
+                <label for="contract"> @Resource.ContractType</label>
+                <select id="contract" class="form-control" @bind="_userEdit.MyContractType" required>
+
+                    @foreach (var typeContract in Enum.GetValues(typeof(ContractTypeEnum)))
+                    {
+                        <option value="@typeContract">
+                            @{
+                                switch (typeContract)
+                                {
+                                    case ContractTypeEnum.FeeContract:
+                                        @Resource.FeeContract
+                                        break;
+                                    case ContractTypeEnum.FixedTermContract:
+                                        @Resource.FixedTermContract
+                                        break;
+                                    case ContractTypeEnum.IndefiniteContract:
+                                        @Resource.IndefiniteContract
+                                        break;
+                                }
+                            }
+                        </option>
+                    }
+                </select>
+            </div>
+
+        </div>
+
+        <div>
+            <div class="form-group">
+                <label for="job">@Resource.Job</label>
+                <input class="form-control" type="text" id="job" @bind="_userEdit.MyJob" />
+            </div>
+            <div class="form-group">
+                <label for="telephone">@Resource.Cellphone</label>
+                <input class="form-control" type="text" id="telephone" @bind="_userEdit.MyTelephone" />
+            </div>
+            <div class="form-group">
+                <label for="direction">@Resource.HomeAddress</label>
+                <input class="form-control" id="direction" @bind="_userEdit.MyAddress" />
+            </div>
+        </div>
+        <button class="bmining-button float-right" @onclick="@EditUsers">@Resource.Save</button>
+    }
+    else
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+</div>
 
 @code {
     [Parameter]
@@ -59,38 +72,38 @@
 
     public string Email { get; set; }
 
-    private UserViewModel userEdit = new UserViewModel();
-   
+    private readonly UserViewModel _userEdit = new UserViewModel();
 
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-
-        var userEditModels = await UserDataService.ReadUser(Id);
-        userEdit.MyEmail = userEditModels.MyEmail;
-        userEdit.MyName = userEditModels.MyName;
-        userEdit.MyPaternalSurname = userEditModels.MyPaternalSurname;
-        userEdit.MyMaternalSurname = userEditModels.MyMaternalSurname;
-        userEdit.MyRut = userEditModels.MyRut;
-        userEdit.MyContractType = userEditModels.MyContractType;
-        userEdit.MyJob = userEditModels.MyJob;
-        userEdit.MyTelephone = userEditModels.MyTelephone;
-        userEdit.MyDirection= userEditModels.MyDirection;
-        Email = userEditModels.MyEmail;
-
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            var userEditModel = await UserDataService.ReadUser(Id);
+            _userEdit.MyEmail = userEditModel.MyEmail;
+            _userEdit.MyName = userEditModel.MyName;
+            _userEdit.MyPaternalSurname = userEditModel.MyPaternalSurname;
+            _userEdit.MyMaternalSurname = userEditModel.MyMaternalSurname;
+            _userEdit.MyRut = userEditModel.MyRut;
+            _userEdit.MyContractType = userEditModel.MyContractType;
+            _userEdit.MyJob = userEditModel.MyJob;
+            _userEdit.MyTelephone = userEditModel.MyTelephone;
+            _userEdit.MyAddress = userEditModel.MyAddress;
+            Email = userEditModel.MyEmail;
+            StateHasChanged();
+        }
     }
-    protected override async Task OnParametersSetAsync()
-    {
-        var user = await UserDataService.ReadUsers();
-    }
+
 
     private async Task EditUsers()
     {
         var user = new UserViewModel()
         {
-            MyJob = userEdit.MyJob,
-            MyTelephone = userEdit.MyTelephone,
-            MyDirection = userEdit.MyDirection,
-            MyContractType =userEdit.MyContractType,
+            MyJob = _userEdit.MyJob,
+            MyTelephone = _userEdit.MyTelephone,
+            MyAddress = _userEdit.MyAddress,
+            MyContractType = _userEdit.MyContractType,
             MyId = Id
         };
         await UserDataService.EditUser(user);

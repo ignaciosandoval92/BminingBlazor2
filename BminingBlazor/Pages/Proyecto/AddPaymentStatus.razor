@@ -1,59 +1,82 @@
 ﻿@page "/AddPaymentStatus/{idProject:int}"
-
-@using Models
-@using BminingBlazor.Services
-@using Models.Project
 @using ViewModels.Projects
 
 @inject IUserDataService UserDataService
 @inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@attribute [Authorize(Roles = "Administracion")]
+@*@attribute [Authorize(Roles = "Administracion")]*@
 
 
-<h3>@Resource.PaymentStatus</h3>
-
-<EditForm Model="@_newPaymentStatus" >
-    <div>
-        <button class="bmining-btn-icon" OnClick="AddPaymentStatusCallback">
-           <i class="fa fa-plus"></i>
-        </button>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>@Resource.Name</th>
-                    <th>@Resource.PaymentDeadlineIssued</th>
-                    <th>@Resource.BillingDeadline </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var paymentStatus in _paymentStatusItems)
-                {
-                    <tr>
-                        <td><InputText @bind-Value="@paymentStatus.MyName" /></td>
-                        <td><InputDate @bind-Value="@paymentStatus.IssueExpirationDate"></InputDate></td>
-                        <td><InputDate @bind-Value="@paymentStatus.InvoiceExpirationDate"></InputDate></td>
-                        <button class="bmining-btn-icon" @onclick="()=>DeletePaymentStatus(paymentStatus)">
-                           <i class="fa fa-trash"></i>
-                        </button>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.PaymentStatus</h2>
+        </div>
+        <div class="d-inline-block">
+            <button @onclick="AddPaymentStatusCallback" class="bmining-btn-icon">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
     </div>
-    <button  class="bmining-button float-right" @onclick="@InsertPayments">@Resource.Add</button>
-</EditForm>
+    
+    <div class="main-break">
+        <div class="main-circle">
+
+        </div>
+    </div>
+
+    @if (_paymentStatusItems != null)
+    {
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>@Resource.Name</th>
+                        <th>@Resource.PaymentDeadlineIssued</th>
+                        <th>@Resource.BillingDeadline </th>
+                        <th>@Resource.Actions </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var paymentStatus in _paymentStatusItems)
+                    {
+                        <tr>
+                            <td>
+                                <input class="w-100" type="text" @bind-value="@paymentStatus.MyName" />
+                            </td>
+                            <td>
+                                <input class="w-100" type="date" @bind-value="@paymentStatus.IssueExpirationDate" />
+                            </td>
+
+                            <td>
+                                <input class="w-100" type="date" @bind-value="@paymentStatus.InvoiceExpirationDate" />
+                            </td>
+                            <td>
+                                <button class="bmining-btn-icon bg-bmining-error" @onclick="()=>DeletePaymentStatus(paymentStatus)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <button class="bmining-button float-right" @onclick="@InsertPayment">@Resource.Load</button>
+    }
+    else
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+</div>
 
 @code {
     [Parameter]
-    public int idProject { get; set; }
-    private PaymentViewModel _newPaymentStatus = new PaymentViewModel();
+    public int IdProject { get; set; }
     private List<PaymentViewModel> _paymentStatusItems;
 
-    protected override  void OnInitialized()
+    protected override void OnInitialized()
     {
-
         _paymentStatusItems = new List<PaymentViewModel>();
     }
 
@@ -66,17 +89,14 @@
         });
     }
 
-
-
-
     private void DeletePaymentStatus(PaymentViewModel paymentStatus)
     {
         _paymentStatusItems.Remove(paymentStatus);
     }
-    private async Task InsertPayments()
+    private async Task InsertPayment()
     {
 
-        await ProjectDataService.AddPaymentStatus(_paymentStatusItems, idProject);
-        NavigationManager.NavigateTo($"/ViewPaymentStatus/{idProject}");
+        await ProjectDataService.AddPaymentStatus(_paymentStatusItems, IdProject);
+        NavigationManager.NavigateTo($"/ViewPaymentStatus/{IdProject}");
     }
 }

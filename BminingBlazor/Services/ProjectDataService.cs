@@ -159,7 +159,7 @@ namespace BminingBlazor.Services
                         MyMaternalSurname = (string)user[UserConstants.MaternalLastName],
                         MyJob = (string)user[UserConstants.Job],
                         MyTelephone = (string)user[UserConstants.Phone],
-                        MyDirection = (string)user[UserConstants.HomeAddress],
+                        MyAddress = (string)user[UserConstants.HomeAddress],
                         MyId = (int)user[UserConstants.UserId]
                     };
                 }
@@ -176,7 +176,7 @@ namespace BminingBlazor.Services
                         MyMaternalSurname = (string)user[UserConstants.MaternalLastName],
                         MyJob = (string)user[UserConstants.Job],
                         MyTelephone = (string)user[UserConstants.Phone],
-                        MyDirection = (string)user[UserConstants.HomeAddress],
+                        MyAddress = (string)user[UserConstants.HomeAddress],
                         MyId = (int)user[UserConstants.UserId],
                         MyProjectHours = (float)user[MemberConstants.ProjectHours],
                         MyProjectId = (int)user[MemberConstants.ProjectId],
@@ -259,7 +259,7 @@ namespace BminingBlazor.Services
                 membersViewModel.Add(new MemberViewModel
                 {
                     MyCodMember = member.CodMembers,
-                    MyDirection = member.HomeAddress,
+                    MyAddress = member.HomeAddress,
                     MyEmail = member.EmailBmining,
                     MyId = member.UserId,
                     MyJob = member.Job,
@@ -389,7 +389,7 @@ namespace BminingBlazor.Services
         }
 
 
-        public async Task<List<PaymentViewModel>> ReadPaymentStatus(int idProject)
+        public async Task<List<PaymentViewModel>> ReadPaymentStatusOfProject(int idProject)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             var payments = (await queryFactory
@@ -420,7 +420,7 @@ namespace BminingBlazor.Services
             }
             return paymentsViewModel;
         }
-        public async Task<PaymentViewModel> ReadPaymentStatu(int paymentId)
+        public async Task<PaymentViewModel> ReadPaymentStatus(int paymentId)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             var payment = (await queryFactory

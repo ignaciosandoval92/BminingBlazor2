@@ -1,4 +1,4 @@
-﻿@page "/projectmanagerdashboard"
+﻿@page "/project_manager_dashboard"
 @using BminingBlazor.ViewModels.TrackingHours
 @using Microsoft.AspNetCore.Http
 
@@ -25,66 +25,76 @@
 
 
 <div class="bmining-app">
-    <h1 class="header-break">@Resource.DashboardProjectManager</h1>
-
+    <h2 class="header-break">@Resource.DashboardProjectManager</h2>
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
 
-    @foreach (var projectManagerTrackingHoursProject in ViewModel.OurProjectManagerTrackingHoursProjects)
+    @if (ViewModel != null)
     {
-        <h3>@projectManagerTrackingHoursProject.MyProjectName</h3>
-        <table>
-            <tr>
-                <th>@Resource.Name</th>
-                <th>@Resource.Hours</th>
-                <th>@Resource.Date</th>
-                <th>@Resource.Actions</th>
-            </tr>
 
-            @foreach (var projectManagerTrackingHoursProjectMember in projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers)
-            {
+        @foreach (var projectManagerTrackingHoursProject in ViewModel.OurProjectManagerTrackingHoursProjects)
+        {
+            <h4>@projectManagerTrackingHoursProject.MyProjectName</h4>
+            <table>
                 <tr>
-                    <td>
-                        @projectManagerTrackingHoursProjectMember.MyMemberName
-                    </td>
-                    <td>
-                        @projectManagerTrackingHoursProjectMember.MyHoursLoaded
-                    </td>
-                    <td>
-                        @projectManagerTrackingHoursProjectMember.DateOfHours.ToLongDateString()
-                    </td>
-                    <td class="text-center">
-                        <button @onclick="() => RejectHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon bg-bmining-error">
-                            <i class="fa fa-thumbs-down"></i>
-                        </button>
-                        <button @onclick="() => ApproveHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon">
-                            <i class="fa fa-thumbs-up"></i>
-                        </button>
-                    </td>
+                    <th>@Resource.Name</th>
+                    <th>@Resource.Hours</th>
+                    <th>@Resource.Date</th>
+                    <th>@Resource.Actions</th>
                 </tr>
-            }
-        </table>
-        <div class="alternate1-break"></div>
+
+                @foreach (var projectManagerTrackingHoursProjectMember in projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers)
+                {
+                    <tr>
+                        <td>
+                            @projectManagerTrackingHoursProjectMember.MyMemberName
+                        </td>
+                        <td>
+                            @projectManagerTrackingHoursProjectMember.MyHoursLoaded
+                        </td>
+                        <td>
+                            @projectManagerTrackingHoursProjectMember.DateOfHours.ToLongDateString()
+                        </td>
+                        <td class="text-center">
+                            <button @onclick="() => RejectHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon bg-bmining-error">
+                                <i class="fa fa-thumbs-down"></i>
+                            </button>
+                            <button @onclick="() => ApproveHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon">
+                                <i class="fa fa-thumbs-up"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <div class="alternate1-break"></div>
+        }
     }
+    else
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+
 </div>
 
 
 @code {
     public ProjectManagerTrackingHoursApprovalViewModel ViewModel { get; set; }
 
-    protected override void OnInitialized()
-    {
-        ViewModel = new ProjectManagerTrackingHoursApprovalViewModel();
-        base.OnInitialized();
-
-    }
-
     protected override async Task OnInitializedAsync()
     {
-        var id = await UserDataService.GetUserId(HttpContextAccessor.GetEmail());
-        ViewModel = await TimeTrackingService.GetPendingTimeTrackingHoursByProjectManager(id);
         await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            var id = await UserDataService.GetUserId(HttpContextAccessor.GetEmail());
+            ViewModel = await TimeTrackingService.GetPendingTimeTrackingHoursByProjectManager(id);
+            StateHasChanged();
+        }
     }
 
     private async Task ApproveHours(ProjectManagerTrackingHoursProjectViewModel projectManagerTrackingHoursProject,

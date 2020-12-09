@@ -7,13 +7,28 @@
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMatDialogService MatDialogService
-@attribute [Authorize(Roles = "Administracion")]
+@*@attribute [Authorize(Roles = "Administracion")]*@
 
 
-    <h3>@Resource.Projects </h3>
-    >
+<div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.Projects</h2>
+        </div>
+        <div class="d-inline-block">
+            <button @onclick="NewProject" class="bmining-btn-icon">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+
     @if (_projects == null)
-    {        
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
     else
     {
@@ -27,61 +42,65 @@
                         <th>@Resource.ProjectType</th>
                         <th>@Resource.Client</th>
                         <th>@Resource.StatusProject </th>
+                        <th>@Resource.Actions </th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var p in _projects)
                     {
-                    <tr>
-                        <td>@p.MyProjectCode</td>
-                        <td>@p.MyProjectName</td>
-                        <td>@p.MyProjectManager.MyEmail</td>
-                        <td>@p.MyProjectType</td>
-                        <td>@p.MyClientName</td>
-                        <td>@p.MyProjectStatus</td>
-                        <button class="bmining-button" @onclick=@(()=>ViewIntegrantes(p.MyId))>@Resource.Members</button>
-                        <button class="bmining-button" @onclick=@(()=>EditEstadoPago(p.MyId))>@Resource.EditPaymentStatus</button>
-                        <button class="bmining-button" @onclick=@(()=>Delete(p.MyId))>@Resource.Delete</button>
-                    </tr>
+                        <tr>
+                            <td>@p.MyProjectCode</td>
+                            <td>@p.MyProjectName</td>
+                            <td>@p.MyProjectManager.MyEmail</td>
+                            <td>@p.MyProjectType</td>
+                            <td>@p.MyClientName</td>
+                            <td>@p.MyProjectStatus</td>
+                            <td>
+                                <button class="bmining-button" @onclick=@(()=>ViewMembers(p.MyId))>@Resource.Members</button>
+                                <button class="bmining-button" @onclick=@(()=>EditPaymentStatus(p.MyId))>@Resource.EditPaymentStatus</button>
+                                <button class="bmining-button" @onclick=@(()=>Delete(p.MyId))>@Resource.Delete</button>
+                            </td>
+                        </tr>
                     }
-                    <tr>
-                        <button type="button" class="bmining-button" @onclick="@NewProyecto">@Resource.AddProject</button>
-                    </tr>
                 </tbody>
             </table>
         </div>
     }
+</div>
 
+@code {
+    private List<ProjectViewModel> _projects;
 
-    @code {
-        private List<ProjectViewModel> _projects;
-
-        protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
         {
-
             _projects = await ProjectDataService.ReadProjects();
-        }
-
-        public void EditEstadoPago(int idProject)
-        {
-            NavigationManager.NavigateTo($"/ViewPaymentStatus/{idProject}");
-        }
-
-        public void NewProyecto()
-        {
-            NavigationManager.NavigateTo("/CreateProject");
-        }
-        public void ViewIntegrantes(int idProject)
-        {
-            NavigationManager.NavigateTo($"ViewMembers/{idProject}");
-        }
-
-        public async void Delete(int idProject)
-        {
-            var answer = await MatDialogService.AskAsync(Resource.AreYouSureToDelete, new[] { Resource.Yes, Resource.No });
-            if (answer == null || answer == Resource.No)
-                return;
-            await ProjectDataService.DeleteProject(idProject);
-            NavigationManager.NavigateTo("/ViewProject", true);
+            StateHasChanged();
         }
     }
+
+    public void EditPaymentStatus(int idProject)
+    {
+        NavigationManager.NavigateTo($"/ViewPaymentStatus/{idProject}");
+    }
+
+    public void NewProject()
+    {
+        NavigationManager.NavigateTo("/CreateProject");
+    }
+    public void ViewMembers(int idProject)
+    {
+        NavigationManager.NavigateTo($"ViewMembers/{idProject}");
+    }
+
+    public async void Delete(int idProject)
+    {
+        var answer = await MatDialogService.AskAsync(Resource.AreYouSureToDelete, new[] { Resource.Yes, Resource.No });
+        if (answer == null || answer == Resource.No)
+            return;
+        await ProjectDataService.DeleteProject(idProject);
+        NavigationManager.NavigateTo("/ViewProject", true);
+    }
+}

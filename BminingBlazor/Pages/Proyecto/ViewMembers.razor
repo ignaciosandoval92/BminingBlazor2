@@ -10,26 +10,33 @@
 @inject IProjectDataService ProjectDataService
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@attribute [Authorize(Roles = "Administracion")]
-<h3>@Resource.ProjectManager</h3>
-@if (_boss == null)
-{
-}
-else
-{
-    <div class="table-responsive{-sm|-md|-lg|-xl}">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>@Resource.Email</th>
-                    <th>@Resource.Names</th>
-                    <th>@Resource.PaternalLastName</th>
-                    <th>@Resource.MaternalLastName</th>
-                    <th>Rut</th>
-                </tr>
-            </thead>
-            <tbody>
-               
+@*@attribute [Authorize(Roles = "Administracion")]*@
+
+<div class="bmining-app">
+    <h2>@Resource.ProjectManager</h2>
+    <div class="main-circle">
+        <div class="main-circle">
+        </div>
+    </div>
+    @if (_boss == null)
+    {
+        <MatProgressBar Indeterminate="true" />
+    }
+    else
+    {
+        <div class="table-responsive{-sm|-md|-lg|-xl}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>@Resource.Email</th>
+                        <th>@Resource.Names</th>
+                        <th>@Resource.PaternalLastName</th>
+                        <th>@Resource.MaternalLastName</th>
+                        <th>@Resource.Rut</th>
+                    </tr>
+                </thead>
+                <tbody>
+
                     <tr>
                         <td>@_boss.MyEmail</td>
                         <td>@_boss.MyName</td>
@@ -37,50 +44,47 @@ else
                         <td>@_boss.MyMaternalSurname</td>
                         <td>@_boss.MyRut</td>
                     </tr>
-              
-            </tbody>
-        </table>
-    </div>
-}
 
-<h3>@Resource.Members</h3>
-@if (_members == null)
-{
-}
-else
-{
-    <div class="table-responsive{-sm|-md|-lg|-xl}">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>@Resource.Email</th>
-                    <th>@Resource.Names</th>
-                    <th>@Resource.PaternalLastName</th>
-                    <th>@Resource.MaternalLastName</th>
-                    <th>@Resource.Rut</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var i in _members)
-                {
+                </tbody>
+            </table>
+        </div>
+
+
+        <h4>@Resource.Members</h4>
+        <div class="table-responsive{-sm|-md|-lg|-xl}">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>@i.MyEmail</td>
-                        <td>@i.MyName</td>
-                        <td>@i.MyPaternalSurname</td>
-                        <td>@i.MyMaternalSurname</td>
-                        <td>@i.MyRut</td>
-                        <button class="bmining-btn-icon" @onclick="()=>Delete(i.MyCodMember)">
-                            <i class="fa fa-trash"></i>
-                        </button>
+                        <th>@Resource.Email</th>
+                        <th>@Resource.Names</th>
+                        <th>@Resource.PaternalLastName</th>
+                        <th>@Resource.MaternalLastName</th>
+                        <th>@Resource.Rut</th>
+                        <th>@Resource.Actions</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-        <button  class="bmining-button float-right" @onclick="@AddMember">@Resource.AddMember</button>
-    </div>
-
-}
-
+                </thead>
+                <tbody>
+                    @foreach (var member in _members)
+                    {
+                        <tr>
+                            <td>@member.MyEmail</td>
+                            <td>@member.MyName</td>
+                            <td>@member.MyPaternalSurname</td>
+                            <td>@member.MyMaternalSurname</td>
+                            <td>@member.MyRut</td>
+                            <td>
+                                <button class="bmining-btn-icon bg-bmining-error" @onclick="()=>Delete(member.MyCodMember)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button class="bmining-button float-right" @onclick="@AddMember">@Resource.AddMember</button>
+        </div>
+    }
+</div>
 @code {
     [Parameter]
     public int IdProject { get; set; }
@@ -92,6 +96,18 @@ else
         _boss = await UserDataService.ReadUser(id);
         _members = await ProjectDataService.ReadMembers(IdProject);
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            var id = await ProjectDataService.ReadIdProjectManager(IdProject);
+            _boss = await UserDataService.ReadUser(id);
+            _members = await ProjectDataService.ReadMembers(IdProject);
+        }
+    }
+
     public void AddMember()
     {
         NavigationManager.NavigateTo($"/AddMembers/{IdProject}");

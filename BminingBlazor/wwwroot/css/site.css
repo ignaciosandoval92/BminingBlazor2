@@ -286,6 +286,9 @@ legend.scheduler-border {
     margin: 4px;
 }
 
+.pointer-hover:hover {
+    cursor: pointer ;
+}
 
 table {
     width: 100%;
