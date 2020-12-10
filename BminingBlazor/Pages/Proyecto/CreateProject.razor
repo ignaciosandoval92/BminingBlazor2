@@ -274,7 +274,8 @@
 
     private async Task InsertProject()
     {
-        string user = HttpContextAccessor.HttpContext.User.Identity.Name;
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User.Identity.Name;       
         var creatorId = await UserDataService.GetUserId(user);
         var project = new ProjectViewModel
         {

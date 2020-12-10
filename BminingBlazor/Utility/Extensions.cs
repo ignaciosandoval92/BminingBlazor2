@@ -4,14 +4,22 @@ using System.Linq;
 using System.Security.Claims;
 using BminingBlazor.ViewModels.Projects;
 using Models.Project;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BminingBlazor.Utility
 {
     public static class Extensions
     {
-        public static string GetEmail(this IHttpContextAccessor httpContextAccessor)
+        //public static string GetEmail(this IHttpContextAccessor httpContextAccessor)
+        //{
+        //    return httpContextAccessor.HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
+        //}
+        public static async Task<string> GetEmail( this AuthenticationStateProvider AuthenticationStateProvider)
         {
-            return httpContextAccessor.HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User.Identity.Name;
+            return user;
         }
 
         public static ProjectViewModel GetBaseProjectViewModel(this ProjectModel projectModel)
@@ -28,5 +36,5 @@ namespace BminingBlazor.Utility
             };
         }
 
-    }
+    }    
 }

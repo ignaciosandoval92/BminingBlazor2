@@ -6,6 +6,7 @@
 @inject ITimeTrackingService TimeTrackingService
 @inject IUserDataService UserDataService
 @inject IHttpContextAccessor HttpContextAccessor
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <style>
     .item-dashboard-container {
@@ -91,7 +92,7 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            var id = await UserDataService.GetUserId(HttpContextAccessor.GetEmail());
+            var id = await UserDataService.GetUserId(await AuthenticationStateProvider.GetEmail());
             ViewModel = await TimeTrackingService.GetPendingTimeTrackingHoursByProjectManager(id);
             StateHasChanged();
         }

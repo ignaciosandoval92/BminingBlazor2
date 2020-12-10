@@ -9,6 +9,7 @@
 @inject NavigationManager NavigationManager
 @inject IDummyProjectDataService DummyProjectDataService
 @inject IMatDialogService MatDialogService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <style>
     .load-hours-container {
@@ -79,8 +80,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var email = HttpContextAccessor.GetEmail();
-        var userId = await UserDataService.GetUserId(email);
+        var email = AuthenticationStateProvider.GetEmail();
+        var userId = await UserDataService.GetUserId(await email);
 
         var projectsBelongsUserId = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
 

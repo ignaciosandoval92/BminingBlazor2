@@ -12,6 +12,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject NavigationManager NavigationManager
 @inject IMatDialogService MatDialogService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <style>
     .week-header-container {
@@ -227,8 +228,9 @@
     {
         if (firstRender)
         {
-            Email = HttpContextAccessor.GetEmail();
-            var userId = await UserDataService.GetUserId(Email);
+
+            var Email = AuthenticationStateProvider.GetEmail();
+            var userId = await UserDataService.GetUserId(await Email);
             DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
             DashboardUserTracking.MyUserId = userId;
             if (!Day.HasValue || !Month.HasValue || !Year.HasValue)
