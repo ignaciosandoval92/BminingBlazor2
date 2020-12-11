@@ -10,11 +10,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 namespace BminingBlazor.Utility
 {
     public static class Extensions
-    {
-        //public static string GetEmail(this IHttpContextAccessor httpContextAccessor)
-        //{
-        //    return httpContextAccessor.HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
-        //}
+    {     
         public static async Task<string> GetEmail( this AuthenticationStateProvider AuthenticationStateProvider)
         {
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
