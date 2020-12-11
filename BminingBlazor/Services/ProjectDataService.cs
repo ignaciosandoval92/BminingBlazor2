@@ -239,8 +239,8 @@ namespace BminingBlazor.Services
             var members = (await queryFactory
                 .Query()
                 .From(UserTable)
-                .Join(MembersTable, MembersTable + "." + UserConstants.UserId, UserTable + "." + MemberConstants.UserId)
-                .Select(UserTable + "." + UserConstants.UserId)
+                .Join(MembersTable, $"{MembersTable}.{UserConstants.UserId}",$"{UserTable}.{MemberConstants.UserId}")
+                .Select($"{UserTable}.{UserConstants.UserId}")
                 .Select(UserConstants.EmailBmining)
                 .Select(UserConstants.Name)
                 .Select(UserConstants.PaternalLastName)
@@ -250,7 +250,7 @@ namespace BminingBlazor.Services
                 .Select(UserConstants.Phone)
                 .Select(UserConstants.HomeAddress)
                 .Select(MemberConstants.CodMembers)
-                .Where(MembersTable + "." + MemberConstants.ProjectId, idProject)
+                .Where($"{MembersTable}.{MemberConstants.ProjectId}", idProject)
                 .GroupBy(UserConstants.Name)
                 .GetAsync<UserModel>()).ToList();
             var membersViewModel = new List<MemberViewModel>();
@@ -294,10 +294,10 @@ namespace BminingBlazor.Services
             var projects = (await queryFactory
                 .Query()
                 .From(ProjectTable)
-                .Join(UserTable, UserTable + "." + UserConstants.UserId, ProjectTable + "." + ProjectConstants.ProjectManagerId)
-                .Join(ClientTable, ClientTable + "." + ClientConstants.ClientId, ProjectTable + "." + ProjectConstants.ClientId)
-                .Join(MembersTable, MembersTable + "." + MemberConstants.ProjectId, ProjectTable + "." + ProjectConstants.ProjectId)
-                .Select(ProjectTable + "." + ProjectConstants.ProjectId)
+                .Join(UserTable, $"{UserTable}.{UserConstants.UserId}",$"{ProjectTable}.{ProjectConstants.ProjectManagerId}")
+                .Join(ClientTable, $"{ClientTable}.{ClientConstants.ClientId}",$"{ProjectTable}.{ProjectConstants.ClientId}")
+                .Join(MembersTable,$"{MembersTable}.{MemberConstants.ProjectId}",$"{ProjectTable}.{ProjectConstants.ProjectId}")
+                .Select($"{ProjectTable}.{ProjectConstants.ProjectId}")
                 .Select(ProjectConstants.ProjectCode)
                 .Select(ProjectConstants.ProjectName)
                 .Select(ProjectConstants.ProjectManagerId)
@@ -305,9 +305,9 @@ namespace BminingBlazor.Services
                 .Select(ClientConstants.ClientName)
                 .Select(ProjectConstants.CodProjectType)
                 .Select(ProjectConstants.StatusId)
-                .Select(ClientTable + "." + ClientConstants.ClientId)
-                .Where(MembersTable + "." + MemberConstants.UserId, userId)
-                .GroupBy(ProjectTable + "." + ProjectConstants.ProjectId)
+                .Select($"{ClientTable}.{ClientConstants.ClientId}")
+                .Where($"{MembersTable}.{MemberConstants.UserId}", userId)
+                .GroupBy($"{ProjectTable}.{ProjectConstants.ProjectId}")
                 .GetAsync<ProjectModel>()).ToList();
             var projectViewModel = new List<ProjectViewModel>();
             foreach (var projectModel in projects)
@@ -341,9 +341,9 @@ namespace BminingBlazor.Services
             var projects = (await queryFactory
                 .Query()
                 .From(ProjectTable)
-                .Join(UserTable, UserTable + "." + UserConstants.UserId, ProjectTable + "." + ProjectConstants.ProjectManagerId)
-                .Join(ClientTable, ClientTable + "." + ClientConstants.ClientId, ProjectTable + "." + ProjectConstants.ClientId)
-                .Select(ProjectTable + "." + ProjectConstants.ProjectId)
+                .Join(UserTable, $"{UserTable}.{UserConstants.UserId}",$"{ProjectTable}.{ProjectConstants.ProjectManagerId}")
+                .Join(ClientTable, $"{ClientTable}.{ClientConstants.ClientId}",$"{ ProjectTable}.{ProjectConstants.ClientId}")
+                .Select($"{ProjectTable}.{ProjectConstants.ProjectId}")
                 .Select(ProjectConstants.ProjectCode)
                 .Select(ProjectConstants.ProjectName)
                 .Select(ProjectConstants.ProjectManagerId)
@@ -351,8 +351,8 @@ namespace BminingBlazor.Services
                 .Select(ClientConstants.ClientName)
                 .Select(ProjectConstants.CodProjectType)
                 .Select(ProjectConstants.StatusId)
-                .Select(ClientTable + "." + ClientConstants.ClientId)
-                .Where(ProjectTable + "." + ProjectConstants.ProjectId, projectId)
+                .Select($"{ClientTable}.{ClientConstants.ClientId}")
+                .Where($"{ProjectTable}.{ProjectConstants.ProjectId}", projectId)
                 .GetAsync<ProjectModel>()).First();
             var projectViewModel = new ProjectViewModel()
             {
@@ -395,14 +395,14 @@ namespace BminingBlazor.Services
             var payments = (await queryFactory
                 .Query()
                 .From(PaymentTable)
-                .Join(PaymentTypeTable, PaymentTypeTable + "." + PaymentTypeConstants.CodPaymentStatusType, PaymentTable + "." + PaymentConstants.CodPaymentStatusType)
-                .Select(PaymentTable + "." + PaymentConstants.CodPaymentStatusType)
+                .Join(PaymentTypeTable, $"{PaymentTypeTable}.{PaymentTypeConstants.CodPaymentStatusType}",$"{PaymentTable}.{PaymentConstants.CodPaymentStatusType}")
+                .Select($"{PaymentTable}.{PaymentConstants.CodPaymentStatusType}")
                 .Select(PaymentConstants.PaymentName)
                 .Select(PaymentConstants.ProjectId)
                 .Select(PaymentConstants.InvoiceExpirationDate)
                 .Select(PaymentConstants.IssueExpirationDate)
                 .Select(PaymentConstants.PaymentId)
-                .Where(PaymentTable + "." + PaymentConstants.ProjectId, idProject)
+                .Where($"{PaymentTable}.{PaymentConstants.ProjectId}", idProject)
                 .GroupBy(PaymentConstants.PaymentId)
                 .GetAsync<PaymentModel>()).ToList();
             var paymentsViewModel = new List<PaymentViewModel>();
@@ -426,14 +426,14 @@ namespace BminingBlazor.Services
             var payment = (await queryFactory
                 .Query()
                 .From(PaymentTable)
-                .Join(PaymentTypeTable, PaymentTypeTable + "." + PaymentTypeConstants.CodPaymentStatusType, PaymentTable + "." + PaymentConstants.CodPaymentStatusType)
-                .Select(PaymentTable + "." + PaymentConstants.CodPaymentStatusType)
+                .Join(PaymentTypeTable,$"{PaymentTypeTable}.{PaymentTypeConstants.CodPaymentStatusType}",$"{PaymentTable}.{PaymentConstants.CodPaymentStatusType}")
+                .Select($"{PaymentTable}.{PaymentConstants.CodPaymentStatusType}")
                 .Select(PaymentConstants.PaymentName)
                 .Select(PaymentConstants.ProjectId)
                 .Select(PaymentConstants.InvoiceExpirationDate)
                 .Select(PaymentConstants.IssueExpirationDate)
-                .Select(PaymentConstants.PaymentId)
-                .Where(PaymentTable + "." + PaymentConstants.PaymentId, paymentId)
+                .Select($"{PaymentConstants.PaymentId}")
+                .Where($"{PaymentTable}.{PaymentConstants.PaymentId}", paymentId)
                 .GroupBy(PaymentConstants.PaymentId)
                 .GetAsync<PaymentModel>()).First();
             var paymentViewModel = new PaymentViewModel()
