@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -79,6 +80,9 @@ namespace BminingBlazor
             //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             //    app.UseHsts();
             //}
+
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("es-ES");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("es-ES");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
