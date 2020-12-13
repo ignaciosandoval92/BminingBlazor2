@@ -1,7 +1,6 @@
 ﻿using BminingBlazor.ViewModels.User;
 using Data;
 using Microsoft.Extensions.Configuration;
-using Models;
 using SqlKata.Execution;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,7 +93,7 @@ namespace BminingBlazor.Services
                 MyContractType = (ContractTypeEnum)user.CodContractType
 
             };
-            return userViewModel;        
+            return userViewModel;
         }
 
         public async Task<List<UserViewModel>> ReadUsers(IEnumerable<int> ids)
@@ -148,32 +147,26 @@ namespace BminingBlazor.Services
                                              .GetAsync<int>();
             return clients.First();
         }
-
-
+        
 
         public async Task EditUser(UserViewModel user)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             var userId = await queryFactory.Query()
-                .From(UserTable)
-                .Where(UserConstants.UserId, user.MyId)
-                .UpdateAsync(new Dictionary<string, object>{
-                { UserConstants.Job,user.MyJob},
-                { UserConstants.Phone,user.MyTelephone},
-                { UserConstants.HomeAddress,user.MyAddress},
-                { UserConstants.CodContractType,user.MyContractType}
-        });
-                     
+                    .From(UserTable)
+                    .Where(UserConstants.UserId, user.MyId)
+                    .UpdateAsync(new Dictionary<string, object>{
+                    { UserConstants.Job,user.MyJob},
+                    { UserConstants.Phone,user.MyTelephone},
+                    { UserConstants.HomeAddress,user.MyAddress},
+                    { UserConstants.CodContractType,user.MyContractType}
+                });
         }
 
         public async Task DeleteUser(int userId)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             await queryFactory.Query(UserTable).Where(UserConstants.UserId, userId).DeleteAsync();
-
         }
-
-      
-
     }
 }

@@ -161,10 +161,8 @@
     public int? Month { get; set; }
     [Parameter]
     public int? Year { get; set; }
-
-
+    
     public bool IsLoading { get; set; }
-    public string Email { get; set; }
 
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
 
@@ -227,11 +225,9 @@
     {
         if (firstRender)
         {
-
-            var Email = AuthenticationStateProvider.GetEmail();
-            var userId = await UserDataService.GetUserId(await Email);
-            DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
-            DashboardUserTracking.MyUserId = userId;
+            var email = await AuthenticationStateProvider.GetEmail();
+            var userId = await UserDataService.GetUserId(email);
+            DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService) { MyUserId = userId };
             if (!Day.HasValue || !Month.HasValue || !Year.HasValue)
             {
                 var date = DateTime.UtcNow.ToLocalTime();
