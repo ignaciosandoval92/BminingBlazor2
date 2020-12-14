@@ -1,5 +1,8 @@
-﻿namespace BminingBlazor.ViewModels.User
+﻿using System.Diagnostics;
+
+namespace BminingBlazor.ViewModels.User
 {
+    [DebuggerDisplay("{MyEmail}")]
     public class UserViewModel
     {
         public int MyId { get; set; }

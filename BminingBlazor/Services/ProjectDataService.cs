@@ -12,8 +12,6 @@ using System.Threading.Tasks;
 using static Data.TableConstants;
 using MemberViewModel = BminingBlazor.ViewModels.User.MemberViewModel;
 
-
-
 namespace BminingBlazor.Services
 {
     public class ProjectDataService : IProjectDataService

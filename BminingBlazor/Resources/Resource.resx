@@ -415,19 +415,16 @@
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
-  <data name="AddClient_Duplicate[1]" xml:space="preserve">
-    <value>Add Client</value>
-  </data>
   <data name="ClientName" xml:space="preserve">
     <value>Client Name</value>
   </data>
   <data name="Cellphone" xml:space="preserve">
     <value>Cellphone</value>
   </data>
-  <data name="ExternalConsultant" xml:space="preserve">
-    <value>External Consultant</value>
+  <data name="BminingInformation" xml:space="preserve">
+    <value>Bmining Information</value>
   </data>
-  <data name="ExternalEnterprise" xml:space="preserve">
-    <value>External Enterprise</value>
+  <data name="HoursRejected" xml:space="preserve">
+    <value>Hours Rejected in Project {0} {1}</value>
   </data>
 </root>
