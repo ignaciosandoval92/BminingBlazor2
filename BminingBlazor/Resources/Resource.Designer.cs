@@ -79,8 +79,7 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
-
-        ///   Looks up a localized string similar to Activity Record.
+        ///   Busca una cadena traducida similar a Activity Record.
         /// </summary>
         internal static string ActivityRecord {
             get {
@@ -89,8 +88,7 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activity Records.
-
+        ///   Busca una cadena traducida similar a Activity Records.
         /// </summary>
         internal static string ActivityRecords {
             get {
@@ -108,9 +106,7 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
-
-        ///   Looks up a localized string similar to Add Client.
-
+        ///   Busca una cadena traducida similar a Add Client.
         /// </summary>
         internal static string AddClient {
             get {
@@ -119,9 +115,16 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
-
-        ///   Looks up a localized string similar to Add commitment.
-
+        ///   Busca una cadena traducida similar a Add Client.
+        /// </summary>
+        internal static string AddClient_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("AddClient_Duplicate[1]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Add commitment.
         /// </summary>
         internal static string AddCommitment {
             get {
@@ -202,8 +205,7 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
-
-        ///   Looks up a localized string similar to Audit Hours.
+        ///   Busca una cadena traducida similar a Audit Hours.
         /// </summary>
         internal static string AuditHours {
             get {
@@ -212,8 +214,7 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Billing Deadline.
-
+        ///   Busca una cadena traducida similar a Billing Deadline.
         /// </summary>
         internal static string BillingDeadline {
             get {
@@ -249,8 +250,7 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
-
-        ///   Looks up a localized string similar to Cellphone.
+        ///   Busca una cadena traducida similar a Cellphone.
         /// </summary>
         internal static string Cellphone {
             get {
@@ -259,8 +259,7 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change.
-
+        ///   Busca una cadena traducida similar a Change.
         /// </summary>
         internal static string Change {
             get {
@@ -278,8 +277,7 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
-
-        ///   Looks up a localized string similar to Client Name.
+        ///   Busca una cadena traducida similar a Client Name.
         /// </summary>
         internal static string ClientName {
             get {
@@ -288,8 +286,7 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commercial.
-
+        ///   Busca una cadena traducida similar a Commercial.
         /// </summary>
         internal static string Commercial {
             get {
@@ -487,6 +484,24 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a External Consultant.
+        /// </summary>
+        internal static string ExternalConsultant {
+            get {
+                return ResourceManager.GetString("ExternalConsultant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a External Enterprise.
+        /// </summary>
+        internal static string ExternalEnterprise {
+            get {
+                return ResourceManager.GetString("ExternalEnterprise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a External User.
         /// </summary>
         internal static string ExternalUser {
@@ -523,8 +538,7 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
-
-        ///   Looks up a localized string similar to Home.
+        ///   Busca una cadena traducida similar a Home.
         /// </summary>
         internal static string Home {
             get {
@@ -533,8 +547,7 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Home Address.
-
+        ///   Busca una cadena traducida similar a Home Address.
         /// </summary>
         internal static string HomeAddress {
             get {
