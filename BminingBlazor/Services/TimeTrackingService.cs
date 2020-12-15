@@ -103,20 +103,21 @@ namespace BminingBlazor.Services
                 .Where(TimeTrackingConstants.UserId, userId)
                 .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
-                                                  $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")
+                                                  $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")                
                 .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
                 .Include(ProjectConstants.ProjectManager, managerQuery, ProjectConstants.ProjectManagerId, UserConstants.UserId)
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
-                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}");
+                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode},{ProjectConstants.ProjectManagerId}}}");
 
+            
 
             var items = (await query.GetAsync()).Cast<IDictionary<string, object>>().ToList();
 
             var timeTrackingViewModels = new List<TimeTrackingViewModel>();
             foreach (var item in items)
             {
-                var projectManagerUser = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
                 var user = (IDictionary<string, object>)item[TableConstants.UserTable];
+                var projectManagerUser = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
                 var timeTrackingViewModel = new TimeTrackingViewModel
                 {
                     MyId = (int)item[TimeTrackingConstants.TimeTrackingId],
@@ -129,7 +130,7 @@ namespace BminingBlazor.Services
                     MyProjectName = (string)item[ProjectConstants.ProjectName],
                     MyProjectCode = (string)item[ProjectConstants.ProjectCode],
                     MyProjectManager = ViewModelConverter.GetUserViewModel(projectManagerUser),
-                    MyUser = ViewModelConverter.GetUserViewModel(user)
+                    MyUser = ViewModelConverter.GetUserViewModel(user)                    
                 };
                 timeTrackingViewModels.Add(timeTrackingViewModel);
             }
