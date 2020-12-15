@@ -8,7 +8,6 @@
     <PackageReference Include="Blazored.TextEditor" Version="1.0.3" />
     <PackageReference Include="MatBlazor" Version="2.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="3.1.9" />
-    <PackageReference Include="SendGrid" Version="9.21.2" />
     <PackageReference Include="SqlKata" Version="2.2.0" />
     <PackageReference Include="SqlKata.Execution" Version="2.2.0" />
   </ItemGroup>

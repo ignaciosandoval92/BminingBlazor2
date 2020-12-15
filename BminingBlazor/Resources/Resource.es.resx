@@ -337,6 +337,7 @@
   <data name="Thesis" xml:space="preserve">
     <value>Memoria</value>
   </data>
+
   <data name="AddClient" xml:space="preserve">
     <value>Agregar Clientes</value>
   </data>
@@ -346,7 +347,7 @@
   <data name="ViewUsers" xml:space="preserve">
     <value>Ver Usuarios</value>
   </data>
-  <data name="Start" xml:space="preserve">
+	<data name="Start" xml:space="preserve">
     <value>Inicio</value>
 </data>
   <data name="CreateActivityRecord" xml:space="preserve">
@@ -405,7 +406,6 @@
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; a9f9df286c147ae7380c2ff3fe86fa45a7af73b8
   </data>
   <data name="ActivityRecord" xml:space="preserve">
     <value>Registro de actividad</value>
@@ -416,12 +416,16 @@
   <data name="Home" xml:space="preserve">
     <value>Inicio</value>
   </data>
+  <data name="AddClient" xml:space="preserve">
+    <value>Añadir Cliente</value>
+  </data>
   <data name="ClientName" xml:space="preserve">
     <value>Nombre del Cliente</value>
   </data>
   <data name="Cellphone" xml:space="preserve">
     <value>Celular</value>
   </data>
+
   <data name="ExternalConsultant" xml:space="preserve">
     <value>Consultor Externo</value>
   </data>
@@ -431,4 +435,5 @@
   <data name="HoursRejected" xml:space="preserve">
     <value>Horas Reachazadas</value>
   </data>
+
 </root>

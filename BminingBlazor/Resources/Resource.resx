@@ -337,6 +337,7 @@
   <data name="Thesis" xml:space="preserve">
     <value>Thesis</value>
   </data>
+
   <data name="AddClient" xml:space="preserve">
     <value>Add Client</value>
   </data>
@@ -349,6 +350,7 @@
   <data name="Start" xml:space="preserve">
     <value>Start</value>
 </data>
+
   <data name="CreateActivityRecord" xml:space="preserve">
     <value>Create activity record</value>
   </data>
@@ -415,6 +417,9 @@
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="AddClient" xml:space="preserve">
+    <value>Add Client</value>
+  </data>
   <data name="ClientName" xml:space="preserve">
     <value>Client Name</value>
   </data>
@@ -430,4 +435,5 @@
   <data name="HoursRejected" xml:space="preserve">
     <value>Hours Rejected</value>
   </data>
+
 </root>
