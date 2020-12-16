@@ -13,6 +13,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace BminingBlazor.Services
 {
     public class TimeTrackingService : ITimeTrackingService
