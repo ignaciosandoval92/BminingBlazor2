@@ -108,7 +108,7 @@
             {
                 @foreach (var weekDayUserTrackingHours in DashboardUserTracking.WeekDayUserTrackingHours)
                 {
-                    totalHours = 0;
+                    TotalHours = 0;
                     <div class="col">
                         <div class="d-flex flex-row w-100 justify-content-between">
                             <div class="d-inline-block">
@@ -116,12 +116,12 @@
                             </div>
                             @foreach (var day in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
                             {
-                                totalHours = totalHours + day.MyTrackedHours;
+                                TotalHours = TotalHours + day.MyTrackedHours;                                
                             }
                             
                                 <div class="item-dashboard-item2">
-                                    <span class="badge badge-primary badge-pill m-1 bg-bmining-@TotalHoursStatus(totalHours)">
-                                        <h10>@Resource.Hours : </h10>@totalHours
+                                    <span class="badge badge-primary badge-pill m-1 bg-bmining-@TotalHoursStatus(TotalHours,weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize())">
+                                        <h10>@Resource.Hours : </h10>@TotalHours
                                     </span>
                                 </div>
                             
@@ -184,7 +184,8 @@
 
     public bool IsLoading { get; set; }
     public string Email { get; set; }
-    public double totalHours { get; set; }
+    public double TotalHours { get; set; }
+
 
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
 
@@ -308,15 +309,41 @@
     {
         MySelectedDate = MySelectedDate.AddDays(-7);
     }
-    private string TotalHoursStatus(double totalHours)
+    private string TotalHoursStatus(double totalHours,string day)
     {
         if (totalHours > 9)
         {
             return "error";
         }
-        else 
+        else if(totalHours ==9)
         {
+            if(day=="Viernes")
+            {
+                return "error";
+            }
             return "info";
-        }            
+        }
+        else
+        {
+            if(day=="Viernes")
+            {
+
+                if (totalHours==5)
+                {
+                    return "info";
+                }
+                else if (totalHours > 5)
+                {
+                    return "error";
+                }
+                else
+                {
+                    return " ";
+                }
+
+            }
+
+            return " ";
+        }
     }
 }
