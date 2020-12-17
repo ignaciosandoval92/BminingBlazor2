@@ -116,19 +116,21 @@
                             </div>
                             @foreach (var day in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
                             {
-                                totalHours = totalHours + day.MyTrackedHours ;
+                                totalHours = totalHours + day.MyTrackedHours;
                             }
-                            <div class="item-dashboard-item2" >
-                                <span class="badge badge-primary badge-pill m-1 bg-bmining-info">
-                                    <h10>@Resource.Hours : </h10>@totalHours
-                                </span>
-</div>
-                            <div class="d-inline-block">
-                                <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="bmining-btn-icon">
-                                    <i class="fa fa-plus"></i>
-                                </button>
+                            
+                                <div class="item-dashboard-item2">
+                                    <span class="badge badge-primary badge-pill m-1 bg-bmining-@TotalHoursStatus(totalHours)">
+                                        <h10>@Resource.Hours : </h10>@totalHours
+                                    </span>
+                                </div>
+                            
+                                <div class="d-inline-block">
+                                    <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="bmining-btn-icon">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
                             <div class="list-group">
                                 @foreach (var dayUserTrackingHourItem in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
                                 {
@@ -305,5 +307,16 @@
     private void PreviousWeek()
     {
         MySelectedDate = MySelectedDate.AddDays(-7);
+    }
+    private string TotalHoursStatus(double totalHours)
+    {
+        if (totalHours > 9)
+        {
+            return "error";
+        }
+        else 
+        {
+            return "info";
+        }            
     }
 }
