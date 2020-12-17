@@ -47,6 +47,13 @@
         text-align: center;
         padding: 5px
     }
+    .item-dashboard-item2 {
+        position:absolute;
+        vertical-align: middle;
+        display: inline;       
+        padding: 5px;
+        right: 50px
+    }
 
     .item-dashboard-border {
         margin: 5px;
@@ -111,7 +118,7 @@
                             {
                                 totalHours = totalHours + day.MyTrackedHours ;
                             }
-                            <div class="item-dashboard-item" text-align="center">
+                            <div class="item-dashboard-item2" >
                                 <span class="badge badge-primary badge-pill m-1 bg-bmining-info">
                                     <h10>@Resource.Hours : </h10>@totalHours
                                 </span>
