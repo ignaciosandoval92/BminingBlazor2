@@ -313,6 +313,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Copy Last Week.
+        /// </summary>
+        internal static string CopyLastWeek {
+            get {
+                return ResourceManager.GetString("CopyLastWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Create.
         /// </summary>
         internal static string Create {
@@ -525,6 +534,15 @@ namespace BminingBlazor.Resources {
         internal static string FixedTermContract {
             get {
                 return ResourceManager.GetString("FixedTermContract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Friday.
+        /// </summary>
+        internal static string Friday {
+            get {
+                return ResourceManager.GetString("Friday", resourceCulture);
             }
         }
         
