@@ -101,53 +101,63 @@
             {
                 @foreach (var weekDayUserTrackingHours in DashboardUserTracking.WeekDayUserTrackingHours)
                 {
+                    totalHours = 0;
                     <div class="col">
                         <div class="d-flex flex-row w-100 justify-content-between">
                             <div class="d-inline-block">
                                 <h5 class="font-weight-bold">@weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize()</h5>
                             </div>
+                            @foreach (var day in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
+                            {
+                                totalHours = totalHours + day.MyTrackedHours ;
+                            }
+                            <div class="item-dashboard-item" text-align="center">
+                                <span class="badge badge-primary badge-pill m-1 bg-bmining-info">
+                                    <h10>@Resource.Hours : </h10>@totalHours
+                                </span>
+</div>
                             <div class="d-inline-block">
                                 <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="bmining-btn-icon">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="list-group">
-                            @foreach (var dayUserTrackingHourItem in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
-                            {
-                                <div class="item-dashboard-container item-dashboard-border @dayUserTrackingHourItem.MyTrackingStatusClass">
+                            <div class="list-group">
+                                @foreach (var dayUserTrackingHourItem in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
+                                {
+                                    <div class="item-dashboard-container item-dashboard-border @dayUserTrackingHourItem.MyTrackingStatusClass">
 
-                                    <h5 class="item-dashboard-item">
-                                        @dayUserTrackingHourItem.MyProjectName
-                                    </h5>
-                                    <div class="item-dashboard-item w-100">
+                                        <h5 class="item-dashboard-item">
+                                            @dayUserTrackingHourItem.MyProjectName
+                                        </h5>
+                                        <div class="item-dashboard-item w-100">
 
+                                        </div>
+                                        <div class="item-dashboard-item">
+                                            <span class="badge badge-primary badge-pill m-1 bg-bmining-info">
+                                                @dayUserTrackingHourItem.MyTrackedHours
+                                            </span>
+                                            @if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.WaitingForApproval)
+                                            {
+                                                <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="bmining-btn-icon">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            }
+                                            else if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.Rejected)
+                                            {
+                                                <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            }
+                                        </div>
                                     </div>
-                                    <div class="item-dashboard-item">
-                                        <span class="badge badge-primary badge-pill m-1 bg-bmining-info">
-                                            @dayUserTrackingHourItem.MyTrackedHours
-                                        </span>
-                                        @if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.WaitingForApproval)
-                                        {
-                                            <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                            <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        }
-                                        else if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.Rejected)
-                                        {
-                                            <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        }
-                                    </div>
-                                </div>
-                            }
+                                }
+                            </div>
+                            <div class="alternate2-break"></div>
                         </div>
-                        <div class="alternate2-break"></div>
-                    </div>
                 }
             }
         </div>
@@ -165,6 +175,7 @@
 
     public bool IsLoading { get; set; }
     public string Email { get; set; }
+    public double totalHours { get; set; }
 
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
 
@@ -181,26 +192,26 @@
             int numberOfDay;
             switch (dayOfWeek)
             {
-                case DayOfWeek.Sunday:
-                    numberOfDay = 6;
-                    break;
-                case DayOfWeek.Monday:
+                case DayOfWeek.Saturday:
                     numberOfDay = 0;
                     break;
-                case DayOfWeek.Tuesday:
+                case DayOfWeek.Sunday:
                     numberOfDay = 1;
                     break;
-                case DayOfWeek.Wednesday:
+                case DayOfWeek.Monday:
                     numberOfDay = 2;
                     break;
-                case DayOfWeek.Thursday:
+                case DayOfWeek.Tuesday:
                     numberOfDay = 3;
                     break;
-                case DayOfWeek.Friday:
+                case DayOfWeek.Wednesday:
                     numberOfDay = 4;
                     break;
-                case DayOfWeek.Saturday:
+                case DayOfWeek.Thursday:
                     numberOfDay = 5;
+                    break;
+                case DayOfWeek.Friday:
+                    numberOfDay = 6;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
