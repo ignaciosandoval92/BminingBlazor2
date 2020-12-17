@@ -169,7 +169,7 @@
                     </div>
                 }
             }
-            <button class="bmining-button float-right">@Resource.CopyLastWeek</button>
+            <button @onclick="@CopyLastWeek" class="bmining-button float-right">@Resource.CopyLastWeek</button>
         </div>
     }
     
@@ -347,5 +347,20 @@
 
             return " ";
         }
+    }
+    private async void CopyLastWeek()
+    {
+        var Email = AuthenticationStateProvider.GetEmail();
+        var userId = await UserDataService.GetUserId(await Email);
+        var LastWeek = await TimeTrackingService.GetUserTrackingModel(userId, MySelectedDate.AddDays(-7), MySelectedDate);
+        foreach(var hoursLastWeek in LastWeek)
+        {
+            var projectId = hoursLastWeek.MyProjectId;
+            var hours = hoursLastWeek.MyTrackedHours;
+            var timeTracking = hoursLastWeek.MyTimeTrackingDate.AddDays(+7);
+            await TimeTrackingService.AddUserTimeTracking(userId, projectId, timeTracking, hours);
+        }
+
+        
     }
 }
