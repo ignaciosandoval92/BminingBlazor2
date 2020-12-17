@@ -352,7 +352,7 @@
     {
         var Email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await Email);
-        var LastWeek = await TimeTrackingService.GetUserTrackingModel(userId, MySelectedDate.AddDays(-7), MySelectedDate);
+        var LastWeek = await TimeTrackingService.GetUserTrackingModel(userId, MySelectedDate.AddDays(-9), MySelectedDate);
         foreach(var hoursLastWeek in LastWeek)
         {
             var projectId = hoursLastWeek.MyProjectId;
