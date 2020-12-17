@@ -352,7 +352,7 @@
     {
         var Email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await Email);
-        var LastWeek = await TimeTrackingService.GetUserTrackingModel(userId, MySelectedDate.AddDays(-9), MySelectedDate);
+        var LastWeek = await TimeTrackingService.GetUserTrackingModel(userId, MySelectedDate.AddDays(-7), MySelectedDate);
         foreach(var hoursLastWeek in LastWeek)
         {
             var projectId = hoursLastWeek.MyProjectId;
@@ -360,7 +360,6 @@
             var timeTracking = hoursLastWeek.MyTimeTrackingDate.AddDays(+7);
             await TimeTrackingService.AddUserTimeTracking(userId, projectId, timeTracking, hours);
         }
-
-        
+        NavigationManager.NavigateTo($"/dashboard_tracking_hours/",true);
     }
 }
