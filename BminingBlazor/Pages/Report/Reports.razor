@@ -1,18 +1,35 @@
 ﻿@page "/Reports"
+@using BminingBlazor.ViewModels.Projects
 
 @inject IDummyProjectDataService DummyProjectDataService
 @inject IUserDataService UserDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMatDialogService MatDialogService
 <h3>Component</h3>
+<div class="bmining-app">
+    <div class="form-group">
+        <label for="contract">@Resource.Projects</label>
+        <select class="form-control" id="contract" @bind="_project.MyId" required>
+            @foreach (var project in ViewModel )
+            {
+                <option value="@project.MyProjectId">
+                    @project.MyProjectCode - @project.MyProjectName
+                </option>
+            }
+        </select>
+    </div>
+</div>
 
 @code {
+    public List<ProjectResumeViewModel> ViewModel { get; set; }
+    private readonly ProjectViewModel _project = new ProjectViewModel();
     protected override async Task OnInitializedAsync()
     {
         var email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await email);
         var projectsBelongsUserId = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
-        
+        ViewModel = new List<ProjectResumeViewModel>();
+        ViewModel.AddRange(projectsBelongsUserId);
     }
 
 }
