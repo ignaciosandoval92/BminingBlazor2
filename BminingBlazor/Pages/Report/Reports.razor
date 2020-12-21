@@ -11,18 +11,30 @@
 @inject ITimeTrackingService TimeTrackingService
 @inject IReportService ReportService
 @inject NavigationManager NavigationManager
-<h3>Component</h3>
+
 <div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.Report</h2>
+        </div>
+    </div>
+    <div class="main-break">
+        <div class="main-circle">
+        </div>
+    </div>
+
     @if (a == 0)
-    {
-        <select class="form-control" id="contract" @bind="_project.MyId" required>
-            @foreach (var project in ViewModel)
-            {
-                <option value="@project.MyProjectId">
-                    @project.MyProjectCode - @project.MyProjectName
-                </option>
-            }
-        </select>
+    {<div class="form-group">
+            <label for="contract">@Resource.Project</label>
+            <select class="form-control" id="contract" @bind="_project.MyId" required>
+                @foreach (var project in ViewModel)
+                {
+                    <option value="@project.MyProjectId">
+                        @project.MyProjectCode - @project.MyProjectName
+                    </option>
+                }
+            </select>
+        </div>
 
         <button class="bmining-button" @onclick="() => SelectProject(_project.MyId)"></button>
 
@@ -50,48 +62,50 @@
             <label for="inputEndDate">@Resource.EndDate</label>
             <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
         </div>
-        <button class="bmining-button" @onclick="() => ReadHours(_member.MyId,_project.MyStartDate,_project.MyEndDate,projectId)"></button>
-        }
+        <button class="bmining-button" @onclick="() => ReadHours(_member.MyId, _project.MyStartDate, _project.MyEndDate, projectId)"></button>
+    }
+
 </div>
 
 @code {
     [Parameter]
     public int projectId { get; set; }
-    public int a { get; set; }
+public int a { get; set; }
 
 
 
 
-    public List<MemberViewModel> users { get; set; }
-    public List<ProjectResumeViewModel> ViewModel { get; set; }
-    private readonly ProjectViewModel _project = new ProjectViewModel();
-    private readonly MemberViewModel _member = new MemberViewModel();
-    protected override async Task OnInitializedAsync()
-    { if (projectId == 0)
-        {
-            var email = AuthenticationStateProvider.GetEmail();
-            var userId = await UserDataService.GetUserId(await email);
-            var projectsBelongsUserId = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
-            ViewModel = new List<ProjectResumeViewModel>();
-            ViewModel.AddRange(projectsBelongsUserId);
-            a = 0;
-        }
-        else
-        {
-            var members = await ProjectDataService.ReadMembers(projectId);
-            a = 1;
-            users = new List<MemberViewModel>();
-            users.AddRange(members);
-
-        }
-    }
-    private void SelectProject(int IdProject)
+public List<MemberViewModel> users { get; set; }
+public List<ProjectResumeViewModel> ViewModel { get; set; }
+private readonly ProjectViewModel _project = new ProjectViewModel();
+private readonly MemberViewModel _member = new MemberViewModel();
+protected override async Task OnInitializedAsync()
+{
+    if (projectId == 0)
     {
-        NavigationManager.NavigateTo($"/Reports/{IdProject}",true);
+        var email = AuthenticationStateProvider.GetEmail();
+        var userId = await UserDataService.GetUserId(await email);
+        var projectsBelongsUserId = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
+        ViewModel = new List<ProjectResumeViewModel>();
+        ViewModel.AddRange(projectsBelongsUserId);
+        a = 0;
     }
-    private async void ReadHours(int IdUser,DateTime StartDate,DateTime EndDate,int IdProject)
+    else
     {
-        var report = await ReportService.GetUserReport(IdUser, StartDate, EndDate,IdProject);
+        var members = await ProjectDataService.ReadMembers(projectId);
+        a = 1;
+        users = new List<MemberViewModel>();
+        users.AddRange(members);
+
     }
+}
+private void SelectProject(int IdProject)
+{
+    NavigationManager.NavigateTo($"/Reports/{IdProject}", true);
+}
+private  void ReadHours(int IdUser, DateTime StartDate, DateTime EndDate, int IdProject)
+{  
+    NavigationManager.NavigateTo($"/ViewReport/{IdUser}/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{IdProject}");
+}
 }
 
