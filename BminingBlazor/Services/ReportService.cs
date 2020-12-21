@@ -25,21 +25,20 @@ namespace BminingBlazor.Services
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
 
-            var userQuery = queryFactory.Query(TableConstants.UserTable);
-            var managerQuery = queryFactory.Query(TableConstants.UserTable);
+            var userQuery = queryFactory.Query(TableConstants.UserTable);           
 
             var query = queryFactory.Query(TableConstants.TimeTrackingTable)
                 .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.UserId}", userId)
                 .Where(TimeTrackingConstants.TimeTrackingStatusId,1)
+                .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.ProjectId}",projectId)
                 .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
                                                   $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")
                 .Join(TableConstants.UserTable,$"{TableConstants.UserTable}.{UserConstants.UserId}",
                 $"{TableConstants.TimeTrackingTable}.{UserConstants.UserId}")
-                .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
-                .Include(ProjectConstants.ProjectManager, managerQuery, ProjectConstants.ProjectManagerId, UserConstants.UserId)
+                .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)                
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
-                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode},{ProjectConstants.ProjectManagerId}}}",
+                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}",
                         $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}");
 
 
@@ -49,8 +48,7 @@ namespace BminingBlazor.Services
             var report = new List<ReportViewModel>();
             foreach (var item in items)
             {
-                var user = (IDictionary<string, object>)item[TableConstants.UserTable];
-                var projectManagerUser = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
+                var user = (IDictionary<string, object>)item[TableConstants.UserTable];                
                 var reportViewModel = new ReportViewModel
                 {
                     MyCodProject=(string)item[ProjectConstants.ProjectCode],
