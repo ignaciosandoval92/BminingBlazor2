@@ -4,7 +4,7 @@ using System;
 
 namespace BminingBlazor.ViewModels.TrackingHours
 {
-    public class TimeTrackingViewModel
+    public class ReportViewModel
     {
         public int MyId { get; set; }
         public DateTime MyCreationDate { get; set; }

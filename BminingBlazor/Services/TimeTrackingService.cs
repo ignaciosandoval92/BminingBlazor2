@@ -93,7 +93,7 @@ namespace BminingBlazor.Services
             return projectManagerTrackingHoursApproval;
         }
 
-        public async Task<List<TimeTrackingViewModel>> GetUserTrackingModel(int userId, DateTime from, DateTime to)
+        public async Task<List<ReportViewModel>> GetUserTrackingModel(int userId, DateTime from, DateTime to)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
 
@@ -114,12 +114,12 @@ namespace BminingBlazor.Services
 
             var items = (await query.GetAsync()).Cast<IDictionary<string, object>>().ToList();
 
-            var timeTrackingViewModels = new List<TimeTrackingViewModel>();
+            var timeTrackingViewModels = new List<ReportViewModel>();
             foreach (var item in items)
             {
                 var user = (IDictionary<string, object>)item[TableConstants.UserTable];
                 var projectManagerUser = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
-                var timeTrackingViewModel = new TimeTrackingViewModel
+                var timeTrackingViewModel = new ReportViewModel
                 {
                     MyId = (int)item[TimeTrackingConstants.TimeTrackingId],
                     MyProjectId = (int)item[TimeTrackingConstants.ProjectId],
@@ -170,7 +170,7 @@ namespace BminingBlazor.Services
         }
 
 
-        public async Task<TimeTrackingViewModel> GetTimeTrackingId(int timeTrackingId)
+        public async Task<ReportViewModel> GetTimeTrackingId(int timeTrackingId)
         {
             var queryFactory =_dataAccess.GetQueryFactory(_connectionString);
             var userQuery = queryFactory.Query(TableConstants.UserTable);
@@ -192,7 +192,7 @@ namespace BminingBlazor.Services
             var projectManagerUser = (IDictionary<string, object>) item[ProjectConstants.ProjectManager];
             var user = (IDictionary<string, object>)item[TableConstants.UserTable];
 
-            var timeTrackingViewModel = new TimeTrackingViewModel
+            var timeTrackingViewModel = new ReportViewModel
             {
                 MyId = (int)item[TimeTrackingConstants.TimeTrackingId],
                 MyProjectId = (int)item[TimeTrackingConstants.ProjectId],

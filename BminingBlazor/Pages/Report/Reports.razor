@@ -9,13 +9,12 @@
 @inject IMatDialogService MatDialogService
 @inject IProjectDataService ProjectDataService
 @inject ITimeTrackingService TimeTrackingService
+@inject IReportService ReportService
 @inject NavigationManager NavigationManager
 <h3>Component</h3>
 <div class="bmining-app">
     @if (a == 0)
     {
-
-
         <select class="form-control" id="contract" @bind="_project.MyId" required>
             @foreach (var project in ViewModel)
             {
@@ -51,7 +50,7 @@
             <label for="inputEndDate">@Resource.EndDate</label>
             <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
         </div>
-        <button class="bmining-button" @onclick="() => ReadHours(_member.MyId,_project.MyStartDate,_project.MyEndDate)"></button>
+        <button class="bmining-button" @onclick="() => ReadHours(_member.MyId,_project.MyStartDate,_project.MyEndDate,projectId)"></button>
         }
 </div>
 
@@ -86,13 +85,13 @@
 
         }
     }
-    private async void SelectProject(int IdProject)
+    private void SelectProject(int IdProject)
     {
         NavigationManager.NavigateTo($"/Reports/{IdProject}",true);
     }
-    private async void ReadHours(int IdUser,DateTime StartDate,DateTime EndDate)
+    private async void ReadHours(int IdUser,DateTime StartDate,DateTime EndDate,int IdProject)
     {
-        var report = await TimeTrackingService.GetUserTrackingModel(IdUser, StartDate, EndDate);
+        var report = await ReportService.GetUserReport(IdUser, StartDate, EndDate,IdProject);
     }
 }
 
