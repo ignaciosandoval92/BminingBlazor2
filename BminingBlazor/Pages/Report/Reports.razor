@@ -8,6 +8,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMatDialogService MatDialogService
 @inject IProjectDataService ProjectDataService
+@inject ITimeTrackingService TimeTrackingService
 @inject NavigationManager NavigationManager
 <h3>Component</h3>
 <div class="bmining-app">
@@ -30,9 +31,9 @@
     else
     {
         <div class="form-group">
-            <label for="contract">@Resource.Projects</label>
+            <label for="contract">@Resource.Members</label>
             <select class="form-control" id="contract" @bind="_member.MyId" required>
-                
+
                 @foreach (var member in users)
                 {
                     <option value="@member.MyId">
@@ -40,7 +41,18 @@
                     </option>
                 }
             </select>
-        </div>}
+        </div>
+        <div class="form-group col">
+            <label for="inputStartDate">@Resource.StartDate</label>
+            <input class="form-control" type="date" id="inputStartDate" @bind="_project.MyStartDate" />
+        </div>
+
+        <div class="form-group col">
+            <label for="inputEndDate">@Resource.EndDate</label>
+            <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
+        </div>
+        <button class="bmining-button" @onclick="() => ReadHours(_member.MyId,_project.MyStartDate,_project.MyEndDate)"></button>
+        }
 </div>
 
 @code {
@@ -71,12 +83,16 @@
             a = 1;
             users = new List<MemberViewModel>();
             users.AddRange(members);
-            
+
         }
     }
     private async void SelectProject(int IdProject)
     {
         NavigationManager.NavigateTo($"/Reports/{IdProject}",true);
+    }
+    private async void ReadHours(int IdUser,DateTime StartDate,DateTime EndDate)
+    {
+        var report = await TimeTrackingService.GetUserTrackingModel(IdUser, StartDate, EndDate);
     }
 }
 
