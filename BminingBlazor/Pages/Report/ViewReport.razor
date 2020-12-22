@@ -55,17 +55,17 @@
         </div>
        
     }
-    <button @onclick="ExportExcel"></button>
+    <button class="bmining-button" @onclick="ExportExcel">@Resource.Download</button>
 </div>
 @code {
-        [Parameter]
-        public int userId { get; set; }
-        [Parameter]
-        public DateTime startDate { get; set; }
-        [Parameter]
-        public DateTime endDate { get; set; }
-        [Parameter]
-        public int projectId { get; set; }
+    [Parameter]
+    public int userId { get; set; }
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
+    [Parameter]
+    public int projectId { get; set; }
 
     private List<ReportViewModel> _report;
 
@@ -80,7 +80,7 @@
         var dataFormat = workbook.CreateDataFormat();
         var dataStyle = workbook.CreateCellStyle();
         dataStyle.DataFormat = dataFormat.GetFormat("dd/MM/yyyy");
-        ISheet worksheet = workbook.CreateSheet("Sheet1");
+        ISheet worksheet = workbook.CreateSheet("Sheet1");     
         int rowNumbre = 0;
         IRow row = worksheet.CreateRow(rowNumbre++);
         ICell cell = row.CreateCell(0);
@@ -110,6 +110,7 @@
             cell.SetCellValue(member.MyTrackedHours);
             cell = row.CreateCell(5);
             cell.SetCellValue(member.MyDateTracked);
+            cell.CellStyle = dataStyle;
 
         }
         MemoryStream ms = new MemoryStream();

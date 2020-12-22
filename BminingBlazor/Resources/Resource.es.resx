@@ -456,7 +456,16 @@
   <data name="Friday" xml:space="preserve">
     <value>Viernes</value>
   </data>
+  <data name="Download" xml:space="preserve">
+    <value>Descargar</value>
+  </data>
   <data name="Report" xml:space="preserve">
     <value>Reporte</value>
+  </data>
+  <data name="SelectMember" xml:space="preserve">
+    <value>Seleccione Integrante</value>
+  </data>
+  <data name="ViewReport" xml:space="preserve">
+    <value>Ver Reporte</value>
   </data>
 </root>
