@@ -15,5 +15,6 @@ namespace BminingBlazor.Services
         Task<List<ReportViewModel>> GetUserTrackingModel(int userId, DateTime from, DateTime to);
         Task RemoveTimeTrackingHour(int id);
         Task EditStatusTimeTracking(int id, TimeTrackingStatusEnum waitingForApproval, double hours);
+        Task<ProjectManagerTrackingHoursApprovalViewModel> GetPendingTimeTrackingHoursByAdmin(int adminId);
     }
 }

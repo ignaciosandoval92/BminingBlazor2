@@ -15,5 +15,6 @@
         public const string ActivityRecordTable = "ActivityRecord";
         public const string ActivityRecordMemberTable = "ActivityRecordMember";
         public const string ActivityRecordCommitmentTable = "ActivityRecordCommitment";
+        public const string AdminAuditHoursTable = "AdminAuditHours";
     }
 }

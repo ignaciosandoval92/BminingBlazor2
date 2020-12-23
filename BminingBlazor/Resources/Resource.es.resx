@@ -459,4 +459,10 @@
   <data name="Report" xml:space="preserve">
     <value>Reporte</value>
   </data>
+  <data name="DashboardAdmin" xml:space="preserve">
+    <value>Dashboard Administración</value>
+  </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Administración</value>
+  </data>
 </root>

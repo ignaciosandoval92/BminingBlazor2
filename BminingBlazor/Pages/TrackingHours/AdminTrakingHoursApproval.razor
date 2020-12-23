@@ -1,0 +1,115 @@
+﻿@page "/admin_dashboard"
+@using BminingBlazor.ViewModels.TrackingHours
+@using Microsoft.AspNetCore.Http
+
+@inject IMatDialogService MatDialogService
+@inject ITimeTrackingService TimeTrackingService
+@inject IUserDataService UserDataService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<style>
+    .item-dashboard-container {
+        display: inline-grid;
+        grid-template-columns: auto 1fr auto;
+        grid-column-gap: 0px;
+        align-items: center
+    }
+
+    .item-dashboard-item {
+        vertical-align: middle;
+        display: inline;
+        text-align: center;
+        padding: 5px
+    }
+</style>
+
+
+<div class="bmining-app">
+    <h2 class="header-break">@Resource.DashboardAdmin</h2>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+
+    @if (ViewModel != null)
+    {
+
+        @foreach (var projectManagerTrackingHoursProject in ViewModel.OurProjectManagerTrackingHoursProjects)
+        {
+            <h4>@projectManagerTrackingHoursProject.MyProjectName</h4>
+            <table>
+                <tr>
+                    <th>@Resource.Name</th>
+                    <th>@Resource.Hours</th>
+                    <th>@Resource.Date</th>
+                    <th>@Resource.Actions</th>
+                </tr>
+
+                @foreach (var projectManagerTrackingHoursProjectMember in projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers)
+                {
+                    <tr>
+                        <td>
+                            @projectManagerTrackingHoursProjectMember.MyMemberName
+                        </td>
+                        <td>
+                            @projectManagerTrackingHoursProjectMember.MyHoursLoaded
+                        </td>
+                        <td>
+                            @projectManagerTrackingHoursProjectMember.DateOfHours.ToLongDateString()
+                        </td>
+                        <td class="text-center">
+                            <button @onclick="() => RejectHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon bg-bmining-error">
+                                <i class="fa fa-thumbs-down"></i>
+                            </button>
+                            <button @onclick="() => ApproveHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon">
+                                <i class="fa fa-thumbs-up"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <div class="alternate1-break"></div>
+        }
+    }
+    else
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+
+</div>
+
+
+@code {
+    public ProjectManagerTrackingHoursApprovalViewModel ViewModel { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            var id = await UserDataService.GetUserId(await AuthenticationStateProvider.GetEmail());
+            ViewModel = await TimeTrackingService.GetPendingTimeTrackingHoursByAdmin(id);
+            StateHasChanged();
+        }
+    }
+
+    private async Task ApproveHours(ProjectManagerTrackingHoursProjectViewModel projectManagerTrackingHoursProject,
+                                    ProjectManagerTrackingHoursProjectMemberViewModel projectManagerTrackingHoursProjectMember)
+    {
+        await TimeTrackingService.ApproveUserTimeTracking(projectManagerTrackingHoursProjectMember.TimeTrackingHoursId);
+        projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers.Remove(projectManagerTrackingHoursProjectMember);
+    }
+
+    private async Task RejectHours(ProjectManagerTrackingHoursProjectViewModel projectManagerTrackingHoursProject,
+                                   ProjectManagerTrackingHoursProjectMemberViewModel projectManagerTrackingHoursProjectMember)
+    {
+        var reasons = await MatDialogService.PromptAsync(Resource.Reasons);
+        if (string.IsNullOrEmpty(reasons)) return;
+        await TimeTrackingService.RejectUserTimeTracking(projectManagerTrackingHoursProjectMember.TimeTrackingHoursId, reasons);
+        projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers.Remove(projectManagerTrackingHoursProjectMember);
+    }
+}

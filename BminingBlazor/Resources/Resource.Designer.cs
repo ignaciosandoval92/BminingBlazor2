@@ -169,6 +169,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Administration.
+        /// </summary>
+        internal static string Administration {
+            get {
+                return ResourceManager.GetString("Administration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Approve.
         /// </summary>
         internal static string Approve {
@@ -354,6 +363,15 @@ namespace BminingBlazor.Resources {
         internal static string CreateUser {
             get {
                 return ResourceManager.GetString("CreateUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a DashboardAdmin.
+        /// </summary>
+        internal static string DashboardAdmin {
+            get {
+                return ResourceManager.GetString("DashboardAdmin", resourceCulture);
             }
         }
         
