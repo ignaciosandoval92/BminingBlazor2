@@ -1,4 +1,5 @@
 ﻿using BminingBlazor.Utility;
+using BminingBlazor.ViewModels.Projects;
 using BminingBlazor.ViewModels.Report;
 using Data;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +30,7 @@ namespace BminingBlazor.Services
 
             var query = queryFactory.Query(TableConstants.TimeTrackingTable)
                 .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.UserId}", userId)
-                .Where(TimeTrackingConstants.TimeTrackingStatusId,1)
+                .Where(TimeTrackingConstants.TimeTrackingStatusId,(int)TimeTrackingStatusEnum.Approved)
                 .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.ProjectId}",projectId)
                 .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",

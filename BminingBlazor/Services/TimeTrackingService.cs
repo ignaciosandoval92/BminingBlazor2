@@ -1,5 +1,6 @@
 ﻿using BminingBlazor.Resources;
 using BminingBlazor.Utility;
+using BminingBlazor.ViewModels.Projects;
 using BminingBlazor.ViewModels.TrackingHours;
 using Data;
 using Microsoft.Extensions.Configuration;
@@ -93,7 +94,7 @@ namespace BminingBlazor.Services
             return projectManagerTrackingHoursApproval;
         }
 
-        public async Task<List<ReportViewModel>> GetUserTrackingModel(int userId, DateTime from, DateTime to)
+        public async Task<List<ReportViewModel>> GetUserTrackingModels(int userId, DateTime from, DateTime to)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
 
@@ -102,6 +103,7 @@ namespace BminingBlazor.Services
 
             var query = queryFactory.Query(TableConstants.TimeTrackingTable)
                 .Where(TimeTrackingConstants.UserId, userId)
+                .Where($"{TableConstants.ProjectTable}.{ProjectConstants.StatusId}",(int)ProjectStatusEnum.Active)
                 .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
                                                   $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")                

@@ -79,7 +79,7 @@ namespace BminingBlazor.Services
                 { PaymentConstants.CodPaymentStatusType,paymentStatus.PaymentStatusType}
 
         });
-            return 1;         
+            return 1;
         }
 
 
@@ -116,7 +116,7 @@ namespace BminingBlazor.Services
             var creatorQuery = queryFactory.Query(TableConstants.UserTable);
             var projectManagerQuery = queryFactory.Query(TableConstants.UserTable);
 
-            var projectQuery = queryFactory.Query(TableConstants.ProjectTable)              
+            var projectQuery = queryFactory.Query(TableConstants.ProjectTable)
                 .Include(ProjectConstants.Creator, creatorQuery, ProjectConstants.CreatorId, UserConstants.UserId)
                 .Include(ProjectConstants.ProjectManager, projectManagerQuery, ProjectConstants.ProjectManagerId, UserConstants.UserId)
                 .Join(TableConstants.ClientTable, $"{TableConstants.ClientTable}.{ClientConstants.ClientId}",
@@ -239,7 +239,7 @@ namespace BminingBlazor.Services
             var members = (await queryFactory
                 .Query()
                 .From(UserTable)
-                .Join(MembersTable, $"{MembersTable}.{UserConstants.UserId}",$"{UserTable}.{MemberConstants.UserId}")
+                .Join(MembersTable, $"{MembersTable}.{UserConstants.UserId}", $"{UserTable}.{MemberConstants.UserId}")
                 .Select($"{UserTable}.{UserConstants.UserId}")
                 .Select(UserConstants.EmailBmining)
                 .Select(UserConstants.Name)
@@ -294,9 +294,9 @@ namespace BminingBlazor.Services
             var projects = (await queryFactory
                 .Query()
                 .From(ProjectTable)
-                .Join(UserTable, $"{UserTable}.{UserConstants.UserId}",$"{ProjectTable}.{ProjectConstants.ProjectManagerId}")
-                .Join(ClientTable, $"{ClientTable}.{ClientConstants.ClientId}",$"{ProjectTable}.{ProjectConstants.ClientId}")
-                .Join(MembersTable,$"{MembersTable}.{MemberConstants.ProjectId}",$"{ProjectTable}.{ProjectConstants.ProjectId}")
+                .Join(UserTable, $"{UserTable}.{UserConstants.UserId}", $"{ProjectTable}.{ProjectConstants.ProjectManagerId}")
+                .Join(ClientTable, $"{ClientTable}.{ClientConstants.ClientId}", $"{ProjectTable}.{ProjectConstants.ClientId}")
+                .Join(MembersTable, $"{MembersTable}.{MemberConstants.ProjectId}", $"{ProjectTable}.{ProjectConstants.ProjectId}")
                 .Select($"{ProjectTable}.{ProjectConstants.ProjectId}")
                 .Select(ProjectConstants.ProjectCode)
                 .Select(ProjectConstants.ProjectName)
@@ -341,8 +341,8 @@ namespace BminingBlazor.Services
             var projects = (await queryFactory
                 .Query()
                 .From(ProjectTable)
-                .Join(UserTable, $"{UserTable}.{UserConstants.UserId}",$"{ProjectTable}.{ProjectConstants.ProjectManagerId}")
-                .Join(ClientTable, $"{ClientTable}.{ClientConstants.ClientId}",$"{ ProjectTable}.{ProjectConstants.ClientId}")
+                .Join(UserTable, $"{UserTable}.{UserConstants.UserId}", $"{ProjectTable}.{ProjectConstants.ProjectManagerId}")
+                .Join(ClientTable, $"{ClientTable}.{ClientConstants.ClientId}", $"{ ProjectTable}.{ProjectConstants.ClientId}")
                 .Select($"{ProjectTable}.{ProjectConstants.ProjectId}")
                 .Select(ProjectConstants.ProjectCode)
                 .Select(ProjectConstants.ProjectName)
@@ -395,7 +395,7 @@ namespace BminingBlazor.Services
             var payments = (await queryFactory
                 .Query()
                 .From(PaymentTable)
-                .Join(PaymentTypeTable, $"{PaymentTypeTable}.{PaymentTypeConstants.CodPaymentStatusType}",$"{PaymentTable}.{PaymentConstants.CodPaymentStatusType}")
+                .Join(PaymentTypeTable, $"{PaymentTypeTable}.{PaymentTypeConstants.CodPaymentStatusType}", $"{PaymentTable}.{PaymentConstants.CodPaymentStatusType}")
                 .Select($"{PaymentTable}.{PaymentConstants.CodPaymentStatusType}")
                 .Select(PaymentConstants.PaymentName)
                 .Select(PaymentConstants.ProjectId)
@@ -426,7 +426,7 @@ namespace BminingBlazor.Services
             var payment = (await queryFactory
                 .Query()
                 .From(PaymentTable)
-                .Join(PaymentTypeTable,$"{PaymentTypeTable}.{PaymentTypeConstants.CodPaymentStatusType}",$"{PaymentTable}.{PaymentConstants.CodPaymentStatusType}")
+                .Join(PaymentTypeTable, $"{PaymentTypeTable}.{PaymentTypeConstants.CodPaymentStatusType}", $"{PaymentTable}.{PaymentConstants.CodPaymentStatusType}")
                 .Select($"{PaymentTable}.{PaymentConstants.CodPaymentStatusType}")
                 .Select(PaymentConstants.PaymentName)
                 .Select(PaymentConstants.ProjectId)
