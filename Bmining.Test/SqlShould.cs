@@ -42,7 +42,7 @@ namespace Bmining.Test
         public async Task ReadTimeTrackingHoursFixture()
         {
             var timeTrackingService = (ITimeTrackingService)_webHost.Services.GetService(typeof(ITimeTrackingService));
-            var timeTrackingViewModels = await timeTrackingService.GetUserTrackingModel(39, DateTime.MinValue, DateTime.MaxValue);
+            var timeTrackingViewModels = await timeTrackingService.GetUserTrackingModels(39, DateTime.MinValue, DateTime.MaxValue);
         }
         [TestMethod]
         public async Task AddTimeTrackingHoursFixture()

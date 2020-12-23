@@ -456,13 +456,24 @@
   <data name="Friday" xml:space="preserve">
     <value>Viernes</value>
   </data>
+  <data name="Download" xml:space="preserve">
+    <value>Descargar</value>
+  </data>
   <data name="Report" xml:space="preserve">
     <value>Reporte</value>
   </data>
+<<<<<<< HEAD
   <data name="DashboardAdmin" xml:space="preserve">
     <value>Dashboard Administración</value>
   </data>
   <data name="Administration" xml:space="preserve">
     <value>Administración</value>
+=======
+  <data name="SelectMember" xml:space="preserve">
+    <value>Seleccione Integrante</value>
+  </data>
+  <data name="ViewReport" xml:space="preserve">
+    <value>Ver Reporte</value>
+>>>>>>> 6806018a9c65a64f5531b4cfe9e79be288e12414
   </data>
 </root>

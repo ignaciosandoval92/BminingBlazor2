@@ -421,6 +421,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Download.
+        /// </summary>
+        internal static string Download {
+            get {
+                return ResourceManager.GetString("Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Duration hours.
         /// </summary>
         internal static string DurationHours {
@@ -1006,6 +1015,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Select Member.
+        /// </summary>
+        internal static string SelectMember {
+            get {
+                return ResourceManager.GetString("SelectMember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Start.
         /// </summary>
         internal static string Start {
@@ -1074,6 +1092,15 @@ namespace BminingBlazor.Resources {
         internal static string Users {
             get {
                 return ResourceManager.GetString("Users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a View Report.
+        /// </summary>
+        internal static string ViewReport {
+            get {
+                return ResourceManager.GetString("ViewReport", resourceCulture);
             }
         }
         

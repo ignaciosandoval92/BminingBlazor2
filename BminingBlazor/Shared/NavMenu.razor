@@ -58,11 +58,14 @@
         </li>
 
         <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Reports">
+                <span class="oi oi-document" aria-hidden="true"></span> @Resource.Report
+            </NavLink>
+        <li class="nav-item px-3">
             <NavLink class="nav-link" href="/dashboard_tracking_hours">
                 <span class="oi oi-calendar" aria-hidden="true"></span> @Resource.DashboardHours
             </NavLink>
         </li>
-
         <li class="nav-item px-3">
             <NavLink class="nav-link pointer-hover" @onclick="() => _expandAuditHours = !_expandAuditHours">
                 @if (!_expandAuditHours)
@@ -75,6 +78,7 @@
                 }
                 @Resource.AuditHours
             </NavLink>
+<<<<<<< HEAD
             @if (_expandAuditHours)
             {
                 <NavLink class="nav-link" href="/project_manager_dashboard">
@@ -86,6 +90,9 @@
             }
         </li>     
 
+=======
+        </li>
+>>>>>>> 6806018a9c65a64f5531b4cfe9e79be288e12414
         <li class="nav-item px-3">
             <NavLink class="nav-link pointer-hover" @onclick="() => _expandActivityRecord = !_expandActivityRecord">
                 @if (!_expandActivityRecord)
@@ -108,7 +115,6 @@
                 </NavLink>
             }
         </li>
-
         <li class="nav-item px-3">
             <div class="alternate2-break"></div>
         </li>
