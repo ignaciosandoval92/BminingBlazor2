@@ -462,18 +462,16 @@
   <data name="Report" xml:space="preserve">
     <value>Report</value>
   </data>
-<<<<<<< HEAD
   <data name="DashboardAdmin" xml:space="preserve">
     <value>DashboardAdmin</value>
   </data>
-  <data name="Administration" xml:space="preserve">
+	<data name="Administration" xml:space="preserve">
     <value>Administration</value>
-=======
+	  </data>
   <data name="SelectMember" xml:space="preserve">
     <value>Select Member</value>
   </data>
   <data name="ViewReport" xml:space="preserve">
     <value>View Report</value>
->>>>>>> 6806018a9c65a64f5531b4cfe9e79be288e12414
   </data>
 </root>
