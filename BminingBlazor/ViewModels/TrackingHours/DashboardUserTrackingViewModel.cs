@@ -28,7 +28,7 @@ namespace BminingBlazor.ViewModels.TrackingHours
             FromTime = fromTime;
             ToTime = FromTime.AddDays(numberOfDays);
 
-            var items = await _timeTrackingService.GetUserTrackingModel(MyUserId, FromTime, ToTime);
+            var items = await _timeTrackingService.GetUserTrackingModels(MyUserId, FromTime, ToTime);
             
             for (int i = 0; i < numberOfDays; i++)
             {

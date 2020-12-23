@@ -1,5 +1,6 @@
 ﻿using BminingBlazor.Resources;
 using BminingBlazor.Utility;
+using BminingBlazor.ViewModels.Projects;
 using BminingBlazor.ViewModels.TrackingHours;
 using Data;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace BminingBlazor.Services
 {
@@ -91,8 +93,58 @@ namespace BminingBlazor.Services
             }
             return projectManagerTrackingHoursApproval;
         }
+        public async Task<ProjectManagerTrackingHoursApprovalViewModel> GetPendingTimeTrackingHoursByAdmin(int adminId)
+        {
+            var projectManagerTrackingHoursApproval = new ProjectManagerTrackingHoursApprovalViewModel();
 
-        public async Task<List<TimeTrackingViewModel>> GetUserTrackingModel(int userId, DateTime from, DateTime to)
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var memberQuery = queryFactory.Query(TableConstants.UserTable);
+
+            var mainQuery = queryFactory.Query(TableConstants.TimeTrackingTable)
+                .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
+                    $"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.ProjectId}")
+                .Join(TableConstants.AdminAuditHoursTable,$"{TableConstants.AdminAuditHoursTable}.{AdminAuditHoursConstants.ProjectId}", $"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.ProjectId}")
+                .Where($"{TableConstants.AdminAuditHoursTable}.{AdminAuditHoursConstants.UserId}", adminId)
+                .Where($"{TimeTrackingConstants.TimeTrackingStatusId}", (int)TimeTrackingStatusEnum.WaitingForApproval)
+                .Include(TableConstants.UserTable, memberQuery, $"{UserConstants.UserId}",
+                                                                          $"{MemberConstants.UserId}")
+                .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
+                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectManagerId},{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}");
+
+            var items = (await mainQuery.GetAsync()).Cast<IDictionary<string, object>>().ToList();
+
+
+            foreach (var grouping in items.GroupBy(objects => objects[ProjectConstants.ProjectId]))
+            {
+                if (!grouping.Any()) continue;
+                var projectTemplate = grouping.First();
+                var projectManagerTrackingHoursProject = new ProjectManagerTrackingHoursProjectViewModel
+                {
+                    MyProjectId = (int)projectTemplate[ProjectConstants.ProjectId],
+                    MyProjectName = (string)projectTemplate[ProjectConstants.ProjectName],
+                    MyProjectCode = (string)projectTemplate[ProjectConstants.ProjectCode],
+                };
+
+                projectManagerTrackingHoursApproval.OurProjectManagerTrackingHoursProjects.Add(projectManagerTrackingHoursProject);
+
+                foreach (var scenario in grouping)
+                {
+                    var user = (IDictionary<string, object>)scenario[TableConstants.UserTable];
+                    projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers.Add(new ProjectManagerTrackingHoursProjectMemberViewModel
+                    {
+                        MyHoursLoaded = (double)scenario[TimeTrackingConstants.TrackedHours],
+                        DateOfHours = (DateTime)scenario[TimeTrackingConstants.TimeTrackingDate],
+                        MyMemberName = (string)user[UserConstants.Name] + " " + user[UserConstants.PaternalLastName],
+                        TimeTrackingHoursId = (int)scenario[TimeTrackingConstants.TimeTrackingId],
+                        MyMemberEmail = (string)user[UserConstants.EmailBmining],
+                        MyUserId = (int)user[UserConstants.UserId]
+                    });
+                }
+            }
+            return projectManagerTrackingHoursApproval;
+        }
+
+        public async Task<List<ReportViewModel>> GetUserTrackingModels(int userId, DateTime from, DateTime to)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
 
@@ -101,23 +153,25 @@ namespace BminingBlazor.Services
 
             var query = queryFactory.Query(TableConstants.TimeTrackingTable)
                 .Where(TimeTrackingConstants.UserId, userId)
+                .Where($"{TableConstants.ProjectTable}.{ProjectConstants.StatusId}",(int)ProjectStatusEnum.Active)
                 .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
-                                                  $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")
+                                                  $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")                
                 .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
                 .Include(ProjectConstants.ProjectManager, managerQuery, ProjectConstants.ProjectManagerId, UserConstants.UserId)
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
-                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}");
+                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode},{ProjectConstants.ProjectManagerId}}}");
 
+            
 
             var items = (await query.GetAsync()).Cast<IDictionary<string, object>>().ToList();
 
-            var timeTrackingViewModels = new List<TimeTrackingViewModel>();
+            var timeTrackingViewModels = new List<ReportViewModel>();
             foreach (var item in items)
             {
-                var projectManagerUser = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
                 var user = (IDictionary<string, object>)item[TableConstants.UserTable];
-                var timeTrackingViewModel = new TimeTrackingViewModel
+                var projectManagerUser = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
+                var timeTrackingViewModel = new ReportViewModel
                 {
                     MyId = (int)item[TimeTrackingConstants.TimeTrackingId],
                     MyProjectId = (int)item[TimeTrackingConstants.ProjectId],
@@ -129,7 +183,7 @@ namespace BminingBlazor.Services
                     MyProjectName = (string)item[ProjectConstants.ProjectName],
                     MyProjectCode = (string)item[ProjectConstants.ProjectCode],
                     MyProjectManager = ViewModelConverter.GetUserViewModel(projectManagerUser),
-                    MyUser = ViewModelConverter.GetUserViewModel(user)
+                    MyUser = ViewModelConverter.GetUserViewModel(user)                    
                 };
                 timeTrackingViewModels.Add(timeTrackingViewModel);
             }
@@ -168,7 +222,7 @@ namespace BminingBlazor.Services
         }
 
 
-        public async Task<TimeTrackingViewModel> GetTimeTrackingId(int timeTrackingId)
+        public async Task<ReportViewModel> GetTimeTrackingId(int timeTrackingId)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             var userQuery = queryFactory.Query(TableConstants.UserTable);
@@ -190,7 +244,7 @@ namespace BminingBlazor.Services
             var projectManagerUser = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
             var user = (IDictionary<string, object>)item[TableConstants.UserTable];
 
-            var timeTrackingViewModel = new TimeTrackingViewModel
+            var timeTrackingViewModel = new ReportViewModel
             {
                 MyId = (int)item[TimeTrackingConstants.TimeTrackingId],
                 MyProjectId = (int)item[TimeTrackingConstants.ProjectId],

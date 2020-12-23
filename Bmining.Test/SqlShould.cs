@@ -42,7 +42,7 @@ namespace Bmining.Test
         public async Task ReadTimeTrackingHoursFixture()
         {
             var timeTrackingService = (ITimeTrackingService)_webHost.Services.GetService(typeof(ITimeTrackingService));
-            var timeTrackingViewModels = await timeTrackingService.GetUserTrackingModel(39, DateTime.MinValue, DateTime.MaxValue);
+            var timeTrackingViewModels = await timeTrackingService.GetUserTrackingModels(39, DateTime.MinValue, DateTime.MaxValue);
         }
         [TestMethod]
         public async Task AddTimeTrackingHoursFixture()
@@ -78,18 +78,6 @@ namespace Bmining.Test
         {
             var activityRecordService = (IActivityRecordService)_webHost.Services.GetService(typeof(IActivityRecordService));
             var activityRecordViewModel = await activityRecordService.GetActivityRecords();
-        }
-        [TestMethod]
-        public async Task GetTimeTrackingIdFixture()
-        {
-            var timeTrackingService = (ITimeTrackingService)_webHost.Services.GetService(typeof(ITimeTrackingService));
-            var timeTrackingId= await timeTrackingService.GetTimeTrackingId(1);
-        }
-        [TestMethod]
-        public async Task RejectTimeTrackingIdFixture()
-        {
-            var timeTrackingService = (ITimeTrackingService)_webHost.Services.GetService(typeof(ITimeTrackingService));
-           await timeTrackingService.RejectUserTimeTracking(1,"HORAS RECHAZADAS");
         }
     }
 }

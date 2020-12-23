@@ -22,7 +22,7 @@
 
 <div class="top-row pl-4 navbar navbar-dark">
     <div class="bm-grid-container">
-        <img width="32" height="32" class="bm-image bm-grid-item" src="https://i.ibb.co/d2qxL9p/bmining-logo.png"/>
+        <img width="32" height="32" class="bm-image bm-grid-item" src="https://i.ibb.co/d2qxL9p/bmining-logo.png" />
         <div class=" bm-grid-item navbar-brand">@Resource.Bmining</div>
     </div>
 
@@ -38,19 +38,28 @@
                 <span class="oi oi-home" aria-hidden="true"></span> @Resource.Home
             </NavLink>
         </li>
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="ViewUsers">
                 <span class="oi oi-people"></span>@Resource.Users
             </NavLink>
         </li>
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="ViewProject">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> @Resource.Projects
             </NavLink>
         </li>
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="AddClient">
                 <span class="oi oi-plus" aria-hidden="true"></span> @Resource.AddClient
+            </NavLink>
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Reports">
+                <span class="oi oi-document" aria-hidden="true"></span> @Resource.Report
             </NavLink>
         </li>
         <li class="nav-item px-3">
@@ -58,12 +67,29 @@
                 <span class="oi oi-calendar" aria-hidden="true"></span> @Resource.DashboardHours
             </NavLink>
         </li>
-
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/project_manager_dashboard">
-                <span class="oi oi-thumb-up" aria-hidden="true"></span> @Resource.AuditHours
+            <NavLink class="nav-link pointer-hover" @onclick="() => _expandAuditHours = !_expandAuditHours">
+                @if (!_expandAuditHours)
+                {
+                    <span class="oi oi-caret-right" aria-hidden="true"></span>
+                }
+                else
+                {
+                    <span class="oi oi-caret-bottom" aria-hidden="true"></span>
+                }
+                @Resource.AuditHours
             </NavLink>
-        </li>
+
+            @if (_expandAuditHours)
+            {
+                <NavLink class="nav-link" href="/project_manager_dashboard">
+                    @Resource.ProjectManager
+                </NavLink>
+                <NavLink class="nav-link" href="/admin_dashboard">
+                    @Resource.Administration
+                </NavLink>
+            }
+        </li>            
 
         <li class="nav-item px-3">
             <NavLink class="nav-link pointer-hover" @onclick="() => _expandActivityRecord = !_expandActivityRecord">
@@ -87,7 +113,6 @@
                 </NavLink>
             }
         </li>
-
         <li class="nav-item px-3">
             <div class="alternate2-break"></div>
         </li>
@@ -117,6 +142,7 @@
 @code {
     private bool _collapseNavMenu = true;
     private bool _expandActivityRecord = false;
+    private bool _expandAuditHours = false;
 
     private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 

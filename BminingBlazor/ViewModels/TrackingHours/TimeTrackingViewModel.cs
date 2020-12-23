@@ -1,11 +1,10 @@
 ﻿using BminingBlazor.ViewModels.User;
 using Models.TimeTracking;
 using System;
-using System.Diagnostics;
 
 namespace BminingBlazor.ViewModels.TrackingHours
 {
-   public class TimeTrackingViewModel
+    public class ReportViewModel
     {
         public int MyId { get; set; }
         public DateTime MyCreationDate { get; set; }
@@ -14,7 +13,7 @@ namespace BminingBlazor.ViewModels.TrackingHours
         public string MyProjectCode { get; set; }
         public string MyProjectName { get; set; }
         public UserViewModel MyProjectManager { get; set; }
-        public UserViewModel MyUser { get; set; }
+        public UserViewModel MyUser {get;set;}
         public int MyUserId { get; set; }
         public TimeTrackingStatusEnum MyTimeTrackingStatus { get; set; }
         public double MyTrackedHours { get; set; }

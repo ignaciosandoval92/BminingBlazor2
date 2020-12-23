@@ -47,6 +47,13 @@
         text-align: center;
         padding: 5px
     }
+    .item-dashboard-item2 {
+        position:absolute;
+        vertical-align: middle;
+        display: inline;       
+        padding: 5px;
+        right: 50px
+    }
 
     .item-dashboard-border {
         margin: 5px;
@@ -101,11 +108,23 @@
             {
                 @foreach (var weekDayUserTrackingHours in DashboardUserTracking.WeekDayUserTrackingHours)
                 {
+                    TotalHours = 0;
                     <div class="col">
                         <div class="d-flex flex-row w-100 justify-content-between">
                             <div class="d-inline-block">
                                 <h5 class="font-weight-bold">@weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize()</h5>
                             </div>
+                            @foreach (var day in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
+                            {
+                                TotalHours = TotalHours + day.MyTrackedHours;
+                            }
+
+                            <div class="item-dashboard-item2">
+                                <span class="badge badge-primary badge-pill m-1 bg-bmining-@TotalHoursStatus(TotalHours,weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize())">
+                                    <h10>@Resource.Hours : </h10>@TotalHours
+                                </span>
+                            </div>
+
                             <div class="d-inline-block">
                                 <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="bmining-btn-icon">
                                     <i class="fa fa-plus"></i>
@@ -150,8 +169,10 @@
                     </div>
                 }
             }
+            <button @onclick="@CopyLastWeek" class="bmining-button float-right">@Resource.CopyLastWeek</button>
         </div>
     }
+    
 </div>
 
 @code {
@@ -161,8 +182,10 @@
     public int? Month { get; set; }
     [Parameter]
     public int? Year { get; set; }
-    
+
     public bool IsLoading { get; set; }
+    public string Email { get; set; }
+    public double TotalHours { get; set; }
 
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
 
@@ -179,26 +202,26 @@
             int numberOfDay;
             switch (dayOfWeek)
             {
-                case DayOfWeek.Sunday:
-                    numberOfDay = 6;
-                    break;
-                case DayOfWeek.Monday:
+                case DayOfWeek.Saturday:
                     numberOfDay = 0;
                     break;
-                case DayOfWeek.Tuesday:
+                case DayOfWeek.Sunday:
                     numberOfDay = 1;
                     break;
-                case DayOfWeek.Wednesday:
+                case DayOfWeek.Monday:
                     numberOfDay = 2;
                     break;
-                case DayOfWeek.Thursday:
+                case DayOfWeek.Tuesday:
                     numberOfDay = 3;
                     break;
-                case DayOfWeek.Friday:
+                case DayOfWeek.Wednesday:
                     numberOfDay = 4;
                     break;
-                case DayOfWeek.Saturday:
+                case DayOfWeek.Thursday:
                     numberOfDay = 5;
+                    break;
+                case DayOfWeek.Friday:
+                    numberOfDay = 6;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -225,9 +248,11 @@
     {
         if (firstRender)
         {
-            var email = await AuthenticationStateProvider.GetEmail();
-            var userId = await UserDataService.GetUserId(email);
-            DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService) { MyUserId = userId };
+
+            var Email = AuthenticationStateProvider.GetEmail();
+            var userId = await UserDataService.GetUserId(await Email);
+            DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
+            DashboardUserTracking.MyUserId = userId;
             if (!Day.HasValue || !Month.HasValue || !Year.HasValue)
             {
                 var date = DateTime.UtcNow.ToLocalTime();
@@ -283,5 +308,56 @@
     private void PreviousWeek()
     {
         MySelectedDate = MySelectedDate.AddDays(-7);
+    }
+    private string TotalHoursStatus(double totalHours,string day)
+    {
+        if (totalHours > 9)
+        {
+            return "error";
+        }
+        else if(totalHours ==9)
+        {
+            if(day==Resource.Friday)
+            {
+                return "error";
+            }
+            return "info";
+        }
+        else
+        {
+            if(day== Resource.Friday)
+            {
+
+                if (totalHours==5)
+                {
+                    return "info";
+                }
+                else if (totalHours > 5)
+                {
+                    return "error";
+                }
+                else
+                {
+                    return " ";
+                }
+
+            }
+
+            return " ";
+        }
+    }
+    private async void CopyLastWeek()
+    {
+        var Email = AuthenticationStateProvider.GetEmail();
+        var userId = await UserDataService.GetUserId(await Email);
+        var LastWeek = await TimeTrackingService.GetUserTrackingModels(userId, MyStartOfWeek.AddDays(-7), MyStartOfWeek);
+        foreach(var hoursLastWeek in LastWeek)
+        {
+            var projectId = hoursLastWeek.MyProjectId;
+            var hours = hoursLastWeek.MyTrackedHours;
+            var timeTracking = hoursLastWeek.MyTimeTrackingDate.AddDays(+7);
+            await TimeTrackingService.AddUserTimeTracking(userId, projectId, timeTracking, hours);
+        }
+        NavigationManager.NavigateTo($"/dashboard_tracking_hours/",true);
     }
 }

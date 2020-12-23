@@ -45,6 +45,7 @@ namespace BminingBlazor
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IActivityRecordService, ActivityRecordService>();
             services.AddTransient<IDummyProjectDataService, DummyProjectDataService>();
+            services.AddTransient<IReportService, ReportService>();
             services.AddMatBlazor();
             services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
                 .AddAzureAD(options => Configuration.Bind("AzureAd", options));

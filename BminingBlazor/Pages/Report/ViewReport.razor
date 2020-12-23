@@ -1,0 +1,123 @@
+﻿@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{projectId:int}"
+@using BminingBlazor.ViewModels.Report;
+@using System.IO;
+@using NPOI.SS.UserModel;
+@using NPOI.XSSF.UserModel;
+
+
+@inject IReportService ReportService
+@inject IJSRuntime jsruntime
+
+
+<div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.Report</h2>
+        </div>      
+    </div>
+
+    <div class="main-break">
+        <div class="main-circle">
+        </div>
+    </div>
+    @if (_report == null)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
+        <div class="table-responsive{-sm|-md|-lg|-xl}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>@Resource.Name</th>
+                        <th>@Resource.Surname</th>
+                        <th>@Resource.ProjectCode</th>
+                        <th>@Resource.ProjectName</th>
+                        <th>@Resource.Hours</th>
+                        <th>@Resource.Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var reportMember in _report)
+                    {
+                        <tr>
+                            <td>@reportMember.MyName</td>
+                            <td>@reportMember.MyPaternalSurname</td>
+                            <td>@reportMember.MyCodProject</td>
+                            <td>@reportMember.MyNameProject</td>
+                            <td>@reportMember.MyTrackedHours</td>
+                            <td>@reportMember.MyDateTracked</td>                        
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+       
+    }
+    <button class="bmining-button" @onclick="ExportExcel">@Resource.Download</button>
+</div>
+@code {
+    [Parameter]
+    public int userId { get; set; }
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
+    [Parameter]
+    public int projectId { get; set; }
+
+    private List<ReportViewModel> _report;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _report = await ReportService.GetUserReport(userId, startDate, endDate, projectId);
+        StateHasChanged();
+    }
+    public async Task ExportExcel()
+    {
+        IWorkbook workbook = new XSSFWorkbook();
+        var dataFormat = workbook.CreateDataFormat();
+        var dataStyle = workbook.CreateCellStyle();
+        dataStyle.DataFormat = dataFormat.GetFormat("dd/MM/yyyy");
+        ISheet worksheet = workbook.CreateSheet("Sheet1");     
+        int rowNumbre = 0;
+        IRow row = worksheet.CreateRow(rowNumbre++);
+        ICell cell = row.CreateCell(0);
+        cell.SetCellValue(Resource.Name);
+        cell = row.CreateCell(1);
+        cell.SetCellValue(Resource.Surname);
+        cell = row.CreateCell(2);
+        cell.SetCellValue(Resource.ProjectCode);
+        cell = row.CreateCell(3);
+        cell.SetCellValue(Resource.ProjectName);
+        cell = row.CreateCell(4);
+        cell.SetCellValue(Resource.Hours);
+        cell = row.CreateCell(5);
+        cell.SetCellValue(Resource.Date);
+        foreach(var member in _report)
+        {
+            row = worksheet.CreateRow(rowNumbre++);
+            cell = row.CreateCell(0);
+            cell.SetCellValue(member.MyName);
+            cell = row.CreateCell(1);
+            cell.SetCellValue(member.MyPaternalSurname);
+            cell = row.CreateCell(2);
+            cell.SetCellValue(member.MyCodProject);
+            cell = row.CreateCell(3);
+            cell.SetCellValue(member.MyNameProject);
+            cell = row.CreateCell(4);
+            cell.SetCellValue(member.MyTrackedHours);
+            cell = row.CreateCell(5);
+            cell.SetCellValue(member.MyDateTracked);
+            cell.CellStyle = dataStyle;
+
+        }
+        MemoryStream ms = new MemoryStream();
+        workbook.Write(ms);
+        byte[] bytes = ms.ToArray();
+        ms.Close();
+        await jsruntime.SaveAsFileAsync(Resource.Report, bytes, "application/vnd.ms-excel");
+
+    }
+}
