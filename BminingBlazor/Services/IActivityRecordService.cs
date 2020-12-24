@@ -5,7 +5,7 @@ namespace BminingBlazor.Services
 {
     public interface IActivityRecordService
     {
-        Task<int> CreateActivityRecordAsync(string title, int creatorId);
+        Task<int> CreateActivityRecordAsync(string title, int creatorId, int projectId);
         Task<ActivityRecordViewModel> GetActivityRecord(int id);
         Task<DashboardActivityRecordViewModel> GetActivityRecords();
         Task DeleteActivityRecord(int id);

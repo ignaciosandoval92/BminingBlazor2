@@ -4,10 +4,8 @@
 @inject IUserDataService UserDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject IMatDialogService MatDialogService;
+@inject IMatDialogService MatDialogService
 @attribute [Authorize(Roles = "AdminRRHH,Administracion")]
-
-
 
 <div class="bmining-app">
     <div class="d-flex flex-row w-100 justify-content-between">
@@ -31,7 +29,7 @@
     }
     else
     {
-        <div class="table-responsive{-sm|-md|-lg|-xl}">
+        <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -95,10 +93,8 @@
 
     }
 
-    public void EditCallback(int id)
+    private void EditCallback(int id)
     {
         NavigationManager.NavigateTo($"EditUser/{id}");
     }
-
-
 }

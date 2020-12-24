@@ -214,7 +214,7 @@ namespace BminingBlazor.Services
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             await queryFactory.Query(TableConstants.TimeTrackingTable).
-                              Where(TimeTrackingConstants.TimeTrackingId,timeTrackingId).
+                              Where(TimeTrackingConstants.TimeTrackingId, timeTrackingId).
                               UpdateAsync(new Dictionary<string, object>
             {
                 {TimeTrackingConstants.TimeTrackingStatusId, (int) TimeTrackingStatusEnum.Approved}
@@ -224,11 +224,11 @@ namespace BminingBlazor.Services
 
         public async Task<ReportViewModel> GetTimeTrackingId(int timeTrackingId)
         {
-            var queryFactory =_dataAccess.GetQueryFactory(_connectionString);
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             var userQuery = queryFactory.Query(TableConstants.UserTable);
             var managerQuery = queryFactory.Query(TableConstants.UserTable);
 
-            
+
 
             var query = queryFactory.Query(TableConstants.TimeTrackingTable)
                 .Where(TimeTrackingConstants.TimeTrackingId, timeTrackingId)
@@ -241,7 +241,7 @@ namespace BminingBlazor.Services
 
             var item = (await query.GetAsync()).Cast<IDictionary<string, object>>().First();
 
-            var projectManagerUser = (IDictionary<string, object>) item[ProjectConstants.ProjectManager];
+            var projectManagerUser = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
             var user = (IDictionary<string, object>)item[TableConstants.UserTable];
 
             var timeTrackingViewModel = new ReportViewModel
@@ -272,20 +272,15 @@ namespace BminingBlazor.Services
                     {TimeTrackingConstants.TimeTrackingStatusId, (int) TimeTrackingStatusEnum.Rejected}
                 });
 
-
-            
-
             // Send
             var client = new SendGridClient(SendGridConstants.ApiKey);
             var from = new EmailAddress(SendGridConstants.SenderEmail, $"{timeTracking.MyProjectManager.MyName} {timeTracking.MyProjectManager.MyPaternalSurname}");
-            var subject = string.Format(Resource.HoursRejected,timeTracking.MyProjectCode,timeTracking.MyTimeTrackingDate.ToShortDateString());
+            var subject = string.Format(Resource.HoursRejected, timeTracking.MyProjectCode, timeTracking.MyTimeTrackingDate.ToShortDateString());
             var to = new EmailAddress(timeTracking.MyUser.MyEmail, $"{timeTracking.MyUser.MyName} {timeTracking.MyUser.MyPaternalSurname}");
             var plainTextContent = $"{comment}";
             var htmlContent = $"<strong>{comment}</strong>";
             var sendGridMessage = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = await client.SendEmailAsync(sendGridMessage);
-
-            return;
         }
     }
 }
