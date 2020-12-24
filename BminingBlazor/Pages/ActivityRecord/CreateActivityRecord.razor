@@ -47,8 +47,8 @@
 @code {
     public string MyTitle { get; set; }
     public int MyCreatorId { get; set; }
-    public List<ProjectViewModel> OurProjectViewModels { get; set; }
-    public ProjectViewModel MySelectedProject { get; set; }
+    public List<SimpleProjectViewModel> OurProjectViewModels { get; set; }
+    public SimpleProjectViewModel MySelectedProject { get; set; }
     public bool IsLoading { get; set; } = true;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -57,10 +57,9 @@
         if (!firstRender) return;
         var email = AuthenticationStateProvider.GetEmail();
         var id = await UserDataService.GetUserId(await email);
-        var projects = await ProjectDataService.ReadProjects();
-        var validProjects = projects.Where(model => model.OurMembers.Any(viewModel => viewModel.MyId == id));
-        OurProjectViewModels = new List<ProjectViewModel>();
-        OurProjectViewModels.AddRange(validProjects);
+        var projects = await ProjectDataService.ReadProjectWhereUserBelongs(id);
+        OurProjectViewModels = new List<SimpleProjectViewModel>();
+        OurProjectViewModels.AddRange(projects);
         MySelectedProject = OurProjectViewModels.FirstOrDefault();
         MyCreatorId = id;
         IsLoading = false;
@@ -74,7 +73,8 @@
             await MatDialogService.AlertAsync(Resource.MissingInformation);
             return;
         }
-        var activityRecordId = await ActivityRecordService.CreateActivityRecordAsync(MyTitle, MyCreatorId, MySelectedProject.MyId);
+        var activityRecordId = await ActivityRecordService
+                                     .CreateActivityRecordAsync(MyTitle, MyCreatorId, MySelectedProject.MyId);
         NavigationManager.NavigateTo($"/edit_activity_record/{activityRecordId}");
     }
 }

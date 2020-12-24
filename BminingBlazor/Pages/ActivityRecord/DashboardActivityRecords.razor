@@ -3,6 +3,8 @@
 @inject IActivityRecordService ActivityRecordService
 @inject IMatDialogService MatDialogService
 @inject NavigationManager NavigationManager
+@inject IUserDataService UserDataService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 <div class="bmining-app">
     <div class="d-flex flex-row w-100 justify-content-between">
         <div class="d-inline-block">
@@ -28,7 +30,7 @@
                 <th>@Resource.Id</th>
                 <th>@Resource.Title</th>
                 <th>@Resource.Date</th>
-                <th>@Resource.Delete</th>
+                <th>@Resource.Actions</th>
             </tr>
 
             @foreach (var dashboardActivityRecordItem in ViewModel.OurDashboardActivityRecords)
@@ -44,12 +46,25 @@
                         @dashboardActivityRecordItem.MyDate
                     </td>
                     <td class="text-center">
-                        <button @onclick="() => Edit(dashboardActivityRecordItem)" class="bmining-btn-icon">
-                            <i class="fa fa-edit"></i>
-                        </button>
-                        <button @onclick="() => Remove(dashboardActivityRecordItem)" class="bmining-btn-icon bg-bmining-error">
-                            <i class="fa fa-trash"></i>
-                        </button>
+                        @if (dashboardActivityRecordItem.CanView)
+                        {
+                            <button @onclick="() => View(dashboardActivityRecordItem)" class="bmining-btn-icon">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        }
+
+                        @if (dashboardActivityRecordItem.CanEdit)
+                        {
+                            <button @onclick="() => Edit(dashboardActivityRecordItem)" class="bmining-btn-icon">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        }
+                        @if (dashboardActivityRecordItem.CanDelete)
+                        {
+                            <button @onclick="() => Remove(dashboardActivityRecordItem)" class="bmining-btn-icon bg-bmining-error">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        }
                     </td>
                 </tr>
             }
@@ -70,7 +85,9 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            ViewModel = await ActivityRecordService.GetActivityRecords();
+            var email = await AuthenticationStateProvider.GetEmail();
+            var userId = await UserDataService.GetUserId(email);
+            ViewModel = await ActivityRecordService.GetActivityRecords(userId);
             StateHasChanged();
         }
     }
@@ -93,4 +110,10 @@
     {
         NavigationManager.NavigateTo("/create_activity_record");
     }
+
+    private void View(DashboardActivityRecordItemViewModel dashboardActivityRecordItem)
+    {
+        NavigationManager.NavigateTo($"/view_activity_record/{dashboardActivityRecordItem.MyId}");
+    }
+
 }
