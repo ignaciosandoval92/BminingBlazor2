@@ -284,10 +284,7 @@ namespace BminingBlazor.Services
             await queryFactory.Query(ProjectTable).Where(ProjectConstants.ProjectId, projectId).DeleteAsync();
         }
 
-
-
-
-
+        
         public async Task<List<ProjectViewModel>> ReadProjectsOwnedByUser(int userId)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
@@ -325,7 +322,6 @@ namespace BminingBlazor.Services
                 });
             }
             return projectViewModel.ToList();
-
         }
 
         public async Task<List<StatusProjectModel>> GetAvailableProjectStatus()
@@ -366,9 +362,6 @@ namespace BminingBlazor.Services
                 MyProjectManager = new UserViewModel { MyId = projects.ProjectManagerId, MyEmail = projects.EmailBmining },
             };
             return projectViewModel;
-
-
-
         }
 
         public async Task AddPaymentStatus(List<PaymentViewModel> payments, int idProject)

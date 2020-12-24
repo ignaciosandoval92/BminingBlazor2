@@ -18,7 +18,7 @@ namespace BminingBlazor.Services
             _dataAccess = dataAccess;
             _connectionString = configuration.GetConnectionString("default");
         }
-        public async Task<int> CreateActivityRecordAsync(string title, int creatorId)
+        public async Task<int> CreateActivityRecordAsync(string title, int creatorId,int projectId)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             var query = queryFactory.Query(TableConstants.ActivityRecordTable);
@@ -27,6 +27,7 @@ namespace BminingBlazor.Services
                 {ActivityRecordConstants.Title,title},
                 {ActivityRecordConstants.CreatorId,creatorId},
                 {ActivityRecordConstants.Date ,DateTime.UtcNow},
+                {ActivityRecordConstants.ProjectId ,projectId},
             });
             return index;
         }
@@ -37,8 +38,12 @@ namespace BminingBlazor.Services
             var activityQuery = queryFactory.Query(TableConstants.ActivityRecordTable);
             var membersQuery = queryFactory.Query(TableConstants.ActivityRecordMemberTable);
             var commitmentQuery = queryFactory.Query(TableConstants.ActivityRecordCommitmentTable);
+            var projectQuery = queryFactory.Query(TableConstants.ProjectTable);
 
             var item = (await activityQuery.Where(ActivityRecordConstants.Id, id)
+                                          .Include(TableConstants.ProjectTable,projectQuery,
+                                                   ProjectConstants.ProjectId,
+                                                   ActivityRecordConstants.ProjectId)
                                           .IncludeMany(TableConstants.ActivityRecordMemberTable, membersQuery,
                                                        $"{ActivityRecordMemberConstants.ActivityRecordId}",
                                                        $"{ActivityRecordConstants.Id}")
@@ -46,6 +51,9 @@ namespace BminingBlazor.Services
                                                        $"{ActivityRecordCommitmentConstants.ActivityRecordId}",
                                                        $"{ActivityRecordConstants.Id}").GetAsync())
                                           .Cast<IDictionary<string, object>>().ToList().First();
+
+
+            var project = (IDictionary<string,object>) item[TableConstants.ProjectTable];
 
             var activityRecord = new ActivityRecordViewModel
             {
@@ -55,7 +63,10 @@ namespace BminingBlazor.Services
                 MyNotes = (string)item[ActivityRecordConstants.Notes],
                 MyPlace = (string)item[ActivityRecordConstants.Place],
                 MyTitle = (string)item[ActivityRecordConstants.Title],
-                MySecurityReflection = (string)item[ActivityRecordConstants.SecurityReflection]
+                MySecurityReflection = (string)item[ActivityRecordConstants.SecurityReflection],
+                MyProjectName = (string) project[ProjectConstants.ProjectName],
+                MyProjectId = (int) project[ProjectConstants.ProjectId],
+                MyProjectCode = (string) project[ProjectConstants.ProjectCode]
             };
             var members = (IEnumerable<IDictionary<string, object>>)item[TableConstants.ActivityRecordMemberTable];
             foreach (var member in members)

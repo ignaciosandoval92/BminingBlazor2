@@ -1,10 +1,12 @@
 ﻿@page "/edit_activity_record/{id:int}"
 @using BminingBlazor.ViewModels.ActivityRecord
 @using BminingBlazor.ViewModels.User
-@using System.Threading
+
 @inject IMatDialogService MatDialogService
 @inject IUserDataService UserDataService
 @inject IActivityRecordService ActivityRecordService
+@inject NavigationManager NavigationManager
+
 
 <div class="bmining-app">
     <h2>@Resource.EditActivityRecord</h2>
@@ -15,24 +17,36 @@
     @if (ViewModel != null)
     {
         <div>
+            
+            <div class="col">
+                <div class="d-flex flex-row w-100 justify-content-between">
+                    <div class="float-left">
+                        <h5 class="font-weight-bold">@ViewModel.MyProjectCode</h5>
+                    </div>
+                    <div class="float-right">
+                        <h5 class="font-weight-bold">@ViewModel.MyProjectName</h5>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="title">@Resource.Title</label>
-                <input class="form-control" type="text" id="title" @bind-value="@ViewModel.MyTitle" />
+                <input class="form-control" type="text" id="title" @bind-value="@ViewModel.MyTitle"/>
             </div>
 
             <div class="form-group">
                 <label for="date">@Resource.Date</label>
-                <input class="form-control" type="date" id="date" @bind-value="@ViewModel.MyDate" />
+                <input class="form-control" type="date" id="date" @bind-value="@ViewModel.MyDate"/>
             </div>
 
             <div class="form-group">
                 <label for="duration">@Resource.DurationHours</label>
-                <input class="form-control" step="0.1" type="number" id="duration" @bind-value="@ViewModel.MyDurationHours" />
+                <input class="form-control" step="0.1" type="number" id="duration" @bind-value="@ViewModel.MyDurationHours"/>
             </div>
 
             <div class="form-group">
                 <label for="place">@Resource.Place</label>
-                <input class="form-control" type="text" id="place" @bind-value="@ViewModel.MyPlace" />
+                <input class="form-control" type="text" id="place" @bind-value="@ViewModel.MyPlace"/>
             </div>
 
             <div class="d-flex justify-content-between">
@@ -204,9 +218,9 @@
             _users.AddRange(await UserDataService.ReadUsers());
             ViewModel = await ActivityRecordService.GetActivityRecord(Id);
             StateHasChanged();
-            await Task.Delay(1000);
+            await Task.Delay(1000); // Delay for Quill
             await _quillNotesHtml.LoadHTMLContent(ViewModel.MyNotes);
-            await _quillSecurityReflectionHtml.LoadHTMLContent(ViewModel.MySecurityReflection); 
+            await _quillSecurityReflectionHtml.LoadHTMLContent(ViewModel.MySecurityReflection);
         }
     }
 
@@ -228,7 +242,6 @@
             await ActivityRecordService.AddActivityRecordMember(activityRecordMember);
             ViewModel.OurMembers.Add(activityRecordMember);
         }
-
     }
 
     private async Task AddCommitment()
@@ -267,5 +280,4 @@
         ViewModel.MySecurityReflection = await _quillSecurityReflectionHtml.GetHTML();
         await ActivityRecordService.EditActivityRecord(ViewModel);
     }
-
 }

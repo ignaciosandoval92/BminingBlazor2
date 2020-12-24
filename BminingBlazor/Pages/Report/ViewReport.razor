@@ -59,19 +59,19 @@
 </div>
 @code {
     [Parameter]
-    public int userId { get; set; }
+    public int UserId { get; set; }
     [Parameter]
-    public DateTime startDate { get; set; }
+    public DateTime StartDate { get; set; }
     [Parameter]
-    public DateTime endDate { get; set; }
+    public DateTime EndDate { get; set; }
     [Parameter]
-    public int projectId { get; set; }
+    public int ProjectId { get; set; }
 
     private List<ReportViewModel> _report;
 
     protected override async Task OnInitializedAsync()
     {
-        _report = await ReportService.GetUserReport(userId, startDate, endDate, projectId);
+        _report = await ReportService.GetUserReport(UserId, StartDate, EndDate, ProjectId);
         StateHasChanged();
     }
     public async Task ExportExcel()

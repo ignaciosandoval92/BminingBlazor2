@@ -14,6 +14,10 @@ namespace BminingBlazor.ViewModels.ActivityRecord
         public double? MyDurationHours { get; set; }
         public string MyTitle { get; set; }
         public string MyPlace { get; set; }
+        public string MyProjectName { get; set; }
+        public string MyProjectCode { get; set; }
+        public int MyProjectId { get; set; }
+
         public ActivityRecordViewModel()
         {
             OurMembers = new List<ActivityRecordMemberViewModel>();
