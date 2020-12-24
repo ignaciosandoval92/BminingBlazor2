@@ -15,30 +15,33 @@
         <div class="main-circle">
         </div>
     </div>
+    @if (IsLoading)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
+        <div class="form-group">
+            <label for="title">@Resource.Title</label>
+            <input class="form-control" id="title" type="text" @bind-value="@MyTitle" />
+        </div>
 
-    <div class="form-group">
-        <label for="title">@Resource.Title</label>
-        <input class="form-control" id="title" type="text" @bind-value="@MyTitle" />
-    </div>
-    
-    
-    <div class="form-group">
-        <label for="projectSelect">@Resource.Project</label>
-        @if (MySelectedProject != null)
-        {
-            <select class="form-control" id="projectSelect" @bind="@MySelectedProject.MyId">
-                @foreach (var userViewModel in OurProjectViewModels)
-                {
-                    <option value="@userViewModel.MyId">
-                        @userViewModel.MyProjectName
-                    </option>
-                }
-            </select>
-        }
-    </div>
-
-
-    <button class="bmining-button float-right" @onclick="Create">@Resource.Create</button>
+        <div class="form-group">
+            <label for="projectSelect">@Resource.Project</label>
+            @if (MySelectedProject != null)
+            {
+                <select class="form-control" id="projectSelect" @bind="@MySelectedProject.MyId">
+                    @foreach (var userViewModel in OurProjectViewModels)
+                    {
+                        <option value="@userViewModel.MyId">
+                            @userViewModel.MyProjectName
+                        </option>
+                    }
+                </select>
+            }
+        </div>
+        <button class="bmining-button float-right" @onclick="Create">@Resource.Create</button>
+    }
 </div>
 
 @code {
@@ -46,6 +49,7 @@
     public int MyCreatorId { get; set; }
     public List<ProjectViewModel> OurProjectViewModels { get; set; }
     public ProjectViewModel MySelectedProject { get; set; }
+    public bool IsLoading { get; set; } = true;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -59,6 +63,7 @@
         OurProjectViewModels.AddRange(validProjects);
         MySelectedProject = OurProjectViewModels.FirstOrDefault();
         MyCreatorId = id;
+        IsLoading = false;
         StateHasChanged();
     }
 
