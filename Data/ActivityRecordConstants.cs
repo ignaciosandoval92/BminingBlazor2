@@ -10,5 +10,6 @@
         public const string Title = "Title";
         public const string Place = "Place";
         public const string CreatorId = "CreatorId";
+        public const string ProjectId = "ProjectId";
     }
 }

@@ -60,6 +60,7 @@
     <button class="bmining-button" @onclick="ExportExcel">@Resource.Download</button>
 </div>
 @code {
+
         [Parameter]
         public int userId { get; set; }
         [Parameter]
@@ -69,11 +70,12 @@
         [Parameter]
         public int projectId { get; set; }
 
+
         private List<ReportViewModel> _report;
 
     protected override async Task OnInitializedAsync()
     {
-        _report = await ReportService.GetUserReport(userId, startDate, endDate, projectId);
+        _report = await ReportService.GetUserReport(UserId, StartDate, EndDate, ProjectId);
         StateHasChanged();
     }
     public async Task ExportExcel()

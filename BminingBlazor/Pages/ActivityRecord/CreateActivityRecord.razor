@@ -1,43 +1,80 @@
 ﻿@page "/create_activity_record"
 @using Microsoft.AspNetCore.Http
+@using BminingBlazor.ViewModels.Projects
 @inject IActivityRecordService ActivityRecordService
 @inject IUserDataService UserDataService
 @inject IHttpContextAccessor HttpContextAccessor
+@inject IMatDialogService MatDialogService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IProjectDataService ProjectDataService
 
-    <div class="bmining-app">
-        <h2>@Resource.CreateActivityRecord</h2>
-        <div class="main-break">
-            <div class="main-circle">
-            </div>
+<div class="bmining-app">
+    <h2>@Resource.CreateActivityRecord</h2>
+    <div class="main-break">
+        <div class="main-circle">
         </div>
-
+    </div>
+    @if (IsLoading)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
         <div class="form-group">
             <label for="title">@Resource.Title</label>
             <input class="form-control" id="title" type="text" @bind-value="@MyTitle" />
         </div>
 
+        <div class="form-group">
+            <label for="projectSelect">@Resource.Project</label>
+            @if (MySelectedProject != null)
+            {
+                <select class="form-control" id="projectSelect" @bind="@MySelectedProject.MyId">
+                    @foreach (var userViewModel in OurProjectViewModels)
+                    {
+                        <option value="@userViewModel.MyId">
+                            @userViewModel.MyProjectName
+                        </option>
+                    }
+                </select>
+            }
+        </div>
         <button class="bmining-button float-right" @onclick="Create">@Resource.Create</button>
-    </div>
-
-    @code {
-        public string MyTitle { get; set; }
-        public int MyCreatorId { get; set; }
-
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            await base.OnAfterRenderAsync(firstRender);
-            if (!firstRender) return;
-            var email = AuthenticationStateProvider.GetEmail();
-            var id = await UserDataService.GetUserId( await email);
-            MyCreatorId = id;
-        }
-
-        private async Task Create()
-        {
-            var activityRecordId = await ActivityRecordService.CreateActivityRecordAsync(MyTitle, MyCreatorId);
-            NavigationManager.NavigateTo($"/edit_activity_record/{activityRecordId}");
-        }
     }
+</div>
+
+@code {
+    public string MyTitle { get; set; }
+    public int MyCreatorId { get; set; }
+    public List<ProjectViewModel> OurProjectViewModels { get; set; }
+    public ProjectViewModel MySelectedProject { get; set; }
+    public bool IsLoading { get; set; } = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (!firstRender) return;
+        var email = AuthenticationStateProvider.GetEmail();
+        var id = await UserDataService.GetUserId(await email);
+        var projects = await ProjectDataService.ReadProjects();
+        var validProjects = projects.Where(model => model.OurMembers.Any(viewModel => viewModel.MyId == id));
+        OurProjectViewModels = new List<ProjectViewModel>();
+        OurProjectViewModels.AddRange(validProjects);
+        MySelectedProject = OurProjectViewModels.FirstOrDefault();
+        MyCreatorId = id;
+        IsLoading = false;
+        StateHasChanged();
+    }
+
+    private async Task Create()
+    {
+        if (MySelectedProject == null || string.IsNullOrEmpty(MyTitle))
+        {
+            await MatDialogService.AlertAsync(Resource.MissingInformation);
+            return;
+        }
+        var activityRecordId = await ActivityRecordService.CreateActivityRecordAsync(MyTitle, MyCreatorId, MySelectedProject.MyId);
+        NavigationManager.NavigateTo($"/edit_activity_record/{activityRecordId}");
+    }
+}
