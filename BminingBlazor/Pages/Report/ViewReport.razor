@@ -1,19 +1,21 @@
 ﻿@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{projectId:int}"
 @using BminingBlazor.ViewModels.Report;
 @using System.IO;
-@using NPOI.SS.UserModel;
-@using NPOI.XSSF.UserModel;
+@using Microsoft.JSInterop;
+@using OfficeOpenXml;
+@using OfficeOpenXml.Style;
+@using Data;
 
 
 @inject IReportService ReportService
-@inject IJSRuntime jsruntime
+@inject IJSRuntime iJSRuntime
 
 
 <div class="bmining-app">
     <div class="d-flex flex-row w-100 justify-content-between">
         <div class="d-inline-block">
             <h2>@Resource.Report</h2>
-        </div>      
+        </div>
     </div>
 
     <div class="main-break">
@@ -47,27 +49,29 @@
                             <td>@reportMember.MyCodProject</td>
                             <td>@reportMember.MyNameProject</td>
                             <td>@reportMember.MyTrackedHours</td>
-                            <td>@reportMember.MyDateTracked</td>                        
+                            <td>@reportMember.MyDateTracked</td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
-       
+
     }
     <button class="bmining-button" @onclick="ExportExcel">@Resource.Download</button>
 </div>
 @code {
-    [Parameter]
-    public int UserId { get; set; }
-    [Parameter]
-    public DateTime StartDate { get; set; }
-    [Parameter]
-    public DateTime EndDate { get; set; }
-    [Parameter]
-    public int ProjectId { get; set; }
 
-    private List<ReportViewModel> _report;
+        [Parameter]
+        public int userId { get; set; }
+        [Parameter]
+        public DateTime startDate { get; set; }
+        [Parameter]
+        public DateTime endDate { get; set; }
+        [Parameter]
+        public int projectId { get; set; }
+
+
+        private List<ReportViewModel> _report;
 
     protected override async Task OnInitializedAsync()
     {
@@ -76,48 +80,8 @@
     }
     public async Task ExportExcel()
     {
-        IWorkbook workbook = new XSSFWorkbook();
-        var dataFormat = workbook.CreateDataFormat();
-        var dataStyle = workbook.CreateCellStyle();
-        dataStyle.DataFormat = dataFormat.GetFormat("dd/MM/yyyy");
-        ISheet worksheet = workbook.CreateSheet("Sheet1");     
-        int rowNumbre = 0;
-        IRow row = worksheet.CreateRow(rowNumbre++);
-        ICell cell = row.CreateCell(0);
-        cell.SetCellValue(Resource.Name);
-        cell = row.CreateCell(1);
-        cell.SetCellValue(Resource.Surname);
-        cell = row.CreateCell(2);
-        cell.SetCellValue(Resource.ProjectCode);
-        cell = row.CreateCell(3);
-        cell.SetCellValue(Resource.ProjectName);
-        cell = row.CreateCell(4);
-        cell.SetCellValue(Resource.Hours);
-        cell = row.CreateCell(5);
-        cell.SetCellValue(Resource.Date);
-        foreach(var member in _report)
-        {
-            row = worksheet.CreateRow(rowNumbre++);
-            cell = row.CreateCell(0);
-            cell.SetCellValue(member.MyName);
-            cell = row.CreateCell(1);
-            cell.SetCellValue(member.MyPaternalSurname);
-            cell = row.CreateCell(2);
-            cell.SetCellValue(member.MyCodProject);
-            cell = row.CreateCell(3);
-            cell.SetCellValue(member.MyNameProject);
-            cell = row.CreateCell(4);
-            cell.SetCellValue(member.MyTrackedHours);
-            cell = row.CreateCell(5);
-            cell.SetCellValue(member.MyDateTracked);
-            cell.CellStyle = dataStyle;
-
-        }
-        MemoryStream ms = new MemoryStream();
-        workbook.Write(ms);
-        byte[] bytes = ms.ToArray();
-        ms.Close();
-        await jsruntime.SaveAsFileAsync(Resource.Report, bytes, "application/vnd.ms-excel");
-
+        GenerateReport generateReport = new GenerateReport()
+        { _reports = _report };
+        generateReport.GenerateExcel(iJSRuntime);
     }
 }
