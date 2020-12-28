@@ -14,5 +14,6 @@ namespace BminingBlazor.Services
         Task DeleteActivityRecordMember(int id);
         Task AddActivityRecordCommitment(ActivityRecordCommitmentViewModel activityRecordCommitment);
         Task DeleteActivityRecordCommitment(int id);
+        Task EditStatusCommitment(int id,int myId, int status);
     }
 }

@@ -477,4 +477,13 @@
   <data name="SelectAllMembers" xml:space="preserve">
     <value>Todos Los Integrantes</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="Initiated" xml:space="preserve">
+    <value>Iniciado</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Desconocido</value>
+  </data>
 </root>

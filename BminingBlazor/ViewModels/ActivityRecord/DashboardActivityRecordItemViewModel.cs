@@ -1,4 +1,5 @@
 ﻿using System;
+using Models.ActivityRecord;
 
 namespace BminingBlazor.ViewModels.ActivityRecord
 {

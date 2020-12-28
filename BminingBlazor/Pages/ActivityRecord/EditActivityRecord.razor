@@ -1,7 +1,7 @@
 ﻿@page "/edit_activity_record/{id:int}"
 @using BminingBlazor.ViewModels.ActivityRecord
 @using BminingBlazor.ViewModels.User
-
+@using Models.ActivityRecord
 @inject IMatDialogService MatDialogService
 @inject IUserDataService UserDataService
 @inject IActivityRecordService ActivityRecordService
@@ -101,6 +101,7 @@
                             <th>@Resource.Responsible</th>
                             <th>@Resource.EndDate</th>
                             <th>@Resource.Commitment</th>
+                            <th>@Resource.Status</th>
                             <th>@Resource.Actions</th>
                         </tr>
 
@@ -112,11 +113,17 @@
                                 </td>
                                 <td>
                                     @($"{activityRecordCommitment.MyCommitmentDate.ToShortDateString()}")
-                                </td>
+                                </td>                               
                                 <td>
                                     @($"{activityRecordCommitment.MyCommitment}")
                                 </td>
+                                <td>
+                                    @($"{activityRecordCommitment.MyStatus}")
+                                </td>
                                 <td class="text-center">
+                                    <button @onclick="EditStatus" class="bmining-btn-icon bg-bmining-info">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
                                     <button @onclick="() => RemoveCommitment(activityRecordCommitment)" class="bmining-btn-icon bg-bmining-error">
                                         <i class="fa fa-trash"></i>
                                     </button>
@@ -259,6 +266,20 @@
             ViewModel.OurCommitments.Add(activityRecordCommitment);
         }
     }
+    private async Task EditStatus()
+    {
+        var item = await MatDialogService.OpenAsync(typeof(EditStatus), new MatDialogOptions
+        {
+            CanBeClosed = true
+        });
+        if (item == null)
+            return;
+        if (item is ActivityRecordCommitmentViewModel activityRecordCommitment)
+        {
+            activityRecordCommitment.MyActivityRecordId = Id;
+            await ActivityRecordService.EditStatusCommitment(activityRecordCommitment.MyActivityRecordId,activityRecordCommitment.MyId,(int) activityRecordCommitment.MyStatus);
+        }
+    }
 
     private async Task RemoveMember(ActivityRecordMemberViewModel activityRecordMember)
     {
@@ -273,6 +294,7 @@
         ViewModel.OurCommitments.Remove(activityRecordCommitment);
         StateHasChanged();
     }
+   
 
     private async Task Save()
     {
