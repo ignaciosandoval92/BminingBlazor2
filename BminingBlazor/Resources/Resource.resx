@@ -465,7 +465,7 @@
   <data name="DashboardAdmin" xml:space="preserve">
     <value>DashboardAdmin</value>
   </data>
-	<data name="Administration" xml:space="preserve">
+  <data name="Administration" xml:space="preserve">
     <value>Administration</value>
 	  </data>
   <data name="SelectMember" xml:space="preserve">
@@ -473,5 +473,8 @@
   </data>
   <data name="ViewReport" xml:space="preserve">
     <value>View Report</value>
+  </data>
+  <data name="SelectAllMembers" xml:space="preserve">
+    <value>Select All Members</value>
   </data>
 </root>

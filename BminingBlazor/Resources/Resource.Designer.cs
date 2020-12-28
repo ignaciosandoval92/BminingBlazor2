@@ -1015,6 +1015,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Select All Members.
+        /// </summary>
+        internal static string SelectAllMembers {
+            get {
+                return ResourceManager.GetString("SelectAllMembers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Select Member.
         /// </summary>
         internal static string SelectMember {

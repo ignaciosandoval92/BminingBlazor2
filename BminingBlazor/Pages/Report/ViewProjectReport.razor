@@ -1,0 +1,88 @@
+﻿@page "/ViewProjectReport/{startDate:datetime}/{endDate:datetime}/{projectId:int}"
+@using BminingBlazor.ViewModels.Report;
+@using System.IO;
+@using Microsoft.JSInterop;
+@using OfficeOpenXml;
+@using OfficeOpenXml.Style;
+@using Data;
+
+
+@inject IReportService ReportService
+@inject IJSRuntime iJSRuntime
+
+
+<div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.Report</h2>
+        </div>
+    </div>
+
+    <div class="main-break">
+        <div class="main-circle">
+        </div>
+    </div>
+    @if (_report == null)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
+        <div class="table-responsive{-sm|-md|-lg|-xl}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>@Resource.Name</th>
+                        <th>@Resource.Surname</th>
+                        <th>@Resource.ProjectCode</th>
+                        <th>@Resource.ProjectName</th>
+                        <th>@Resource.Hours</th>
+                        <th>@Resource.Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var reportMember in _report)
+                    {
+                        <tr>
+                            <td>@reportMember.MyName</td>
+                            <td>@reportMember.MyPaternalSurname</td>
+                            <td>@reportMember.MyCodProject</td>
+                            <td>@reportMember.MyNameProject</td>
+                            <td>@reportMember.MyTrackedHours</td>
+                            <td>@reportMember.MyDateTracked</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+    <button class="bmining-button" @onclick="ExportExcel">@Resource.Download</button>
+</div>
+@code {
+
+    [Parameter]
+    public int userId { get; set; }
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
+    [Parameter]
+    public int projectId { get; set; }
+
+
+    private List<ReportViewModel> _report;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _report = await ReportService.GetProjectReport(startDate, endDate, projectId);
+        StateHasChanged();
+    }
+    public async Task ExportExcel()
+    {
+        GenerateReport generateReport = new GenerateReport()
+        { _reports = _report };
+        generateReport.GenerateExcel(iJSRuntime);
+    }
+}
+
