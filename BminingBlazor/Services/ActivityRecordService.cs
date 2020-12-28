@@ -146,12 +146,12 @@ namespace BminingBlazor.Services
             var commitmentQuery = queryFactory.Query(TableConstants.ActivityRecordCommitmentTable);
 
 
-            var activityRecord = await GetActivityRecord(myId);
+            var activityRecord = await GetActivityRecord(id);
 
 
             foreach (var commitment in activityRecord.OurCommitments)
             {
-                await commitmentQuery.Where(ActivityRecordCommitmentConstants.Id, id).UpdateAsync(new Dictionary<string, object>
+                await commitmentQuery.Where(ActivityRecordCommitmentConstants.Id, myId).UpdateAsync(new Dictionary<string, object>
                 {
                     {ActivityRecordCommitmentConstants.ActivityRecordStatus,status}
                 });                

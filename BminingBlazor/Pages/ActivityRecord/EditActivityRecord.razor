@@ -121,7 +121,7 @@
                                     @($"{activityRecordCommitment.MyStatus}")
                                 </td>
                                 <td class="text-center">
-                                    <button @onclick="EditStatus" class="bmining-btn-icon bg-bmining-info">
+                                    <button @onclick="()=>EditStatus(activityRecordCommitment.MyId)" class="bmining-btn-icon bg-bmining-">
                                         <i class="fa fa-edit"></i>
                                     </button>
                                     <button @onclick="() => RemoveCommitment(activityRecordCommitment)" class="bmining-btn-icon bg-bmining-error">
@@ -266,7 +266,7 @@
             ViewModel.OurCommitments.Add(activityRecordCommitment);
         }
     }
-    private async Task EditStatus()
+    private async Task EditStatus(int myId)
     {
         var item = await MatDialogService.OpenAsync(typeof(EditStatus), new MatDialogOptions
         {
@@ -277,7 +277,8 @@
         if (item is ActivityRecordCommitmentViewModel activityRecordCommitment)
         {
             activityRecordCommitment.MyActivityRecordId = Id;
-            await ActivityRecordService.EditStatusCommitment(activityRecordCommitment.MyActivityRecordId,activityRecordCommitment.MyId,(int) activityRecordCommitment.MyStatus);
+            await ActivityRecordService.EditStatusCommitment(activityRecordCommitment.MyActivityRecordId,myId,(int) activityRecordCommitment.MyStatus);
+            NavigationManager.NavigateTo(@$"/edit_activity_record/{Id}", true);
         }
     }
 
@@ -294,7 +295,7 @@
         ViewModel.OurCommitments.Remove(activityRecordCommitment);
         StateHasChanged();
     }
-   
+
 
     private async Task Save()
     {
