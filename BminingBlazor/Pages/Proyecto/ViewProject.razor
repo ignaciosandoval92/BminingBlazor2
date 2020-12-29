@@ -121,6 +121,6 @@
     }
     private void UpdateList(int pageNumber)
     {
-        _projectList = _projects.Skip(pageNumber * PageSize).Take(PageSize).ToList();
+        _projectList = _projects.Skip(2).Take(PageSize).ToList();
     }
 }
