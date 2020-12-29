@@ -69,13 +69,13 @@
     <div>
         @for(int page=0;page<TotalPage;page++)
         {
-            
-            <button class="btn btn-info"@onclick="@(()=>UpdateList(page))">@(page+1)</button>
+            int pageNumber = page;
+            <button class="bmining-button"@onclick="@(()=>UpdateList(pageNumber))">@(page+1)</button>
         }
     </div>
 </div>
 
-@code {    
+@code {        
     public List<ProjectViewModel> _projects;
     public List<ProjectViewModel> _projectList { get; set; }
     public int PageSize { get; set; }
@@ -86,7 +86,7 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            PageSize = 2;
+            PageSize = 5;
             _projects = await ProjectDataService.ReadProjects();
             _projectList = _projects.Take(PageSize).ToList();
             TotalPage = (int)Math.Ceiling(_projects.Count() / (decimal)PageSize);
@@ -121,6 +121,6 @@
     }
     private void UpdateList(int pageNumber)
     {
-        _projectList = _projects.Skip(2).Take(PageSize).ToList();
+        _projectList = _projects.Skip(PageSize*pageNumber).Take(PageSize).ToList();
     }
 }
