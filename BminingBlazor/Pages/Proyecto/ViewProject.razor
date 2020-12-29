@@ -46,7 +46,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var p in _projects)
+                    @foreach (var p in _projectList)
                     {
                         <tr>
                             <td>@p.MyProjectCode</td>
@@ -66,20 +66,36 @@
             </table>
         </div>
     }
+    <div>
+        @for(int page=0;page<TotalPage;page++)
+        {
+            
+            <button class="btn btn-info"@onclick="@(()=>UpdateList(page))">@(page+1)</button>
+        }
+    </div>
 </div>
 
-@code {
-    private List<ProjectViewModel> _projects;
+@code {    
+    public List<ProjectViewModel> _projects;
+    public List<ProjectViewModel> _projectList { get; set; }
+    public int PageSize { get; set; }
+    public int TotalPage { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
+            PageSize = 2;
             _projects = await ProjectDataService.ReadProjects();
+            _projectList = _projects.Take(PageSize).ToList();
+            TotalPage = (int)Math.Ceiling(_projects.Count() / (decimal)PageSize);
+
             StateHasChanged();
         }
     }
+
+
 
     public void EditPaymentStatus(int idProject)
     {
@@ -102,5 +118,9 @@
             return;
         await ProjectDataService.DeleteProject(idProject);
         NavigationManager.NavigateTo("/ViewProject", true);
+    }
+    private void UpdateList(int pageNumber)
+    {
+        _projectList = _projects.Skip(pageNumber * PageSize).Take(PageSize).ToList();
     }
 }
