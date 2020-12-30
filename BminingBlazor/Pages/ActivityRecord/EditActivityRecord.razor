@@ -2,10 +2,18 @@
 @using BminingBlazor.ViewModels.ActivityRecord
 @using BminingBlazor.ViewModels.User
 @using Models.ActivityRecord
+@using System.IO
+@using SelectPdf
+@using System.Text
+@using Microsoft.AspNetCore.Html
+@using System.Text.Encodings.Web
+
 @inject IMatDialogService MatDialogService
 @inject IUserDataService UserDataService
 @inject IActivityRecordService ActivityRecordService
 @inject NavigationManager NavigationManager
+@inject Microsoft.JSInterop.IJSRuntime JS
+
 
 
 <div class="bmining-app">
@@ -17,7 +25,7 @@
     @if (ViewModel != null)
     {
         <div>
-            
+
             <div class="col">
                 <div class="d-flex flex-row w-100 justify-content-between">
                     <div class="float-left">
@@ -31,22 +39,22 @@
 
             <div class="form-group">
                 <label for="title">@Resource.Title</label>
-                <input class="form-control" type="text" id="title" @bind-value="@ViewModel.MyTitle"/>
+                <input class="form-control" type="text" id="title" @bind-value="@ViewModel.MyTitle" />
             </div>
 
             <div class="form-group">
                 <label for="date">@Resource.Date</label>
-                <input class="form-control" type="date" id="date" @bind-value="@ViewModel.MyDate"/>
+                <input class="form-control" type="date" id="date" @bind-value="@ViewModel.MyDate" />
             </div>
 
             <div class="form-group">
                 <label for="duration">@Resource.DurationHours</label>
-                <input class="form-control" step="0.1" type="number" id="duration" @bind-value="@ViewModel.MyDurationHours"/>
+                <input class="form-control" step="0.1" type="number" id="duration" @bind-value="@ViewModel.MyDurationHours" />
             </div>
 
             <div class="form-group">
                 <label for="place">@Resource.Place</label>
-                <input class="form-control" type="text" id="place" @bind-value="@ViewModel.MyPlace"/>
+                <input class="form-control" type="text" id="place" @bind-value="@ViewModel.MyPlace" />
             </div>
 
             <div class="d-flex justify-content-between">
@@ -113,7 +121,7 @@
                                 </td>
                                 <td>
                                     @($"{activityRecordCommitment.MyCommitmentDate.ToShortDateString()}")
-                                </td>                               
+                                </td>
                                 <td>
                                     @($"{activityRecordCommitment.MyCommitment}")
                                 </td>
@@ -199,8 +207,10 @@
                 <EditorContent>
                 </EditorContent>
             </BlazoredTextEditor>
+            <asp:HiddenField ID="html" runat="server"></asp:HiddenField>
         </div>
         <button class="bmining-button float-right" @onclick="Save">@Resource.Save</button>
+        <button class="bmining-button float-right" @onclick="@ExportToPdf">pdf</button>
     }
     else
     {
@@ -277,7 +287,7 @@
         if (item is ActivityRecordCommitmentViewModel activityRecordCommitment)
         {
             activityRecordCommitment.MyActivityRecordId = Id;
-            await ActivityRecordService.EditStatusCommitment(activityRecordCommitment.MyActivityRecordId,myId,(int) activityRecordCommitment.MyStatus);
+            await ActivityRecordService.EditStatusCommitment(activityRecordCommitment.MyActivityRecordId, myId, (int)activityRecordCommitment.MyStatus);
             NavigationManager.NavigateTo(@$"/edit_activity_record/{Id}", true);
         }
     }
@@ -302,5 +312,18 @@
         ViewModel.MyNotes = await _quillNotesHtml.GetHTML();
         ViewModel.MySecurityReflection = await _quillSecurityReflectionHtml.GetHTML();
         await ActivityRecordService.EditActivityRecord(ViewModel);
+
     }
+
+
+    protected void ExportToPdf()
+    {
+        
+        PdfActivityRecord oPdfActivityRecord = new PdfActivityRecord();
+        JS.InvokeAsync<ActivityRecordViewModel>(
+            "savePdf",
+            "prueba.pdf",
+            Convert.ToBase64String(oPdfActivityRecord.Report(ViewModel)));
+    }
+
 }
