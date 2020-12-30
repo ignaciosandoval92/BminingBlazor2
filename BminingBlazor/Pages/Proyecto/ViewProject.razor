@@ -70,7 +70,7 @@
         @for(int page=0;page<TotalPage;page++)
         {
             int pageNumber = page;
-            <button class="bmining-button"@onclick="@(()=>UpdateList(pageNumber))">@(page+1)</button>
+            <button class="@SelectedPage(page)"  @onclick="@(()=>UpdateList(pageNumber))">@(page+1)</button>
         }
     </div>
 </div>
@@ -80,6 +80,7 @@
     public List<ProjectViewModel> _projectList { get; set; }
     public int PageSize { get; set; }
     public int TotalPage { get; set; }
+    public int CurrentPage { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -121,6 +122,18 @@
     }
     private void UpdateList(int pageNumber)
     {
-        _projectList = _projects.Skip(PageSize*pageNumber).Take(PageSize).ToList();
+        _projectList = _projects.Skip(PageSize * pageNumber).Take(PageSize).ToList();
+        CurrentPage = pageNumber;
+    }
+    private string SelectedPage(int selectPage)
+    {
+        if(CurrentPage==selectPage)
+        {
+            return "btn btn-info";
+        }
+        else
+        {
+            return "btn btn-secondary";
+        }
     }
 }
