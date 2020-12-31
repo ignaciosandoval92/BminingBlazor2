@@ -325,9 +325,9 @@ namespace BminingBlazor.Utility
             _document.Add(Chunk.Newline);
 
             _fontStyle = FontFactory.GetFont("Arial", 7f, 0);
-            _pdfCell = new PdfPCell(new Phrase("hola", _fontStyle));
+            _pdfCell = new PdfPCell(new Phrase(_oActivityRecord.MySecurityReflection, _fontStyle));
             _pdfCell.Colspan = _maxColumn;
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
             _pdfCell.Border = 0;
             _pdfCell.ExtraParagraphSpace = 0;
             _pdfTable4.AddCell(_pdfCell);
@@ -347,7 +347,7 @@ namespace BminingBlazor.Utility
             _fontStyle = FontFactory.GetFont("Arial", 10f, 1);
             _pdfCell = new PdfPCell(new Phrase(Resource.Notes, _fontStyle));
             _pdfCell.Colspan = _maxColumn;
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
             _pdfCell.Border = 0;
             _pdfCell.ExtraParagraphSpace = 0;
             _pdfTable4.AddCell(_pdfCell);

@@ -320,6 +320,8 @@
     protected async void ExportToPdf()
     {
         ActivityRecordViewModel Model = new ActivityRecordViewModel();
+        Model = ViewModel;
+        Model.MySecurityReflection =await _quillSecurityReflectionHtml.GetText();
         Model.MyNotes =await _quillNotesHtml.GetText();
         PdfActivityRecord oPdfActivityRecord = new PdfActivityRecord();
         JS.InvokeAsync<ActivityRecordViewModel>(
