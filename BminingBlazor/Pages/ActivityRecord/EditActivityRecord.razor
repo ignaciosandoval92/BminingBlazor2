@@ -317,14 +317,15 @@
     }
 
 
-    protected void ExportToPdf()
+    protected async void ExportToPdf()
     {
-        
+        ActivityRecordViewModel Model = new ActivityRecordViewModel();
+        Model.MyNotes =await _quillNotesHtml.GetText();
         PdfActivityRecord oPdfActivityRecord = new PdfActivityRecord();
         JS.InvokeAsync<ActivityRecordViewModel>(
             "savePdf",
             "prueba.pdf",
-            Convert.ToBase64String(oPdfActivityRecord.Report(ViewModel)));
+            Convert.ToBase64String(oPdfActivityRecord.Report(Model)));
     }
 
 }

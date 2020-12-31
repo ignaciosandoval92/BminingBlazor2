@@ -12,7 +12,7 @@ namespace BminingBlazor.Utility
 {
     public class PdfActivityRecord
     {
-        private BlazoredTextEditor Notes;
+        public BlazoredTextEditor Notes;
         public string Note { get; set; }
         public async Task<string> OnitianalizedAsync()
         {
@@ -325,7 +325,7 @@ namespace BminingBlazor.Utility
             _document.Add(Chunk.Newline);
 
             _fontStyle = FontFactory.GetFont("Arial", 7f, 0);
-            _pdfCell = new PdfPCell(new Phrase(_oActivityRecord.MySecurityReflection.Replace("<p>", "").Replace("</p>", ""), _fontStyle));
+            _pdfCell = new PdfPCell(new Phrase("hola", _fontStyle));
             _pdfCell.Colspan = _maxColumn;
             _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             _pdfCell.Border = 0;
@@ -366,7 +366,7 @@ namespace BminingBlazor.Utility
 
             
             _fontStyle = FontFactory.GetFont("Arial", 7f, 0);
-            _pdfCell = new PdfPCell(new Phrase(Note, _fontStyle));
+            _pdfCell = new PdfPCell(new Phrase(_oActivityRecord.MyNotes, _fontStyle));
             _pdfCell.Colspan = _maxColumn;
             _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             _pdfCell.Border = 0;
