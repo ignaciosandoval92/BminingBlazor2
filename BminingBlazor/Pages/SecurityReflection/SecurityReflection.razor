@@ -26,7 +26,7 @@
         <div class="main-circle"></div>
     </div>
 
-    @if (_projects == null)
+    @if (_securityReflections == null)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
@@ -51,9 +51,9 @@
                             <td>@securityReflection.MyDate</td>
                             <td>@securityReflection.MyTopic</td>                            
                             <td>
-                                <button class="bmining-button" @onclick=@(()=>ViewMembers(p.MyId))>@Resource.Members</button>
+                                @*<button class="bmining-button" @onclick=@(()=>ViewMembers(p.MyId))>@Resource.Members</button>
                                 <button class="bmining-button" @onclick=@(()=>EditPaymentStatus(p.MyId))>@Resource.EditPaymentStatus</button>
-                                <button class="bmining-button" @onclick=@(()=>Delete(p.MyId))>@Resource.Delete</button>
+                                <button class="bmining-button" @onclick=@(()=>Delete(p.MyId))>@Resource.Delete</button>*@
                             </td>
                         </tr>
                     }
@@ -82,10 +82,10 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            PageSize = 5;
-            _securityReflections = await SecurityReflectionDataService.ReadSecurityReflection()
-            _securityReflectionLsit = _securityReflections.Take(PageSize).ToList();
-            TotalPage = (int)Math.Ceiling(_projects.Count() / (decimal)PageSize);
+            //PageSize = 5;
+            //_securityReflections = await SecurityReflectionDataService.ReadSecurityReflection()
+            //_securityReflectionList = _securityReflections.Take(PageSize).ToList();
+            //TotalPage = (int)Math.Ceiling(_projects.Count() / (decimal)PageSize);
 
             StateHasChanged();
         }
@@ -112,13 +112,13 @@
         var answer = await MatDialogService.AskAsync(Resource.AreYouSureToDelete, new[] { Resource.Yes, Resource.No });
         if (answer == null || answer == Resource.No)
             return;
-        await ProjectDataService.DeleteProject(idProject);
-        NavigationManager.NavigateTo("/ViewProject", true);
+        //await ProjectDataService.DeleteProject(idProject);
+        //NavigationManager.NavigateTo("/ViewProject", true);
     }
     private void UpdateList(int pageNumber)
     {
-        _projectList = _projects.Skip(PageSize * pageNumber).Take(PageSize).ToList();
-        CurrentPage = pageNumber;
+        //_projectList = _projects.Skip(PageSize * pageNumber).Take(PageSize).ToList();
+        //CurrentPage = pageNumber;
     }
     private string SelectedPage(int selectPage)
     {
