@@ -1,0 +1,134 @@
+﻿@page "/SecurityReflection"
+@using Models
+@using BminingBlazor.ViewModels.SecurityReflection
+
+
+@inject ISecurityReflectionDataService SecurityReflectionDataService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IMatDialogService MatDialogService
+
+
+
+<div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.SecurityReflection</h2>
+        </div>
+        <div class="d-inline-block">
+            <button @onclick="NewProject" class="bmining-btn-icon">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+
+    @if (_projects == null)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
+        <div class="table-responsive{-sm|-md|-lg|-xl}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>@Resource.ProjectCode</th>
+                        <th>@Resource.ProjectName</th>
+                        <th>@Resource.EmailProjectManager</th>
+                        <th>@Resource.ProjectType</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var securityReflection in _securityReflectionList)
+                    {
+                        <tr>
+                            <td>@securityReflection.MyId</td>
+                            <td>@securityReflection.MyName</td>
+                            <td>@securityReflection.MyDate</td>
+                            <td>@securityReflection.MyTopic</td>                            
+                            <td>
+                                <button class="bmining-button" @onclick=@(()=>ViewMembers(p.MyId))>@Resource.Members</button>
+                                <button class="bmining-button" @onclick=@(()=>EditPaymentStatus(p.MyId))>@Resource.EditPaymentStatus</button>
+                                <button class="bmining-button" @onclick=@(()=>Delete(p.MyId))>@Resource.Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    <div>
+        @for (int page = 0; page < TotalPage; page++)
+        {
+            int pageNumber = page;
+            <button class="@SelectedPage(page)" @onclick="@(()=>UpdateList(pageNumber))">@(page+1)</button>
+        }
+    </div>
+</div>
+
+@code {
+    public List<SecurityReflection> _securityReflections;
+    public List<SecurityReflectionViewModel> _securityReflectionList { get; set; }
+    public int PageSize { get; set; }
+    public int TotalPage { get; set; }
+    public int CurrentPage { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            PageSize = 5;
+            _securityReflections = await SecurityReflectionDataService.ReadSecurityReflection()
+            _securityReflectionLsit = _securityReflections.Take(PageSize).ToList();
+            TotalPage = (int)Math.Ceiling(_projects.Count() / (decimal)PageSize);
+
+            StateHasChanged();
+        }
+    }
+
+
+
+    public void EditPaymentStatus(int idProject)
+    {
+        NavigationManager.NavigateTo($"/ViewPaymentStatus/{idProject}");
+    }
+
+    public void NewProject()
+    {
+        NavigationManager.NavigateTo("/CreateProject");
+    }
+    public void ViewMembers(int idProject)
+    {
+        NavigationManager.NavigateTo($"ViewMembers/{idProject}");
+    }
+
+    public async void Delete(int idProject)
+    {
+        var answer = await MatDialogService.AskAsync(Resource.AreYouSureToDelete, new[] { Resource.Yes, Resource.No });
+        if (answer == null || answer == Resource.No)
+            return;
+        await ProjectDataService.DeleteProject(idProject);
+        NavigationManager.NavigateTo("/ViewProject", true);
+    }
+    private void UpdateList(int pageNumber)
+    {
+        _projectList = _projects.Skip(PageSize * pageNumber).Take(PageSize).ToList();
+        CurrentPage = pageNumber;
+    }
+    private string SelectedPage(int selectPage)
+    {
+        if (CurrentPage == selectPage)
+        {
+            return "btn btn-info";
+        }
+        else
+        {
+            return "btn btn-secondary";
+        }
+    }
+}

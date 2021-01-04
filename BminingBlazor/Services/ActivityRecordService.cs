@@ -19,7 +19,7 @@ namespace BminingBlazor.Services
             _dataAccess = dataAccess;
             _connectionString = configuration.GetConnectionString("default");
         }
-        public async Task<int> CreateActivityRecordAsync(string title, int creatorId,int projectId)
+        public async Task<int> CreateActivityRecordAsync(string title, int creatorId, int projectId)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             var query = queryFactory.Query(TableConstants.ActivityRecordTable);
@@ -42,7 +42,7 @@ namespace BminingBlazor.Services
             var projectQuery = queryFactory.Query(TableConstants.ProjectTable);
 
             var item = (await activityQuery.Where(ActivityRecordConstants.Id, id)
-                                          .Include(TableConstants.ProjectTable,projectQuery,
+                                          .Include(TableConstants.ProjectTable, projectQuery,
                                                    ProjectConstants.ProjectId,
                                                    ActivityRecordConstants.ProjectId)
                                           .IncludeMany(TableConstants.ActivityRecordMemberTable, membersQuery,
@@ -54,7 +54,7 @@ namespace BminingBlazor.Services
                                           .Cast<IDictionary<string, object>>().ToList().First();
 
 
-            var project = (IDictionary<string,object>) item[TableConstants.ProjectTable];
+            var project = (IDictionary<string, object>)item[TableConstants.ProjectTable];
 
             var activityRecord = new ActivityRecordViewModel
             {
@@ -65,9 +65,9 @@ namespace BminingBlazor.Services
                 MyPlace = (string)item[ActivityRecordConstants.Place],
                 MyTitle = (string)item[ActivityRecordConstants.Title],
                 MySecurityReflection = (string)item[ActivityRecordConstants.SecurityReflection],
-                MyProjectName = (string) project[ProjectConstants.ProjectName],
-                MyProjectId = (int) project[ProjectConstants.ProjectId],
-                MyProjectCode = (string) project[ProjectConstants.ProjectCode]                
+                MyProjectName = (string)project[ProjectConstants.ProjectName],
+                MyProjectId = (int)project[ProjectConstants.ProjectId],
+                MyProjectCode = (string)project[ProjectConstants.ProjectCode]
             };
             var members = (IEnumerable<IDictionary<string, object>>)item[TableConstants.ActivityRecordMemberTable];
             foreach (var member in members)
@@ -94,7 +94,7 @@ namespace BminingBlazor.Services
                     MyResponsible = (string)commitment[ActivityRecordCommitmentConstants.Responsible],
                     MyCommitment = (string)commitment[ActivityRecordCommitmentConstants.Commitment],
                     MyCommitmentDate = (DateTime)commitment[ActivityRecordCommitmentConstants.CommitmentDate],
-                    MyStatus =(ActivityRecordStatusEnum)commitment[ActivityRecordCommitmentConstants.ActivityRecordStatus]
+                    MyStatus = (ActivityRecordStatusEnum)commitment[ActivityRecordCommitmentConstants.ActivityRecordStatus]
                 };
                 activityRecord.OurCommitments.Add(activityRecordCommitment);
             }
@@ -132,30 +132,23 @@ namespace BminingBlazor.Services
 
             foreach (var commitment in activityRecord.OurCommitments)
             {
-                await commitmentQuery.Where(ActivityRecordCommitmentConstants.Id,commitment.MyId).DeleteAsync();
+                await commitmentQuery.Where(ActivityRecordCommitmentConstants.Id, commitment.MyId).DeleteAsync();
             }
             foreach (var member in activityRecord.OurMembers)
             {
                 await membersQuery.Where(ActivityRecordMemberConstants.Id, member.MyId).DeleteAsync();
             }
         }
-        public async Task EditStatusCommitment(int id,int myId,int status)
+        public async Task EditStatusCommitment( int commitmentId, int status)
         {
-            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
-            var activityQuery = queryFactory.Query(TableConstants.ActivityRecordTable);           
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);            
             var commitmentQuery = queryFactory.Query(TableConstants.ActivityRecordCommitmentTable);
 
-
-            var activityRecord = await GetActivityRecord(id);
-
-
-            foreach (var commitment in activityRecord.OurCommitments)
-            {
-                await commitmentQuery.Where(ActivityRecordCommitmentConstants.Id, myId).UpdateAsync(new Dictionary<string, object>
+            await commitmentQuery.Where(ActivityRecordCommitmentConstants.Id, commitmentId).UpdateAsync(new Dictionary<string, object>
                 {
                     {ActivityRecordCommitmentConstants.ActivityRecordStatus,status}
-                });                
-            }           
+                });
+
         }
 
         public async Task EditActivityRecord(ActivityRecordViewModel activityRecord)
