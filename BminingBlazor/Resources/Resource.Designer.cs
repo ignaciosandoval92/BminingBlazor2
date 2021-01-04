@@ -466,6 +466,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Eliminated.
+        /// </summary>
+        internal static string Eliminated {
+            get {
+                return ResourceManager.GetString("Eliminated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Email.
         /// </summary>
         internal static string Email {

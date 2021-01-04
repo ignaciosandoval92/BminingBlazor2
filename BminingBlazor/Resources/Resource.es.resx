@@ -492,4 +492,7 @@
   <data name="Topic" xml:space="preserve">
     <value>Tema</value>
   </data>
+  <data name="Eliminated" xml:space="preserve">
+    <value>Eliminado</value>
+  </data>
 </root>

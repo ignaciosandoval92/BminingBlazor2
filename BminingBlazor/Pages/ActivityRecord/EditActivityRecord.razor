@@ -126,8 +126,25 @@
                     <td>
                         @($"{activityRecordCommitment.MyCommitment}")
                     </td>
-                    <td>
-                        @($"{activityRecordCommitment.MyStatus}")
+                    <td>                       
+                        @switch (activityRecordCommitment.MyStatus)
+                        {
+                            case ActivityRecordStatusEnum.Initiated:
+                                @Resource.Initiated
+                                break;
+                            case ActivityRecordStatusEnum.Finalized:
+                                @Resource.Finished
+                                break;
+                            case ActivityRecordStatusEnum.Unknown:
+                                @Resource.Unknown
+                                break;
+                            case ActivityRecordStatusEnum.Eliminated:
+                                @Resource.Eliminated
+                                break;
+                            case ActivityRecordStatusEnum.NotInitiated:
+                                @Resource.NotInitiated
+                                break;
+                        }
                     </td>
                     <td class="text-center">
                         <button @onclick="()=>EditStatus(activityRecordCommitment.MyId)" class="bmining-btn-icon bg-bmining-">

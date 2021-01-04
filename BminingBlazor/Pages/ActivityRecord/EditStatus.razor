@@ -14,22 +14,28 @@
 
                 @foreach (var typeStatus in Enum.GetValues(typeof(ActivityRecordStatusEnum)))
                 {
-                    <option value="@typeStatus">
-                        @{
-                            switch (typeStatus)
-                            {
-                                case ActivityRecordStatusEnum.Initiated:
-                                    @Resource.Initiated
-                                    break;
-                                case ActivityRecordStatusEnum.Finalized:
-                                    @Resource.Finished
-                                    break;
-                                case ActivityRecordStatusEnum.Unknown:
-                                    @Resource.Unknown
-                                    break;
-                            }
+                <option value="@typeStatus">
+                    @{
+                        switch (typeStatus)
+                        {
+                            case ActivityRecordStatusEnum.Initiated:
+                                @Resource.Initiated
+                                break;
+                            case ActivityRecordStatusEnum.Finalized:
+                                @Resource.Finished
+                                break;
+                            case ActivityRecordStatusEnum.Unknown:
+                                @Resource.Unknown
+                                break;
+                            case ActivityRecordStatusEnum.Eliminated:
+                                @Resource.Eliminated
+                                break;
+                            case ActivityRecordStatusEnum.NotInitiated:
+                                @Resource.NotInitiated
+                                break;
                         }
-                    </option>
+                    }
+                </option>
                 }
             </select>
         </div>

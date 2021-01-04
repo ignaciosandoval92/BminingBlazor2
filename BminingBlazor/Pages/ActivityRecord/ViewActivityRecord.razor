@@ -1,6 +1,7 @@
 ﻿@page "/view_activity_record/{id:int}"
 @using BminingBlazor.ViewModels.ActivityRecord
 @using BminingBlazor.ViewModels.User
+@using Models.ActivityRecord
 
 @inject IMatDialogService MatDialogService
 @inject IUserDataService UserDataService
@@ -93,21 +94,42 @@
                             <th>@Resource.Responsible</th>
                             <th>@Resource.EndDate</th>
                             <th>@Resource.Commitment</th>
+                            <th>@Resource.Status</th>
                         </tr>
 
                         @foreach (var activityRecordCommitment in ViewModel.OurCommitments)
                         {
-                            <tr>
-                                <td>
-                                    @($"{activityRecordCommitment.MyResponsible}")
-                                </td>
-                                <td>
-                                    @($"{activityRecordCommitment.MyCommitmentDate.ToShortDateString()}")
-                                </td>
-                                <td>
-                                    @($"{activityRecordCommitment.MyCommitment}")
-                                </td>
-                            </tr>
+                    <tr>
+                        <td>
+                            @($"{activityRecordCommitment.MyResponsible}")
+                        </td>
+                        <td>
+                            @($"{activityRecordCommitment.MyCommitmentDate.ToShortDateString()}")
+                        </td>
+                        <td>
+                            @($"{activityRecordCommitment.MyCommitment}")
+                        </td>
+                        <td>                           
+                            @switch (activityRecordCommitment.MyStatus)
+                            {
+                                case ActivityRecordStatusEnum.Initiated:
+                                    @Resource.Initiated
+                                    break;
+                                case ActivityRecordStatusEnum.Finalized:
+                                    @Resource.Finished
+                                    break;
+                                case ActivityRecordStatusEnum.Unknown:
+                                    @Resource.Unknown
+                                    break;
+                                case ActivityRecordStatusEnum.Eliminated:
+                                    @Resource.Eliminated
+                                    break;
+                                case ActivityRecordStatusEnum.NotInitiated:
+                                    @Resource.NotInitiated
+                                    break;
+                            }
+                        </td>
+                    </tr>
                         }
                     </table>
                 </div>
