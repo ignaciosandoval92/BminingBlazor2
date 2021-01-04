@@ -248,8 +248,8 @@
         if (firstRender)
         {
 
-            var Email = AuthenticationStateProvider.GetEmail();
-            var userId = await UserDataService.GetUserId(await Email);
+            var email =await AuthenticationStateProvider.GetEmail();
+            var userId = await UserDataService.GetUserId(email);
             DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
             DashboardUserTracking.MyUserId = userId;
             if (!Day.HasValue || !Month.HasValue || !Year.HasValue)
@@ -347,10 +347,10 @@
     }
     private async void CopyLastWeek()
     {
-        var Email = AuthenticationStateProvider.GetEmail();
-        var userId = await UserDataService.GetUserId(await Email);
-        var LastWeek = await TimeTrackingService.GetUserTrackingModels(userId, MyStartOfWeek.AddDays(-7), MyStartOfWeek);
-        foreach(var hoursLastWeek in LastWeek)
+        var email = AuthenticationStateProvider.GetEmail();
+        var userId = await UserDataService.GetUserId(await email);
+        var lastWeek = await TimeTrackingService.GetUserTrackingModels(userId, MyStartOfWeek.AddDays(-7), MyStartOfWeek);
+        foreach(var hoursLastWeek in lastWeek)
         {
             var projectId = hoursLastWeek.MyProjectId;
             var hours = hoursLastWeek.MyTrackedHours;

@@ -103,9 +103,6 @@ namespace BminingBlazor.Services
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
 
-
-            var listOfProjectModels = new List<ProjectViewModel>();
-
             var paymentQuery = queryFactory.Query(TableConstants.PaymentTable);
             var membersQuery = queryFactory.Query(TableConstants.MembersTable)
                 .Join(TableConstants.UserTable, $"{TableConstants.UserTable}.{UserConstants.UserId}",
@@ -180,7 +177,6 @@ namespace BminingBlazor.Services
                         MyId = (int)user[UserConstants.UserId],
                         MyProjectHours = (float)user[MemberConstants.ProjectHours],
                         MyProjectId = (int)user[MemberConstants.ProjectId],
-
                     };
                 }
 
@@ -220,6 +216,41 @@ namespace BminingBlazor.Services
             }
             return projects;
         }
+
+        public async Task<List<SimpleProjectViewModel>> ReadProjectWhereUserBelongs(int userId)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+
+            var projectQuery = queryFactory.Query(TableConstants.ProjectTable);
+            var membersQuery = queryFactory.Query(TableConstants.MembersTable)
+                                            .Where(MemberConstants.UserId, userId)
+                                            .Include(TableConstants.ProjectTable, projectQuery,
+                                                     ProjectConstants.ProjectId, MemberConstants.ProjectId);
+
+            var items = (await membersQuery.GetAsync()).Cast<IDictionary<string, object>>().ToList();
+
+            var listOfSimpleProjects = new List<SimpleProjectViewModel>();
+            foreach (var item in items)
+            {
+                var dictionary = (IDictionary<string, object>)item[TableConstants.ProjectTable];
+                var simpleProject = new SimpleProjectViewModel
+                {
+                    MyId = (int)dictionary[ProjectConstants.ProjectId],
+                    MyProjectName = (string)dictionary[ProjectConstants.ProjectName],
+                    MyClientId = (int)dictionary[ProjectConstants.ClientId],
+                    MyEndDate = (DateTime)dictionary[ProjectConstants.EndDate],
+                    MyStartDate = (DateTime)dictionary[ProjectConstants.StartDate],
+                    MyProjectCode = (string)dictionary[ProjectConstants.ProjectCode],
+                    MyProjectStatus = (ProjectStatusEnum)dictionary[ProjectConstants.StatusId],
+                    MyProjectType = (ProjectTypeEnum)dictionary[ProjectConstants.CodProjectType],
+                    MyCreatorId = (int)dictionary[ProjectConstants.CreatorId],
+                    MyProjectManagerId = (int)dictionary[ProjectConstants.ProjectManagerId]
+                };
+                listOfSimpleProjects.Add(simpleProject);
+            }
+            return listOfSimpleProjects;
+        }
+
         public async Task<int> ReadIdProjectManager(int idProject)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
@@ -284,7 +315,7 @@ namespace BminingBlazor.Services
             await queryFactory.Query(ProjectTable).Where(ProjectConstants.ProjectId, projectId).DeleteAsync();
         }
 
-        
+
         public async Task<List<ProjectViewModel>> ReadProjectsOwnedByUser(int userId)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);

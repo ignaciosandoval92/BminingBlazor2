@@ -11,6 +11,7 @@ namespace BminingBlazor.Services
     {
         Task<int> CreateProject(ProjectViewModel newProject);       
         Task<List<ProjectViewModel>> ReadProjects();
+        Task<List<SimpleProjectViewModel>> ReadProjectWhereUserBelongs(int userId);
         Task<ProjectViewModel> ReadProject(int projectId);
         Task<int> EditPaymentStatus(PaymentViewModel editPayment);        
         Task DeleteMember(int memberId);

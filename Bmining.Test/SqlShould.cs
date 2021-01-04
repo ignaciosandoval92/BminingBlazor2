@@ -16,7 +16,7 @@ namespace Bmining.Test
 
         public SqlShould()
         {
-            _webHost = WebHost.CreateDefaultBuilder<Startup>(new string[0]).Build();
+            _webHost = WebHost.CreateDefaultBuilder<Startup>(new string[0]).UseEnvironment("Development").Build();
         }
         [TestMethod]
         public async Task ClientsFixture()
@@ -68,7 +68,7 @@ namespace Bmining.Test
         public async Task GetActivityRecordFixture()
         {
             var activityRecordService = (IActivityRecordService)_webHost.Services.GetService(typeof(IActivityRecordService));
-            var  activityRecordViewModel=await activityRecordService.GetActivityRecord(5);
+            var activityRecordViewModel = await activityRecordService.GetActivityRecord(5);
             activityRecordViewModel.MyDurationHours = 4;
             await activityRecordService.EditActivityRecord(activityRecordViewModel);
         }
@@ -78,6 +78,19 @@ namespace Bmining.Test
         {
             var activityRecordService = (IActivityRecordService)_webHost.Services.GetService(typeof(IActivityRecordService));
             var activityRecordViewModel = await activityRecordService.GetActivityRecords();
+        }
+
+        [TestMethod]
+        public async Task GetAllActivityRecordsByUserFixture()
+        {
+            var activityRecordService = (IActivityRecordService)_webHost.Services.GetService(typeof(IActivityRecordService));
+            var activityRecordViewModel = await activityRecordService.GetActivityRecords(39);
+        }
+        [TestMethod]
+        public async Task ReadProjectsWhereUserBelongs()
+        {
+            var projectDataService = (IProjectDataService)_webHost.Services.GetService(typeof(IProjectDataService));
+            var simpleProjectViewModels = await projectDataService.ReadProjectWhereUserBelongs(39);
         }
     }
 }

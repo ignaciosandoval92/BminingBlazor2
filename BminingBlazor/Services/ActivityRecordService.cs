@@ -119,6 +119,45 @@ namespace BminingBlazor.Services
             return dashboardActivityRecord;
         }
 
+        public async Task<DashboardActivityRecordViewModel> GetActivityRecords(int userId)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var activityRecord = queryFactory.Query(TableConstants.ActivityRecordTable);
+            var memberQuery = queryFactory.Query(TableConstants.MembersTable)
+                                .Where(MemberConstants.UserId,userId)
+                                .IncludeMany(TableConstants.ActivityRecordTable,activityRecord,
+                                             ActivityRecordConstants.ProjectId,MemberConstants.ProjectId);
+            
+            var items = (await memberQuery.GetAsync()).Cast<IDictionary<string, object>>().ToList();
+            var dashboardActivityRecord = new DashboardActivityRecordViewModel();
+
+            foreach (var item in items)
+            {
+                var activityRecordDictionaries =
+                    (IEnumerable<IDictionary<string, object>>) item[TableConstants.ActivityRecordTable];
+
+
+                foreach (var activityRecordDictionary in activityRecordDictionaries)
+                {
+                    var creatorId = (int) activityRecordDictionary[ActivityRecordConstants.CreatorId];
+
+                    var dashboardActivityRecordItem = new DashboardActivityRecordItemViewModel
+                    {
+                        MyId = (int)activityRecordDictionary[ActivityRecordConstants.Id],
+                        MyDate = (DateTime)activityRecordDictionary[ActivityRecordConstants.Date],
+                        MyTitle = (string)activityRecordDictionary[ActivityRecordConstants.Title],
+                        MyProjectId = (int)activityRecordDictionary[ActivityRecordConstants.ProjectId],
+                        MyCreatorId = creatorId,
+                        CanView = true,
+                        CanDelete = creatorId == userId,
+                        CanEdit = creatorId == userId
+                    };
+                    dashboardActivityRecord.OurDashboardActivityRecords.Add(dashboardActivityRecordItem);
+                }
+            }
+            return dashboardActivityRecord;
+        }
+
         public async Task DeleteActivityRecord(int id)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
