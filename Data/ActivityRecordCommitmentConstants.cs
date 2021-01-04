@@ -7,5 +7,6 @@
         public const string Commitment = "Commitment";
         public const string Responsible = "Responsible";
         public const string CommitmentDate = "CommitmentDate";
+        public const string ActivityRecordStatus = "ActivityRecordStatus";
     }
 }

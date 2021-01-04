@@ -628,7 +628,20 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+
         ///   Looks up a localized string similar to Intern.
+
+        ///   Busca una cadena traducida similar a Initiated.
+        /// </summary>
+        internal static string Initiated {
+            get {
+                return ResourceManager.GetString("Initiated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Intern.
+
         /// </summary>
         internal static string Intern {
             get {
@@ -1015,7 +1028,20 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+
         ///   Looks up a localized string similar to Select Member.
+
+        ///   Busca una cadena traducida similar a Select All Members.
+        /// </summary>
+        internal static string SelectAllMembers {
+            get {
+                return ResourceManager.GetString("SelectAllMembers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Select Member.
+
         /// </summary>
         internal static string SelectMember {
             get {
@@ -1042,7 +1068,20 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+
         ///   Looks up a localized string similar to Status Project.
+
+        ///   Busca una cadena traducida similar a Status.
+        /// </summary>
+        internal static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Status Project.
+
         /// </summary>
         internal static string StatusProject {
             get {
@@ -1078,7 +1117,20 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+
         ///   Looks up a localized string similar to User.
+
+        ///   Busca una cadena traducida similar a Unknown.
+        /// </summary>
+        internal static string Unknown {
+            get {
+                return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a User.
+
         /// </summary>
         internal static string User {
             get {

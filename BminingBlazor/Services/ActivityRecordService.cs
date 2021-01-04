@@ -1,6 +1,7 @@
 ﻿using BminingBlazor.ViewModels.ActivityRecord;
 using Data;
 using Microsoft.Extensions.Configuration;
+using Models.ActivityRecord;
 using SqlKata.Execution;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,7 @@ namespace BminingBlazor.Services
                 MySecurityReflection = (string)item[ActivityRecordConstants.SecurityReflection],
                 MyProjectName = (string) project[ProjectConstants.ProjectName],
                 MyProjectId = (int) project[ProjectConstants.ProjectId],
-                MyProjectCode = (string) project[ProjectConstants.ProjectCode]
+                MyProjectCode = (string) project[ProjectConstants.ProjectCode]                
             };
             var members = (IEnumerable<IDictionary<string, object>>)item[TableConstants.ActivityRecordMemberTable];
             foreach (var member in members)
@@ -92,7 +93,8 @@ namespace BminingBlazor.Services
                     MyId = (int)commitment[ActivityRecordCommitmentConstants.Id],
                     MyResponsible = (string)commitment[ActivityRecordCommitmentConstants.Responsible],
                     MyCommitment = (string)commitment[ActivityRecordCommitmentConstants.Commitment],
-                    MyCommitmentDate = (DateTime)commitment[ActivityRecordCommitmentConstants.CommitmentDate]
+                    MyCommitmentDate = (DateTime)commitment[ActivityRecordCommitmentConstants.CommitmentDate],
+                    MyStatus =(ActivityRecordStatusEnum)commitment[ActivityRecordCommitmentConstants.ActivityRecordStatus]
                 };
                 activityRecord.OurCommitments.Add(activityRecordCommitment);
             }
@@ -175,6 +177,24 @@ namespace BminingBlazor.Services
             {
                 await membersQuery.Where(ActivityRecordMemberConstants.Id, member.MyId).DeleteAsync();
             }
+        }
+        public async Task EditStatusCommitment(int id,int myId,int status)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var activityQuery = queryFactory.Query(TableConstants.ActivityRecordTable);           
+            var commitmentQuery = queryFactory.Query(TableConstants.ActivityRecordCommitmentTable);
+
+
+            var activityRecord = await GetActivityRecord(id);
+
+
+            foreach (var commitment in activityRecord.OurCommitments)
+            {
+                await commitmentQuery.Where(ActivityRecordCommitmentConstants.Id, myId).UpdateAsync(new Dictionary<string, object>
+                {
+                    {ActivityRecordCommitmentConstants.ActivityRecordStatus,status}
+                });                
+            }           
         }
 
         public async Task EditActivityRecord(ActivityRecordViewModel activityRecord)

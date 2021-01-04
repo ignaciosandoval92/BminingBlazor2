@@ -31,6 +31,7 @@
                 <th>@Resource.Title</th>
                 <th>@Resource.Date</th>
                 <th>@Resource.Actions</th>
+
             </tr>
 
             @foreach (var dashboardActivityRecordItem in ViewModel.OurDashboardActivityRecords)
@@ -44,7 +45,7 @@
                     </td>
                     <td>
                         @dashboardActivityRecordItem.MyDate
-                    </td>
+                    </td>                    
                     <td class="text-center">
                         @if (dashboardActivityRecordItem.CanView)
                         {

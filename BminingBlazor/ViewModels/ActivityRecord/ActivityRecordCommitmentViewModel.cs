@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.ActivityRecord;
+using System;
 
 namespace BminingBlazor.ViewModels.ActivityRecord
 {
@@ -9,5 +10,6 @@ namespace BminingBlazor.ViewModels.ActivityRecord
         public string MyCommitment { get; set; }
         public string MyResponsible { get; set; }
         public DateTime MyCommitmentDate { get; set; }
+        public ActivityRecordStatusEnum MyStatus { get; set; }
     }
 }

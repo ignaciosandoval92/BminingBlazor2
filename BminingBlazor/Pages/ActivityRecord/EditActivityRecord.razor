@@ -1,11 +1,20 @@
 ﻿@page "/edit_activity_record/{id:int}"
 @using BminingBlazor.ViewModels.ActivityRecord
 @using BminingBlazor.ViewModels.User
+@using Models.ActivityRecord
+@using System.IO
+@using SelectPdf
+@using System.Text
+@using Microsoft.AspNetCore.Html
+@using System.Text.Encodings.Web
+
 
 @inject IMatDialogService MatDialogService
 @inject IUserDataService UserDataService
 @inject IActivityRecordService ActivityRecordService
 @inject NavigationManager NavigationManager
+@inject Microsoft.JSInterop.IJSRuntime JS
+
 
 
 <div class="bmining-app">
@@ -17,7 +26,7 @@
     @if (ViewModel != null)
     {
         <div>
-            
+
             <div class="col">
                 <div class="d-flex flex-row w-100 justify-content-between">
                     <div class="float-left">
@@ -31,22 +40,22 @@
 
             <div class="form-group">
                 <label for="title">@Resource.Title</label>
-                <input class="form-control" type="text" id="title" @bind-value="@ViewModel.MyTitle"/>
+                <input class="form-control" type="text" id="title" @bind-value="@ViewModel.MyTitle" />
             </div>
 
             <div class="form-group">
                 <label for="date">@Resource.Date</label>
-                <input class="form-control" type="date" id="date" @bind-value="@ViewModel.MyDate"/>
+                <input class="form-control" type="date" id="date" @bind-value="@ViewModel.MyDate" />
             </div>
 
             <div class="form-group">
                 <label for="duration">@Resource.DurationHours</label>
-                <input class="form-control" step="0.1" type="number" id="duration" @bind-value="@ViewModel.MyDurationHours"/>
+                <input class="form-control" step="0.1" type="number" id="duration" @bind-value="@ViewModel.MyDurationHours" />
             </div>
 
             <div class="form-group">
                 <label for="place">@Resource.Place</label>
-                <input class="form-control" type="text" id="place" @bind-value="@ViewModel.MyPlace"/>
+                <input class="form-control" type="text" id="place" @bind-value="@ViewModel.MyPlace" />
             </div>
 
             <div class="d-flex justify-content-between">
@@ -101,6 +110,7 @@
                             <th>@Resource.Responsible</th>
                             <th>@Resource.EndDate</th>
                             <th>@Resource.Commitment</th>
+                            <th>@Resource.Status</th>
                             <th>@Resource.Actions</th>
                         </tr>
 
@@ -116,7 +126,13 @@
                                 <td>
                                     @($"{activityRecordCommitment.MyCommitment}")
                                 </td>
+                                <td>
+                                    @($"{activityRecordCommitment.MyStatus}")
+                                </td>
                                 <td class="text-center">
+                                    <button @onclick="()=>EditStatus(activityRecordCommitment.MyId)" class="bmining-btn-icon bg-bmining-">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
                                     <button @onclick="() => RemoveCommitment(activityRecordCommitment)" class="bmining-btn-icon bg-bmining-error">
                                         <i class="fa fa-trash"></i>
                                     </button>
@@ -192,8 +208,10 @@
                 <EditorContent>
                 </EditorContent>
             </BlazoredTextEditor>
+            <asp:HiddenField ID="html" runat="server"></asp:HiddenField>
         </div>
         <button class="bmining-button float-right" @onclick="Save">@Resource.Save</button>
+        <button class="bmining-button float-right" @onclick="@ExportToPdf">pdf</button>
     }
     else
     {
@@ -259,6 +277,21 @@
             ViewModel.OurCommitments.Add(activityRecordCommitment);
         }
     }
+    private async Task EditStatus(int myId)
+    {
+        var item = await MatDialogService.OpenAsync(typeof(EditStatus), new MatDialogOptions
+        {
+            CanBeClosed = true
+        });
+        if (item == null)
+            return;
+        if (item is ActivityRecordCommitmentViewModel activityRecordCommitment)
+        {
+            activityRecordCommitment.MyActivityRecordId = Id;
+            await ActivityRecordService.EditStatusCommitment(activityRecordCommitment.MyActivityRecordId, myId, (int)activityRecordCommitment.MyStatus);
+            NavigationManager.NavigateTo(@$"/edit_activity_record/{Id}", true);
+        }
+    }
 
     private async Task RemoveMember(ActivityRecordMemberViewModel activityRecordMember)
     {
@@ -274,10 +307,27 @@
         StateHasChanged();
     }
 
+
     private async Task Save()
     {
         ViewModel.MyNotes = await _quillNotesHtml.GetHTML();
         ViewModel.MySecurityReflection = await _quillSecurityReflectionHtml.GetHTML();
         await ActivityRecordService.EditActivityRecord(ViewModel);
+
     }
+
+
+    protected async void ExportToPdf()
+    {
+        ActivityRecordViewModel Model = new ActivityRecordViewModel();
+        Model = ViewModel;
+        Model.MySecurityReflection =await _quillSecurityReflectionHtml.GetText();
+        Model.MyNotes =await _quillNotesHtml.GetText();
+        PdfActivityRecord oPdfActivityRecord = new PdfActivityRecord();
+        JS.InvokeAsync<ActivityRecordViewModel>(
+            "savePdf",
+            "prueba.pdf",
+            Convert.ToBase64String(oPdfActivityRecord.Report(Model)));
+    }
+
 }

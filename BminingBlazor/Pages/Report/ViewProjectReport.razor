@@ -1,4 +1,4 @@
-﻿@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{projectId:int}"
+﻿@page "/ViewProjectReport/{startDate:datetime}/{endDate:datetime}/{projectId:int}"
 @using BminingBlazor.ViewModels.Report;
 @using System.IO;
 @using Microsoft.JSInterop;
@@ -61,21 +61,21 @@
 </div>
 @code {
 
-        [Parameter]
-        public int userId { get; set; }
-        [Parameter]
-        public DateTime startDate { get; set; }
-        [Parameter]
-        public DateTime endDate { get; set; }
-        [Parameter]
-        public int projectId { get; set; }
+    [Parameter]
+    public int userId { get; set; }
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
+    [Parameter]
+    public int projectId { get; set; }
 
 
-        private List<ReportViewModel> _report;
+    private List<ReportViewModel> _report;
 
     protected override async Task OnInitializedAsync()
     {
-        _report = await ReportService.GetUserReport(userId, startDate, endDate, projectId);
+        _report = await ReportService.GetProjectReport(startDate, endDate, projectId);
         StateHasChanged();
     }
     public async Task ExportExcel()
@@ -85,3 +85,4 @@
         generateReport.GenerateExcel(iJSRuntime);
     }
 }
+

@@ -1,0 +1,66 @@
+﻿@using BminingBlazor.ViewModels.ActivityRecord
+@using Models.ActivityRecord
+@inject IMatDialogService MatDialogService
+
+
+<div class="bmining-dialog">
+    <div class="bmining-dialog-inner">
+
+        <h3>@Resource.Edit</h3>
+        <div class="alternate2-break"></div>        
+        <div class="form-group col">
+            <label class="float-left" for="projectStatus">@Resource.Status:</label>
+            <select id="projectStatus" class="form-control" @bind="@MyStatus" required>
+
+                @foreach (var typeStatus in Enum.GetValues(typeof(ActivityRecordStatusEnum)))
+                {
+                    <option value="@typeStatus">
+                        @{
+                            switch (typeStatus)
+                            {
+                                case ActivityRecordStatusEnum.Initiated:
+                                    @Resource.Initiated
+                                    break;
+                                case ActivityRecordStatusEnum.Finalized:
+                                    @Resource.Finished
+                                    break;
+                                case ActivityRecordStatusEnum.Unknown:
+                                    @Resource.Unknown
+                                    break;
+                            }
+                        }
+                    </option>
+                }
+            </select>
+        </div>
+    </div>
+
+</div>
+<button class="bmining-button float-right" @onclick="@AddCommitment">@Resource.Save</button>
+
+@code {
+    [CascadingParameter]
+    public MatDialogReference DialogReference { get; set; }
+
+
+    public ActivityRecordStatusEnum MyStatus { get; set; }
+
+
+
+
+
+    private async Task AddCommitment()
+    {
+
+        if (MyStatus == null)
+        {
+            await MatDialogService.AlertAsync(Resource.MissingInformation);
+            return;
+        }
+        DialogReference.Close(new ActivityRecordCommitmentViewModel
+        {
+            MyStatus = MyStatus
+
+        });
+    }
+}

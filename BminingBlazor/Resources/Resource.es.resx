@@ -474,7 +474,21 @@
   <data name="ViewReport" xml:space="preserve">
     <value>Ver Reporte</value>
   </data>
+
   <data name="ViewActivityRecord" xml:space="preserve">
     <value>Ver Registro de Actividad</value>
+
+  <data name="SelectAllMembers" xml:space="preserve">
+    <value>Todos Los Integrantes</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="Initiated" xml:space="preserve">
+    <value>Iniciado</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Desconocido</value>
+
   </data>
 </root>

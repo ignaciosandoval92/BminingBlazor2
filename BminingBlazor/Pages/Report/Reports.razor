@@ -1,5 +1,5 @@
 ﻿@page "/Reports"
-@page "/Reports/{projectId:int}"
+@page "/Reports/{projectId:int}/{startDate:datetime}/{endDate:datetime}"
 @using BminingBlazor.ViewModels.Projects
 @using BminingBlazor.ViewModels.User
 
@@ -34,7 +34,16 @@
                 }
             </select>
         </div>
-        <button class="bmining-button" @onclick="() => SelectProject(_project.MyId)">@Resource.SelectMember</button>
+        <div class="form-group col">
+            <label for="inputStartDate">@Resource.StartDate</label>
+            <input class="form-control" type="date" id="inputStartDate" @bind="_project.MyStartDate" />
+        </div>
+        <div class="form-group col">
+            <label for="inputEndDate">@Resource.EndDate</label>
+            <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
+        </div>
+        <button class="bmining-button" @onclick="() => SelectAllMembers(_project.MyId,_project.MyStartDate,_project.MyEndDate)">@Resource.SelectAllMembers</button>
+        <button class="bmining-button" @onclick="() => SelectProject(_project.MyId,_project.MyStartDate,_project.MyEndDate)">@Resource.SelectMember</button>
     }
     else
     {
@@ -50,14 +59,6 @@
                 }
             </select>
         </div>
-        <div class="form-group col">
-            <label for="inputStartDate">@Resource.StartDate</label>
-            <input class="form-control" type="date" id="inputStartDate" @bind="_project.MyStartDate" />
-        </div>
-        <div class="form-group col">
-            <label for="inputEndDate">@Resource.EndDate</label>
-            <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
-        </div>
         <button class="bmining-button" @onclick="() => ReadHours(_member.MyId, _project.MyStartDate, _project.MyEndDate, projectId)">@Resource.ViewReport</button>
     }
 
@@ -66,6 +67,10 @@
 @code {
     [Parameter]
     public int projectId { get; set; }
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
     public int phase { get; set; }
     public List<MemberViewModel> users { get; set; }
     public List<ProjectResumeViewModel> ViewModel { get; set; }
@@ -80,21 +85,27 @@
             var projectsBelongsUserId = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
             ViewModel = new List<ProjectResumeViewModel>();
             ViewModel.AddRange(projectsBelongsUserId);
+            _project.MyStartDate = DateTime.UtcNow;
+            _project.MyEndDate = DateTime.UtcNow;
             phase = 0;
         }
         else
         {
             var members = await ProjectDataService.ReadMembers(projectId);
+            _project.MyStartDate = startDate;
+            _project.MyEndDate = endDate;
             phase = 1;
             users = new List<MemberViewModel>();
             users.AddRange(members);
-            _project.MyStartDate = DateTime.UtcNow;
-            _project.MyEndDate = DateTime.UtcNow;
         }
     }
-    private void SelectProject(int IdProject)
+    private void SelectProject(int IdProject,DateTime StartDate,DateTime EndDate)
     {
-        NavigationManager.NavigateTo($"/Reports/{IdProject}", true);
+        NavigationManager.NavigateTo($"/Reports/{IdProject}/{StartDate.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture)}", true);
+    }
+    private void SelectAllMembers(int IdProject, DateTime StartDate, DateTime EndDate)
+    {
+        NavigationManager.NavigateTo($"/ViewProjectReport/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{IdProject}", true);
     }
     private  void ReadHours(int IdUser, DateTime StartDate, DateTime EndDate, int IdProject)
     {
