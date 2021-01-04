@@ -474,10 +474,9 @@
   <data name="ViewReport" xml:space="preserve">
     <value>Ver Reporte</value>
   </data>
-
   <data name="ViewActivityRecord" xml:space="preserve">
     <value>Ver Registro de Actividad</value>
-
+  </data>
   <data name="SelectAllMembers" xml:space="preserve">
     <value>Todos Los Integrantes</value>
   </data>
@@ -489,6 +488,8 @@
   </data>
   <data name="Unknown" xml:space="preserve">
     <value>Desconocido</value>
-
+  </data>
+  <data name="Topic" xml:space="preserve">
+    <value>Tema</value>
   </data>
 </root>

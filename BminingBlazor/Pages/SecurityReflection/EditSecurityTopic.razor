@@ -1,0 +1,47 @@
+﻿@using BminingBlazor.ViewModels.SecurityReflection
+@using Models.ActivityRecord
+@inject IMatDialogService MatDialogService
+
+
+<div class="bmining-dialog">
+    <div class="bmining-dialog-inner">
+
+        <h3>@Resource.Edit</h3>
+        <div class="alternate2-break"></div>
+        <div class="form-group col">
+            <label class="float-left" for="EditSecurityTopic">@Resource.Topic:</label>
+            <input class="form-control" id="Topic" @bind="MyTopic" required />
+
+            
+        </div>
+    </div>
+
+</div>
+<button class="bmining-button float-right" @onclick="@AddTopic">@Resource.Save</button>
+
+@code {
+    [CascadingParameter]
+    public MatDialogReference DialogReference { get; set; }
+
+
+    public string MyTopic { get; set; }
+
+
+
+
+
+    private async Task AddTopic()
+    {
+
+        if (MyTopic == null)
+        {
+            await MatDialogService.AlertAsync(Resource.MissingInformation);
+            return;
+        }
+        DialogReference.Close(new SecurityReflectionViewModel
+        {
+            MyTopic = MyTopic
+
+        }); ;
+    }
+}

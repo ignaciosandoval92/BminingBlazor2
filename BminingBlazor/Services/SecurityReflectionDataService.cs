@@ -47,5 +47,18 @@ namespace BminingBlazor.Services
             }
             return securityViewModel;
         }
+
+        public async Task EditTopic(int securityId, string topic)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            await queryFactory.Query()
+                .From(SecurityReflectionTable)
+                .Where(SecurityReflectionConstants.SecurityId, securityId)
+                .UpdateAsync(new Dictionary<string, object>{
+                { SecurityReflectionConstants.Topic,topic}
+                
+        });
+
+        }
     }
 }

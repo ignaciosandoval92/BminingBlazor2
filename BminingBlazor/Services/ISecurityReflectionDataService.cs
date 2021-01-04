@@ -9,5 +9,6 @@ namespace BminingBlazor.Services
     public interface ISecurityReflectionDataService
     {
         Task<List<SecurityReflectionViewModel>> ReadSecurityReflection();
+        Task EditTopic(int securityId, string topic);
     }
 }

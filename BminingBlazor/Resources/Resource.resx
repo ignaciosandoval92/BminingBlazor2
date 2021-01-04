@@ -467,17 +467,16 @@
   </data>
   <data name="Administration" xml:space="preserve">
     <value>Administration</value>
-	  </data>
+	</data>
   <data name="SelectMember" xml:space="preserve">
     <value>Select Member</value>
   </data>
   <data name="ViewReport" xml:space="preserve">
     <value>View Report</value>
   </data>
-
   <data name="ViewActivityRecord" xml:space="preserve">
     <value>View Activity Record</value>
-
+	</data>
   <data name="SelectAllMembers" xml:space="preserve">
     <value>Select All Members</value>
   </data>
@@ -490,5 +489,8 @@
   <data name="Unknown" xml:space="preserve">
     <value>Unknown</value>
 
+  </data>
+  <data name="Topic" xml:space="preserve">
+    <value>Topic</value>
   </data>
 </root>
