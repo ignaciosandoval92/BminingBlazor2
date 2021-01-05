@@ -24,71 +24,93 @@
 
 
     @if (ViewModel != null)
-    {
-        <table>
+    {<div>
+    <Filter ColumnTitle=@Resource.Title OnSearchTextChanged="OnSearchTextChanged"></Filter>
+    <table>
+        <tr>
+            <th>@Resource.Id</th>
+            <th>@Resource.Title</th>
+            <th>@Resource.Date</th>
+            <th>@Resource.Actions</th>
+
+        </tr>
+
+        @foreach (var dashboardActivityRecordItem in _activityRecordView)
+        {
             <tr>
-                <th>@Resource.Id</th>
-                <th>@Resource.Title</th>
-                <th>@Resource.Date</th>
-                <th>@Resource.Actions</th>
+                <td>
+                    @dashboardActivityRecordItem.MyId
+                </td>
+                <td>
+                    @dashboardActivityRecordItem.MyTitle
+                </td>
+                <td>
+                    @dashboardActivityRecordItem.MyDate
+                </td>
+                <td class="text-center">
+                    @if (dashboardActivityRecordItem.CanView)
+                    {
+                        <button @onclick="() => View(dashboardActivityRecordItem)" class="bmining-btn-icon">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    }
 
+                    @if (dashboardActivityRecordItem.CanEdit)
+                    {
+                        <button @onclick="() => Edit(dashboardActivityRecordItem)" class="bmining-btn-icon">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    }
+                    @if (dashboardActivityRecordItem.CanDelete)
+                    {
+                        <button @onclick="() => Remove(dashboardActivityRecordItem)" class="bmining-btn-icon bg-bmining-error">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    }
+                </td>
             </tr>
+        }
+    </table>
+    <br />
+</div>
 
-            @foreach (var dashboardActivityRecordItem in ViewModel.OurDashboardActivityRecords)
-            {
-                <tr>
-                    <td>
-                        @dashboardActivityRecordItem.MyId
-                    </td>
-                    <td>
-                        @dashboardActivityRecordItem.MyTitle
-                    </td>
-                    <td>
-                        @dashboardActivityRecordItem.MyDate
-                    </td>                    
-                    <td class="text-center">
-                        @if (dashboardActivityRecordItem.CanView)
-                        {
-                            <button @onclick="() => View(dashboardActivityRecordItem)" class="bmining-btn-icon">
-                                <i class="fa fa-eye"></i>
-                            </button>
-                        }
-
-                        @if (dashboardActivityRecordItem.CanEdit)
-                        {
-                            <button @onclick="() => Edit(dashboardActivityRecordItem)" class="bmining-btn-icon">
-                                <i class="fa fa-edit"></i>
-                            </button>
-                        }
-                        @if (dashboardActivityRecordItem.CanDelete)
-                        {
-                            <button @onclick="() => Remove(dashboardActivityRecordItem)" class="bmining-btn-icon bg-bmining-error">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        }
-                    </td>
-                </tr>
-            }
-        </table>
     }
+
     else
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
+    <div>
+        @for (int page = 0; page < TotalPage; page++)
+        {
+            int pageNumber = page;
+           
+            <button class="@SelectedPage(page)" @onclick="@(()=>UpdateList(pageNumber))">@(page+1)</button>
+        }
+    </div>
+
 </div>
+
 @code {
 
 
     public DashboardActivityRecordViewModel ViewModel { get; set; }
+    public List<DashboardActivityRecordItemViewModel> _activityRecordView { get; set; }
+    public int PageSize { get; set; }
+    public int TotalPage { get; set; }
+    public int CurrentPage { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
+            PageSize = 5;
             var email = await AuthenticationStateProvider.GetEmail();
             var userId = await UserDataService.GetUserId(email);
             ViewModel = await ActivityRecordService.GetActivityRecords(userId);
+            _activityRecordView = ViewModel.OurDashboardActivityRecords.Take(PageSize).ToList();
+            TotalPage = (int)Math.Ceiling(ViewModel.OurDashboardActivityRecords.Count() / (decimal)PageSize);
             StateHasChanged();
         }
     }
@@ -116,5 +138,27 @@
     {
         NavigationManager.NavigateTo($"/view_activity_record/{dashboardActivityRecordItem.MyId}");
     }
+    private void UpdateList(int pageNumber)
+    {
+        _activityRecordView = ViewModel.OurDashboardActivityRecords.Skip(PageSize * pageNumber).Take(PageSize).ToList();
+        CurrentPage = pageNumber;
+    }
+    private string SelectedPage(int selectPage)
+    {
+        if (CurrentPage == selectPage)
+        {
+            return "btn btn-info";
+        }
+        else
+        {
+            return "btn btn-secondary";
+        }
+    }
+    private void OnSearchTextChanged(ChangeEventArgs changeEventArgs)
+    {
+        string searchText = changeEventArgs.Value.ToString();
 
+        _activityRecordView = ViewModel.OurDashboardActivityRecords.Where(act => act.MyTitle.Contains(searchText)).ToList();
+
+    }
 }
