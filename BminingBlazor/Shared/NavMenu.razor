@@ -68,6 +68,11 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
+            <NavLink class="nav-link" href="SecurityReflection">
+                <span class="oi oi-info" aria-hidden="true"></span> @Resource.SecurityReflection
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
             <NavLink class="nav-link pointer-hover" @onclick="() => _expandAuditHours = !_expandAuditHours">
                 @if (!_expandAuditHours)
                 {
@@ -89,7 +94,7 @@
                     @Resource.Administration
                 </NavLink>
             }
-        </li>            
+        </li>
 
         <li class="nav-item px-3">
             <NavLink class="nav-link pointer-hover" @onclick="() => _expandActivityRecord = !_expandActivityRecord">
