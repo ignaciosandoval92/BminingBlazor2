@@ -7,7 +7,7 @@
 @inject IUserDataService UserDataService
 @inject IActivityRecordService ActivityRecordService
 @inject NavigationManager NavigationManager
-
+@inject Microsoft.JSInterop.IJSRuntime JS
 
 <div class="bmining-app">
     <h2>@Resource.ViewActivityRecord</h2>
@@ -99,39 +99,40 @@
 
                         @foreach (var activityRecordCommitment in ViewModel.OurCommitments)
                         {
-                    <tr>
-                        <td>
-                            @($"{activityRecordCommitment.MyResponsible}")
-                        </td>
-                        <td>
-                            @($"{activityRecordCommitment.MyCommitmentDate.ToShortDateString()}")
-                        </td>
-                        <td>
-                            @($"{activityRecordCommitment.MyCommitment}")
-                        </td>
-                        <td>                           
-                            @switch (activityRecordCommitment.MyStatus)
-                            {
-                                case ActivityRecordStatusEnum.Initiated:
-                                    @Resource.Initiated
-                                    break;
-                                case ActivityRecordStatusEnum.Finalized:
-                                    @Resource.Finished
-                                    break;
-                                case ActivityRecordStatusEnum.Unknown:
-                                    @Resource.Unknown
-                                    break;
-                                case ActivityRecordStatusEnum.Eliminated:
-                                    @Resource.Eliminated
-                                    break;
-                                case ActivityRecordStatusEnum.NotInitiated:
-                                    @Resource.NotInitiated
-                                    break;
-                            }
-                        </td>
-                    </tr>
+                            <tr>
+                                <td>
+                                    @($"{activityRecordCommitment.MyResponsible}")
+                                </td>
+                                <td>
+                                    @($"{activityRecordCommitment.MyCommitmentDate.ToShortDateString()}")
+                                </td>
+                                <td>
+                                    @($"{activityRecordCommitment.MyCommitment}")
+                                </td>
+                                <td>
+                                    @switch (activityRecordCommitment.MyStatus)
+                                    {
+                                        case ActivityRecordStatusEnum.Initiated:
+                                            @Resource.Initiated
+                                            break;
+                                        case ActivityRecordStatusEnum.Finalized:
+                                            @Resource.Finished
+                                            break;
+                                        case ActivityRecordStatusEnum.Unknown:
+                                            @Resource.Unknown
+                                            break;
+                                        case ActivityRecordStatusEnum.Eliminated:
+                                            @Resource.Eliminated
+                                            break;
+                                        case ActivityRecordStatusEnum.NotInitiated:
+                                            @Resource.NotInitiated
+                                            break;
+                                    }
+                                </td>
+                            </tr>
                         }
                     </table>
+
                 </div>
             }
 
@@ -201,6 +202,9 @@
                 </EditorContent>
             </BlazoredTextEditor>
         </div>
+        <button class="bmining-btn-icon" @onclick="@ExportToPdf">
+            <i class="oi oi-arrow-bottom"></i>
+        </button>
     }
     else
     {
@@ -228,6 +232,20 @@
             await Task.Delay(1000); // Delay for Quill
             await _quillNotesHtml.LoadHTMLContent(ViewModel.MyNotes);
             await _quillSecurityReflectionHtml.LoadHTMLContent(ViewModel.MySecurityReflection);
+            await _quillNotesHtml.LoadHTMLContent(ViewModel.MyNotes);
+            await _quillSecurityReflectionHtml.LoadHTMLContent(ViewModel.MySecurityReflection);
         }
+    }
+    protected async void ExportToPdf()
+    {
+        ActivityRecordViewModel Model = new ActivityRecordViewModel();
+        Model = ViewModel;
+        Model.MySecurityReflection = await _quillSecurityReflectionHtml.GetText();
+        Model.MyNotes = await _quillNotesHtml.GetText();
+        PdfActivityRecord oPdfActivityRecord = new PdfActivityRecord();
+        JS.InvokeAsync<ActivityRecordViewModel>(
+            "savePdf",
+            "prueba.pdf",
+            Convert.ToBase64String(oPdfActivityRecord.Report(Model)));
     }
 }
