@@ -202,9 +202,7 @@
                 </EditorContent>
             </BlazoredTextEditor>
         </div>
-        <button class="bmining-btn-icon" @onclick="@ExportToPdf">
-            <i class="oi oi-arrow-bottom"></i>
-        </button>
+        
     }
     else
     {
@@ -232,20 +230,9 @@
             await Task.Delay(1000); // Delay for Quill
             await _quillNotesHtml.LoadHTMLContent(ViewModel.MyNotes);
             await _quillSecurityReflectionHtml.LoadHTMLContent(ViewModel.MySecurityReflection);
-            await _quillNotesHtml.LoadHTMLContent(ViewModel.MyNotes);
-            await _quillSecurityReflectionHtml.LoadHTMLContent(ViewModel.MySecurityReflection);
+
         }
     }
-    protected async void ExportToPdf()
-    {
-        ActivityRecordViewModel Model = new ActivityRecordViewModel();
-        Model = ViewModel;
-        Model.MySecurityReflection = await _quillSecurityReflectionHtml.GetText();
-        Model.MyNotes = await _quillNotesHtml.GetText();
-        PdfActivityRecord oPdfActivityRecord = new PdfActivityRecord();
-        JS.InvokeAsync<ActivityRecordViewModel>(
-            "savePdf",
-            "prueba.pdf",
-            Convert.ToBase64String(oPdfActivityRecord.Report(Model)));
-    }
+
+    
 }

@@ -17,7 +17,11 @@ namespace BminingBlazor.Utility
         
         
         public string status { get; set; }
+        public string security { get; set; }
+        public string Note { get; set; }
+        private BlazoredTextEditor Notes;
         
+
         #region Declararion
         int _maxColumn = 3;
         Document _document;
@@ -35,7 +39,7 @@ namespace BminingBlazor.Utility
         public byte[] Report(ActivityRecordViewModel oActivityRecord)
         {
 
-            _oActivityRecord = oActivityRecord;
+            _oActivityRecord = oActivityRecord;           
             _document = new Document(PageSize.A4, 10f, 10f, 20f, 30f);
             _pdfTable.WidthPercentage = 100;
             _pdfTable.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -210,7 +214,7 @@ namespace BminingBlazor.Utility
             _pdfTable2.CompleteRow();
             _document.Add(Chunk.Newline);
 
-            _fontStyle = FontFactory.GetFont("Arial", 10f, 1);
+            _fontStyle = FontFactory.GetFont("Arial", 10f, 1,font1);
             _pdfCell = new PdfPCell(new Phrase(Resource.Commitments, _fontStyle));
             _pdfCell.Colspan = _maxColumn;
             _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -348,10 +352,10 @@ namespace BminingBlazor.Utility
             _pdfTable4.CompleteRow();
             _document.Add(Chunk.Newline);
 
-            _fontStyle = FontFactory.GetFont("Arial", 7f, 0,font1);
+            _fontStyle = FontFactory.GetFont("Arial", 7f, 0);
             _pdfCell = new PdfPCell(new Phrase(_oActivityRecord.MySecurityReflection, _fontStyle));
             _pdfCell.Colspan = _maxColumn;
-            _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
+            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             _pdfCell.Border = 0;
             _pdfCell.ExtraParagraphSpace = 0;
             _pdfTable4.AddCell(_pdfCell);
