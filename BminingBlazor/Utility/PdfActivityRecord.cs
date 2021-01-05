@@ -8,19 +8,16 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Blazored.TextEditor;
+using Models.ActivityRecord;
+
 namespace BminingBlazor.Utility
 {
     public class PdfActivityRecord
     {
         
-        public BlazoredTextEditor Notes;
-        public string Note { get; set; }
-        public async Task<string> OnitianalizedAsync()
-        {
-            await Notes.LoadHTMLContent(_oActivityRecord.MyNotes);
-            var Note = await Notes.GetText();
-            return Note;
-        }
+        
+        public string status { get; set; }
+        
         #region Declararion
         int _maxColumn = 3;
         Document _document;
@@ -29,7 +26,7 @@ namespace BminingBlazor.Utility
         PdfPTable _pdfTable3 = new PdfPTable(4);
         PdfPTable _pdfTable4 = new PdfPTable(3);
         PdfPCell _pdfCell;
-        Font _fontStyle;
+        Font _fontStyle;        
         BaseColor font1 = new BaseColor(8, 32, 95);
         BaseColor font2 = new BaseColor(1, 142, 151);
         MemoryStream _memoryStream = new MemoryStream();
@@ -213,7 +210,7 @@ namespace BminingBlazor.Utility
             _pdfTable2.CompleteRow();
             _document.Add(Chunk.Newline);
 
-            _fontStyle = FontFactory.GetFont("Arial", 10f, 1,font1);
+            _fontStyle = FontFactory.GetFont("Arial", 10f, 1);
             _pdfCell = new PdfPCell(new Phrase(Resource.Commitments, _fontStyle));
             _pdfCell.Colspan = _maxColumn;
             _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -289,7 +286,29 @@ namespace BminingBlazor.Utility
                 _pdfCell.BackgroundColor = BaseColor.White;
                 _pdfTable3.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(oActivityRecord.MyStatus.ToString(), fontStyle));
+                switch (oActivityRecord.MyStatus)
+                {
+
+                    case ActivityRecordStatusEnum.Unknown:
+                        status = Resource.Unknown;                        
+                        break;
+                    case ActivityRecordStatusEnum.Initiated:
+                        status = Resource.Initiated;
+                        break;
+                    case ActivityRecordStatusEnum.NotInitiated:
+                        status = Resource.NotInitiated;
+                        break;
+                    case ActivityRecordStatusEnum.Finalized:
+                        status = Resource.Finished;
+                        break;
+                    case ActivityRecordStatusEnum.Eliminated:
+                        status = Resource.Eliminated;
+                        break;
+                    default:
+                        break;
+                }
+
+                _pdfCell = new PdfPCell(new Phrase(status,fontStyle));
                 _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 _pdfCell.BackgroundColor = BaseColor.White;
@@ -359,7 +378,7 @@ namespace BminingBlazor.Utility
             _pdfTable4.CompleteRow();
             _document.Add(Chunk.Newline);
 
-            _fontStyle = FontFactory.GetFont("Arial", 1f, 1,font1);
+            _fontStyle = FontFactory.GetFont("Arial", 1f, 1);
             _pdfCell = new PdfPCell(new Phrase(" ", _fontStyle));
             _pdfCell.Colspan = _maxColumn;
             _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -370,7 +389,7 @@ namespace BminingBlazor.Utility
             _document.Add(Chunk.Newline);
 
             
-            _fontStyle = FontFactory.GetFont("Arial", 7f, 0,font1);
+            _fontStyle = FontFactory.GetFont("Arial", 7f, 0);
             _pdfCell = new PdfPCell(new Phrase(_oActivityRecord.MyNotes, _fontStyle));
             _pdfCell.Colspan = _maxColumn;
             _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
