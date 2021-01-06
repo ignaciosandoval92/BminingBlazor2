@@ -6,7 +6,7 @@ namespace Models.ActivityRecord
 {
     public class ListActivityRecordModel
     {
-        public int Id_ListAR { get; set; }
+        public int ListARId { get; set; }
         public string NameListAR { get; set; }
         public DateTime DateListAR { get; set; }
     }

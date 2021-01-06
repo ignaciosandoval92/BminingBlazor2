@@ -268,7 +268,7 @@ namespace BminingBlazor.Services
             {
                 listActivityRecordViewModel.Add(new ListActivityRecordViewModel
                 {
-                    MyId = listActivityRecord.Id_ListAR,
+                    MyId = listActivityRecord.ListARId,
                     MyName = listActivityRecord.NameListAR,
                     MyDate = listActivityRecord.DateListAR,                  
                 });
