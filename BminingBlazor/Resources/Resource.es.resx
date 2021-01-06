@@ -498,4 +498,7 @@
   <data name="Search" xml:space="preserve">
     <value>Buscar</value>
   </data>
+  <data name="ListActivityRecord" xml:space="preserve">
+    <value>Listado de Registro de Actividad</value>
+  </data>
 </root>

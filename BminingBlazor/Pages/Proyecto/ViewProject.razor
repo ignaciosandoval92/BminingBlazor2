@@ -58,26 +58,56 @@
                             <td>@p.MyProjectCode</td>
                             <td>@p.MyProjectName</td>
                             <td>@p.MyProjectManager.MyEmail</td>
-                            <td>@p.MyProjectType</td>
-                            <td>@p.MyClientName</td>
-                            <td>@p.MyProjectStatus</td>
                             <td>
-                                <button class="bmining-button" @onclick=@(()=>ViewMembers(p.MyId))>@Resource.Members</button>
-                                <button class="bmining-button" @onclick=@(()=>EditPaymentStatus(p.MyId))>@Resource.EditPaymentStatus</button>
-                                <button class="bmining-button" @onclick=@(()=>Delete(p.MyId))>@Resource.Delete</button>
+                                @switch (p.MyProjectType)
+                                {
+                                    case ProjectTypeEnum.Commercial:
+                                        @Resource.Commercial
+                                        break;
+                                    case ProjectTypeEnum.Internal:
+                                        @Resource.Intern
+                                        break;
+                                    case ProjectTypeEnum.Thesis:
+                                        @Resource.Thesis
+                                        break;
+                                }
                             </td>
-                        </tr>
-                    }
+                            <td>@p.MyClientName</td>
+                            <td>
+                                @switch (p.MyProjectStatus)
+                                {
+                                    case ProjectStatusEnum.Active:
+                                        @Resource.Active
+                                        break;
+                                    case ProjectStatusEnum.Finished:
+                                        @Resource.Finished
+                                        break;
+                                    case ProjectStatusEnum.NotInitiated:
+                                        @Resource.NotInitiated
+                                        break;
+                                    case ProjectStatusEnum.Unknown:
+                                        @Resource.Unknown
+                                        break;
+                                }
+                            </td>
+                        <td>
+                            <button class="bmining-button" @onclick=@(()=>ViewMembers(p.MyId))>@Resource.Members</button>
+                            <button class="bmining-button" @onclick=@(()=>EditPaymentStatus(p.MyId))>@Resource.EditPaymentStatus</button>
+                            <button class="bmining-button" @onclick=@(()=>Delete(p.MyId))>@Resource.Delete</button>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
     }
     <div>
-       
+
         @for (int page = 0; page < TotalPage; page++)
         {
-            int pageNumber = page;           
-            
+            int pageNumber = page;
+
+
             <button class="@SelectedPage(page)" @onclick="@(()=>UpdateList(pageNumber))">@(page+1)</button>
         }
     </div>

@@ -499,4 +499,7 @@
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="ListActivityRecord" xml:space="preserve">
+    <value>List Activity Record</value>
+  </data>
 </root>

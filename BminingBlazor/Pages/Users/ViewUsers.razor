@@ -49,17 +49,36 @@
                             <td>@user.MyName</td>
                             <td>@user.MyPaternalSurname</td>
                             <td>@user.MyJob</td>
-                            <td>@user.MyContractType</td>
                             <td>
-                                <button class="bmining-btn-icon" @onclick=@(() => EditCallback(user.MyId))>
-                                    <i class="fa fa-edit"></i>
-                                </button>
-                                <button class="bmining-btn-icon bg-bmining-error" @onclick=@(() => Delete(user.MyId))>
-                                    <i class="fa fa-trash"></i>
-                                </button>
+                                @switch (user.MyContractType)
+                                {
+                                    case ContractTypeEnum.Unknown:
+                                        @Resource.Unknown
+                                        break;
+                                    case ContractTypeEnum.IndefiniteContract:
+                                        @Resource.IndefiniteContract
+                                        break;
+                                    case ContractTypeEnum.FixedTermContract:
+                                        @Resource.FixedTermContract
+                                        break;
+                                    case ContractTypeEnum.ExternalConsultant:
+                                        @Resource.ExternalConsultant
+                                        break;
+                                    case ContractTypeEnum.ExternalEnterprise:
+                                        @Resource.ExternalEnterprise
+                                        break;
+                                }
                             </td>
-                        </tr>
-                    }
+                        <td>
+                            <button class="bmining-btn-icon" @onclick=@(() => EditCallback(user.MyId))>
+                                <i class="fa fa-edit"></i>
+                            </button>
+                            <button class="bmining-btn-icon bg-bmining-error" @onclick=@(() => Delete(user.MyId))>
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>

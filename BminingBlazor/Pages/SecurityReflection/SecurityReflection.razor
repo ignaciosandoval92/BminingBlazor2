@@ -4,6 +4,7 @@
 
 
 @inject ISecurityReflectionDataService SecurityReflectionDataService
+@inject IUserDataService UserDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMatDialogService MatDialogService
@@ -46,10 +47,13 @@
                         <tr>
                             <td>@securityReflection.MyId</td>
                             <td>@securityReflection.MyName</td>
-                            <td>@securityReflection.MyDate</td>
+                            <td>@securityReflection.MyDate.ToString("dd/MM/yyyy")</td>
                             <td>@securityReflection.MyTopic</td>
                             <td>
-                                <button class="bmining-btn-icon" @onclick=@(()=>EditTopic(securityReflection.MyId))><i class="fa fa-edit"></i></button>
+                                @if ( id == 37)
+                                {
+                                <button class="bmining-btn-icon" @onclick=@(() => EditTopic(securityReflection.MyId))><i class="fa fa-edit"></i></button>
+                                }
                             </td>
                         </tr>
                     }
@@ -74,17 +78,18 @@
     public int PageSize { get; set; }
     public int TotalPage { get; set; }
     public int CurrentPage { get; set; }
+    public int id { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
+            var id = await UserDataService.GetUserId(await AuthenticationStateProvider.GetEmail());
             PageSize = 5;
             _securityReflections = await SecurityReflectionDataService.ReadSecurityReflection();
             _securityReflectionList = _securityReflections.Take(PageSize).ToList();
             TotalPage = (int)Math.Ceiling(_securityReflections.Count() / (decimal)PageSize);
-
             StateHasChanged();
         }
     }

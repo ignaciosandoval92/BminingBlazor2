@@ -691,6 +691,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a List Activity Record.
+        /// </summary>
+        internal static string ListActivityRecord {
+            get {
+                return ResourceManager.GetString("ListActivityRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Load.
         /// </summary>
         internal static string Load {

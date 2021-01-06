@@ -1,4 +1,5 @@
 ﻿using BminingBlazor.ViewModels.ActivityRecord;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BminingBlazor.Services
@@ -16,5 +17,6 @@ namespace BminingBlazor.Services
         Task AddActivityRecordCommitment(ActivityRecordCommitmentViewModel activityRecordCommitment);
         Task DeleteActivityRecordCommitment(int id);
         Task EditStatusCommitment(int commitmentId, int status);
+        Task<List<ListActivityRecordViewModel>> ReadListActivityRecord();
     }
 }

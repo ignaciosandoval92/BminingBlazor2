@@ -253,5 +253,27 @@ namespace BminingBlazor.Services
             var activityQuery = queryFactory.Query(TableConstants.ActivityRecordCommitmentTable);
             var numberOfRows = await activityQuery.Where(ActivityRecordCommitmentConstants.Id, id).DeleteAsync();
         }
+        public async Task<List<ListActivityRecordViewModel>> ReadListActivityRecord()
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var listActivityRecords = (await queryFactory
+                .Query()
+                .From(TableConstants.ListActivityRecordTable)
+                .Select(ListActivityRecordConstants.Id)
+                .Select(ListActivityRecordConstants.Name)
+                .Select(ListActivityRecordConstants.Date)                
+                .GetAsync<ListActivityRecordModel>()).ToList();
+            var listActivityRecordViewModel = new List<ListActivityRecordViewModel>();
+            foreach (var listActivityRecord in listActivityRecords)
+            {
+                listActivityRecordViewModel.Add(new ListActivityRecordViewModel
+                {
+                    MyId = listActivityRecord.Id_ListAR,
+                    MyName = listActivityRecord.NameListAR,
+                    MyDate = listActivityRecord.DateListAR,                  
+                });
+            }
+            return listActivityRecordViewModel;
+        }
     }
 }
