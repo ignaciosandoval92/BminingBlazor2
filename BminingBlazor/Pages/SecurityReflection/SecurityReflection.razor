@@ -49,11 +49,8 @@
                             <td>@securityReflection.MyName</td>
                             <td>@securityReflection.MyDate.ToString("dd/MM/yyyy")</td>
                             <td>@securityReflection.MyTopic</td>
-                            <td>
-                                @if ( id == 37)
-                                {
-                                <button class="bmining-btn-icon" @onclick=@(() => EditTopic(securityReflection.MyId))><i class="fa fa-edit"></i></button>
-                                }
+                            <td>                
+                                <button class="bmining-btn-icon" @onclick=@(() => EditTopic(securityReflection.MyId))><i class="fa fa-edit"></i></button>                                
                             </td>
                         </tr>
                     }
@@ -96,17 +93,26 @@
 
     private async Task EditTopic(int securityId)
     {
-        var item = await MatDialogService.OpenAsync(typeof(EditSecurityTopic), new MatDialogOptions
+        var id = await UserDataService.GetUserId(await AuthenticationStateProvider.GetEmail());
+        if (id ==26||id == 5)
         {
-            CanBeClosed = true
-        });
-        if (item == null)
-            return;
-        if (item is SecurityReflectionViewModel securityReflection)
+            var item = await MatDialogService.OpenAsync(typeof(EditSecurityTopic), new MatDialogOptions
+            {
+                CanBeClosed = true
+            });
+            if (item == null)
+                return;
+            if (item is SecurityReflectionViewModel securityReflection)
+            {
+                securityReflection.MyId = securityId;
+                await SecurityReflectionDataService.EditTopic(securityId, securityReflection.MyTopic);
+                NavigationManager.NavigateTo("/SecurityReflection", true);
+            }
+        }
+        else
         {
-            securityReflection.MyId = securityId;
-            await SecurityReflectionDataService.EditTopic(securityId, securityReflection.MyTopic);
-            NavigationManager.NavigateTo("/SecurityReflection", true);
+             await MatDialogService.AlertAsync(Resource.Notauthorized);
+             return;
         }
     }
 

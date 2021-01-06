@@ -826,6 +826,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Not authorized.
+        /// </summary>
+        internal static string Notauthorized {
+            get {
+                return ResourceManager.GetString("Notauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Notes.
         /// </summary>
         internal static string Notes {

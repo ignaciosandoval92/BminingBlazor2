@@ -502,4 +502,7 @@
   <data name="ListActivityRecord" xml:space="preserve">
     <value>List Activity Record</value>
   </data>
+  <data name="Notauthorized" xml:space="preserve">
+    <value>Not authorized</value>
+  </data>
 </root>

@@ -501,4 +501,7 @@
   <data name="ListActivityRecord" xml:space="preserve">
     <value>Listado de Registro de Actividad</value>
   </data>
+  <data name="Notauthorized" xml:space="preserve">
+    <value>No Autorizado</value>
+  </data>
 </root>
