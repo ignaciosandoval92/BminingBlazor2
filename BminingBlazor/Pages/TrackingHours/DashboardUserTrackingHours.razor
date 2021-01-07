@@ -27,6 +27,11 @@
         text-align: center;
     }
 
+    .calendar {
+        font-size: 12pt;
+       
+    }
+
     .week-header-bmining-button {
         font-size: 30px;
         font-weight: bold;
@@ -47,10 +52,11 @@
         text-align: center;
         padding: 5px
     }
+
     .item-dashboard-item2 {
-        position:absolute;
+        position: absolute;
         vertical-align: middle;
-        display: inline;       
+        display: inline;
         padding: 5px;
         right: 50px
     }
@@ -65,6 +71,51 @@
     .header-break {
         margin: 0px 0px 0px 16px
     }
+
+    .line-container {
+        width: 200px;
+        height: 20px;
+    }
+
+    .single-line {
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: pre;
+    }
+
+    .btn-plus {
+        display: inline-block;
+        border: none;
+        width: 26px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/PxxCtQ3/boton-mas-Recurso-7-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+    .btn-back {
+        display: inline-block;
+        border: none;
+        width: 26px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/sjzjjft/botonatras-Recurso-16-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+    .btn-next {
+        display: inline-block;
+        border: none;
+        width: 26px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/BT7N0jK/botonsiguiente-Recurso-17-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
 </style>
 
 <div class="bmining-app">
@@ -75,28 +126,36 @@
     }
     else
     {
-        <h2 class="header-break">@Resource.DashboardHours</h2>
+        <h4 class="header-break">@Resource.DashboardHours</h4>
         <div class="main-break">
             <div class="main-circle"></div>
         </div>
 
         <div class="week-header-container">
+
+
             <div class="week-header-item">
-                <button class="bmining-btn-icon week-header-bmining-button" @onclick="@PreviousWeek">
-                    <i class="fa fa-caret-left"></i>
-                </button>
+                <h6 class="m-2">@Resource.Week <h4 class="bmining-button h4">@NumberWeek()</h4>@MyStartOfWeek.ToString("d MMMM yyyy")</h6>
             </div>
+      
+
+
             <div class="week-header-item">
-                <button class="bmining-btn-icon week-header-bmining-button" @onclick="@NextWeek">
-                    <i class="fa fa-caret-right"></i>
+
+                <button class="btn-back" @onclick="@PreviousWeek">                   
                 </button>
+
             </div>
-            <div class="week-header-item">
+
+
+            <div class="calendar">
                 <MatDatePicker @bind-Value="@MySelectedDate" />
             </div>
             <div class="week-header-item">
-                <h4 class="m-2">@Resource.Week @MyStartOfWeek.ToLongDateString()</h4>
+                <button class="btn-next" @onclick="@NextWeek">                   
+                </button>
             </div>
+
         </div>
 
         <div class="alternate1-break">
@@ -126,8 +185,7 @@
                             </div>
 
                             <div class="d-inline-block">
-                                <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="bmining-btn-icon">
-                                    <i class="fa fa-plus"></i>
+                                <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="btn-plus">                                  
                                 </button>
                             </div>
                         </div>
@@ -169,10 +227,11 @@
                     </div>
                 }
             }
-            <button @onclick="@CopyLastWeek" class="bmining-button float-right">@Resource.CopyLastWeek</button>
+
+            <button @onclick="@CopyLastWeek" class="badge badge-primary badge-pill  bg-bmining-info float-right">@Resource.CopyLastWeek</button>
         </div>
     }
-    
+
 </div>
 
 @code {
@@ -248,7 +307,7 @@
         if (firstRender)
         {
 
-            var email =await AuthenticationStateProvider.GetEmail();
+            var email = await AuthenticationStateProvider.GetEmail();
             var userId = await UserDataService.GetUserId(email);
             DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
             DashboardUserTracking.MyUserId = userId;
@@ -308,15 +367,15 @@
     {
         MySelectedDate = MySelectedDate.AddDays(-7);
     }
-    private string TotalHoursStatus(double totalHours,string day)
+    private string TotalHoursStatus(double totalHours, string day)
     {
         if (totalHours > 9)
         {
             return "error";
         }
-        else if(totalHours ==9)
+        else if (totalHours == 9)
         {
-            if(day==Resource.Friday)
+            if (day == Resource.Friday)
             {
                 return "error";
             }
@@ -324,10 +383,10 @@
         }
         else
         {
-            if(day== Resource.Friday)
+            if (day == Resource.Friday)
             {
 
-                if (totalHours==5)
+                if (totalHours == 5)
                 {
                     return "info";
                 }
@@ -350,13 +409,26 @@
         var email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await email);
         var lastWeek = await TimeTrackingService.GetUserTrackingModels(userId, MyStartOfWeek.AddDays(-7), MyStartOfWeek);
-        foreach(var hoursLastWeek in lastWeek)
+        foreach (var hoursLastWeek in lastWeek)
         {
             var projectId = hoursLastWeek.MyProjectId;
             var hours = hoursLastWeek.MyTrackedHours;
             var timeTracking = hoursLastWeek.MyTimeTrackingDate.AddDays(+7);
             await TimeTrackingService.AddUserTimeTracking(userId, projectId, timeTracking, hours);
         }
-        NavigationManager.NavigateTo($"/dashboard_tracking_hours/",true);
+        NavigationManager.NavigateTo($"/dashboard_tracking_hours/", true);
+    }
+
+    private int NumberWeek()
+    {
+        int numberWeek2 = System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(MySelectedDate, System.Globalization.CalendarWeekRule.FirstDay, MySelectedDate.DayOfWeek);
+        int numberWeek1 = System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(MySelectedDate.AddDays(-(MySelectedDate.Day-1)), System.Globalization.CalendarWeekRule.FirstDay, MySelectedDate.DayOfWeek);
+        int totalNumberWeeks = numberWeek2 - numberWeek1;
+        if (totalNumberWeeks > 0 && totalNumberWeeks<10)
+            return totalNumberWeeks;
+        if (totalNumberWeeks < 0)
+            return numberWeek2;
+        else
+            return 5;
     }
 }
