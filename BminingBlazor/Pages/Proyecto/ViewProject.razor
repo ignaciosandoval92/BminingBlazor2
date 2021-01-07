@@ -90,13 +90,19 @@
                                         break;
                                 }
                             </td>
-                        <td>
-                            <button class="bmining-button" @onclick=@(()=>ViewMembers(p.MyId))>@Resource.Members</button>
-                            <button class="bmining-button" @onclick=@(()=>EditPaymentStatus(p.MyId))>@Resource.EditPaymentStatus</button>
-                            <button class="bmining-button" @onclick=@(()=>Delete(p.MyId))>@Resource.Delete</button>
-                        </td>
-                    </tr>
-                }
+                            <td>
+                                <button class="bmining-btn-icon" @onclick=@(()=>ViewMembers(p.MyId))>
+                                    <i class="fa fa-users"></i>
+                                </button>
+                                <button class="bmining-btn-icon" @onclick=@(()=>EditPaymentStatus(p.MyId))>
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button class="bmining-btn-icon bg-bmining-error" @onclick=@(()=>Delete(p.MyId))>
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
@@ -178,9 +184,9 @@
     {
         string searchText = changeEventArgs.Value.ToString();
         if (columnTitle == Resource.ProjectName)
-            _projectList = _projects.Where(pro => pro.MyProjectName.Contains(searchText,StringComparison.CurrentCultureIgnoreCase)).ToList();
+            _projectList = _projects.Where(pro => pro.MyProjectName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase)).ToList();
         if (columnTitle == Resource.ProjectCode)
-            _projectList = _projects.Where(pro => pro.MyProjectCode.Contains(searchText,StringComparison.CurrentCultureIgnoreCase)).ToList();
+            _projectList = _projects.Where(pro => pro.MyProjectCode.Contains(searchText, StringComparison.CurrentCultureIgnoreCase)).ToList();
 
 
     }
