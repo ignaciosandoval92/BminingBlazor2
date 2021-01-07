@@ -178,9 +178,9 @@
     {
         string searchText = changeEventArgs.Value.ToString();
         if (columnTitle == Resource.ProjectName)
-            _projectList = _projects.Where(pro => pro.MyProjectName.Contains(searchText)).ToList();
+            _projectList = _projects.Where(pro => pro.MyProjectName.Contains(searchText,StringComparison.CurrentCultureIgnoreCase)).ToList();
         if (columnTitle == Resource.ProjectCode)
-            _projectList = _projects.Where(pro => pro.MyProjectCode.Contains(searchText)).ToList();
+            _projectList = _projects.Where(pro => pro.MyProjectCode.Contains(searchText,StringComparison.CurrentCultureIgnoreCase)).ToList();
 
 
     }

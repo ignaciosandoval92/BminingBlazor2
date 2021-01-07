@@ -158,7 +158,7 @@
     {
         string searchText = changeEventArgs.Value.ToString();
 
-        _activityRecordView = ViewModel.OurDashboardActivityRecords.Where(act => act.MyTitle.Contains(searchText)).ToList();
+        _activityRecordView = ViewModel.OurDashboardActivityRecords.Where(act => act.MyTitle.Contains(searchText,StringComparison.CurrentCultureIgnoreCase)).ToList();
 
     }
 }
