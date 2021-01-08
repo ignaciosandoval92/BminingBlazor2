@@ -307,7 +307,7 @@
         if (item is ActivityRecordCommitmentViewModel activityRecordCommitment)
         {
             activityRecordCommitment.MyActivityRecordId = Id;
-            await ActivityRecordService.EditStatusCommitment( myId, (int)activityRecordCommitment.MyStatus);
+            await ActivityRecordService.EditStatusCommitment( myId, (int)activityRecordCommitment.MyStatus,(bool)activityRecordCommitment.MyVisibility);
             NavigationManager.NavigateTo(@$"/edit_activity_record/{Id}", true);
         }
     }

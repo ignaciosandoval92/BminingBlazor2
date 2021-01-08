@@ -8,5 +8,6 @@
         public const string Responsible = "Responsible";
         public const string CommitmentDate = "CommitmentDate";
         public const string ActivityRecordStatus = "ActivityRecordStatus";
+        public const string IsVisibleInMainPanel = "IsVisibleInMainPanel";
     }
 }

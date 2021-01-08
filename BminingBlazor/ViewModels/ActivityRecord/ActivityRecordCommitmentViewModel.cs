@@ -11,5 +11,6 @@ namespace BminingBlazor.ViewModels.ActivityRecord
         public string MyResponsible { get; set; }
         public DateTime MyCommitmentDate { get; set; }
         public ActivityRecordStatusEnum MyStatus { get; set; }
+        public bool MyVisibility { get; set; }
     }
 }

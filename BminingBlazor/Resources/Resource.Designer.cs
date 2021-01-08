@@ -1204,6 +1204,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Visibility.
+        /// </summary>
+        internal static string Visibility {
+            get {
+                return ResourceManager.GetString("Visibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Week.
         /// </summary>
         internal static string Week {

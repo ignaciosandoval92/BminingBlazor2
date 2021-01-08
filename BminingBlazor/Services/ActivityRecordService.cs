@@ -178,14 +178,15 @@ namespace BminingBlazor.Services
                 await membersQuery.Where(ActivityRecordMemberConstants.Id, member.MyId).DeleteAsync();
             }
         }
-        public async Task EditStatusCommitment( int commitmentId, int status)
+        public async Task EditStatusCommitment( int commitmentId, int status,bool visibility)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);            
             var commitmentQuery = queryFactory.Query(TableConstants.ActivityRecordCommitmentTable);
 
             await commitmentQuery.Where(ActivityRecordCommitmentConstants.Id, commitmentId).UpdateAsync(new Dictionary<string, object>
                 {
-                    {ActivityRecordCommitmentConstants.ActivityRecordStatus,status}
+                    {ActivityRecordCommitmentConstants.ActivityRecordStatus,status},
+                {ActivityRecordCommitmentConstants.IsVisibleInMainPanel,visibility }
                 });
 
         }
@@ -274,6 +275,34 @@ namespace BminingBlazor.Services
                 });
             }
             return listActivityRecordViewModel;
+        }
+
+        public async Task<List<ActivityRecordCommitmentViewModel>> ReadComments()
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var listComments = (await queryFactory
+                .Query()
+                .From(TableConstants.ActivityRecordCommitmentTable)
+                .Select(ListActivityRecordConstants.Id)
+                .Select(ListActivityRecordConstants.Name)
+                .Select(ListActivityRecordConstants.Date)
+                .GetAsync<ActivityRecordCommentsModel>()).ToList();
+            var listCommentViewModel = new List<ActivityRecordCommitmentViewModel>();
+            foreach (var listComment in listComments)
+            {
+                listCommentViewModel.Add(new ActivityRecordCommitmentViewModel
+                {
+                    MyCommitment=listComment.Commitment,
+                    MyVisibility=listComment.IsVisibleInMainPanel,
+                    MyCommitmentDate=listComment.CommitmentDate,
+                    MyActivityRecordId=listComment.ActivityRecordId,
+                    MyResponsible=listComment.Responsible,
+                    MyStatus=(ActivityRecordStatusEnum)listComment.ActivityRecordStatus,
+                    MyId=listComment.Id
+
+                });
+            }
+            return listCommentViewModel;
         }
     }
 }

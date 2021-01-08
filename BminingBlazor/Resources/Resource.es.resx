@@ -504,4 +504,7 @@
   <data name="Notauthorized" xml:space="preserve">
     <value>No Autorizado</value>
   </data>
+  <data name="Visibility" xml:space="preserve">
+    <value>Visibilidad</value>
+  </data>
 </root>
