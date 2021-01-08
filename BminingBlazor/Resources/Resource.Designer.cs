@@ -1186,6 +1186,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a View Commitments.
+        /// </summary>
+        internal static string ViewCommitments {
+            get {
+                return ResourceManager.GetString("ViewCommitments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a View Report.
         /// </summary>
         internal static string ViewReport {

@@ -14,6 +14,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <style>
+
     .week-header-container {
         display: inline-grid;
         grid-template-columns: auto auto auto 1fr;
@@ -29,7 +30,7 @@
 
     .calendar {
         font-size: 12pt;
-       
+
     }
 
     .week-header-bmining-button {
@@ -63,7 +64,7 @@
 
     .item-dashboard-border {
         margin: 5px;
-        border-style: solid;
+
         border-radius: 4px;
         border-width: 2.5px;
     }
@@ -116,6 +117,79 @@
         transform: scale(0.75);
         transform-origin: left;
     }
+
+
+
+
+    .projetc {
+        position:absolute;
+        background-color:white;
+        width:70%;
+        height:30px;
+        left:3%;
+
+    }
+    .circle {
+        position:absolute;
+        width: 5%;
+        height: 30px;
+        background: white;
+        border-radius: 50%;
+        left:1%;
+    }
+  
+    .little-circle {
+        position:absolute;
+        width: 2.5%;
+        height: 18px;
+        background: white;
+        border-radius: 50%;
+        left: 86%;
+        top:12px;
+    }
+    .day {
+        position: absolute;
+        background-color: white;
+        width: 20%;
+        height: 30px;
+        left: 3%;
+        font-weight:700;
+    }
+    .line{
+        position:absolute;
+        background-color:white;
+        width:84%;
+        height:3px;
+        left:3%;
+        top:27px;
+    }
+    .totalhours {
+        position: absolute;
+        background-color: white;
+        width: 14%;
+        height: 15px;
+        left: 73%;
+        top: 12px;
+        color: rgb(31,36,61);
+    }
+    .trackedhours {
+        position: absolute;
+        background-color: rgb(31,36,61);
+        width: 20%;
+        height: 18px;
+        left: 100%;
+        top: 12px;
+        color:white;
+    }
+    .little-circle-blue {
+        position: absolute;
+        width: 3%;
+        height: 18px;
+        background: rgb(31,36,61);
+        border-radius: 50%;
+        left: 119%;
+        top: 12px;
+    }
 </style>
 
 <div class="bmining-app">
@@ -126,7 +200,7 @@
     }
     else
     {
-        <h4 class="header-break">@Resource.DashboardHours</h4>
+        <h2 class="header-break">@Resource.DashboardHours</h2>
         <div class="main-break">
             <div class="main-circle"></div>
         </div>
@@ -135,7 +209,7 @@
 
 
             <div class="week-header-item">
-                <h6 class="m-2">@Resource.Week <h4 class="bmining-button h4">@NumberWeek()</h4>@MyStartOfWeek.ToString("d MMMM yyyy")</h6>
+                <h6 class="m-2">@Resource.Week <h4 class="bmining-button h4">0 @NumberWeek()</h4>@MyStartOfWeek.ToString("d MMMM yyyy")</h6>
             </div>
       
 
@@ -170,19 +244,22 @@
                     TotalHours = 0;
                     <div class="col">
                         <div class="d-flex flex-row w-100 justify-content-between">
-                            <div class="d-inline-block">
-                                <h5 class="font-weight-bold">@weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize()</h5>
+                            <div >
+                                <div class="circle"></div>
+                                <strong><h6 class="day">@weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize().Substring(0, 3)</h6></strong>
+                                <div class="line"></div>
                             </div>
                             @foreach (var day in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
                             {
                                 TotalHours = TotalHours + day.MyTrackedHours;
                             }
 
-                            <div class="item-dashboard-item2">
-                                <span class="badge badge-primary badge-pill m-1 bg-bmining-@TotalHoursStatus(TotalHours,weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize())">
-                                    <h10>@Resource.Hours : </h10>@TotalHours
-                                </span>
-                            </div>
+                        <div>
+
+                            <div class=" little-circle"></div>
+                            <strong><h10 class="totalhours">@Resource.Hours : @TotalHours </h10></strong>
+
+                        </div>
 
                             <div class="d-inline-block">
                                 <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="btn-plus">                                  
@@ -192,38 +269,46 @@
                         <div class="list-group">
                             @foreach (var dayUserTrackingHourItem in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
                             {
-                                <div class="item-dashboard-container item-dashboard-border @dayUserTrackingHourItem.MyTrackingStatusClass">
+                            <div class="item-dashboard-container item-dashboard-border @dayUserTrackingHourItem.MyTrackingStatusClass">
+                                <div class="circle"></div>
+                                <h6 class="projetc">
+                                    @dayUserTrackingHourItem.MyProjectName
+                                    <div>
 
-                                    <h5 class="item-dashboard-item">
-                                        @dayUserTrackingHourItem.MyProjectName
-                                    </h5>
-                                    <div class="item-dashboard-item w-100">
+                                        <div class=" little-circle-blue"></div>
+                                        <strong><h10 class="trackedhours">@Resource.Hours : @dayUserTrackingHourItem.MyTrackedHours </h10></strong>
+                                    </div>
+                                </h6>
+                                
+                                <div class="item-dashboard-item w-100">
 
-                                    </div>
-                                    <div class="item-dashboard-item">
-                                        <span class="badge badge-primary badge-pill m-1 bg-bmining-info">
-                                            @dayUserTrackingHourItem.MyTrackedHours
-                                        </span>
-                                        @if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.WaitingForApproval)
-                                        {
-                                            <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                            <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        }
-                                        else if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.Rejected)
-                                        {
-                                            <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        }
-                                    </div>
                                 </div>
+
+                                <div class="item-dashboard-item">
+                                    @*<span class="badge badge-primary badge-pill m-1 bg-bmining-info">
+                @dayUserTrackingHourItem.MyTrackedHours
+            </span>*@
+                                   
+                                    @if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.WaitingForApproval)
+                                    {
+                                        <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="bmining-btn-icon">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    }
+                                    else if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.Rejected)
+                                    {
+                                        <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
                             }
                         </div>
-                        <div class="alternate2-break"></div>
+                        <div class="alternate3-break"></div>
                     </div>
                 }
             }

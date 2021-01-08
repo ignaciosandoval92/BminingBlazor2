@@ -282,10 +282,7 @@ namespace BminingBlazor.Services
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             var listComments = (await queryFactory
                 .Query()
-                .From(TableConstants.ActivityRecordCommitmentTable)
-                .Select(ListActivityRecordConstants.Id)
-                .Select(ListActivityRecordConstants.Name)
-                .Select(ListActivityRecordConstants.Date)
+                .From(TableConstants.ActivityRecordCommitmentTable)                
                 .GetAsync<ActivityRecordCommentsModel>()).ToList();
             var listCommentViewModel = new List<ActivityRecordCommitmentViewModel>();
             foreach (var listComment in listComments)

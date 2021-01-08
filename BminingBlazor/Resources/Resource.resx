@@ -508,4 +508,7 @@
   <data name="Visibility" xml:space="preserve">
     <value>Visibility</value>
   </data>
+  <data name="ViewCommitments" xml:space="preserve">
+    <value>View Commitments</value>
+  </data>
 </root>

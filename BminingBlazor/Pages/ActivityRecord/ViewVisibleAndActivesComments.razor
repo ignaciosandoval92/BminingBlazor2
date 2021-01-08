@@ -1,7 +1,108 @@
-﻿@page "/ViewVisibleAndActivesComments"
+﻿@page "/ViewVisibleAndActivesCommitments"
 
-<h3>ViewVisibleAndActivesComments</h3>
+@using Models
+@using BminingBlazor.ViewModels.ActivityRecord
+
+
+@inject IActivityRecordService ActivityRecordService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IMatDialogService MatDialogService
+
+
+
+<div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.ListActivityRecord</h2>
+        </div>
+
+
+    </div>
+
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+
+    @if (_listCommitments == null)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
+        <div class="table-responsive{-sm|-md|-lg|-xl}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>@Resource.Responsible</th>
+                        <th>@Resource.Commitment</th>
+                        <th>@Resource.Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    @foreach (var listcomment in _listCommitment)
+                        if(listcomment.MyVisibility)
+                            if(listcomment.MyStatus!=Models.ActivityRecord.ActivityRecordStatusEnum.Finalized)
+                    {
+                        <tr>
+                            <td>@listcomment.MyResponsible</td>
+                            <td>@listcomment.MyCommitment</td>
+                            <td>@listcomment.MyCommitmentDate.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <div>
+        @for (int page = 0; page < TotalPage; page++)
+        {
+            int pageNumber = page;
+            <button class="@SelectedPage(page)" @onclick="@(()=>UpdateList(pageNumber))">@(page+1)</button>
+        }
+    </div>
+</div>
+
 
 @code {
+    public List<ActivityRecordCommitmentViewModel> _listCommitments;
+    public List<ActivityRecordCommitmentViewModel> _listCommitment { get; set; }
+    public int PageSize { get; set; }
+    public int TotalPage { get; set; }
+    public int CurrentPage { get; set; }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            PageSize = 5;
+            _listCommitments = await ActivityRecordService.ReadComments();
+            _listCommitment = _listCommitments.Take(PageSize).ToList();
+            TotalPage = (int)Math.Ceiling(_listCommitments.Count() / (decimal)PageSize);
+
+            StateHasChanged();
+        }
+    }
+
+
+
+    private void UpdateList(int pageNumber)
+    {
+        _listCommitment = _listCommitments.Skip(PageSize * pageNumber).Take(PageSize).ToList();
+        CurrentPage = pageNumber;
+    }
+    private string SelectedPage(int selectPage)
+    {
+        if (CurrentPage == selectPage)
+        {
+            return "btn btn-info";
+        }
+        else
+        {
+            return "btn btn-secondary";
+        }
+    }
 }
