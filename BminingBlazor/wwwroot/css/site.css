@@ -285,15 +285,8 @@ legend.scheduler-border {
     position: relative;
     margin: 4px;
 }
-.alternate3-break {
-    width: 100%;
-    height: 1px;   
-    position: relative;
-    margin: 4px;
-}
-
 .pointer-hover:hover {
-    cursor: pointer ;
+    cursor: pointer;
 }
 
 table {
@@ -310,7 +303,7 @@ tr:nth-child(even) {
     background-color: #D9DEE7;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1, h2, h3, h4, h5, h6 {
     color: #002060
 }
 
@@ -352,4 +345,359 @@ h1,h2,h3,h4,h5,h6 {
 
 .bg-bmining-error:hover {
     background-color: #B21A1A;
+}
+
+@media (min-width: 768px) {
+    .alternate3-break {
+        width: 100%;
+        height: 10px;
+        position: relative;
+        margin: 4px;
+    }
+    .alternate4-break {
+        width: 100%;
+        height: 20px;
+        position: relative;
+        margin: 4px;
+    }
+
+    
+
+    .btn-plus {
+        display: inline-block;
+        border: none;
+        width: 26px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/PxxCtQ3/boton-mas-Recurso-7-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+    .btn-edit {
+        display: inline-block;
+        border: none;
+        width: 25px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/m86WHzt/edit-Recurso-20-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+    .btn-delete {
+        display: inline-block;
+        border: none;
+        width: 25px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/47Csx0K/delete-Recurso-21-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+    .btn-back {
+        display: inline-block;
+        border: none;
+        width: 26px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/sjzjjft/botonatras-Recurso-16-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+    .btn-next {
+        display: inline-block;
+        border: none;
+        width: 26px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/BT7N0jK/botonsiguiente-Recurso-17-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+
+
+
+    .projetc {
+        position: absolute;
+        background-color: white;
+        width: 410px;
+        height: 30px;
+        left: 15px;
+    }
+
+    .circle {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background: white;
+        border-radius: 50%;
+        left: 0px;
+    }
+
+    .little-circle {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: white;
+        border-radius: 50%;
+        left: 506px;
+        top: 12px;
+    }
+
+    .day {
+        position: absolute;
+        background-color: white;
+        width: 50px;
+        height: 30px;
+        left: 15px;
+        font-weight: 700;
+    }
+
+    .line {
+        position: absolute;
+        background-color: white;
+        width: 410px;
+        height: 3px;
+        left: 15px;
+        top: 27px;
+    }
+
+    .totalhours {
+        position: absolute;
+        background-color: white;
+        width: 90px;
+        height: 18px;
+        left: 425px;
+        top: 12px;
+        color: rgb(31,36,61);
+    }
+
+    .trackedhours {
+        position: absolute;
+        background-color: rgb(31,36,61);
+        width: 90px;
+        height: 18px;
+        left: 410px;
+        top: 12px;
+        color: white;
+    }
+
+    .little-circle-blue {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: rgb(31,36,61);
+        border-radius: 50%;
+        left: 491px;
+        top: 12px;
+    }
+
+    .btn {
+        position: absolute;
+        left: 513px;
+    }
+    .btn2{
+        position:absolute;
+        left: 530px;
+    }
+    .btn3 {
+        position: absolute;
+        left: 1210px;
+    }
+
+    .logo {
+        position: absolute;
+        background-image: url(https://i.ibb.co/RcCBYP8/logo-LRecurso-24-2x.png);
+        top: 62%;
+        left: 73%;
+        height: 266px;
+        width: 356px;
+    }
+}
+
+@media (max-width: 768px) {
+    .alternate3-break {
+        width: 100%;
+        height: 10px;
+        position: relative;
+        margin: 4px;
+    }
+    .header-break{
+        font-size:12pt;
+        
+    }
+    .txt{
+        font-size:8pt;
+    }
+
+    .alternate4-break {
+        width: 100%;
+        height: 0px;
+        position: relative;
+        margin: 4px;
+    }
+
+
+
+    .btn-plus {
+        display: inline-block;
+        border: none;
+        width: 26px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/PxxCtQ3/boton-mas-Recurso-7-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+    .btn-edit {
+        display: inline-block;
+        border: none;
+        width: 25px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/m86WHzt/edit-Recurso-20-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+    .btn-delete {
+        display: inline-block;
+        border: none;
+        width: 24px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/47Csx0K/delete-Recurso-21-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+    .btn-back {
+        display: inline-block;
+        border: none;
+        width: 26px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/sjzjjft/botonatras-Recurso-16-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+    .btn-next {
+        display: inline-block;
+        border: none;
+        width: 26px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/BT7N0jK/botonsiguiente-Recurso-17-2x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+    }
+
+
+
+
+    .projetc {
+        position: absolute;
+        background-color: white;
+        width: 144px;
+        height: 30px;
+        left: 15px;
+    }
+
+    .circle {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background: white;
+        border-radius: 50%;
+        left: 0px;
+    }
+
+    .little-circle {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: white;
+        border-radius: 50%;
+        left: 211px;
+        top: 12px;
+    }
+
+    .day {
+        position: absolute;
+        background-color: white;
+        width: 40px;
+        height: 30px;
+        left: 16px;
+        font-weight: 700;
+    }
+
+    .line {
+        position: absolute;
+        background-color: white;
+        width: 104px;
+        height: 3px;
+        left: 56px;
+        top: 27px;
+    }
+
+    .totalhours {
+        position: absolute;
+        background-color: white;
+        width: 60px;
+        height: 18px;
+        left: 160px;
+        top: 12px;
+        color: rgb(31,36,61);
+        font-size:8pt;
+    }
+
+    .trackedhours {
+        position: absolute;
+        background-color: rgb(31,36,61);
+        width: 60px;
+        height: 18px;
+        left: 144px;
+        top: 12px;
+        color: white;
+        font-size:8pt;
+    }
+
+    .little-circle-blue {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: rgb(31,36,61);
+        border-radius: 50%;
+        left: 195px;
+        top: 12px;
+    }
+
+    .btn {
+        position: absolute;
+        left: 231px;        
+    }
+
+    .logo {
+        position: absolute;
+        background-image: url(https://i.ibb.co/TKZPVnv/logobmining-Recurso-26-2x.png);
+        top: 101%;
+        left: 300px;
+        height: 33px;
+        width: 33px; 
+    }
+    .line-logo{
+        width: 110%;
+        height: 2px;
+        background-color: white;
+        position: absolute;
+        top:100%;
+        left:0%;
+        
+    }
 }

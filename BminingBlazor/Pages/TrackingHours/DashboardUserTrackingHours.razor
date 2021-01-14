@@ -30,7 +30,6 @@
 
     .calendar {
         font-size: 12pt;
-
     }
 
     .week-header-bmining-button {
@@ -64,7 +63,6 @@
 
     .item-dashboard-border {
         margin: 5px;
-
         border-radius: 4px;
         border-width: 2.5px;
     }
@@ -84,114 +82,9 @@
         overflow: hidden;
         white-space: pre;
     }
-
-    .btn-plus {
-        display: inline-block;
-        border: none;
-        width: 26px;
-        height: 26px;
-        background-image: url(https://i.ibb.co/PxxCtQ3/boton-mas-Recurso-7-2x.png);
-        background-color: transparent;
-        transform: scale(0.75);
-        transform-origin: left;
-    }
-
-    .btn-back {
-        display: inline-block;
-        border: none;
-        width: 26px;
-        height: 26px;
-        background-image: url(https://i.ibb.co/sjzjjft/botonatras-Recurso-16-2x.png);
-        background-color: transparent;
-        transform: scale(0.75);
-        transform-origin: left;
-    }
-
-    .btn-next {
-        display: inline-block;
-        border: none;
-        width: 26px;
-        height: 26px;
-        background-image: url(https://i.ibb.co/BT7N0jK/botonsiguiente-Recurso-17-2x.png);
-        background-color: transparent;
-        transform: scale(0.75);
-        transform-origin: left;
-    }
-
-
-
-
-    .projetc {
-        position:absolute;
-        background-color:white;
-        width:70%;
-        height:30px;
-        left:3%;
-
-    }
-    .circle {
-        position:absolute;
-        width: 5%;
-        height: 30px;
-        background: white;
-        border-radius: 50%;
-        left:1%;
-    }
-  
-    .little-circle {
-        position:absolute;
-        width: 2.5%;
-        height: 18px;
-        background: white;
-        border-radius: 50%;
-        left: 86%;
-        top:12px;
-    }
-    .day {
-        position: absolute;
-        background-color: white;
-        width: 20%;
-        height: 30px;
-        left: 3%;
-        font-weight:700;
-    }
-    .line{
-        position:absolute;
-        background-color:white;
-        width:84%;
-        height:3px;
-        left:3%;
-        top:27px;
-    }
-    .totalhours {
-        position: absolute;
-        background-color: white;
-        width: 14%;
-        height: 15px;
-        left: 73%;
-        top: 12px;
-        color: rgb(31,36,61);
-    }
-    .trackedhours {
-        position: absolute;
-        background-color: rgb(31,36,61);
-        width: 20%;
-        height: 18px;
-        left: 100%;
-        top: 12px;
-        color:white;
-    }
-    .little-circle-blue {
-        position: absolute;
-        width: 3%;
-        height: 18px;
-        background: rgb(31,36,61);
-        border-radius: 50%;
-        left: 119%;
-        top: 12px;
-    }
 </style>
-
+<div class="logo"/>
+<div class="line-logo"/>
 <div class="bmining-app">
 
     @if (IsLoading)
@@ -201,22 +94,20 @@
     else
     {
         <h2 class="header-break">@Resource.DashboardHours</h2>
-        <div class="main-break">
-            <div class="main-circle"></div>
-        </div>
+        
 
         <div class="week-header-container">
 
 
             <div class="week-header-item">
-                <h6 class="m-2">@Resource.Week <h4 class="bmining-button h4">0 @NumberWeek()</h4>@MyStartOfWeek.ToString("d MMMM yyyy")</h6>
+                <h6 class="m-2 txt">@Resource.Week <h4 class="bmining-button h4 txt">0 @NumberWeek()</h4>@MyStartOfWeek.ToString("d MMMM yyyy")</h6>
             </div>
-      
+
 
 
             <div class="week-header-item">
 
-                <button class="btn-back" @onclick="@PreviousWeek">                   
+                <button class="btn-back" @onclick="@PreviousWeek">
                 </button>
 
             </div>
@@ -226,15 +117,14 @@
                 <MatDatePicker @bind-Value="@MySelectedDate" />
             </div>
             <div class="week-header-item">
-                <button class="btn-next" @onclick="@NextWeek">                   
+                <button class="btn-next" @onclick="@NextWeek">
                 </button>
             </div>
 
         </div>
 
-        <div class="alternate1-break">
 
-        </div>
+        <div class="alternate3-break"></div>
 
         <div class="w-100">
             @if (DashboardUserTracking != null)
@@ -244,7 +134,7 @@
                     TotalHours = 0;
                     <div class="col">
                         <div class="d-flex flex-row w-100 justify-content-between">
-                            <div >
+                            <div>
                                 <div class="circle"></div>
                                 <strong><h6 class="day">@weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize().Substring(0, 3)</h6></strong>
                                 <div class="line"></div>
@@ -254,21 +144,23 @@
                                 TotalHours = TotalHours + day.MyTrackedHours;
                             }
 
-                        <div>
+                            <div>
 
-                            <div class=" little-circle"></div>
-                            <strong><h10 class="totalhours">@Resource.Hours : @TotalHours </h10></strong>
+                                <div class=" little-circle"></div>
+                                <strong><h10 class="totalhours">@Resource.Hours : @TotalHours </h10></strong>
 
-                        </div>
+                            </div>
 
                             <div class="d-inline-block">
-                                <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="btn-plus">                                  
+                                <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="btn-plus btn2">
                                 </button>
                             </div>
                         </div>
-                        <div class="list-group">
-                            @foreach (var dayUserTrackingHourItem in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
-                            {
+                        
+
+                        <div class="alternate4-break"></div>
+                        @foreach (var dayUserTrackingHourItem in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
+                        {
                             <div class="item-dashboard-container item-dashboard-border @dayUserTrackingHourItem.MyTrackingStatusClass">
                                 <div class="circle"></div>
                                 <h6 class="projetc">
@@ -279,41 +171,38 @@
                                         <strong><h10 class="trackedhours">@Resource.Hours : @dayUserTrackingHourItem.MyTrackedHours </h10></strong>
                                     </div>
                                 </h6>
-                                
+
                                 <div class="item-dashboard-item w-100">
 
                                 </div>
 
-                                <div class="item-dashboard-item">
-                                    @*<span class="badge badge-primary badge-pill m-1 bg-bmining-info">
-                @dayUserTrackingHourItem.MyTrackedHours
-            </span>*@
-                                   
+                                <div class="btn">
                                     @if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.WaitingForApproval)
                                     {
-                                        <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                            <i class="fa fa-edit"></i>
+                                        <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="btn-edit">
                                         </button>
-                                        <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                            <i class="fa fa-trash"></i>
+                                        <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="btn-delete">
                                         </button>
+
                                     }
                                     else if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.Rejected)
                                     {
-                                        <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                            <i class="fa fa-trash"></i>
+                                        <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="btn-edit">
                                         </button>
                                     }
                                 </div>
+
                             </div>
-                            }
-                        </div>
-                        <div class="alternate3-break"></div>
+                            <div class="alternate3-break"></div>
+
+                        }
                     </div>
+                    <div class="alternate3-break"></div>
+
                 }
             }
 
-            <button @onclick="@CopyLastWeek" class="badge badge-primary badge-pill  bg-bmining-info float-right">@Resource.CopyLastWeek</button>
+            <button @onclick="@CopyLastWeek" class="badge badge-primary badge-pill  bg-bmining-info float-right btn3">@Resource.CopyLastWeek</button>
         </div>
     }
 
@@ -507,9 +396,9 @@
     private int NumberWeek()
     {
         int numberWeek2 = System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(MySelectedDate, System.Globalization.CalendarWeekRule.FirstDay, MySelectedDate.DayOfWeek);
-        int numberWeek1 = System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(MySelectedDate.AddDays(-(MySelectedDate.Day-1)), System.Globalization.CalendarWeekRule.FirstDay, MySelectedDate.DayOfWeek);
+        int numberWeek1 = System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(MySelectedDate.AddDays(-(MySelectedDate.Day - 1)), System.Globalization.CalendarWeekRule.FirstDay, MySelectedDate.DayOfWeek);
         int totalNumberWeeks = numberWeek2 - numberWeek1;
-        if (totalNumberWeeks > 0 && totalNumberWeeks<10)
+        if (totalNumberWeeks > 0 && totalNumberWeeks < 10)
             return totalNumberWeeks;
         if (totalNumberWeeks < 0)
             return numberWeek2;
