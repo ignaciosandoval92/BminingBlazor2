@@ -345,7 +345,7 @@
         PdfActivityRecord oPdfActivityRecord = new PdfActivityRecord();
         JS.InvokeAsync<ActivityRecordViewModel>(
             "savePdf",
-            "prueba.pdf",
+            $"{Model.MyProjectCode}.pdf",
             Convert.ToBase64String(oPdfActivityRecord.Report(Model)));
     }
 

@@ -11,6 +11,9 @@
 @attribute [Authorize(Roles = "Administracion")]
 
 
+
+
+<div class="logo"/>
 <div class="bmining-app">
     <div class="d-flex flex-row w-100 justify-content-between">
         <div class="d-inline-block">
@@ -107,13 +110,11 @@
             </table>
         </div>
     }
-    <div>
+    <div >
 
         @for (int page = 0; page < TotalPage; page++)
         {
             int pageNumber = page;
-
-
             <button class="@SelectedPage(page)" @onclick="@(()=>UpdateList(pageNumber))">@(page+1)</button>
         }
     </div>
@@ -131,7 +132,7 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            PageSize = 5;
+            PageSize = 4;
             _projects = await ProjectDataService.ReadProjects();
             _projectList = _projects.Take(PageSize).ToList();
             TotalPage = (int)Math.Ceiling(_projects.Count() / (decimal)PageSize);

@@ -347,7 +347,7 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #B21A1A;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 767.98px) {
     .alternate3-break {
         width: 100%;
         height: 10px;
@@ -496,9 +496,9 @@ h1, h2, h3, h4, h5, h6 {
         top: 12px;
     }
 
-    .btn {
+    .bttn {
         position: absolute;
-        left: 513px;
+        left: 523px;
     }
     .btn2{
         position:absolute;
@@ -516,10 +516,12 @@ h1, h2, h3, h4, h5, h6 {
         left: 73%;
         height: 266px;
         width: 356px;
+        z-index:-1;
+       
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767.98px) {
     .alternate3-break {
         width: 100%;
         height: 10px;
@@ -678,7 +680,7 @@ h1, h2, h3, h4, h5, h6 {
         top: 12px;
     }
 
-    .btn {
+    .bttn {
         position: absolute;
         left: 231px;        
     }
@@ -700,4 +702,12 @@ h1, h2, h3, h4, h5, h6 {
         left:0%;
         
     }
+        
+}
+.icon-calendar {
+    background-image: url(https://i.ibb.co/GpQzssx/calendario-Recurso-28-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat:no-repeat;
+    background-size:20px 20px;
 }
