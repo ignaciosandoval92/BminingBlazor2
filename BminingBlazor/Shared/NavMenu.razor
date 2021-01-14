@@ -35,52 +35,52 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> @Resource.Home
+                <span class="oi icon-home" aria-hidden="true"></span> @Resource.Home
             </NavLink>
         </li>
 
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="ViewUsers">
-                <span class="oi oi-people"></span>@Resource.Users
+                <span class="oi icon-user"></span>@Resource.Users
             </NavLink>
         </li>
 
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="ViewProject">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> @Resource.Projects
+                <span class="oi icon-projects" aria-hidden="true"></span> @Resource.Projects
             </NavLink>
         </li>
 
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="AddClient">
-                <span class="oi oi-plus" aria-hidden="true"></span> @Resource.AddClient
+                <span class="oi icon-plus" aria-hidden="true"></span> @Resource.AddClient
             </NavLink>
         </li>
 
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="/Reports">
-                <span class="oi oi-document" aria-hidden="true"></span> @Resource.Report
+                <span class="oi icon-report" aria-hidden="true"></span> @Resource.Report
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="/dashboard_tracking_hours">
-                <div class=" oi icon-calendar" aria-hidden="true"></div> @Resource.DashboardHours
+                <span class=" oi icon-calendar" aria-hidden="true"></span> @Resource.DashboardHours
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="SecurityReflection">
-                <span class="oi oi-info" aria-hidden="true"></span> @Resource.SecurityReflection
+                <span class="oi icon-info" aria-hidden="true"></span> @Resource.SecurityReflection
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link pointer-hover" @onclick="() => _expandAuditHours = !_expandAuditHours">
                 @if (!_expandAuditHours)
                 {
-                    <span class="oi oi-caret-right" aria-hidden="true"></span>
+                    <span class="oi icon-arrow" aria-hidden="true"></span>
                 }
                 else
                 {
-                    <span class="oi oi-caret-bottom" aria-hidden="true"></span>
+                    <span class="oi icon-arrowselect" aria-hidden="true"></span>
                 }
                 @Resource.AuditHours
             </NavLink>
@@ -100,11 +100,11 @@
             <NavLink class="nav-link pointer-hover" @onclick="() => _expandActivityRecord = !_expandActivityRecord">
                 @if (!_expandActivityRecord)
                 {
-                    <span class="oi oi-caret-right" aria-hidden="true"></span>
+                    <span class="oi icon-arrow" aria-hidden="true"></span>
                 }
                 else
                 {
-                    <span class="oi oi-caret-bottom" aria-hidden="true"></span>
+                    <span class="oi icon-arrowselect" aria-hidden="true"></span>
                 }
                 @Resource.ActivityRecord
             </NavLink>
@@ -131,11 +131,11 @@
             <AuthorizeView>
                 <Authorized>
                     <NavLink class="nav-link">
-                        <span class="oi oi-person" aria-hidden="true"></span>
+                        <span class="oi icon-user" aria-hidden="true"></span>
                         @context.User.Identity.Name
                     </NavLink>
                     <NavLink class="nav-link" href="AzureAD/Account/SignOut">
-                        <span class="oi oi-account-logout" aria-hidden="true"></span>
+                        <span class="oi icon-logout" aria-hidden="true"></span>
                         @Resource.LogOut
                     </NavLink>
                 </Authorized>

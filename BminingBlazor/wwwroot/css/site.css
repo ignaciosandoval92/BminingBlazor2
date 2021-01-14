@@ -711,3 +711,66 @@ h1, h2, h3, h4, h5, h6 {
     background-repeat:no-repeat;
     background-size:20px 20px;
 }
+.icon-user {
+    background-image: url(https://i.ibb.co/3pY8531/user-Recurso-8-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+.icon-plus {
+    background-image: url(https://i.ibb.co/2K5ztdp/agregar-Recurso-4-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+.icon-logout {
+    background-image: url(https://i.ibb.co/CVKbk8Y/logout-Recurso-7-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+.icon-report {
+    background-image: url(https://i.ibb.co/Qc5PvcX/reporte-Recurso-8-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+.icon-arrow {
+    background-image: url(https://i.ibb.co/kDXKqfY/flecha-Recurso-6-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+.icon-home {
+    background-image: url(https://i.ibb.co/vkxz1RP/home-Recurso-5-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+.icon-info {
+    background-image: url(https://i.ibb.co/rtXqp4D/seguridad-Recurso-10-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+.icon-projects {
+    background-image: url(https://i.ibb.co/Brnp1Qd/proyectos-Recurso-10-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+.icon-arrowselect {
+    background-image: url(https://i.ibb.co/1fRp2rZ/flecha-abajo-Recurso-10-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
