@@ -361,28 +361,30 @@ h1, h2, h3, h4, h5, h6 {
         margin: 4px;
     }
 
-    
+
 
     .btn-plus {
         display: inline-block;
         border: none;
         width: 26px;
         height: 26px;
-        background-image: url(https://i.ibb.co/PxxCtQ3/boton-mas-Recurso-7-2x.png);
+        background-image: url(https://i.ibb.co/QJtjZY4/boton-mas-Recurso-5-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
+        background-size:26px 26px;
     }
 
     .btn-edit {
         display: inline-block;
         border: none;
-        width: 25px;
+        width: 26px;
         height: 26px;
-        background-image: url(https://i.ibb.co/m86WHzt/edit-Recurso-20-2x.png);
+        background-image: url(https://i.ibb.co/7S7GZsL/editar-Recurso-5-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
+        background-size:26px 26px;
     }
 
     .btn-delete {
@@ -390,10 +392,11 @@ h1, h2, h3, h4, h5, h6 {
         border: none;
         width: 25px;
         height: 26px;
-        background-image: url(https://i.ibb.co/47Csx0K/delete-Recurso-21-2x.png);
+        background-image: url(https://i.ibb.co/CQ4wFHS/delete-Recurso-6-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
+        background-size:25px 26px;
     }
 
     .btn-back {
@@ -401,10 +404,11 @@ h1, h2, h3, h4, h5, h6 {
         border: none;
         width: 26px;
         height: 26px;
-        background-image: url(https://i.ibb.co/sjzjjft/botonatras-Recurso-16-2x.png);
+        background-image: url(https://i.ibb.co/28jq3rW/back-Recurso-7-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
+        background-size:26px 26px;
     }
 
     .btn-next {
@@ -412,10 +416,11 @@ h1, h2, h3, h4, h5, h6 {
         border: none;
         width: 26px;
         height: 26px;
-        background-image: url(https://i.ibb.co/BT7N0jK/botonsiguiente-Recurso-17-2x.png);
+        background-image: url(https://i.ibb.co/xfSfm1p/next-Recurso-8-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
+        background-size:26px 26px;
     }
 
 
@@ -498,7 +503,7 @@ h1, h2, h3, h4, h5, h6 {
 
     .bttn {
         position: absolute;
-        left: 523px;
+        left: 525px;
     }
     .btn2{
         position:absolute;
@@ -550,32 +555,35 @@ h1, h2, h3, h4, h5, h6 {
         border: none;
         width: 26px;
         height: 26px;
-        background-image: url(https://i.ibb.co/PxxCtQ3/boton-mas-Recurso-7-2x.png);
+        background-image: url(https://i.ibb.co/QJtjZY4/boton-mas-Recurso-5-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
+        background-size: 26px 26px;
     }
 
     .btn-edit {
         display: inline-block;
         border: none;
-        width: 25px;
+        width: 26px;
         height: 26px;
-        background-image: url(https://i.ibb.co/m86WHzt/edit-Recurso-20-2x.png);
+        background-image: url(https://i.ibb.co/7S7GZsL/editar-Recurso-5-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
+        background-size: 26px 26px;
     }
 
     .btn-delete {
         display: inline-block;
         border: none;
-        width: 24px;
+        width: 25px;
         height: 26px;
-        background-image: url(https://i.ibb.co/47Csx0K/delete-Recurso-21-2x.png);
+        background-image: url(https://i.ibb.co/CQ4wFHS/delete-Recurso-6-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
+        background-size: 25px 26px;
     }
 
     .btn-back {
@@ -583,10 +591,11 @@ h1, h2, h3, h4, h5, h6 {
         border: none;
         width: 26px;
         height: 26px;
-        background-image: url(https://i.ibb.co/sjzjjft/botonatras-Recurso-16-2x.png);
+        background-image: url(https://i.ibb.co/28jq3rW/back-Recurso-7-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
+        background-size: 26px 26px;
     }
 
     .btn-next {
@@ -594,10 +603,11 @@ h1, h2, h3, h4, h5, h6 {
         border: none;
         width: 26px;
         height: 26px;
-        background-image: url(https://i.ibb.co/BT7N0jK/botonsiguiente-Recurso-17-2x.png);
+        background-image: url(https://i.ibb.co/xfSfm1p/next-Recurso-8-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
+        background-size: 26px 26px;
     }
 
 
@@ -755,10 +765,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 .icon-info {
     background-image: url(https://i.ibb.co/rtXqp4D/seguridad-Recurso-10-4x.png);
-    width: 20px;
+    width: 18px;
     height: 20px;
     background-repeat: no-repeat;
-    background-size: 20px 20px;
+    background-size: 18px 20px;
 }
 .icon-projects {
     background-image: url(https://i.ibb.co/Brnp1Qd/proyectos-Recurso-10-4x.png);
