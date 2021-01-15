@@ -7,114 +7,109 @@
 @inject IMatDialogService MatDialogService
 @attribute [Authorize(Roles = "AdminRRHH,Administracion")]
 
-    <div class="logo" />
-<div class="bmining-app">
-    <div class="d-flex flex-row w-100 justify-content-between">
-        <div class="d-inline-block">
-            <h2>@Resource.Users</h2>
+<div class="logo" />
+<hr style="position:absolute;border:none;border-top:5px dashed white; width:530px; left:250px;top:40px"  />
+    <div class="bmining-app">
+        <div class="d-flex flex-row w-100 justify-content-between">
+            <div class="d-inline-block">
+                <h2>@Resource.Users</h2>
+            </div>
+            <div class="d-inline-block">
+                <button @onclick="NewUser" class="btn-plus">
+                </button>
+            </div>
         </div>
-        <div class="d-inline-block">
-            <button @onclick="NewUser" class="bmining-btn-icon">
-                <i class="fa fa-plus"></i>
-            </button>
-        </div>
-    </div>
 
-    <div class="main-break">
-        <div class="main-circle">
-        </div>
-    </div>
-    @if (_users == null)
-    {
-        <MatProgressBar Indeterminate="true"></MatProgressBar>
-    }
-    else
-    {
-        <div class="table-responsive{-sm|-md|-lg|-xl}">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>@Resource.Email</th>
-                        <th>@Resource.Names</th>
-                        <th>@Resource.Surname</th>
-                        <th>@Resource.Job</th>
-                        <th>@Resource.ContractType</th>
-                        <th>@Resource.Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var user in _users)
-                    {
-                        <tr>
-                            <td>@user.MyEmail</td>
-                            <td>@user.MyName</td>
-                            <td>@user.MyPaternalSurname</td>
-                            <td>@user.MyJob</td>
-                            <td>
-                                @switch (user.MyContractType)
-                                {
-                                    case ContractTypeEnum.Unknown:
-                                        @Resource.Unknown
-                                        break;
-                                    case ContractTypeEnum.IndefiniteContract:
-                                        @Resource.IndefiniteContract
-                                        break;
-                                    case ContractTypeEnum.FixedTermContract:
-                                        @Resource.FixedTermContract
-                                        break;
-                                    case ContractTypeEnum.ExternalConsultant:
-                                        @Resource.ExternalConsultant
-                                        break;
-                                    case ContractTypeEnum.ExternalEnterprise:
-                                        @Resource.ExternalEnterprise
-                                        break;
-                                }
-                            </td>
-                        <td>
-                            <button class="bmining-btn-icon" @onclick=@(() => EditCallback(user.MyId))>
-                                <i class="fa fa-edit"></i>
-                            </button>
-                            <button class="bmining-btn-icon bg-bmining-error" @onclick=@(() => Delete(user.MyId))>
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        </div>
-    }
-</div>
-@code {
-    private List<UserViewModel> _users;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
+        @if (_users == null)
         {
-            _users = await UserDataService.ReadUsers();
-            StateHasChanged();
+            <MatProgressBar Indeterminate="true"></MatProgressBar>
+        }
+        else
+        {
+            <div class="table-responsive{-sm|-md|-lg|-xl}">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>@Resource.Email</th>
+                            <th>@Resource.Names</th>
+                            <th>@Resource.Surname</th>
+                            <th>@Resource.Job</th>
+                            <th>@Resource.ContractType</th>
+                            <th>@Resource.Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in _users)
+                        {
+                            <tr>
+                                <td>@user.MyEmail</td>
+                                <td>@user.MyName</td>
+                                <td>@user.MyPaternalSurname</td>
+                                <td>@user.MyJob</td>
+                                <td>
+                                    @switch (user.MyContractType)
+                                    {
+                                        case ContractTypeEnum.Unknown:
+                                            @Resource.Unknown
+                                            break;
+                                        case ContractTypeEnum.IndefiniteContract:
+                                            @Resource.IndefiniteContract
+                                            break;
+                                        case ContractTypeEnum.FixedTermContract:
+                                            @Resource.FixedTermContract
+                                            break;
+                                        case ContractTypeEnum.ExternalConsultant:
+                                            @Resource.ExternalConsultant
+                                            break;
+                                        case ContractTypeEnum.ExternalEnterprise:
+                                            @Resource.ExternalEnterprise
+                                            break;
+                                    }
+                                </td>
+                                <td>
+                                    <button class="btn-edit" @onclick=@(() => EditCallback(user.MyId))>
+                                    </button>
+                                    <button class="btn-delete" @onclick=@(() => Delete(user.MyId))>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+    @code {
+        private List<UserViewModel> _users;
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+            if (firstRender)
+            {
+                _users = await UserDataService.ReadUsers();
+                StateHasChanged();
+            }
+        }
+
+        private void NewUser()
+        {
+            NavigationManager.NavigateTo("/CreateUser");
+        }
+
+        private async void Delete(int id)
+        {
+            var answer = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
+            if (!answer)
+                return;
+            await UserDataService.DeleteUser(id);
+            NavigationManager.NavigateTo("ViewUsers", true);
+
+        }
+
+        private void EditCallback(int id)
+        {
+            NavigationManager.NavigateTo($"EditUser/{id}");
         }
     }
-
-    private void NewUser()
-    {
-        NavigationManager.NavigateTo("/CreateUser");
-    }
-
-    private async void Delete(int id)
-    {
-        var answer = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
-        if (!answer)
-            return;
-        await UserDataService.DeleteUser(id);
-        NavigationManager.NavigateTo("ViewUsers", true);
-
-    }
-
-    private void EditCallback(int id)
-    {
-        NavigationManager.NavigateTo($"EditUser/{id}");
-    }
-}

@@ -514,16 +514,7 @@ h1, h2, h3, h4, h5, h6 {
         left: 1210px;
     }
 
-    .logo {
-        position: absolute;
-        background-image: url(https://i.ibb.co/RcCBYP8/logo-LRecurso-24-2x.png);
-        top: 62%;
-        left: 73%;
-        height: 266px;
-        width: 356px;
-        z-index:-1;
-       
-    }
+  
 }
 
 @media (max-width: 767.98px) {
