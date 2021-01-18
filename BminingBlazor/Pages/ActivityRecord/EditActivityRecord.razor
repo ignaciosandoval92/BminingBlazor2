@@ -256,7 +256,7 @@
             StateHasChanged();
             await Task.Delay(1000); // Delay for Quill
             await _quillNotesHtml.LoadHTMLContent(ViewModel.MyNotes);
-            await _quillSecurityReflectionHtml.LoadHTMLContent(ViewModel.MySecurityReflection);            
+            await _quillSecurityReflectionHtml.LoadHTMLContent(ViewModel.MySecurityReflection);
         }
     }
 
@@ -331,6 +331,7 @@
         ViewModel.MyNotes = await _quillNotesHtml.GetHTML();
         ViewModel.MySecurityReflection = await _quillSecurityReflectionHtml.GetHTML();
         await ActivityRecordService.EditActivityRecord(ViewModel);
+        await MatDialogService.AlertAsync(Resource.Saved);       
 
     }
 

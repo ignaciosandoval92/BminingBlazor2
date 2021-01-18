@@ -510,4 +510,7 @@
   <data name="ViewCommitments" xml:space="preserve">
     <value>Ver Compromisos</value>
   </data>
+  <data name="Saved" xml:space="preserve">
+    <value>Guardado</value>
+  </data>
 </root>

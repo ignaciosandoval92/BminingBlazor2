@@ -1042,6 +1042,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Saved.
+        /// </summary>
+        internal static string Saved {
+            get {
+                return ResourceManager.GetString("Saved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Search.
         /// </summary>
         internal static string Search {
