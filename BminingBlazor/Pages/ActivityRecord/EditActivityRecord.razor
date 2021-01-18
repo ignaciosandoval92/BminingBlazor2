@@ -23,46 +23,46 @@
 
     @if (ViewModel != null)
     {
-    <div>
+<div>
 
-        <div class="col">
-            <div class="d-flex flex-row w-100 justify-content-between">
-                <div class="float-left">
-                    <h5 class="font-weight-bold">@ViewModel.MyProjectCode</h5>
-                </div>
-                <div class="float-right">
-                    <h5 class="font-weight-bold">@ViewModel.MyProjectName</h5>
-                </div>
+    <div class="col">
+        <div class="d-flex flex-row w-100 justify-content-between">
+            <div class="float-left">
+                <h5 class="font-weight-bold">@ViewModel.MyProjectCode</h5>
+            </div>
+            <div class="float-right">
+                <h5 class="font-weight-bold">@ViewModel.MyProjectName</h5>
             </div>
         </div>
+    </div>
 
-        <div class="form-group">
-            <label for="title">@Resource.Title</label>
-            <input class="form-control" type="text" id="title" @bind-value="@ViewModel.MyTitle" />
-        </div>
+    <div class="form-group">
+        <label for="title">@Resource.Title</label>
+        <input class="form-control" type="text" id="title" @bind-value="@ViewModel.MyTitle" />
+    </div>
 
-        <div class="form-group">
-            <label for="date">@Resource.Date</label>
-            <input class="form-control" type="date" id="date" @bind-value="@ViewModel.MyDate" />
-        </div>
+    <div class="form-group">
+        <label for="date">@Resource.Date</label>
+        <input class="form-control" type="date" id="date" @bind-value="@ViewModel.MyDate" />
+    </div>
 
-        <div class="form-group">
-            <label for="duration">@Resource.DurationHours</label>
-            <input class="form-control" step="0.1" type="number" id="duration" @bind-value="@ViewModel.MyDurationHours" />
-        </div>
+    <div class="form-group">
+        <label for="duration">@Resource.DurationHours</label>
+        <input class="form-control" step="0.1" type="number" id="duration" @bind-value="@ViewModel.MyDurationHours" />
+    </div>
 
-        <div class="form-group">
-            <label for="place">@Resource.Place</label>
-            <input class="form-control" type="text" id="place" @bind-value="@ViewModel.MyPlace" />
-        </div>
+    <div class="form-group">
+        <label for="place">@Resource.Place</label>
+        <input class="form-control" type="text" id="place" @bind-value="@ViewModel.MyPlace" />
+    </div>
 
-        <div class="d-flex justify-content-between">
-            <h4>@Resource.Members</h4>
-            <button class="btn-plus" @onclick="@AddMember">                
-            </button>
-        </div>
-        @if (ViewModel.OurMembers.Any())
-            {
+    <div class="d-flex justify-content-between">
+        <h4>@Resource.Members</h4>
+        <button class="btn-plus" @onclick="@AddMember">
+        </button>
+    </div>
+    @if (ViewModel.OurMembers.Any())
+    {
         <table>
             <tr>
                 <th>@Resource.Name</th>
@@ -72,33 +72,33 @@
             </tr>
 
             @foreach (var activityRecordMember in ViewModel.OurMembers)
-                    {
-            <tr>
-                <td>
-                    @($"{activityRecordMember.MyName} {activityRecordMember.MySurname}")
-                </td>
-                <td>
-                    @activityRecordMember.MyEmail
-                </td>
-                <td>
-                    @activityRecordMember.MyEnterprise
-                </td>
-                <td class="text-center">
-                    <button @onclick="() => RemoveMember(activityRecordMember)" class="btn-delete">            
-                    </button>
-                </td>
-            </tr>
-                    }
-        </table>
-            }
-
-        <div class="d-flex justify-content-between">
-            <h4>@Resource.Commitments</h4>
-            <button class="btn-plus" @onclick="@AddCommitment">                
-            </button>
-        </div>
-        @if (ViewModel.OurCommitments.Any())
             {
+                <tr>
+                    <td>
+                        @($"{activityRecordMember.MyName} {activityRecordMember.MySurname}")
+                    </td>
+                    <td>
+                        @activityRecordMember.MyEmail
+                    </td>
+                    <td>
+                        @activityRecordMember.MyEnterprise
+                    </td>
+                    <td class="text-center">
+                        <button @onclick="() => RemoveMember(activityRecordMember)" class="btn-delete">
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+
+    <div class="d-flex justify-content-between">
+        <h4>@Resource.Commitments</h4>
+        <button class="btn-plus" @onclick="@AddCommitment">
+        </button>
+    </div>
+    @if (ViewModel.OurCommitments.Any())
+    {
         <div>
             <table>
                 <tr>
@@ -110,50 +110,51 @@
                 </tr>
 
                 @foreach (var activityRecordCommitment in ViewModel.OurCommitments)
-                        {
-                <tr>
-                    <td>
-                        @($"{activityRecordCommitment.MyResponsible}")
-                    </td>
-                    <td>
-                        @($"{activityRecordCommitment.MyCommitmentDate.ToShortDateString()}")
-                    </td>
-                    <td>
-                        @($"{activityRecordCommitment.MyCommitment}")
-                    </td>
-                    <td>                       
-                        @switch (activityRecordCommitment.MyStatus)
-                        {
-                            case ActivityRecordStatusEnum.Initiated:
-                                @Resource.Initiated
-                                break;
-                            case ActivityRecordStatusEnum.Finalized:
-                                @Resource.Finished
-                                break;
-                            case ActivityRecordStatusEnum.Unknown:
-                                @Resource.Unknown
-                                break;
-                            case ActivityRecordStatusEnum.Eliminated:
-                                @Resource.Eliminated
-                                break;
-                            case ActivityRecordStatusEnum.NotInitiated:
-                                @Resource.NotInitiated
-                                break;
-                        }
-                    </td>
-                    <td class="text-center">
-                        <button @onclick="()=>EditStatus(activityRecordCommitment.MyId)" class="btn-edit">                          
-                        </button>
-                        <button @onclick="() => RemoveCommitment(activityRecordCommitment)" class="btn-delete">                          
-                        </button>
-                    </td>
-                </tr>
-                        }
+                {
+                    <tr>
+                        <td>
+                            @($"{activityRecordCommitment.MyResponsible}")
+                        </td>
+                        <td>
+                            @($"{activityRecordCommitment.MyCommitmentDate.ToShortDateString()}")
+                        </td>
+                        <td>
+                            @($"{activityRecordCommitment.MyCommitment}")
+                        </td>
+                        <td>
+                            @switch (activityRecordCommitment.MyStatus)
+                            {
+                                case ActivityRecordStatusEnum.Initiated:
+                                    @Resource.Initiated
+                                    break;
+                                case ActivityRecordStatusEnum.Finalized:
+                                    @Resource.Finished
+                                    break;
+                                case ActivityRecordStatusEnum.Unknown:
+                                    @Resource.Unknown
+                                    break;
+                                case ActivityRecordStatusEnum.Eliminated:
+                                    @Resource.Eliminated
+                                    break;
+                                case ActivityRecordStatusEnum.NotInitiated:
+                                    @Resource.NotInitiated
+                                    break;
+                            }
+                        </td>
+                        <td class="text-center">
+                            <button @onclick="()=>EditStatus(activityRecordCommitment.MyId)" class="btn-edit">
+                            </button>
+                            <button @onclick="() => RemoveCommitment(activityRecordCommitment)" class="btn-delete">
+                            </button>
+                        </td>
+                    </tr>
+                }
             </table>
         </div>
-            }
+    }
 
-        <h4>@Resource.SecurityReflection</h4>
+    <h4>@Resource.SecurityReflection</h4>
+    <div style="background-color:white">
         <BlazoredTextEditor @ref="@_quillSecurityReflectionHtml" Placeholder="">
             <ToolbarContent>
                 <select class="ql-header ">
@@ -185,8 +186,10 @@
             <EditorContent>
             </EditorContent>
         </BlazoredTextEditor>
+    </div>
 
-        <h4>@Resource.Notes</h4>
+    <h4>@Resource.Notes</h4>
+    <div style="background-color:white">
         <BlazoredTextEditor @ref="@_quillNotesHtml" Placeholder="">
             <ToolbarContent>
                 <select class="ql-header">
@@ -214,15 +217,16 @@
                 <span class="ql-formats">
                     <button class="ql-link"></button>
                 </span>
-            </ToolbarContent >
-            
-                <EditorContent>
+            </ToolbarContent>
 
-                </EditorContent>
-            
+            <EditorContent>
+
+            </EditorContent>
+
         </BlazoredTextEditor>
-        <asp:HiddenField ID="html" runat="server"></asp:HiddenField>
     </div>
+    <asp:HiddenField ID="html" runat="server"></asp:HiddenField>
+</div>
     <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="Save">@Resource.Save</button>
     <button class="btn-download float-right" @onclick="@ExportToPdf">       
     </button>
@@ -252,7 +256,7 @@
             StateHasChanged();
             await Task.Delay(1000); // Delay for Quill
             await _quillNotesHtml.LoadHTMLContent(ViewModel.MyNotes);
-            await _quillSecurityReflectionHtml.LoadHTMLContent(ViewModel.MySecurityReflection);
+            await _quillSecurityReflectionHtml.LoadHTMLContent(ViewModel.MySecurityReflection);            
         }
     }
 
