@@ -25,10 +25,7 @@
 
 
 <div class="bmining-app">
-    <h2 class="header-break">@Resource.DashboardProjectManager</h2>
-    <div class="main-break">
-        <div class="main-circle"></div>
-    </div>
+    <h2 class="header-break">@Resource.DashboardProjectManager</h2>    
 
     @if (ViewModel != null)
     {
@@ -57,11 +54,9 @@
                             @projectManagerTrackingHoursProjectMember.DateOfHours.ToLongDateString()
                         </td>
                         <td class="text-center">
-                            <button @onclick="() => RejectHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon bg-bmining-error">
-                                <i class="fa fa-thumbs-down"></i>
+                            <button @onclick="() => RejectHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="btn-disapproved float-left" >                              
                             </button>
-                            <button @onclick="() => ApproveHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="bmining-btn-icon">
-                                <i class="fa fa-thumbs-up"></i>
+                            <button @onclick="() => ApproveHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="btn-approved">                                
                             </button>
                         </td>
                     </tr>

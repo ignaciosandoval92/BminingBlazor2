@@ -14,10 +14,7 @@
 
 <div class="bmining-app">
     <h2>@Resource.ProjectManager</h2>
-    <div class="main-circle">
-        <div class="main-circle">
-        </div>
-    </div>
+ 
     @if (_boss == null)
     {
         <MatProgressBar Indeterminate="true" />
@@ -73,15 +70,15 @@
                             <td>@member.MyMaternalSurname</td>
                             <td>@member.MyRut</td>
                             <td>
-                                <button class="bmining-btn-icon bg-bmining-error" @onclick="()=>Delete(member.MyCodMember)">
-                                    <i class="fa fa-trash"></i>
+                                <button class="btn-delete" @onclick="()=>Delete(member.MyCodMember)">
+                                    
                                 </button>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-            <button class="bmining-button float-right" @onclick="@AddMember">@Resource.AddMember</button>
+            <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="@AddMember">@Resource.AddMember</button>
         </div>
     }
 </div>

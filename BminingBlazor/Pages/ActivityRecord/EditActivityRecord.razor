@@ -19,9 +19,7 @@
 
 <div class="bmining-app">
     <h2>@Resource.EditActivityRecord</h2>
-    <div class="main-break">
-        <div class="main-circle"></div>
-    </div>
+   
 
     @if (ViewModel != null)
     {
@@ -60,8 +58,7 @@
 
         <div class="d-flex justify-content-between">
             <h4>@Resource.Members</h4>
-            <button class="bmining-btn-icon" @onclick="@AddMember">
-                <i class="fa fa-plus"></i>
+            <button class="btn-plus" @onclick="@AddMember">                
             </button>
         </div>
         @if (ViewModel.OurMembers.Any())
@@ -87,8 +84,7 @@
                     @activityRecordMember.MyEnterprise
                 </td>
                 <td class="text-center">
-                    <button @onclick="() => RemoveMember(activityRecordMember)" class="bmining-btn-icon bg-bmining-error">
-                        <i class="fa fa-trash"></i>
+                    <button @onclick="() => RemoveMember(activityRecordMember)" class="btn-delete">            
                     </button>
                 </td>
             </tr>
@@ -98,8 +94,7 @@
 
         <div class="d-flex justify-content-between">
             <h4>@Resource.Commitments</h4>
-            <button class="bmining-btn-icon" @onclick="@AddCommitment">
-                <i class="fa fa-plus"></i>
+            <button class="btn-plus" @onclick="@AddCommitment">                
             </button>
         </div>
         @if (ViewModel.OurCommitments.Any())
@@ -147,11 +142,9 @@
                         }
                     </td>
                     <td class="text-center">
-                        <button @onclick="()=>EditStatus(activityRecordCommitment.MyId)" class="bmining-btn-icon bg-bmining-">
-                            <i class="fa fa-edit"></i>
+                        <button @onclick="()=>EditStatus(activityRecordCommitment.MyId)" class="btn-edit">                          
                         </button>
-                        <button @onclick="() => RemoveCommitment(activityRecordCommitment)" class="bmining-btn-icon bg-bmining-error">
-                            <i class="fa fa-trash"></i>
+                        <button @onclick="() => RemoveCommitment(activityRecordCommitment)" class="btn-delete">                          
                         </button>
                     </td>
                 </tr>
@@ -163,7 +156,7 @@
         <h4>@Resource.SecurityReflection</h4>
         <BlazoredTextEditor @ref="@_quillSecurityReflectionHtml" Placeholder="">
             <ToolbarContent>
-                <select class="ql-header">
+                <select class="ql-header ">
                     <option selected=""></option>
                     <option value="1"></option>
                     <option value="2"></option>
@@ -221,15 +214,17 @@
                 <span class="ql-formats">
                     <button class="ql-link"></button>
                 </span>
-            </ToolbarContent>
-            <EditorContent>
-            </EditorContent>
+            </ToolbarContent >
+            
+                <EditorContent>
+
+                </EditorContent>
+            
         </BlazoredTextEditor>
         <asp:HiddenField ID="html" runat="server"></asp:HiddenField>
     </div>
-    <button class="bmining-button float-right" @onclick="Save">@Resource.Save</button>
-    <button class="bmining-btn-icon float-right" @onclick="@ExportToPdf">
-        <i class="oi oi-arrow-bottom"></i>
+    <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="Save">@Resource.Save</button>
+    <button class="btn-download float-right" @onclick="@ExportToPdf">       
     </button>
     }
     else

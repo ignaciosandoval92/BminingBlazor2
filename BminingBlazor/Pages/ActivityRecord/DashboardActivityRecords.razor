@@ -11,16 +11,10 @@
             <h2>@Resource.ActivityRecords</h2>
         </div>
         <div class="d-inline-block">
-            <button @onclick="Create" class="bmining-btn-icon">
-                <i class="fa fa-plus"></i>
+            <button @onclick="Create" class="btn-plus">              
             </button>
         </div>
-    </div>
-
-
-    <div class="main-break">
-        <div class="main-circle"></div>
-    </div>
+    </div>  
 
 
     @if (ViewModel != null)
@@ -50,21 +44,18 @@
                 <td class="text-center">
                     @if (dashboardActivityRecordItem.CanView)
                     {
-                        <button @onclick="() => View(dashboardActivityRecordItem)" class="bmining-btn-icon">
-                            <i class="fa fa-eye"></i>
+                        <button @onclick="() => View(dashboardActivityRecordItem)" class="btn-view">                         
                         </button>
                     }
 
                     @if (dashboardActivityRecordItem.CanEdit)
                     {
-                        <button @onclick="() => Edit(dashboardActivityRecordItem)" class="bmining-btn-icon">
-                            <i class="fa fa-edit"></i>
+                        <button @onclick="() => Edit(dashboardActivityRecordItem)" class="btn-edit">                          
                         </button>
                     }
                     @if (dashboardActivityRecordItem.CanDelete)
                     {
-                        <button @onclick="() => Remove(dashboardActivityRecordItem)" class="bmining-btn-icon bg-bmining-error">
-                            <i class="fa fa-trash"></i>
+                        <button @onclick="() => Remove(dashboardActivityRecordItem)" class="btn-delete">                           
                         </button>
                     }
                 </td>

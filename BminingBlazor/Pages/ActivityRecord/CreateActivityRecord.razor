@@ -11,10 +11,7 @@
 
 <div class="bmining-app">
     <h2>@Resource.CreateActivityRecord</h2>
-    <div class="main-break">
-        <div class="main-circle">
-        </div>
-    </div>
+   
     @if (IsLoading)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
@@ -40,7 +37,7 @@
                 </select>
             }
         </div>
-        <button class="bmining-button float-right" @onclick="Create">@Resource.Create</button>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="Create">@Resource.Create</button>
     }
 </div>
 

@@ -17,9 +17,7 @@
 <div class="bmining-app">
 
     <h2>@Resource.CreateProject</h2>
-    <div class="main-break">
-        <div class="main-circle"></div>
-    </div>
+
     @if (_clients != null && _users != null)
     {
         <div class="container">
@@ -123,8 +121,7 @@
         <div>
             <div class="d-flex justify-content-between">
                 <h4>@Resource.PaymentStatus</h4>
-                <button class="bmining-btn-icon" @onclick="AddPaymentStatusCallback">
-                    <i class="fa fa-plus"></i>
+                <button class="btn-plus" @onclick="AddPaymentStatusCallback">
                 </button>
             </div>
             @if (_paymentStatusItems.Any())
@@ -152,8 +149,7 @@
                                     <input class="w-100" @bind="@paymentStatus.InvoiceExpirationDate" />
                                 </td>
                                 <td>
-                                    <button class="bmining-btn-icon" @onclick="() => DeletePaymentStatus(paymentStatus)">
-                                        <i class="fa fa-trash"></i>
+                                    <button class="btn-delete" @onclick="() => DeletePaymentStatus(paymentStatus)">
                                     </button>
                                 </td>
                             </tr>
@@ -166,8 +162,7 @@
         <div>
             <div class="d-flex justify-content-between">
                 <h4>@Resource.Members</h4>
-                <button class="bmining-btn-icon" @onclick="AddMembersProjectCallback">
-                    <i class="fa fa-plus"></i>
+                <button class="btn-plus" @onclick="AddMembersProjectCallback">
                 </button>
             </div>
             @if (_membersProjectItems.Any())
@@ -197,10 +192,8 @@
                                 <td>
                                     <input type="number" step="0.1" class="w-100" @bind="@membersProject.MyProjectHours" />
                                 </td>
-
                                 <td>
-                                    <button class="bmining-btn-icon" Type="button" @onclick="()=>DeleteMembersProject(membersProject)">
-                                        <i class="fa fa-trash"></i>
+                                    <button class="btn-delete" Type="button" @onclick="()=>DeleteMembersProject(membersProject)">
                                     </button>
                                 </td>
                             </tr>
@@ -209,7 +202,7 @@
                 </table>
             }
         </div>
-        <button class="bmining-button float-right" @onclick=@InsertProject>@Resource.Create </button>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick=@InsertProject>@Resource.Create </button>
     }
     else
     {
@@ -275,7 +268,7 @@
     private async Task InsertProject()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User.Identity.Name;       
+        var user = authState.User.Identity.Name;
         var creatorId = await UserDataService.GetUserId(user);
         var project = new ProjectViewModel
         {

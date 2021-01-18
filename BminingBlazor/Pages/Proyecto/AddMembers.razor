@@ -10,16 +10,14 @@
 
 <div class="bmining-app">
     <h2>@Resource.Members</h2>
-    <div class="main-break">
-        <div class="main-circle"></div>
-    </div>
+   
 
 
     @if (_users != null)
     {
         <div>
-            <button class="bmining-btn-icon" @onclick="AddMembersProjectCallback">
-                <i class="fa fa-plus"></i>
+            <button class="btn-plus" @onclick="AddMembersProjectCallback">
+                
             </button>
 
             <table>
@@ -46,8 +44,8 @@
                             </td>
                             <td><input type="number" step="0.1" @bind="@membersProject.MyProjectHours" /> </td>
                             <td>
-                                <button class="bmining-btn-icon bg-bmining-error" @onclick="()=>DeleteMembersProject(membersProject)">
-                                    <i class="fa fa-trash"></i>
+                                <button class="btn-delete" @onclick="()=>DeleteMembersProject(membersProject)">
+                                   
                                 </button>
                             </td>
                         </tr>
@@ -56,7 +54,7 @@
             </table>
 
         </div>
-        <button class="bmining-button float-right" @onclick="@InsertMember">@Resource.Add</button>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="@InsertMember">@Resource.Add</button>
     }
 </div>
 

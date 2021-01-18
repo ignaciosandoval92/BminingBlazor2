@@ -160,7 +160,8 @@ app {
 
     .sidebar {
         width: 250px;
-        height: 100vh;
+        min-height:100vh;
+        max-height:130vh;
         position: sticky;
         top: 0;
     }
@@ -507,7 +508,9 @@ h1, h2, h3, h4, h5, h6 {
     }
     .btn2{
         position:absolute;
-        left: 530px;
+        left: 535px;
+        z-index:3;
+       
     }
     .btn3 {
         position: absolute;
@@ -774,4 +777,59 @@ h1, h2, h3, h4, h5, h6 {
     height: 20px;
     background-repeat: no-repeat;
     background-size: 20px 20px;
+}
+.btn-member {
+    background-image: url(https://i.ibb.co/nBB0xsg/member-Recurso-14-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-color: transparent;
+    display: inline-block;
+    border: none;
+    transform-origin:left;
+}
+.btn-download {
+    background-image: url(https://i.ibb.co/LxyFZFj/download-Recurso-15-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-color: transparent;
+    display: inline-block;
+    border: none;
+    transform-origin: left;
+}
+.btn-approved {
+    background-image: url(https://i.ibb.co/VHDWZ2g/approbed-Recurso-16-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-color: transparent;
+    display: inline-block;
+    border: none;
+    transform-origin: left;
+}
+.btn-disapproved {
+    background-image: url(https://i.ibb.co/fYYfw6P/decline-Recurso-17-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-color: transparent;
+    display: inline-block;
+    border: none;
+    transform-origin: left;
+}
+.btn-view {
+    background-image: url(https://i.ibb.co/Q8KbjrF/view-Recurso-18-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-color: transparent;
+    display: inline-block;
+    border: none;
+    transform-origin: left;
 }

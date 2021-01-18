@@ -16,12 +16,6 @@
         <div class="d-inline-block">
             <h2>@Resource.SecurityReflection</h2>
         </div>
-
-
-    </div>
-
-    <div class="main-break">
-        <div class="main-circle"></div>
     </div>
 
     @if (_securityReflections == null)
@@ -50,7 +44,7 @@
                             <td>@securityReflection.MyDate.ToString("dd/MM/yyyy")</td>
                             <td>@securityReflection.MyTopic</td>
                             <td>                
-                                <button class="bmining-btn-icon" @onclick=@(() => EditTopic(securityReflection.MyId))><i class="fa fa-edit"></i></button>                                
+                                <button class="btn-edit" @onclick=@(() => EditTopic(securityReflection.MyId))></button>                                
                             </td>
                         </tr>
                     }

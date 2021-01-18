@@ -9,15 +9,12 @@
 
 <div class="bmining-app">
     <h2>@Resource.AddClient</h2>
-    <div class="main-break">
-        <div class="main-circle">
-        </div>
-    </div>
+   
     <div class="form-group">
         <label for="clientName">@Resource.Name</label>
         <input class="form-control" id="clientName" @bind-value="@_newClient.MyName" />
     </div>
-    <button class="bmining-button float-right" @onclick="@InsertClient">@Resource.Save</button>
+    <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="@InsertClient">@Resource.Save</button>
 </div>
 @code {
     private ClientViewModel _newClient = new ClientViewModel();

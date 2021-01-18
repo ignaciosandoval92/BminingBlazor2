@@ -83,8 +83,8 @@
         white-space: pre;
     }
 </style>
-<div class="logo"/>
-<div class="line-logo"/>
+<div class="logo" />
+<div class="line-logo" />
 <div class="bmining-app">
 
     @if (IsLoading)
@@ -94,7 +94,7 @@
     else
     {
         <h2 class="header-break">@Resource.DashboardHours</h2>
-        
+
 
         <div class="week-header-container">
 
@@ -150,13 +150,15 @@
                                 <strong><h10 class="totalhours">@Resource.Hours : @TotalHours </h10></strong>
 
                             </div>
+                            <div class="btn2">
+                                <div class="d-inline-block">
 
-                            <div class="d-inline-block">
-                                <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="btn-plus btn2">
-                                </button>
+                                    <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="btn-plus ">
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        
+
 
                         <div class="alternate4-break"></div>
                         @foreach (var dayUserTrackingHourItem in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
@@ -202,7 +204,7 @@
                 }
             }
 
-            <button @onclick="@CopyLastWeek" class="badge badge-primary badge-pill  bg-bmining-info float-right btn3">@Resource.CopyLastWeek</button>
+            <button @onclick="@CopyLastWeek" class="badge badge-primary badge-pill  bg-bmining-info float-right ">@Resource.CopyLastWeek</button>
         </div>
     }
 

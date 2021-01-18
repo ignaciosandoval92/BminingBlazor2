@@ -20,15 +20,12 @@
             <h2>@Resource.Projects</h2>
         </div>
         <div class="d-inline-block">
-            <button @onclick="NewProject" class="bmining-btn-icon">
-                <i class="fa fa-plus"></i>
+            <button @onclick="NewProject" class="btn-plus">              
             </button>
         </div>
     </div>
 
-    <div class="main-break">
-        <div class="main-circle"></div>
-    </div>
+ 
 
     @if (_projects == null)
     {
@@ -94,14 +91,11 @@
                                 }
                             </td>
                             <td>
-                                <button class="bmining-btn-icon" @onclick=@(()=>ViewMembers(p.MyId))>
-                                    <i class="fa fa-users"></i>
+                                <button class="btn-member" @onclick=@(()=>ViewMembers(p.MyId))>                                   
                                 </button>
-                                <button class="bmining-btn-icon" @onclick=@(()=>EditPaymentStatus(p.MyId))>
-                                    <i class="fa fa-edit"></i>
+                                <button class="btn-edit" @onclick=@(()=>EditPaymentStatus(p.MyId))>                                  
                                 </button>
-                                <button class="bmining-btn-icon bg-bmining-error" @onclick=@(()=>Delete(p.MyId))>
-                                    <i class="fa fa-trash"></i>
+                                <button class="btn-delete" @onclick=@(()=>Delete(p.MyId))>                                    
                                 </button>
                             </td>
                         </tr>

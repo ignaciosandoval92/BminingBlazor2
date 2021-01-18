@@ -8,15 +8,12 @@
 
 <div class="bmining-app">
     <h2>@Resource.EditPaymentStatus</h2>
-    <div class="main-break">
-        <div class="main-circle">
-        </div>
-    </div>
+   
 
     @if (_newPayment != null)
     {
         <div>
-            <label for="inputPayment">@Resource.ContractType</label>
+            <label for="inputPayment">@Resource.PaymentStatus</label>
             <select class="form-control" id="inputPayment" @bind="_newPayment.PaymentStatusType" required>
                 @foreach (var typePayment in Enum.GetValues(typeof(PaymentStatusTypeEnum)))
                 {
@@ -50,7 +47,7 @@
                     </option>
                 }
             </select>
-            <button class="bmining-button float-right" @onclick="@EditPayments">@Resource.Change</button>
+            <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="@EditPayments">@Resource.Change</button>
         </div>
     }
     else

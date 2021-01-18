@@ -10,9 +10,7 @@
 
 <div class="bmining-app">
     <h2>@Resource.PaymentStatus</h2>
-    <div class="main-break">
-        <div class="main-circle"></div>
-    </div>
+    
     @if (_payments == null)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
@@ -66,13 +64,13 @@
                                 }
                             </td>
                             <td>
-                                <button class="bmining-button" @onclick="()=>EditPaymentStatus(payment.Id)">@Resource.Edit</button>
+                                <button class="btn-edit" @onclick="()=>EditPaymentStatus(payment.Id)"></button>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-            <button type="button" class="bmining-button float-right" @onclick="@AddPayment">@Resource.AddPaymentStatus</button>
+            <button type="button" class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="@AddPayment">@Resource.AddPaymentStatus</button>
         </div>
     }
 </div>
