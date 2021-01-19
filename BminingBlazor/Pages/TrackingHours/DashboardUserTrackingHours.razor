@@ -100,7 +100,7 @@
 
 
             <div class="week-header-item">
-                <h6 class="m-2 txt">@Resource.Week <h4 class="bmining-button h4 txt">0 @NumberWeek()</h4>@MyStartOfWeek.ToString("d MMMM yyyy")</h6>
+                <h6 class="m-2 txt">@Resource.Week <h4 class="bmining-button h4 txt"> @NumberWeek()</h4>@MyStartOfWeek.ToString("d MMMM yyyy")</h6>
             </div>
 
 
@@ -397,14 +397,7 @@
 
     private int NumberWeek()
     {
-        int numberWeek2 = System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(MySelectedDate, System.Globalization.CalendarWeekRule.FirstDay, MySelectedDate.DayOfWeek);
-        int numberWeek1 = System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(MySelectedDate.AddDays(-(MySelectedDate.Day - 1)), System.Globalization.CalendarWeekRule.FirstDay, MySelectedDate.DayOfWeek);
-        int totalNumberWeeks = numberWeek2 - numberWeek1;
-        if (totalNumberWeeks > 0 && totalNumberWeeks < 10)
-            return totalNumberWeeks;
-        if (totalNumberWeeks < 0)
-            return numberWeek2;
-        else
-            return 5;
+        int numberWeek = System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(MySelectedDate, System.Globalization.CalendarWeekRule.FirstDay, MySelectedDate.DayOfWeek);
+        return numberWeek;
     }
 }
