@@ -14,7 +14,7 @@
 <div class="bmining-app">
     <div class="d-flex flex-row w-100 justify-content-between">
         <div class="d-inline-block">
-            <h2>@Resource.ListActivityRecord</h2>
+            <h2>@Resource.Commitments</h2>
         </div>
     </div>
 
@@ -36,9 +36,7 @@
                 </thead>
                 <tbody>
                     
-                    @foreach (var listcomment in _listCommitment)
-                        if(listcomment.MyVisibility)
-                            if(listcomment.MyStatus!=Models.ActivityRecord.ActivityRecordStatusEnum.Finalized)
+                    @foreach (var listcomment in _listCommitment)                     
                     {
                         <tr>
                             <td>@listcomment.MyResponsible</td>
@@ -62,19 +60,20 @@
 
 
 @code {
-    public List<ActivityRecordCommitmentViewModel> _listCommitments;
-    public List<ActivityRecordCommitmentViewModel> _listCommitment { get; set; }
-    public int PageSize { get; set; }
-    public int TotalPage { get; set; }
-    public int CurrentPage { get; set; }
+        public List<ActivityRecordCommitmentViewModel> _listCommitments;
+        public List<ActivityRecordCommitmentViewModel> _listCommitmentsActive;
+        public List<ActivityRecordCommitmentViewModel> _listCommitment { get; set; }
+        public int PageSize { get; set; }
+        public int TotalPage { get; set; }
+        public int CurrentPage { get; set; }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
+            await base.OnAfterRenderAsync(firstRender);
+            if (firstRender)
+            {
             PageSize = 5;
-            _listCommitments = await ActivityRecordService.ReadComments();
+            _listCommitments = await ActivityRecordService.ReadCommentsActives();                
             _listCommitment = _listCommitments.Take(PageSize).ToList();
             TotalPage = (int)Math.Ceiling(_listCommitments.Count() / (decimal)PageSize);
 

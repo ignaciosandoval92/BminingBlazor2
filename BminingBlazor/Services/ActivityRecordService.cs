@@ -277,12 +277,14 @@ namespace BminingBlazor.Services
             return listActivityRecordViewModel;
         }
 
-        public async Task<List<ActivityRecordCommitmentViewModel>> ReadComments()
+        public async Task<List<ActivityRecordCommitmentViewModel>> ReadCommentsActives()
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             var listComments = (await queryFactory
                 .Query()
-                .From(TableConstants.ActivityRecordCommitmentTable)                
+                .From(TableConstants.ActivityRecordCommitmentTable)
+                .Where(ActivityRecordCommitmentConstants.IsVisibleInMainPanel,1)
+                .WhereNot(ActivityRecordCommitmentConstants.ActivityRecordStatus,ActivityRecordStatusEnum.Finalized)
                 .GetAsync<ActivityRecordCommentsModel>()).ToList();
             var listCommentViewModel = new List<ActivityRecordCommitmentViewModel>();
             foreach (var listComment in listComments)
