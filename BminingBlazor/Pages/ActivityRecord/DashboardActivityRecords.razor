@@ -48,7 +48,7 @@
                         </button>
                     }
 
-                    @if (dashboardActivityRecordItem.CanEdit)
+                    @if (dashboardActivityRecordItem.CanEdit || userId==9 || userId==23 || userId==14 )
                     {
                         <button @onclick="() => Edit(dashboardActivityRecordItem)" class="btn-edit">                          
                         </button>
@@ -90,6 +90,7 @@
     public int PageSize { get; set; }
     public int TotalPage { get; set; }
     public int CurrentPage { get; set; }
+    public int userId { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -98,7 +99,7 @@
         {
             PageSize = 5;
             var email = await AuthenticationStateProvider.GetEmail();
-            var userId = await UserDataService.GetUserId(email);
+            userId = await UserDataService.GetUserId(email);
             ViewModel = await ActivityRecordService.GetActivityRecords(userId);
             _activityRecordView = ViewModel.OurDashboardActivityRecords.Take(PageSize).ToList();
             TotalPage = (int)Math.Ceiling(ViewModel.OurDashboardActivityRecords.Count() / (decimal)PageSize);
