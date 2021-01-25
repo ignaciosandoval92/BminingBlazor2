@@ -8,86 +8,101 @@
 @attribute [Authorize(Roles = "AdminRRHH,Administracion")]
 
 <div class="logo" />
-    <div class="bmining-app">
-        <div class="d-flex flex-row w-100 justify-content-between">
-            <div class="d-inline-block">
-                <h2>@Resource.Users</h2>
-            </div>
-            <div class="d-inline-block">
-                <button @onclick="NewUser" class="btn-plus">
-                </button>
-            </div>
+<div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.Users</h2>
         </div>
+        <div class="d-inline-block">
+            <button @onclick="NewUser" class="btn-plus">
+            </button>
+        </div>
+    </div>
 
 
-        @if (_users == null)
-        {
-            <MatProgressBar Indeterminate="true"></MatProgressBar>
-        }
-        else
-        {
-            <div class="table-responsive{-sm|-md|-lg|-xl}">
-                <table class="table table-striped">
-                    <thead>
+    @if (_users == null)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
+        <div class="table-responsive{-sm|-md|-lg|-xl}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>@Resource.Email</th>
+                        <th>@Resource.Names</th>
+                        <th>@Resource.Surname</th>
+                        <th>@Resource.Job</th>
+                        <th>@Resource.ContractType</th>
+                        <th>@Resource.Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in _usersList)
+                    {
                         <tr>
-                            <th>@Resource.Email</th>
-                            <th>@Resource.Names</th>
-                            <th>@Resource.Surname</th>
-                            <th>@Resource.Job</th>
-                            <th>@Resource.ContractType</th>
-                            <th>@Resource.Actions</th>
+                            <td>@user.MyEmail</td>
+                            <td>@user.MyName</td>
+                            <td>@user.MyPaternalSurname</td>
+                            <td>@user.MyJob</td>
+                            <td>
+                                @switch (user.MyContractType)
+                                {
+                                    case ContractTypeEnum.Unknown:
+                                        @Resource.Unknown
+                                        break;
+                                    case ContractTypeEnum.IndefiniteContract:
+                                        @Resource.IndefiniteContract
+                                        break;
+                                    case ContractTypeEnum.FixedTermContract:
+                                        @Resource.FixedTermContract
+                                        break;
+                                    case ContractTypeEnum.ExternalConsultant:
+                                        @Resource.ExternalConsultant
+                                        break;
+                                    case ContractTypeEnum.ExternalEnterprise:
+                                        @Resource.ExternalEnterprise
+                                        break;
+                                }
+                            </td>
+                            <td>
+                                <button class="btn-edit" @onclick=@(() => EditCallback(user.MyId))>
+                                </button>
+                                <button class="btn-delete" @onclick=@(() => Delete(user.MyId))>
+                                </button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var user in _users)
-                        {
-                            <tr>
-                                <td>@user.MyEmail</td>
-                                <td>@user.MyName</td>
-                                <td>@user.MyPaternalSurname</td>
-                                <td>@user.MyJob</td>
-                                <td>
-                                    @switch (user.MyContractType)
-                                    {
-                                        case ContractTypeEnum.Unknown:
-                                            @Resource.Unknown
-                                            break;
-                                        case ContractTypeEnum.IndefiniteContract:
-                                            @Resource.IndefiniteContract
-                                            break;
-                                        case ContractTypeEnum.FixedTermContract:
-                                            @Resource.FixedTermContract
-                                            break;
-                                        case ContractTypeEnum.ExternalConsultant:
-                                            @Resource.ExternalConsultant
-                                            break;
-                                        case ContractTypeEnum.ExternalEnterprise:
-                                            @Resource.ExternalEnterprise
-                                            break;
-                                    }
-                                </td>
-                                <td>
-                                    <button class="btn-edit" @onclick=@(() => EditCallback(user.MyId))>
-                                    </button>
-                                    <button class="btn-delete" @onclick=@(() => Delete(user.MyId))>
-                                    </button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    <div>
+
+        @for (int page = 0; page < TotalPage; page++)
+        {
+            int pageNumber = page;
+            <button class="@SelectedPage(page)" @onclick="@(()=>UpdateList(pageNumber))">@(page+1)</button>
         }
     </div>
+</div>
     @code {
-        private List<UserViewModel> _users;
+        public List<UserViewModel> _users;
+        public List<UserViewModel> _usersList { get; set; }
+        public int PageSize { get; set; }
+        public int TotalPage { get; set; }
+        public int CurrentPage { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
             if (firstRender)
             {
+                PageSize = 5;
                 _users = await UserDataService.ReadUsers();
+                _usersList = _users.Take(PageSize).ToList();
+                TotalPage = (int)Math.Ceiling(_users.Count() / (decimal)PageSize);
                 StateHasChanged();
             }
         }
@@ -110,5 +125,21 @@
         private void EditCallback(int id)
         {
             NavigationManager.NavigateTo($"EditUser/{id}");
+        }
+        private void UpdateList(int pageNumber)
+        {
+            _usersList = _users.Skip(PageSize * pageNumber).Take(PageSize).ToList();
+            CurrentPage = pageNumber;
+        }
+        private string SelectedPage(int selectPage)
+        {
+            if (CurrentPage == selectPage)
+            {
+                return "btn btn-info";
+            }
+            else
+            {
+                return "btn btn-secondary";
+            }
         }
     }
