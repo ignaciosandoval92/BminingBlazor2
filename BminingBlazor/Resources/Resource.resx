@@ -514,4 +514,7 @@
   <data name="Saved" xml:space="preserve">
     <value>Saved</value>
   </data>
+  <data name="CreateAndAddSubProjects" xml:space="preserve">
+    <value>Create and add sub projects</value>
+  </data>
 </root>

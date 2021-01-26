@@ -88,19 +88,25 @@
 
                         @foreach (var typeStatus in Enum.GetValues(typeof(ProjectStatusEnum)))
                         {
-                            <option value="@typeStatus">
-                                @{
-                                    switch (typeStatus)
-                                    {
-                                        case ProjectStatusEnum.Active:
-                                            @Resource.Active
-                                            break;
-                                        case ProjectStatusEnum.Finished:
-                                            @Resource.Finished
-                                            break;
-                                    }
+                        <option value="@typeStatus">
+                            @{
+                                switch (typeStatus)
+                                {
+                                    case ProjectStatusEnum.Active:
+                                        @Resource.Active
+                                        break;
+                                    case ProjectStatusEnum.Finished:
+                                        @Resource.Finished
+                                        break;
+                                    case ProjectStatusEnum.NotInitiated:
+                                        @Resource.NotInitiated
+                                        break;
+                                    case ProjectStatusEnum.Unknown:
+                                        @Resource.Unknown
+                                        break;
                                 }
-                            </option>
+                            }
+                        </option>
                         }
                     </select>
                 </div>
@@ -203,6 +209,7 @@
             }
         </div>
         <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick=@InsertProject>@Resource.Create </button>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick=@CreateSubProject>@Resource.CreateAndAddSubProjects </button>
     }
     else
     {
@@ -294,5 +301,38 @@
         }
         await ProjectDataService.CreateProject(project);
         NavigationManager.NavigateTo("/ViewProject");
+    }
+
+    private async Task CreateSubProject()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User.Identity.Name;
+        var creatorId = await UserDataService.GetUserId(user);
+        var project = new ProjectViewModel
+        {
+            MyProjectCode = _newCreateProjectView.MyProjectCode,
+            MyProjectName = _newCreateProjectView.MyProjectName,
+            MyProjectType = _newCreateProjectView.MyProjectType,
+            MyStartDate = _newCreateProjectView.MyStartDate,
+            MyEndDate = _newCreateProjectView.MyEndDate,
+            MyCreator = new UserViewModel { MyId = creatorId },
+            MyProjectManager = _newCreateProjectView.MyProjectManager,
+            MyClientId = _newCreateProjectView.MyClientId,
+            MyProjectStatus = _newCreateProjectView.MyProjectStatus
+        };
+        foreach (var members in _membersProjectItems)
+        {
+            project.OurMembers.Add(members);
+        }
+
+        foreach (var paymentViewModel in _paymentStatusItems)
+        {
+            project.OurPayments.Add(paymentViewModel);
+        }
+        await ProjectDataService.CreateProject(project);
+        CProject proj = new CProject();
+        CNode ParentId = proj.Insertar(project, null);
+        NavigationManager.NavigateTo($"/AddSubProject/{_newCreateProjectView.MyProjectCode}");
+
     }
 }

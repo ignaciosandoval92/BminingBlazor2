@@ -349,6 +349,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Create and add sub projects.
+        /// </summary>
+        internal static string CreateAndAddSubProjects {
+            get {
+                return ResourceManager.GetString("CreateAndAddSubProjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Create Project.
         /// </summary>
         internal static string CreateProject {

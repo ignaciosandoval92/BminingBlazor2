@@ -1,0 +1,24 @@
+﻿@page "/AddSubProject/{myProjectCode}"
+@using ViewModels.Projects
+<h3>AddSubProject</h3>
+
+<button @onclick="prueba"></button>
+
+@code {
+    [Parameter]
+    public CNode ParentId { get; set; }
+    [Parameter]
+    public string MyProjectCode { get; set; }
+    [Parameter]
+    public CProject proj { get; set; }
+
+    private readonly ProjectViewModel _newCreateProjectView = new ProjectViewModel();
+
+    public void prueba()
+    {
+        _newCreateProjectView.MyProjectCode = "prueba";
+        proj.Insertar(_newCreateProjectView, ParentId);
+    }
+
+
+}
