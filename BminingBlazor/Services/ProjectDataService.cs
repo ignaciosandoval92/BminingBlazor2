@@ -473,5 +473,38 @@ namespace BminingBlazor.Services
 
             return paymentViewModel;
         }
+
+        public async Task<ProjectViewModel> ReadProjectFromCode(string code)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var projects = (await queryFactory
+                .Query()
+                .From(ProjectTable)
+                .Join(UserTable, $"{UserTable}.{UserConstants.UserId}", $"{ProjectTable}.{ProjectConstants.ProjectManagerId}")
+                .Join(ClientTable, $"{ClientTable}.{ClientConstants.ClientId}", $"{ ProjectTable}.{ProjectConstants.ClientId}")
+                .Select($"{ProjectTable}.{ProjectConstants.ProjectId}")
+                .Select(ProjectConstants.ProjectCode)
+                .Select(ProjectConstants.ProjectName)
+                .Select(ProjectConstants.ProjectManagerId)
+                .Select(UserConstants.EmailBmining)
+                .Select(ClientConstants.ClientName)
+                .Select(ProjectConstants.CodProjectType)
+                .Select(ProjectConstants.StatusId)
+                .Select($"{ClientTable}.{ClientConstants.ClientId}")
+                .Where($"{ProjectTable}.{ProjectConstants.ProjectCode}", code)
+                .GetAsync<ProjectModel>()).First();
+            var projectViewModel = new ProjectViewModel()
+            {
+                MyId = projects.ProjectId,
+                MyProjectCode = projects.CodProject,
+                MyProjectName = projects.ProjectName,
+                MyProjectStatus = (ProjectStatusEnum)projects.StatusId,
+                MyProjectType = (ProjectTypeEnum)projects.CodProjectType,
+                MyClientId = projects.ClientId,
+                MyClientName = projects.ClientName,
+                MyProjectManager = new UserViewModel { MyId = projects.ProjectManagerId, MyEmail = projects.EmailBmining },
+            };
+            return projectViewModel;
+        }
     }
 }
