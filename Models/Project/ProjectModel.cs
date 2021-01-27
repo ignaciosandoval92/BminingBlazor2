@@ -17,5 +17,7 @@ namespace Models.Project
         public int ProjectManagerId { get; set; }        
         public int ClientId { get; set; }
         public int StatusId { get; set; }
+        public int Level { get; set; }
+        public int ParentId { get; set; }
     }
 }

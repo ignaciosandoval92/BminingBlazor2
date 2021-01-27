@@ -509,5 +509,40 @@ namespace BminingBlazor.Services
             };
             return projectViewModel;
         }
+        public async Task<List<ProjectViewModel>> ReadTreeProject(string code)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var projects = (await queryFactory
+                .Query()
+                .From(ProjectTable)
+                .Select(ProjectConstants.ProjectId)
+                .Select(ProjectConstants.ProjectCode)
+                .Select(ProjectConstants.ProjectName)
+                .Select(ProjectConstants.ProjectManagerId)              
+                .Select(ProjectConstants.CodProjectType)
+                .Select(ProjectConstants.StatusId)                
+                .Select(ProjectConstants.Level)
+                .Select(ProjectConstants.ParentId)
+                .Where($"{ProjectTable}.{ProjectConstants.ProjectCode}", code)                
+                .GetAsync<ProjectModel>()).ToList();
+            var projectViewModel = new List<ProjectViewModel>();
+            foreach (var projectModel in projects)
+            {
+                projectViewModel.Add(new ProjectViewModel
+                {
+                    MyLevel=projectModel.Level,
+                    MyParentId=projectModel.ParentId,
+                    MyId = projectModel.ProjectId,
+                    MyProjectCode = projectModel.CodProject,
+                    MyProjectName = projectModel.ProjectName,
+                    MyProjectStatus = (ProjectStatusEnum)projectModel.StatusId,
+                    MyProjectType = (ProjectTypeEnum)projectModel.CodProjectType,
+                    MyClientId = projectModel.ClientId,
+                    MyClientName = projectModel.ClientName,
+                    MyProjectManager = new UserViewModel { MyId = projectModel.ProjectManagerId, MyEmail = projectModel.EmailBmining },
+                });
+            }
+            return projectViewModel.ToList();
+        }
     }
 }

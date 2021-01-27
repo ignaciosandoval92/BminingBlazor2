@@ -1,4 +1,5 @@
 ﻿@page "/AddSubProject/{myProjectCode}"
+@page "/AddSubProject/{myProjectCode}/{projectId:int}"
 @using ViewModels.Projects
 @using ViewModels.User
 @inject IProjectDataService ProjectDataService
@@ -10,76 +11,81 @@
 
     <h2>agregar sub proyecto</h2>
 
-    @if (_users != null)
-    {
-        <div class="container">
-            <div class="row">
-                <div class="form-group col">
-                    <label for="inputProjectName">@Resource.ProjectName</label>
-                    <input class="form-control" id="inputProjectName" @bind="_newCreateProjectView.MyProjectName" />
+    @if (_users != null || _projects != null) 
+        @if (ProjectId == 0)
+        {
+            <div class="form-group col">
+                <label for="inputClient">@Resource.ProjectName</label>
+                <select id="inputClient" class="form-control" @bind="_newCreateProjectView.MyId" required>
+                    @foreach (var pro in _projects)
+                    {
+                        <option value="@pro.MyId">@pro.MyProjectName</option>
+                    }
+                </select>
+            </div>
+            <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick=@SelectFather>@Resource.Create </button>
+        }
+        else
+        {
+            <div class="container">
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="inputProjectName">@Resource.ProjectName</label>
+                        <input class="form-control" id="inputProjectName" @bind="_newCreateProjectView.MyProjectName" />
+                    </div>
                 </div>
             </div>
-        </div>
-
-
-
-
-
-        <div class="alternate1-break"></div>
-
-
-
-        <div class="alternate1-break"></div>
-        <div>
-            <div class="d-flex justify-content-between">
-                <h4>@Resource.Members</h4>
-                <button class="btn-plus" @onclick="AddMembersProjectCallback">
-                </button>
-            </div>
-            @if (_membersProjectItems.Any())
-            {
-                <table>
-                    <thead>
-                        <tr>
-                            <th>@Resource.Email</th>
-                            <th>@Resource.ProjectHours</th>
-                            <th>@Resource.Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var membersProject in _membersProjectItems)
-                        {
+            <div class="alternate1-break"></div>
+            <div>
+                <div class="d-flex justify-content-between">
+                    <h4>@Resource.Members</h4>
+                    <button class="btn-plus" @onclick="AddMembersProjectCallback">
+                    </button>
+                </div>
+                @if (_membersProjectItems.Any())
+                {
+                    <table>
+                        <thead>
                             <tr>
-                                <td>
-                                    <div class="w-100">
-                                        <select class="form-control" @bind="membersProject.MyId" required>
-                                            @foreach (var emails in _users)
-                                            {
-                                                <option value="@emails.MyId">@emails.MyEmail</option>
-                                            }
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <input type="number" step="0.1" class="w-100" @bind="@membersProject.MyProjectHours" />
-                                </td>
-                                <td>
-                                    <button class="btn-delete" Type="button" @onclick="()=>DeleteMembersProject(membersProject)">
-                                    </button>
-                                </td>
+                                <th>@Resource.Email</th>
+                                <th>@Resource.ProjectHours</th>
+                                <th>@Resource.Actions</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-        </div>
-        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick=@InsertProject>@Resource.Create </button>
-    }
+                        </thead>
+                        <tbody>
+                            @foreach (var membersProject in _membersProjectItems)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="w-100">
+                                            <select class="form-control" @bind="membersProject.MyId" required>
+                                                @foreach (var emails in _users)
+                                                {
+                                                    <option value="@emails.MyId">@emails.MyEmail</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="number" step="0.1" class="w-100" @bind="@membersProject.MyProjectHours" />
+                                    </td>
+                                    <td>
+                                        <button class="btn-delete" Type="button" @onclick="()=>DeleteMembersProject(membersProject)">
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+            <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick=@InsertProject>@Resource.Create </button>
+        }
 
-    else
-    {
-        <MatProgressBar Indeterminate="true"></MatProgressBar>
-    }
+        else
+        {
+            <MatProgressBar Indeterminate="true"></MatProgressBar>
+        }
 
 </div>
 
@@ -87,14 +93,14 @@
 
     [Parameter]
     public string MyProjectCode { get; set; }
+    [Parameter]
+    public int ProjectId { get; set; }
 
-    public ProjectViewModel _project { get; set; }
+    public List<ProjectViewModel> _projects { get; set; }
     private List<MemberViewModel> _users;
     private List<MemberViewModel> _membersProjectItems;
-
+    private ProjectViewModel _project { get; set; }
     private readonly ProjectViewModel _newCreateProjectView = new ProjectViewModel();
-
-
 
 
     private void AddMembersProjectCallback()
@@ -109,13 +115,22 @@
     {
         await base.OnAfterRenderAsync(firstRender);
         if (!firstRender) return;
-        _project = await ProjectDataService.ReadProjectFromCode(MyProjectCode, 0);
-        _users = await ProjectDataService.ReadMembers(_project.MyId);
-        _membersProjectItems = new List<MemberViewModel>();
+        if (ProjectId == 0)
+        {
+            _projects = await ProjectDataService.ReadTreeProject(MyProjectCode);
+        }
+        else
+        {
+            _project = await ProjectDataService.ReadProject(112);
+            _users = await ProjectDataService.ReadMembers(_project.MyId);
+            _membersProjectItems = new List<MemberViewModel>();
+            StateHasChanged();
+        }
 
         StateHasChanged();
     }
-    private async Task InsertProject()
+
+    public async Task InsertProject()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User.Identity.Name;
@@ -131,18 +146,20 @@
             MyProjectManager = _project.MyProjectManager,
             MyClientId = _project.MyClientId,
             MyProjectStatus = _project.MyProjectStatus,
-            MyLevel=_project.MyLevel+1,
-            MyParentId=_project.MyId
-            
+            MyLevel = _project.MyLevel + 1,
+            MyParentId = _project.MyId,
+            OurPayments = _project.OurPayments
         };
-
         foreach (var members in _membersProjectItems)
         {
             project.OurMembers.Add(members);
         }
 
-        await ProjectDataService.CreateProject(project);
-        NavigationManager.NavigateTo("/ViewProject");
+        var id=await ProjectDataService.CreateProject(project);
+        NavigationManager.NavigateTo("/ViewProject", true);
     }
-
+    private void SelectFather()
+    {
+        NavigationManager.NavigateTo($"/AddSubProject/{MyProjectCode}/{_newCreateProjectView.MyId}", true);
+    }
 }
