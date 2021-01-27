@@ -91,11 +91,13 @@
                                 }
                             </td>
                             <td>
-                                <button class="btn-member" @onclick=@(()=>ViewMembers(p.MyId))>                                   
+                                <button class="btn-member" @onclick=@(()=>ViewMembers(p.MyId))>
                                 </button>
-                                <button class="btn-edit" @onclick=@(()=>EditPaymentStatus(p.MyId))>                                  
+                                <button class="btn-edit" @onclick=@(()=>EditPaymentStatus(p.MyId))>
                                 </button>
-                                <button class="btn-delete" @onclick=@(()=>Delete(p.MyId))>                                    
+                                <button class="btn-delete" @onclick=@(()=>Delete(p.MyId))>
+                                </button>
+                                <button class="icon-projects" @onclick=@(()=>AddSubProject(p.MyProjectCode))>
                                 </button>
                             </td>
                         </tr>
@@ -127,7 +129,7 @@
         if (firstRender)
         {
             PageSize = 4;
-            _projects = await ProjectDataService.ReadProjects();
+            _projects = await ProjectDataService.ReadFathersProjects();
             _projectList = _projects.Take(PageSize).ToList();
             TotalPage = (int)Math.Ceiling(_projects.Count() / (decimal)PageSize);
 
@@ -149,6 +151,10 @@
     public void ViewMembers(int idProject)
     {
         NavigationManager.NavigateTo($"ViewMembers/{idProject}");
+    }
+    public void AddSubProject(string projectCode)
+    {
+        NavigationManager.NavigateTo($"/AddSubProject/{projectCode}");
     }
 
     public async void Delete(int idProject)
