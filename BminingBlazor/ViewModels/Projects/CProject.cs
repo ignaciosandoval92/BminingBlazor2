@@ -7,47 +7,46 @@ namespace BminingBlazor.ViewModels.Projects
 {
     public class CProject
     {
-        private CNode raiz;
-        private CNode trabajo;
+        private CNode root;
+        private CNode work;
         private int i = 0;
         
         public CProject()
         {
-            raiz = new CNode();
+            root = new CNode();
         }
 
-        public CNode Insertar(ProjectViewModel pDato,CNode pNodo)
+        public CNode Insertar(ProjectViewModel pData,CNode pNode)
         {
-            if (pNodo==null)
+            if (pNode==null)
             {
-                raiz = new CNode();
-                raiz.Dato = pDato;
+                root = new CNode();
+                root.Data = pData;
+                root.Son = null;
+                root.Brother = null;
 
-                raiz.Hijo = null;
-                raiz.Hermano = null;
-
-                return raiz;
+                return root;
             }
 
-            if(pNodo.Hijo==null)
+            if(pNode.Son==null)
             {
                 CNode temp = new CNode();
-                temp.Dato = pDato;
-                pNodo.Hijo = temp;
+                temp.Data = pData;
+                pNode.Son = temp;
                 return temp;
             }
             else
             {
-                trabajo = pNodo.Hijo;
+                work = pNode.Son;
 
-                while(trabajo.Hermano!=null)
+                while(root.Brother!=null)
                 {
-                    trabajo = trabajo.Hermano;
+                    work = work.Son;
                 }
 
                 CNode temp = new CNode();
-                temp.Dato = pDato;
-                trabajo.Hermano = temp;
+                temp.Data = pData;
+                work.Son = temp;
                 return temp;
             }
         }
@@ -60,18 +59,18 @@ namespace BminingBlazor.ViewModels.Projects
 
             for (int n = 0; n < i; n++)
                 Console.Write(" ");
-            Console.WriteLine(pNodo.Dato);
+            Console.WriteLine(pNodo.Data);
 
-            if(pNodo.Hijo!=null)
+            if(pNodo.Son!=null)
             {
                 i++;
-                TransversaPreO(pNodo.Hijo);
+                TransversaPreO(pNodo.Son);
                 i--;
             }
 
-            if(pNodo.Hermano!=null)
+            if(pNodo.Brother!=null)
             {
-                TransversaPreO(pNodo.Hermano);
+                TransversaPreO(pNodo.Brother);
             }
 
 

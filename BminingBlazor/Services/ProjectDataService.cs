@@ -41,7 +41,9 @@ namespace BminingBlazor.Services
                                                  {ProjectConstants.EndDate,createProject.MyEndDate },
                                                  {ProjectConstants.CreatorId,createProject.MyCreator.MyId },
                                                  {ProjectConstants.ProjectManagerId,createProject.MyProjectManager.MyId },
-                                                 {ProjectConstants.StatusId,createProject.MyProjectStatus }
+                                                 {ProjectConstants.StatusId,createProject.MyProjectStatus },
+                                                 {ProjectConstants.ParentId,createProject.MyParentId },
+                                                 {ProjectConstants.Level,createProject.MyLevel }
                                              });
             foreach (var member in createProject.OurMembers)
             {
@@ -474,7 +476,7 @@ namespace BminingBlazor.Services
             return paymentViewModel;
         }
 
-        public async Task<ProjectViewModel> ReadProjectFromCode(string code)
+        public async Task<ProjectViewModel> ReadProjectFromCode(string code,int level)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             var projects = (await queryFactory
@@ -492,6 +494,7 @@ namespace BminingBlazor.Services
                 .Select(ProjectConstants.StatusId)
                 .Select($"{ClientTable}.{ClientConstants.ClientId}")
                 .Where($"{ProjectTable}.{ProjectConstants.ProjectCode}", code)
+                .Where($"{ProjectTable}.{ProjectConstants.Level}",level)
                 .GetAsync<ProjectModel>()).First();
             var projectViewModel = new ProjectViewModel()
             {

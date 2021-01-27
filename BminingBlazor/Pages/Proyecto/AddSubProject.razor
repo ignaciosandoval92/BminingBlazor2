@@ -1,32 +1,148 @@
 ﻿@page "/AddSubProject/{myProjectCode}"
 @using ViewModels.Projects
+@using ViewModels.User
 @inject IProjectDataService ProjectDataService
-<h3>AddSubProject</h3>
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IUserDataService UserDataService
 
-<button @onclick="prueba"></button>
+<div class="bmining-app">
+
+    <h2>agregar sub proyecto</h2>
+
+    @if (_users != null)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="form-group col">
+                    <label for="inputProjectName">@Resource.ProjectName</label>
+                    <input class="form-control" id="inputProjectName" @bind="_newCreateProjectView.MyProjectName" />
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="alternate1-break"></div>
+
+
+
+        <div class="alternate1-break"></div>
+        <div>
+            <div class="d-flex justify-content-between">
+                <h4>@Resource.Members</h4>
+                <button class="btn-plus" @onclick="AddMembersProjectCallback">
+                </button>
+            </div>
+            @if (_membersProjectItems.Any())
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>@Resource.Email</th>
+                            <th>@Resource.ProjectHours</th>
+                            <th>@Resource.Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var membersProject in _membersProjectItems)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="w-100">
+                                        <select class="form-control" @bind="membersProject.MyId" required>
+                                            @foreach (var emails in _users)
+                                            {
+                                                <option value="@emails.MyId">@emails.MyEmail</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="number" step="0.1" class="w-100" @bind="@membersProject.MyProjectHours" />
+                                </td>
+                                <td>
+                                    <button class="btn-delete" Type="button" @onclick="()=>DeleteMembersProject(membersProject)">
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick=@InsertProject>@Resource.Create </button>
+    }
+
+    else
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+
+</div>
 
 @code {
 
     [Parameter]
     public string MyProjectCode { get; set; }
 
-    public ProjectViewModel project { get; set; }
-
+    public ProjectViewModel _project { get; set; }
+    private List<MemberViewModel> _users;
+    private List<MemberViewModel> _membersProjectItems;
 
     private readonly ProjectViewModel _newCreateProjectView = new ProjectViewModel();
 
-    protected override async Task OnInitializedAsync()
-    {
-        project = await ProjectDataService.ReadProjectFromCode(MyProjectCode);
-    }
 
-    public void prueba()
-    {
-        CProject proj = new CProject();
-        CNode ParentId = proj.Insertar(project, null);
-        _newCreateProjectView.MyProjectCode = "prueba";
-        proj.Insertar(_newCreateProjectView, ParentId);
-    }
 
+
+    private void AddMembersProjectCallback()
+    {
+        _membersProjectItems.Add(new MemberViewModel());
+    }
+    private void DeleteMembersProject(MemberViewModel membersProject)
+    {
+        _membersProjectItems.Remove(membersProject);
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (!firstRender) return;
+        _project = await ProjectDataService.ReadProjectFromCode(MyProjectCode, 0);
+        _users = await ProjectDataService.ReadMembers(_project.MyId);
+        _membersProjectItems = new List<MemberViewModel>();
+
+        StateHasChanged();
+    }
+    private async Task InsertProject()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User.Identity.Name;
+        var creatorId = await UserDataService.GetUserId(user);
+        var project = new ProjectViewModel
+        {
+            MyProjectCode = _project.MyProjectCode,
+            MyProjectName = _newCreateProjectView.MyProjectName,
+            MyProjectType = _project.MyProjectType,
+            MyStartDate = _project.MyStartDate,
+            MyEndDate = _project.MyEndDate,
+            MyCreator = new UserViewModel { MyId = creatorId },
+            MyProjectManager = _project.MyProjectManager,
+            MyClientId = _project.MyClientId,
+            MyProjectStatus = _project.MyProjectStatus,
+            MyLevel=_project.MyLevel+1,
+            MyParentId=_project.MyId
+            
+        };
+
+        foreach (var members in _membersProjectItems)
+        {
+            project.OurMembers.Add(members);
+        }
+
+        await ProjectDataService.CreateProject(project);
+        NavigationManager.NavigateTo("/ViewProject");
+    }
 
 }

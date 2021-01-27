@@ -19,6 +19,8 @@ namespace BminingBlazor.ViewModels.Projects
         public int MyClientId { get; set; }
         public DateTime MyStartDate { get; set; }
         public DateTime MyEndDate { get; set; }
+        public int MyLevel { get; set; }
+        public int MyParentId { get; set; }
        
 
         public ProjectViewModel()

@@ -14,5 +14,7 @@
         public const string ProjectCode = "CodProject";
         public const string Creator = "Creator";
         public const string ProjectManager = "ProjectManager";
+        public const string ParentId = "ParentId";
+        public const string Level = "Level";
     }
 }
