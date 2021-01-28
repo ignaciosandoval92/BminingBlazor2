@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BminingBlazor.ViewModels.Report;
 
 namespace BminingBlazor.ViewModels.Projects
 {
@@ -16,7 +17,7 @@ namespace BminingBlazor.ViewModels.Projects
             root = new CNode();
         }
 
-        public CNode Insertar(ProjectViewModel pData,CNode pNode)
+        public CNode Insertar(ReportViewModel pData,CNode pNode)
         {
             if (pNode==null)
             {

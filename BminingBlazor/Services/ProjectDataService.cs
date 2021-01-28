@@ -228,6 +228,7 @@ namespace BminingBlazor.Services
                                             .Where(MemberConstants.UserId, userId)
                                             .Include(TableConstants.ProjectTable, projectQuery,
                                                      ProjectConstants.ProjectId, MemberConstants.ProjectId);
+                                           
 
             var items = (await membersQuery.GetAsync()).Cast<IDictionary<string, object>>().ToList();
 

@@ -1,10 +1,11 @@
-﻿@page "/ViewProjectReport/{startDate:datetime}/{endDate:datetime}/{projectId:int}"
+﻿@page "/ViewProjectReport/{startDate:datetime}/{endDate:datetime}/{codeProject}"
 @using BminingBlazor.ViewModels.Report;
 @using System.IO;
 @using Microsoft.JSInterop;
 @using OfficeOpenXml;
 @using OfficeOpenXml.Style;
 @using Data;
+@using ViewModels.Projects;
 
 
 @inject IReportService ReportService
@@ -58,21 +59,55 @@
 </div>
 @code {
 
-    [Parameter]
-    public int userId { get; set; }
-    [Parameter]
-    public DateTime startDate { get; set; }
-    [Parameter]
-    public DateTime endDate { get; set; }
-    [Parameter]
-    public int projectId { get; set; }
+        [Parameter]
+        public int userId { get; set; }
+        [Parameter]
+        public DateTime startDate { get; set; }
+        [Parameter]
+        public DateTime endDate { get; set; }
+        [Parameter]
+        public string codeProject { get; set; }
 
+    public CProject project { get; set; }
 
-    private List<ReportViewModel> _report;
+    private List<ReportViewModel> _report { get; set; }
+    private ReportViewModel father { get; set; }
+    private List<ReportViewModel> _sons = new List<ReportViewModel>();
+    private List<ReportViewModel> _GrandChilds= new List<ReportViewModel>();
+    private int cantSons { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        _report = await ReportService.GetProjectReport(startDate, endDate, projectId);
+        _report = await ReportService.GetProjectReport(startDate, endDate,codeProject);
+
+        foreach(var report in _report)
+        {
+            if(report.MyLevel==0)
+            {
+                father = report;
+            }
+            if(report.MyLevel==1)
+            {
+                _sons.Add(report);
+            }
+            if(report.MyLevel==2)
+            {
+                _GrandChilds.Add(report);
+            }
+        }
+        var cantSons = _sons.Count();
+        CNode root = project.Insertar(father, null);
+        foreach(var son in _sons)
+        {
+            CNode n = project.Insertar(son, root);
+            foreach(var grandchild in _GrandChilds)
+            {
+                if (grandchild.MyParentId == son.MyProjectId)
+                {
+                    project.Insertar(grandchild, n);
+                }
+            }
+        }
         StateHasChanged();
     }
     public async Task ExportExcel()

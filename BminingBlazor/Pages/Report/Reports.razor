@@ -22,10 +22,10 @@
     @if (phase == 0)
     {<div class="form-group">
             <label for="contract">@Resource.Project</label>
-            <select class="form-control" id="contract" @bind="_project.MyId" required>
+            <select class="form-control" id="contract" @bind="_project.MyProjectCode" required>
                 @foreach (var project in ViewModel)
                 {
-                    <option value="@project.MyProjectId">
+                    <option value="@project.MyProjectCode">
                         @project.MyProjectCode - @project.MyProjectName
                     </option>
                 }
@@ -39,8 +39,8 @@
             <label for="inputEndDate">@Resource.EndDate</label>
             <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
         </div>
-        <button class="badge badge-primary badge-pill  bg-bmining-info float-md-right" @onclick="() => SelectAllMembers(_project.MyId,_project.MyStartDate,_project.MyEndDate)">@Resource.SelectAllMembers</button>
-        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => SelectProject(_project.MyId,_project.MyStartDate,_project.MyEndDate)">@Resource.SelectMember</button>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-md-right" @onclick="() => SelectAllMembers(_project.MyProjectCode,_project.MyStartDate,_project.MyEndDate)">@Resource.SelectAllMembers</button>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => SelectProject(_project.MyProjectCode,_project.MyStartDate,_project.MyEndDate)">@Resource.SelectMember</button>
     }
     else
     {
@@ -96,13 +96,13 @@
             users.AddRange(members);
         }
     }
-    private void SelectProject(int IdProject,DateTime StartDate,DateTime EndDate)
+    private void SelectProject(string CodeProject,DateTime StartDate,DateTime EndDate)
     {
-        NavigationManager.NavigateTo($"/Reports/{IdProject}/{StartDate.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture)}", true);
+        NavigationManager.NavigateTo($"/Reports/{CodeProject}/{StartDate.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture)}", true);
     }
-    private void SelectAllMembers(int IdProject, DateTime StartDate, DateTime EndDate)
+    private void SelectAllMembers(string CodeProject, DateTime StartDate, DateTime EndDate)
     {
-        NavigationManager.NavigateTo($"/ViewProjectReport/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{IdProject}", true);
+        NavigationManager.NavigateTo($"/ViewProjectReport/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{CodeProject}", true);
     }
     private  void ReadHours(int IdUser, DateTime StartDate, DateTime EndDate, int IdProject)
     {

@@ -12,5 +12,8 @@ namespace BminingBlazor.ViewModels.Report
         public DateTime MyDateTracked { get; set; }
         public string MyCodProject { get; set; }
         public string MyNameProject { get; set; }
+        public int MyProjectId { get; set; }
+        public int MyParentId { get; set; }
+        public int MyLevel { get; set; }
     }
 }
