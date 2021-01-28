@@ -68,7 +68,7 @@
         [Parameter]
         public string codeProject { get; set; }
 
-    public CProject project { get; set; }
+    public CProject project = new CProject();
 
     private List<ReportViewModel> _report { get; set; }
     private ReportViewModel father { get; set; }
