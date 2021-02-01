@@ -65,12 +65,16 @@
 <select class="form-control" id="contract" required>
 
     <option value="">
-        @root.Son.Data.MyNameProject       
+        @root.Son.Data.MyNameProject
     </option>
-    <option value="">        
-        @root.Son.Brother.Data.MyNameProject
+    @{select = root.Son; }
+    @while (select.Brother != null)
+    {        
+    <option value="">
+        @select.Brother.Data.MyNameProject
     </option>
-
+        select = select.Brother;
+    }
 </select>
         
     }
@@ -96,6 +100,7 @@
     public CNode n = new CNode();
     public CNode select = new CNode();
     public List<CNode> _listSons = new List<CNode>();
+    public string sons = ".Brother";
 
 
 
