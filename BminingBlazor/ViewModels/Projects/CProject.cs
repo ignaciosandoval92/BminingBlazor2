@@ -40,14 +40,14 @@ namespace BminingBlazor.ViewModels.Projects
             {
                 work = pNode.Son;
 
-                while(root.Brother!=null)
+                while(work.Brother!=null)
                 {
-                    work = work.Son;
+                    work = work.Brother;
                 }
 
                 CNode temp = new CNode();
                 temp.Data = pData;
-                work.Son = temp;
+                work.Brother = temp;
                 return temp;
             }
         }

@@ -62,14 +62,16 @@
     @if (root.Son != null)
     {
 
-        <select class="form-control" id="contract"  required>
-            
-                <option value="">
-                    @*@root.Son.Data.MyNameProject;*@
-                    @root.Son.Data.MyNameProject
-                </option>
-            
-        </select>
+<select class="form-control" id="contract" required>
+
+    <option value="">
+        @root.Son.Data.MyNameProject       
+    </option>
+    <option value="">        
+        @root.Son.Brother.Data.MyNameProject
+    </option>
+
+</select>
         
     }
 </div>
