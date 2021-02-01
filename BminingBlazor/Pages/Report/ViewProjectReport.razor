@@ -19,44 +19,61 @@
         </div>
     </div>
 
- 
+
     @if (_report == null)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
     else
-    {
-        <div class="table-responsive{-sm|-md|-lg|-xl}">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>@Resource.Name</th>
-                        <th>@Resource.Surname</th>
-                        <th>@Resource.ProjectCode</th>
-                        <th>@Resource.ProjectName</th>
-                        <th>@Resource.Hours</th>
-                        <th>@Resource.Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var reportMember in _report)
-                    {
+    {@if (root.Son == null)
+        {
+            <div class="table-responsive{-sm|-md|-lg|-xl}">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>@reportMember.MyName</td>
-                            <td>@reportMember.MyPaternalSurname</td>
-                            <td>@reportMember.MyCodProject</td>
-                            <td>@reportMember.MyNameProject</td>
-                            <td>@reportMember.MyTrackedHours</td>
-                            <td>@reportMember.MyDateTracked</td>
+                            <th>@Resource.Name</th>
+                            <th>@Resource.Surname</th>
+                            <th>@Resource.ProjectCode</th>
+                            <th>@Resource.ProjectName</th>
+                            <th>@Resource.Hours</th>
+                            <th>@Resource.Date</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @foreach (var reportMember in _report)
+                        {
+                            <tr>
+                                <td>@reportMember.MyName</td>
+                                <td>@reportMember.MyPaternalSurname</td>
+                                <td>@reportMember.MyCodProject</td>
+                                <td>@reportMember.MyNameProject</td>
+                                <td>@reportMember.MyTrackedHours</td>
+                                <td>@reportMember.MyDateTracked</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
+
+            <button class="btn-download float-right" @onclick="ExportExcel"></button>
+        }
+}
+    @if (root.Son != null)
+    {
+
+        <select class="form-control" id="contract"  required>
+            
+                <option value="">
+                    @*@root.Son.Data.MyNameProject;*@
+                    @root.Son.Data.MyNameProject
+                </option>
+            
+        </select>
+        
     }
-    <button class="btn-download float-right" @onclick="ExportExcel"></button>
 </div>
+
 @code {
 
     [Parameter]
@@ -73,6 +90,10 @@
     public ReportViewModel father = new ReportViewModel();
     public List<ReportViewModel> _sons = new List<ReportViewModel>();
     public List<ReportViewModel> _GrandChilds = new List<ReportViewModel>();
+    public CNode root = new CNode();
+    public CNode n = new CNode();
+    public CNode select = new CNode();
+    public List<CNode> _listSons = new List<CNode>();
 
 
 
@@ -95,10 +116,10 @@
                 _GrandChilds.Add(report);
             }
         }
-        CNode root = project.Insertar(father, null);
+        root = project.Insertar(father, null);
         foreach (var son in _sons)
         {
-            CNode n = project.Insertar(son, root);
+            n = project.Insertar(son, root);
             foreach (var grandchild in _GrandChilds)
             {
                 if (grandchild.MyParentId == son.MyProjectId)
@@ -107,6 +128,7 @@
                 }
             }
         }
+
         StateHasChanged();
     }
     public async Task ExportExcel()
