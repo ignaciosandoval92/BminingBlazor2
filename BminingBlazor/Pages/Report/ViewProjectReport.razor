@@ -67,13 +67,13 @@
     <option value="">
         @root.Son.Data.MyNameProject
     </option>
-    @{select = root.Son; }
-    @while (select.Brother != null)
+    @{options = root.Son; }
+    @while (options.Brother != null)
     {        
     <option value="">
-        @select.Brother.Data.MyNameProject
+        @options.Brother.Data.MyNameProject
     </option>
-        select = select.Brother;
+        options = options.Brother;
     }
 </select>
         
@@ -98,9 +98,9 @@
     public List<ReportViewModel> _GrandChilds = new List<ReportViewModel>();
     public CNode root = new CNode();
     public CNode n = new CNode();
-    public CNode select = new CNode();
+    public CNode options = new CNode();
     public List<CNode> _listSons = new List<CNode>();
-    public string sons = ".Brother";
+    
 
 
 
