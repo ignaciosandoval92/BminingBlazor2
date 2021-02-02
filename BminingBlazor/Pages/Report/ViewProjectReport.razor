@@ -1,5 +1,6 @@
 ﻿@page "/ViewProjectReport/{startDate:datetime}/{endDate:datetime}/{codeProject}"
 @page "/ViewProjectReport/{startDate:datetime}/{endDate:datetime}/{projectID:int}/{levelSelect:int}"
+@page "/ViewProjectReport/{startDate:datetime}/{endDate:datetime}/{codeProject}/{levelSelect:int}"
 @using BminingBlazor.ViewModels.Report;
 @using System.IO;
 @using Microsoft.JSInterop;
@@ -11,6 +12,7 @@
 
 @inject IReportService ReportService
 @inject IJSRuntime iJSRuntime
+@inject NavigationManager NavigationManager
 
 
 <div class="bmining-app">
@@ -26,7 +28,7 @@
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
     else
-    {@if (root.Son == null)
+    {@if (root.Son == null || levelselect == 3)
         {
             <div class="table-responsive{-sm|-md|-lg|-xl}">
                 <table class="table table-striped">
@@ -60,23 +62,24 @@
             <button class="btn-download float-right" @onclick="ExportExcel"></button>
         }
 }
-    @if (root.Son != null)
+    @if (root.Son != null && levelselect != 3)
     {
 
-<select class="form-control" id="projectdId" @bind="@idProject" required>
-    @{options = root.Son; }
-    <option value="@options.Data.MyProjectId">
-        @options.Data.MyNameProject
-    </option>
-    @while (options.Brother != null)
-    {
-        <option value="@options.Data.MyProjectId">
-            @options.Brother.Data.MyNameProject
-        </option>
-        options = options.Brother;
-    }
-</select>
-<button class="btn-download float-right" @onclick="()=>SelectSon(idProject)"></button> 
+        <select class="form-control" id="projectdId" @bind="@idProject" required>
+            @{options = root.Son; }
+            <option value="@options.Data.MyProjectId">
+                @options.Data.MyNameProject
+            </option>
+            @while (options.Brother != null)
+            {
+                <option value="@options.Data.MyProjectId">
+                    @options.Brother.Data.MyNameProject
+                </option>
+                options = options.Brother;
+            }
+        </select>
+        <button class="btn-download float-right" @onclick="()=>SelectSon(idProject,1)"></button>
+        <button class="btn float-right" @onclick="@proyectoactual">proyecto actual </button>
     }
 </div>
 
@@ -105,6 +108,7 @@
     public CNode options = new CNode();
     public List<CNode> _listSons = new List<CNode>();
     public int idProject { get; set; }
+    public int levelSelect { get; set; }
 
 
 
@@ -112,41 +116,52 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _report = await ReportService.GetProjectReportTree(startDate, endDate,codeProject);
-
-        foreach (var report in _report)
+        if (levelselect == 1)
         {
-            if (report.MyLevel == 0)
-            {
-                father = report;
-            }
-            if (report.MyLevel == 1)
-            {
-                _sons.Add(report);
-            }
-            if (report.MyLevel == 2)
-            {
-                _GrandChilds.Add(report);
-            }
+            _report = await ReportService.GetProjectReportSons(startDate, endDate, projectId);
         }
-        root = project.Insertar(father, null);
-        foreach (var son in _sons)
+        else
         {
-            n = project.Insertar(son, root);
-            foreach (var grandchild in _GrandChilds)
+            _report = await ReportService.GetProjectReportTree(startDate, endDate, codeProject);
+
+            foreach (var report in _report)
             {
-                if (grandchild.MyParentId == son.MyProjectId)
+                if (report.MyLevel == 0)
                 {
-                    project.Insertar(grandchild, n);
+                    father = report;
+                }
+                if (report.MyLevel == 1)
+                {
+                    _sons.Add(report);
+                }
+                if (report.MyLevel == 2)
+                {
+                    _GrandChilds.Add(report);
+                }
+            }
+            root = project.Insertar(father, null);
+            foreach (var son in _sons)
+            {
+                n = project.Insertar(son, root);
+                foreach (var grandchild in _GrandChilds)
+                {
+                    if (grandchild.MyParentId == son.MyProjectId)
+                    {
+                        project.Insertar(grandchild, n);
+                    }
                 }
             }
         }
 
         StateHasChanged();
     }
-    public async Task SelectSon(int projectId)
+    public void SelectSon(int projectId, int levelselect)
     {
-        _report = await ReportService.GetProjectReport(startDate, endDate, projectId);
+        NavigationManager.NavigateTo($"/ViewProjectReport/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{levelselect}", true);
+    }
+    public void proyectoactual()
+    {
+        NavigationManager.NavigateTo($"/ViewProjectReport/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{codeProject}/{3}", true);
     }
 
     public async Task ExportExcel()

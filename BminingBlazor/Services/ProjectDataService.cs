@@ -381,11 +381,15 @@ namespace BminingBlazor.Services
                 .Select(ClientConstants.ClientName)
                 .Select(ProjectConstants.CodProjectType)
                 .Select(ProjectConstants.StatusId)
+                .Select(ProjectConstants.Level)
+                .Select(ProjectConstants.ParentId)
                 .Select($"{ClientTable}.{ClientConstants.ClientId}")
                 .Where($"{ProjectTable}.{ProjectConstants.ProjectId}", projectId)
                 .GetAsync<ProjectModel>()).First();
             var projectViewModel = new ProjectViewModel()
             {
+                MyLevel=projects.Level,
+                MyParentId=projects.ParentId,
                 MyId = projectId,
                 MyProjectCode = projects.CodProject,
                 MyProjectName = projects.ProjectName,

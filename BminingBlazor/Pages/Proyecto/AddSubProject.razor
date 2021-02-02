@@ -121,7 +121,7 @@
         }
         else
         {
-            _project = await ProjectDataService.ReadProject(112);
+            _project = await ProjectDataService.ReadProject(ProjectId);
             _users = await ProjectDataService.ReadMembers(_project.MyId);
             _membersProjectItems = new List<MemberViewModel>();
             StateHasChanged();
@@ -147,7 +147,7 @@
             MyClientId = _project.MyClientId,
             MyProjectStatus = _project.MyProjectStatus,
             MyLevel = _project.MyLevel + 1,
-            MyParentId = _project.MyId,
+            MyParentId = ProjectId,
             OurPayments = _project.OurPayments
         };
         foreach (var members in _membersProjectItems)
