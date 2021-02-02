@@ -28,7 +28,8 @@
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
     else
-    {@if (root.Son == null || levelselect == 3)
+    {
+        @if (root.Son == null || levelselect == 3)
         {
             <div class="table-responsive{-sm|-md|-lg|-xl}">
                 <table class="table table-striped">
@@ -61,25 +62,38 @@
 
             <button class="btn-download float-right" @onclick="ExportExcel"></button>
         }
-}
-    @if (root.Son != null && levelselect != 3)
-    {
 
-        <select class="form-control" id="projectdId" @bind="@idProject" required>
-            @{options = root.Son; }
-            <option value="@options.Data.MyProjectId">
-                @options.Data.MyNameProject
-            </option>
-            @while (options.Brother != null)
-            {
+        @if (root.Son != null && levelselect != 3)
+        {
+
+            <select class="form-control" id="projectdId" @bind="@idProject" required>
+                @{options = root.Son; }
                 <option value="@options.Data.MyProjectId">
-                    @options.Brother.Data.MyNameProject
+                    @options.Data.MyNameProject
                 </option>
-                options = options.Brother;
-            }
-        </select>
-        <button class="btn-download float-right" @onclick="()=>SelectSon(idProject,1)"></button>
-        <button class="btn float-right" @onclick="@proyectoactual">proyecto actual </button>
+                @while (options.Brother != null)
+                {
+                    <option value="@options.Data.MyProjectId">
+                        @options.Brother.Data.MyNameProject
+                    </option>
+                    options = options.Brother;
+                }
+            </select>
+            <button class="btn-download float-right" @onclick="() => SelectSon(idProject, 1)"></button>
+            <button class="btn float-right" @onclick="@proyectoactual">proyecto actual </button>
+        }
+        @*@if (levelselect == 1)
+        {
+            <label for="contract">@Resource.Project</label>
+            <select class="form-control" id="contract" required>
+                @foreach (var pro in _report)
+                {
+                    <option value="@pro.MyProjectId">
+                        @pro.MyNameProject
+                    </option>
+                }
+            </select>
+        }*@
     }
 </div>
 
@@ -119,6 +133,23 @@
         if (levelselect == 1)
         {
             _report = await ReportService.GetProjectReportSons(startDate, endDate, projectId);
+            foreach (var report in _report)
+            {
+                if (report.MyLevel == 1)
+                {
+                    father = report;
+                }
+                if (report.MyLevel == 2)
+                {
+                    _sons.Add(report);
+                }
+            }
+            root = project.Insertar(father, null);
+            foreach (var son in _sons)
+            {
+                n = project.Insertar(son, root);                
+            }
+
         }
         else
         {
@@ -157,7 +188,7 @@
     }
     public void SelectSon(int projectId, int levelselect)
     {
-        NavigationManager.NavigateTo($"/ViewProjectReport/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{levelselect}", true);
+        NavigationManager.NavigateTo($"/ViewProjectReport/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{1}", true);
     }
     public void proyectoactual()
     {
