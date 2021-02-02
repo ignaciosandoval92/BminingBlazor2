@@ -1,4 +1,5 @@
 ﻿@page "/ViewProjectReport/{startDate:datetime}/{endDate:datetime}/{codeProject}"
+@page "/ViewProjectReport/{startDate:datetime}/{endDate:datetime}/{projectID:int}/{levelSelect:int}"
 @using BminingBlazor.ViewModels.Report;
 @using System.IO;
 @using Microsoft.JSInterop;
@@ -62,21 +63,20 @@
     @if (root.Son != null)
     {
 
-<select class="form-control" id="contract" required>
-
-    <option value="">
-        @root.Son.Data.MyNameProject
-    </option>
+<select class="form-control" id="projectdId" @bind="@idProject" required>
     @{options = root.Son; }
-    @while (options.Brother != null)
-    {        
-    <option value="">
-        @options.Brother.Data.MyNameProject
+    <option value="@options.Data.MyProjectId">
+        @options.Data.MyNameProject
     </option>
+    @while (options.Brother != null)
+    {
+        <option value="@options.Data.MyProjectId">
+            @options.Brother.Data.MyNameProject
+        </option>
         options = options.Brother;
     }
 </select>
-        
+<button class="btn-download float-right" @onclick="()=>SelectSon(idProject)"></button> 
     }
 </div>
 
@@ -90,6 +90,10 @@
     public DateTime endDate { get; set; }
     [Parameter]
     public string codeProject { get; set; }
+    [Parameter]
+    public int levelselect { get; set; }
+    [Parameter]
+    public int projectId { get; set; }
 
     public CProject project = new CProject();
     public List<ReportViewModel> _report = new List<ReportViewModel>();
@@ -100,13 +104,15 @@
     public CNode n = new CNode();
     public CNode options = new CNode();
     public List<CNode> _listSons = new List<CNode>();
-    
+    public int idProject { get; set; }
+
+
 
 
 
     protected override async Task OnInitializedAsync()
     {
-        _report = await ReportService.GetProjectReport(startDate, endDate,codeProject);
+        _report = await ReportService.GetProjectReportTree(startDate, endDate,codeProject);
 
         foreach (var report in _report)
         {
@@ -138,6 +144,11 @@
 
         StateHasChanged();
     }
+    public async Task SelectSon(int projectId)
+    {
+        _report = await ReportService.GetProjectReport(startDate, endDate, projectId);
+    }
+
     public async Task ExportExcel()
     {
         GenerateReport generateReport = new GenerateReport()

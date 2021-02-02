@@ -9,6 +9,7 @@ namespace BminingBlazor.Services
     public interface IReportService
     {
         Task<List<ReportViewModel>> GetUserReport(int userId, DateTime from, DateTime to, int projectId);
-        Task<List<ReportViewModel>> GetProjectReport(DateTime from, DateTime to, string codeProject);
+        Task<List<ReportViewModel>> GetProjectReportTree(DateTime from, DateTime to, string codeProject);
+        Task<List<ReportViewModel>> GetProjectReport(DateTime from, DateTime to, int projectId);
     }
 }
