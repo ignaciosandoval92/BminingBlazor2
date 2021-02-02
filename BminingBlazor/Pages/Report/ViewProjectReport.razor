@@ -79,21 +79,10 @@
                     options = options.Brother;
                 }
             </select>
-            <button class="btn-download float-right" @onclick="() => SelectSon(idProject, 1)"></button>
+            <button class="btn-download float-right" @onclick="() => SelectSon(idProject)"></button>
             <button class="btn float-right" @onclick="@proyectoactual">proyecto actual </button>
         }
-        @*@if (levelselect == 1)
-        {
-            <label for="contract">@Resource.Project</label>
-            <select class="form-control" id="contract" required>
-                @foreach (var pro in _report)
-                {
-                    <option value="@pro.MyProjectId">
-                        @pro.MyNameProject
-                    </option>
-                }
-            </select>
-        }*@
+      
     }
 </div>
 
@@ -147,9 +136,13 @@
             root = project.Insertar(father, null);
             foreach (var son in _sons)
             {
-                n = project.Insertar(son, root);                
+                n = project.Insertar(son, root);
             }
 
+        }
+        if(levelselect==2)
+        {
+            _report = await ReportService.GetProjectReport(startDate, endDate, projectId);
         }
         else
         {
@@ -186,9 +179,16 @@
 
         StateHasChanged();
     }
-    public void SelectSon(int projectId, int levelselect)
+    public void SelectSon(int projectId)
     {
-        NavigationManager.NavigateTo($"/ViewProjectReport/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{1}", true);
+        if (levelselect == 1)
+        {
+            NavigationManager.NavigateTo($"/ViewProjectReport/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{2}", true);
+        }
+        else
+        {
+            NavigationManager.NavigateTo($"/ViewProjectReport/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{1}", true);
+        }
     }
     public void proyectoactual()
     {
