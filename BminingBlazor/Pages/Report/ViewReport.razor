@@ -84,33 +84,33 @@
     protected override async Task OnInitializedAsync()
     {
         _report = await ReportService.GetUserReportFromCode(userId, startDate, endDate, codeProject);
-        foreach (var report in _report)
-        {
-            if (report.MyLevel == 0)
-            {
-                father = report;
-            }
-            if (report.MyLevel == 1)
-            {
-                _sons.Add(report);
-            }
-            if (report.MyLevel == 2)
-            {
-                _GrandChilds.Add(report);
-            }
-        }
-        root = project.Insertar(father, null);
-        foreach (var son in _sons)
-        {
-            n = project.Insertar(son, root);
-            foreach (var grandchild in _GrandChilds)
-            {
-                if (grandchild.MyParentId == son.MyProjectId)
-                {
-                    project.Insertar(grandchild, n);
-                }
-            }
-        }
+        //foreach (var report in _report)
+        //{
+        //    if (report.MyLevel == 0)
+        //    {
+        //        father = report;
+        //    }
+        //    if (report.MyLevel == 1)
+        //    {
+        //        _sons.Add(report);
+        //    }
+        //    if (report.MyLevel == 2)
+        //    {
+        //        _GrandChilds.Add(report);
+        //    }
+        //}
+        //root = project.Insertar(father, null);
+        //foreach (var son in _sons)
+        //{
+        //    n = project.Insertar(son, root);
+        //    foreach (var grandchild in _GrandChilds)
+        //    {
+        //        if (grandchild.MyParentId == son.MyProjectId)
+        //        {
+        //            project.Insertar(grandchild, n);
+        //        }
+        //    }
+        //}
         StateHasChanged();
     }
     public async Task ExportExcel()

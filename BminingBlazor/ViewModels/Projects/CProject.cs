@@ -17,7 +17,7 @@ namespace BminingBlazor.ViewModels.Projects
             root = new CNode();
         }
 
-        public CNode Insertar(ReportViewModel pData,CNode pNode)
+        public CNode Insertar(ProjectViewModel pData,CNode pNode)
         {
             if (pNode==null)
             {

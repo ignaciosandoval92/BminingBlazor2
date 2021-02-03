@@ -27,5 +27,6 @@ namespace BminingBlazor.Services
         Task<ProjectViewModel> ReadProjectFromCode(string code,int level);
         Task<List<ProjectViewModel>> ReadTreeProject(string code);
         Task<List<ProjectViewModel>> ReadFathersProjects();
+        Task<List<ProjectViewModel>> ReadSonsProject(int projectId);
     }
 }

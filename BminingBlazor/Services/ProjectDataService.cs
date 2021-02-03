@@ -228,7 +228,7 @@ namespace BminingBlazor.Services
                                             .Where(MemberConstants.UserId, userId)
                                             .Include(TableConstants.ProjectTable, projectQuery,
                                                      ProjectConstants.ProjectId, MemberConstants.ProjectId);
-                                           
+
 
             var items = (await membersQuery.GetAsync()).Cast<IDictionary<string, object>>().ToList();
 
@@ -388,8 +388,8 @@ namespace BminingBlazor.Services
                 .GetAsync<ProjectModel>()).First();
             var projectViewModel = new ProjectViewModel()
             {
-                MyLevel=projects.Level,
-                MyParentId=projects.ParentId,
+                MyLevel = projects.Level,
+                MyParentId = projects.ParentId,
                 MyId = projectId,
                 MyProjectCode = projects.CodProject,
                 MyProjectName = projects.ProjectName,
@@ -481,7 +481,7 @@ namespace BminingBlazor.Services
             return paymentViewModel;
         }
 
-        public async Task<ProjectViewModel> ReadProjectFromCode(string code,int level)
+        public async Task<ProjectViewModel> ReadProjectFromCode(string code, int level)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             var projects = (await queryFactory
@@ -499,7 +499,7 @@ namespace BminingBlazor.Services
                 .Select(ProjectConstants.StatusId)
                 .Select($"{ClientTable}.{ClientConstants.ClientId}")
                 .Where($"{ProjectTable}.{ProjectConstants.ProjectCode}", code)
-                .Where($"{ProjectTable}.{ProjectConstants.Level}",level)
+                .Where($"{ProjectTable}.{ProjectConstants.Level}", level)
                 .GetAsync<ProjectModel>()).First();
             var projectViewModel = new ProjectViewModel()
             {
@@ -523,20 +523,20 @@ namespace BminingBlazor.Services
                 .Select(ProjectConstants.ProjectId)
                 .Select(ProjectConstants.ProjectCode)
                 .Select(ProjectConstants.ProjectName)
-                .Select(ProjectConstants.ProjectManagerId)              
+                .Select(ProjectConstants.ProjectManagerId)
                 .Select(ProjectConstants.CodProjectType)
-                .Select(ProjectConstants.StatusId)                
+                .Select(ProjectConstants.StatusId)
                 .Select(ProjectConstants.Level)
                 .Select(ProjectConstants.ParentId)
-                .Where($"{ProjectTable}.{ProjectConstants.ProjectCode}", code)                
+                .Where($"{ProjectTable}.{ProjectConstants.ProjectCode}", code)
                 .GetAsync<ProjectModel>()).ToList();
             var projectViewModel = new List<ProjectViewModel>();
             foreach (var projectModel in projects)
             {
                 projectViewModel.Add(new ProjectViewModel
                 {
-                    MyLevel=projectModel.Level,
-                    MyParentId=projectModel.ParentId,
+                    MyLevel = projectModel.Level,
+                    MyParentId = projectModel.ParentId,
                     MyId = projectModel.ProjectId,
                     MyProjectCode = projectModel.CodProject,
                     MyProjectName = projectModel.ProjectName,
@@ -563,7 +563,7 @@ namespace BminingBlazor.Services
             var creatorQuery = queryFactory.Query(TableConstants.UserTable);
             var projectManagerQuery = queryFactory.Query(TableConstants.UserTable);
 
-            var projectQuery = queryFactory.Query(TableConstants.ProjectTable).Where(ProjectConstants.Level,0)
+            var projectQuery = queryFactory.Query(TableConstants.ProjectTable).Where(ProjectConstants.Level, 0)
                 .Include(ProjectConstants.Creator, creatorQuery, ProjectConstants.CreatorId, UserConstants.UserId)
                 .Include(ProjectConstants.ProjectManager, projectManagerQuery, ProjectConstants.ProjectManagerId, UserConstants.UserId)
                 .Join(TableConstants.ClientTable, $"{TableConstants.ClientTable}.{ClientConstants.ClientId}",
@@ -666,6 +666,42 @@ namespace BminingBlazor.Services
             }
             return projects;
         }
+        public async Task<List<ProjectViewModel>> ReadSonsProject(int projectId)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var projects = (await queryFactory
+                .Query()
+                .From(ProjectTable)
+                .Select(ProjectConstants.ProjectId)
+                .Select(ProjectConstants.ProjectCode)
+                .Select(ProjectConstants.ProjectName)
+                .Select(ProjectConstants.ProjectManagerId)
+                .Select(ProjectConstants.CodProjectType)
+                .Select(ProjectConstants.StatusId)
+                .Select(ProjectConstants.Level)
+                .Select(ProjectConstants.ParentId)
+                .Where($"{ProjectTable}.{ProjectConstants.ParentId}", projectId)
+                .GetAsync<ProjectModel>()).ToList();
+            var projectViewModel = new List<ProjectViewModel>();
+            foreach (var projectModel in projects)
+            {
+                projectViewModel.Add(new ProjectViewModel
+                {
+                    MyLevel = projectModel.Level,
+                    MyParentId = projectModel.ParentId,
+                    MyId = projectModel.ProjectId,
+                    MyProjectCode = projectModel.CodProject,
+                    MyProjectName = projectModel.ProjectName,
+                    MyProjectStatus = (ProjectStatusEnum)projectModel.StatusId,
+                    MyProjectType = (ProjectTypeEnum)projectModel.CodProjectType,
+                    MyClientId = projectModel.ClientId,
+                    MyClientName = projectModel.ClientName,
+                    MyProjectManager = new UserViewModel { MyId = projectModel.ProjectManagerId, MyEmail = projectModel.EmailBmining },
+                });
+            }
+            return projectViewModel.ToList();
+        }
+
 
     }
 }
