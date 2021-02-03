@@ -29,7 +29,7 @@
     }
     else
     {
-        @if (root.Son == null || levelselect == 3)
+        @if (root.Son == null || levelselect == 3||levelselect==4)
         {
             <div class="table-responsive{-sm|-md|-lg|-xl}">
                 <table class="table table-striped">
@@ -80,9 +80,9 @@
                 }
             </select>
             <button class="btn-download float-right" @onclick="() => SelectSon(idProject)"></button>
-            <button class="btn float-right" @onclick="@proyectoactual">proyecto actual </button>
+            <button class="btn float-right" @onclick="()=>proyectoactual(father.MyProjectId)">proyecto actual </button>
         }
-      
+
     }
 </div>
 
@@ -140,7 +140,12 @@
             }
 
         }
-        if(levelselect==2)
+        if (levelselect == 4)
+        {
+            _report = await ReportService.GetProjectReportSons(startDate, endDate,135);           
+
+        }
+        if (levelselect == 2)
         {
             _report = await ReportService.GetProjectReport(startDate, endDate, projectId);
         }
@@ -190,11 +195,17 @@
             NavigationManager.NavigateTo($"/ViewProjectReport/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{1}", true);
         }
     }
-    public void proyectoactual()
+    public void proyectoactual(int projectId)
     {
-        NavigationManager.NavigateTo($"/ViewProjectReport/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{codeProject}/{3}", true);
+        if (levelselect == 1)
+        {
+            NavigationManager.NavigateTo($"/ViewProjectReport/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{4}", true);
+        }
+        else
+        {
+            NavigationManager.NavigateTo($"/ViewProjectReport/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{codeProject}/{3}", true);
+        }
     }
-
     public async Task ExportExcel()
     {
         GenerateReport generateReport = new GenerateReport()
