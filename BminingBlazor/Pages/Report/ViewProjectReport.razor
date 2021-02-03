@@ -66,25 +66,29 @@
         @if (root.Son != null && levelselect != 3)
         {
 
-            <select class="form-control" id="projectdId" @bind="@idProject" required>
-                @{options = root.Son; }
-                <option value="@options.Data.MyProjectId">
-                    @options.Data.MyNameProject
-                </option>
-                @while (options.Brother != null)
-                {
-                    if (_names.Contains(options.Brother.Data.MyNameProject))
-                    { return; }
-                    else
-                    { 
-                    <option value="@options.Data.MyProjectId">
-                        @options.Brother.Data.MyNameProject
-                    </option>
-                        options = options.Brother;
-                        _names.Add(options.Data.MyNameProject);
-                    }
-                }
-            </select>
+<select class="form-control" id="projectdId" @bind="@idProject" required>
+    @{options = root.Son;
+        _names.Add(options.Data.MyNameProject);
+    }
+    <option value="@options.Data.MyProjectId">
+        @options.Data.MyNameProject
+    </option>
+    @while (options.Brother != null)
+    {
+        if (_names.Contains(options.Brother.Data.MyNameProject))
+        {
+            options = options.Brother;
+        }
+        else
+        {
+        <option value="@options.Data.MyProjectId">
+            @options.Brother.Data.MyNameProject
+        </option>
+            options = options.Brother;
+            _names.Add(options.Data.MyNameProject);
+        }
+    }
+</select>
             <button class="btn-download float-right" @onclick="() => SelectSon(idProject)"></button>
             <button class="btn float-right" @onclick="()=>proyectoactual(options.Data.MyParentId)">proyecto actual </button>
         }
