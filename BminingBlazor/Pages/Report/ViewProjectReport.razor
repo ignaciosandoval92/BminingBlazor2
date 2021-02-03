@@ -29,7 +29,7 @@
     }
     else
     {
-        @if (root.Son == null || levelselect == 3||levelselect==4)
+        @if (root.Son == null || levelselect == 3 || levelselect == 4)
         {
             <div class="table-responsive{-sm|-md|-lg|-xl}">
                 <table class="table table-striped">
@@ -142,9 +142,8 @@
         }
         else if (levelselect == 4)
         {
-            _report = await ReportService.GetProjectReportSons(startDate, endDate,projectId);
-            _report.AddRange(await ReportService.GetProjectReport(startDate, endDate, projectId));
-
+            _report = await ReportService.GetProjectReport(startDate, endDate, projectId);
+            _report.AddRange(await ReportService.GetProjectReportSons(startDate, endDate, projectId));
         }
         else if (levelselect == 2)
         {

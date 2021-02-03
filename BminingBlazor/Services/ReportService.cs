@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BminingBlazor.ViewModels.User;
+using Models;
 
 namespace BminingBlazor.Services
 {
@@ -189,6 +191,47 @@ namespace BminingBlazor.Services
                 report.Add(reportViewModel);
             }
             return report;
+        }
+        public async Task<List<MemberViewModel>> ReadMembersFromCode(string codeProject)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var projectQuery =queryFactory.Query(TableConstants.ProjectTable).Where($"{ProjectConstants.ProjectId}",codeProject);
+            var members = (await queryFactory
+                .Query()             
+                .From(TableConstants.UserTable)
+                .Join(TableConstants.MembersTable, $"{TableConstants.MembersTable}.{UserConstants.UserId}", $"{TableConstants.UserTable}.{MemberConstants.UserId}")
+                .Select($"{TableConstants.UserTable}.{UserConstants.UserId}")
+                .Select(UserConstants.EmailBmining)
+                .Select(UserConstants.Name)
+                .Select(UserConstants.PaternalLastName)
+                .Select(UserConstants.MaternalLastName)
+                .Select(UserConstants.Rut)
+                .Select(UserConstants.Job)
+                .Select(UserConstants.Phone)
+                .Select(UserConstants.HomeAddress)
+                .Select(MemberConstants.CodMembers)
+                .Join(TableConstants.ProjectTable,$"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",$"{TableConstants.MembersTable}.{MemberConstants.ProjectId}")
+                .Where(ProjectConstants.ProjectCode,codeProject)
+                .GroupBy(UserConstants.Name)
+                .GetAsync<UserModel>()).ToList();
+            var membersViewModel = new List<MemberViewModel>();
+            foreach (var member in members)
+            {
+                membersViewModel.Add(new MemberViewModel
+                {
+                    MyCodMember = member.CodMembers,
+                    MyAddress = member.HomeAddress,
+                    MyEmail = member.EmailBmining,
+                    MyId = member.UserId,
+                    MyJob = member.Job,
+                    MyMaternalSurname = member.MaternalLastName,
+                    MyName = member.Name,
+                    MyPaternalSurname = member.PaternalLastName,
+                    MyRut = member.Rut
+
+                });
+            }
+            return membersViewModel;
         }
     }
 }

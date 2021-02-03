@@ -1,4 +1,4 @@
-﻿@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{projectId:int}"
+﻿@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{codeProject}"
 @using BminingBlazor.ViewModels.Report;
 @using System.IO;
 @using Microsoft.JSInterop;
@@ -64,7 +64,7 @@
         [Parameter]
         public DateTime endDate { get; set; }
         [Parameter]
-        public int projectId { get; set; }
+        public string codeProject { get; set; }
 
 
         private List<ReportViewModel> _report;

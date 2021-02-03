@@ -1,5 +1,5 @@
 ﻿@page "/Reports"
-@page "/Reports/{projectId:int}/{startDate:datetime}/{endDate:datetime}"
+@page "/Reports/{codeProject}/{startDate:datetime}/{endDate:datetime}"
 @using BminingBlazor.ViewModels.Projects
 @using BminingBlazor.ViewModels.User
 
@@ -56,14 +56,14 @@
                 }
             </select>
         </div>
-        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => ReadHours(_member.MyId, _project.MyStartDate, _project.MyEndDate, projectId)">@Resource.ViewReport</button>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => ReadHours(_member.MyId, _project.MyStartDate, _project.MyEndDate, codeProject)">@Resource.ViewReport</button>
     }
 
 </div>
 
 @code {
     [Parameter]
-    public int projectId { get; set; }
+    public string codeProject { get; set; }
     [Parameter]
     public DateTime startDate { get; set; }
     [Parameter]
@@ -75,7 +75,7 @@
     private readonly MemberViewModel _member = new MemberViewModel();
     protected override async Task OnInitializedAsync()
     {
-        if (projectId == 0)
+        if (codeProject == null)
         {
             var email = AuthenticationStateProvider.GetEmail();
             var userId = await UserDataService.GetUserId(await email);
@@ -88,7 +88,7 @@
         }
         else
         {
-            var members = await ProjectDataService.ReadMembers(projectId);
+            var members = await ReportService.ReadMembersFromCode(codeProject);
             _project.MyStartDate = startDate;
             _project.MyEndDate = endDate;
             phase = 1;
@@ -104,9 +104,9 @@
     {
         NavigationManager.NavigateTo($"/ViewProjectReport/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{CodeProject}", true);
     }
-    private  void ReadHours(int IdUser, DateTime StartDate, DateTime EndDate, int IdProject)
+    private  void ReadHours(int IdUser, DateTime StartDate, DateTime EndDate, string CodeProject)
     {
-        NavigationManager.NavigateTo($"/ViewReport/{IdUser}/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{IdProject}");
+        NavigationManager.NavigateTo($"/ViewReport/{IdUser}/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{CodeProject}");
     }
 }
 
