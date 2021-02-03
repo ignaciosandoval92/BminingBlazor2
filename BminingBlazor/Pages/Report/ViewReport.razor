@@ -71,7 +71,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _report = await ReportService.GetUserReport(userId, startDate, endDate, projectId);
+        _report = await ReportService.GetUserReportFromCode(userId, startDate, endDate, codeProject);
         StateHasChanged();
     }
     public async Task ExportExcel()
