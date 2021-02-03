@@ -5,10 +5,12 @@
 @using OfficeOpenXml;
 @using OfficeOpenXml.Style;
 @using Data;
+@using ViewModels.Projects;
 
 
 @inject IReportService ReportService
 @inject IJSRuntime iJSRuntime
+@inject NavigationManager NavigationManager
 
 
 <div class="bmining-app">
@@ -17,7 +19,7 @@
             <h2>@Resource.Report</h2>
         </div>
     </div>
-    
+
     @if (_report == null)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
@@ -57,21 +59,58 @@
 </div>
 @code {
 
-        [Parameter]
-        public int userId { get; set; }
-        [Parameter]
-        public DateTime startDate { get; set; }
-        [Parameter]
-        public DateTime endDate { get; set; }
-        [Parameter]
-        public string codeProject { get; set; }
+    [Parameter]
+    public int userId { get; set; }
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
+    [Parameter]
+    public string codeProject { get; set; }
 
 
-        private List<ReportViewModel> _report;
+    public CProject project = new CProject();
+    public List<ReportViewModel> _report = new List<ReportViewModel>();
+    public ReportViewModel father = new ReportViewModel();
+    public List<ReportViewModel> _sons = new List<ReportViewModel>();
+    public List<ReportViewModel> _GrandChilds = new List<ReportViewModel>();
+    public CNode root = new CNode();
+    public CNode n = new CNode();
+    public CNode options = new CNode();
+    public List<CNode> _listSons = new List<CNode>();
+    public int idProject { get; set; }
+    public int levelSelect { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         _report = await ReportService.GetUserReportFromCode(userId, startDate, endDate, codeProject);
+        foreach (var report in _report)
+        {
+            if (report.MyLevel == 0)
+            {
+                father = report;
+            }
+            if (report.MyLevel == 1)
+            {
+                _sons.Add(report);
+            }
+            if (report.MyLevel == 2)
+            {
+                _GrandChilds.Add(report);
+            }
+        }
+        root = project.Insertar(father, null);
+        foreach (var son in _sons)
+        {
+            n = project.Insertar(son, root);
+            foreach (var grandchild in _GrandChilds)
+            {
+                if (grandchild.MyParentId == son.MyProjectId)
+                {
+                    project.Insertar(grandchild, n);
+                }
+            }
+        }
         StateHasChanged();
     }
     public async Task ExportExcel()

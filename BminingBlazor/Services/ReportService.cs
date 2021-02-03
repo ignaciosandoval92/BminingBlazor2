@@ -267,7 +267,10 @@ namespace BminingBlazor.Services
                     MyName = (string)item[UserConstants.Name],
                     MyPaternalSurname = (string)item[UserConstants.PaternalLastName],
                     MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
-                    MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate]
+                    MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate],
+                    MyLevel = (int)item[ProjectConstants.Level],
+                    MyParentId = (int)item[ProjectConstants.ParentId],
+                    MyProjectId = (int)item[ProjectConstants.ProjectId]
                 };
                 report.Add(reportViewModel);
             }

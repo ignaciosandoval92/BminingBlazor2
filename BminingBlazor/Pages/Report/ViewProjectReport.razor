@@ -73,10 +73,14 @@
                 </option>
                 @while (options.Brother != null)
                 {
+                    if (_names.Any(x => x == options.Brother.Data.MyNameProject))
+                    {
                     <option value="@options.Data.MyProjectId">
                         @options.Brother.Data.MyNameProject
                     </option>
-                    options = options.Brother;
+                        options = options.Brother;
+                        _names.Add(options.Data.MyNameProject);
+                    }
                 }
             </select>
             <button class="btn-download float-right" @onclick="() => SelectSon(idProject)"></button>
@@ -112,6 +116,7 @@
     public List<CNode> _listSons = new List<CNode>();
     public int idProject { get; set; }
     public int levelSelect { get; set; }
+    public List<string> _names = new List<string>();
 
 
 
