@@ -249,8 +249,8 @@ namespace BminingBlazor.Services
                 $"{TableConstants.TimeTrackingTable}.{UserConstants.UserId}")
                 .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
-                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}",
-                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}").Where(ProjectConstants.ProjectCode,codeProject);
+                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}/*,{ProjectConstants.Level},{ProjectConstants.ParentId},{ProjectConstants.ProjectId}*/}}",
+                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}").Where($"{TableConstants.ProjectTable}.{ProjectConstants.ProjectCode}",codeProject);
 
 
 
@@ -268,9 +268,9 @@ namespace BminingBlazor.Services
                     MyPaternalSurname = (string)item[UserConstants.PaternalLastName],
                     MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
                     MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate],
-                    MyLevel = (int)item[ProjectConstants.Level],
-                    MyParentId = (int)item[ProjectConstants.ParentId],
-                    MyProjectId = (int)item[ProjectConstants.ProjectId]
+                    //MyLevel = (int)item[ProjectConstants.Level],
+                    //MyParentId = (int)item[ProjectConstants.ParentId],
+                    //MyProjectId = (int)item[ProjectConstants.ProjectId]
                 };
                 report.Add(reportViewModel);
             }

@@ -1,4 +1,6 @@
 ﻿@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{codeProject}"
+@*@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{projectID:int}/{levelSelect:int}"
+@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{codeProject}/{levelSelect:int}"*@
 @using BminingBlazor.ViewModels.Report;
 @using System.IO;
 @using Microsoft.JSInterop;
@@ -7,7 +9,7 @@
 @using Data;
 @using ViewModels.Projects;
 
-
+@inject IProjectDataService ProjectDataService
 @inject IReportService ReportService
 @inject IJSRuntime iJSRuntime
 @inject NavigationManager NavigationManager
@@ -26,36 +28,67 @@
     }
     else
     {
-        <div class="table-responsive{-sm|-md|-lg|-xl}">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>@Resource.Name</th>
-                        <th>@Resource.Surname</th>
-                        <th>@Resource.ProjectCode</th>
-                        <th>@Resource.ProjectName</th>
-                        <th>@Resource.Hours</th>
-                        <th>@Resource.Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var reportMember in _report)
-                    {
+        @*@if (root.Son == null || levelselect == 3 || levelselect == 4)*@
+        {<div class="table-responsive{-sm|-md|-lg|-xl}">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>@reportMember.MyName</td>
-                            <td>@reportMember.MyPaternalSurname</td>
-                            <td>@reportMember.MyCodProject</td>
-                            <td>@reportMember.MyNameProject</td>
-                            <td>@reportMember.MyTrackedHours</td>
-                            <td>@reportMember.MyDateTracked</td>
+                            <th>@Resource.Name</th>
+                            <th>@Resource.Surname</th>
+                            <th>@Resource.ProjectCode</th>
+                            <th>@Resource.ProjectName</th>
+                            <th>@Resource.Hours</th>
+                            <th>@Resource.Date</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @foreach (var reportMember in _report)
+                        {
+                            <tr>
+                                <td>@reportMember.MyName</td>
+                                <td>@reportMember.MyPaternalSurname</td>
+                                <td>@reportMember.MyCodProject</td>
+                                <td>@reportMember.MyNameProject</td>
+                                <td>@reportMember.MyTrackedHours</td>
+                                <td>@reportMember.MyDateTracked</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
+        }
+        <button class="btn-download float-right" @onclick="ExportExcel"></button>
+        @*@if (root.Son != null && levelselect != 3)*@
+        {
+
+            <select class="form-control" id="projectdId" @bind="@idProject" required>
+                @{options = root.Son;
+                    _names.Add(options.Data.MyProjectName);
+                }
+                <option value="@options.Data.MyId">
+                    @options.Data.MyProjectName
+                </option>
+                @while (options.Brother != null)
+                {
+                    if (_names.Contains(options.Brother.Data.MyProjectName))
+                    {
+                        options = options.Brother;
+                    }
+                    else
+                    {
+                        <option value="@options.Data.MyId">
+                            @options.Brother.Data.MyProjectName
+                        </option>
+                        options = options.Brother;
+                        _names.Add(options.Data.MyProjectName);
+                    }
+                }
+            </select>
+            @*<button class="btn-download float-right" @onclick="() => SelectSon(idProject)"></button>
+            <button class="btn float-right" @onclick="()=>proyectoactual(options.Data.MyParentId)">proyecto actual </button>*@
+        }
     }
-    <button class="btn-download float-right" @onclick="ExportExcel"></button>
 </div>
 @code {
 
@@ -67,36 +100,43 @@
     public DateTime endDate { get; set; }
     [Parameter]
     public string codeProject { get; set; }
+    //[Parameter]
+    //public int levelselect { get; set; }
+    //[Parameter]
+    //public int projectId { get; set; }
 
 
     public CProject project = new CProject();
     public List<ReportViewModel> _report = new List<ReportViewModel>();
-    public ReportViewModel father = new ReportViewModel();
-    public List<ReportViewModel> _sons = new List<ReportViewModel>();
-    public List<ReportViewModel> _GrandChilds = new List<ReportViewModel>();
+    public ProjectViewModel father = new ProjectViewModel();
+    public List<ProjectViewModel> _sons = new List<ProjectViewModel>();
+    public List<ProjectViewModel> _GrandChilds = new List<ProjectViewModel>();
     public CNode root = new CNode();
     public CNode n = new CNode();
     public CNode options = new CNode();
     public List<CNode> _listSons = new List<CNode>();
     public int idProject { get; set; }
     public int levelSelect { get; set; }
+    public List<string> _names = new List<string>();
+    public List<ProjectViewModel> _projects = new List<ProjectViewModel>();
 
     protected override async Task OnInitializedAsync()
     {
+        //_projects = await ProjectDataService.ReadTreeProject(codeProject);
         _report = await ReportService.GetUserReportFromCode(userId, startDate, endDate, codeProject);
-        //foreach (var report in _report)
+        //foreach (var project in _projects)
         //{
-        //    if (report.MyLevel == 0)
+        //    if (project.MyLevel == 0)
         //    {
-        //        father = report;
+        //        father = project;
         //    }
-        //    if (report.MyLevel == 1)
+        //    if (project.MyLevel == 1)
         //    {
-        //        _sons.Add(report);
+        //        _sons.Add(project);
         //    }
-        //    if (report.MyLevel == 2)
+        //    if (project.MyLevel == 2)
         //    {
-        //        _GrandChilds.Add(report);
+        //        _GrandChilds.Add(project);
         //    }
         //}
         //root = project.Insertar(father, null);
@@ -105,7 +145,7 @@
         //    n = project.Insertar(son, root);
         //    foreach (var grandchild in _GrandChilds)
         //    {
-        //        if (grandchild.MyParentId == son.MyProjectId)
+        //        if (grandchild.MyParentId == son.MyId)
         //        {
         //            project.Insertar(grandchild, n);
         //        }
