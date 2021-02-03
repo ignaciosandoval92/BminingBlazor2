@@ -80,7 +80,7 @@
                 }
             </select>
             <button class="btn-download float-right" @onclick="() => SelectSon(idProject)"></button>
-            <button class="btn float-right" @onclick="()=>proyectoactual(father.MyProjectId)">proyecto actual </button>
+            <button class="btn float-right" @onclick="()=>proyectoactual(options.Data.MyParentId)">proyecto actual </button>
         }
 
     }
@@ -142,7 +142,8 @@
         }
         else if (levelselect == 4)
         {
-            _report = await ReportService.GetProjectReportSons(startDate, endDate,projectId);           
+            _report = await ReportService.GetProjectReportSons(startDate, endDate,projectId);
+            _report.AddRange(await ReportService.GetProjectReport(startDate, endDate, projectId));
 
         }
         else if (levelselect == 2)
