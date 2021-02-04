@@ -125,7 +125,7 @@
         if (levelselect == 1)
         {
             _projects = await ProjectDataService.ReadSonsProject(projectId);
-            _report = await ReportService.GetProjectReportSons(startDate, endDate, projectId);
+            _report = await ReportService.GetUserProjectReportSons(userId,startDate, endDate, projectId);
             foreach (var project in _projects)
             {
                 if (project.MyLevel == 1)
@@ -143,6 +143,15 @@
                 n = project.Insertar(son, root);
             }
 
+        }
+        else if (levelselect == 4)
+        {
+            _report = await ReportService.GetUserReport(userId,startDate, endDate, projectId);
+            _report.AddRange(await ReportService.GetUserProjectReportSons(userId,startDate, endDate, projectId));
+        }
+        else if (levelselect == 2)
+        {
+            _report = await ReportService.GetUserReport(userId,startDate, endDate, projectId);
         }
         else
         {
