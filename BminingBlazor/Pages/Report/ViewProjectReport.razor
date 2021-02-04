@@ -58,31 +58,33 @@
                     </tbody>
                 </table>
             </div>
-
+            <div class="alternate3-break"></div>
 
             <button class="btn-download float-right" @onclick="ExportExcel"></button>
         }
 
         @if (root.Son != null && levelselect != 3)
-        {options = root.Son;       
+        {
+            options = root.Son;
 
-        <select class="form-control" id="projectdId" @bind="@idProject" required>
+            <select class="form-control" id="projectdId" @bind="@idProject" required>
 
 
-            <option value="@options.Data.MyId">
-                @options.Data.MyProjectName
-            </option>
-            @while (options.Brother != null)
-            {
-                <option value="@options.Brother.Data.MyId">
-                    @options.Brother.Data.MyProjectName
+                <option value="@options.Data.MyId">
+                    @options.Data.MyProjectName
                 </option>
-                options = options.Brother;
-            }
-        </select>
-        <button class="btn-download float-right" @onclick="() => SelectSon(idProject)"></button>
-        <button class="btn float-right" @onclick="()=>proyectoactual(options.Data.MyParentId)">proyecto actual </button>
-    }
+                @while (options.Brother != null)
+                {
+                    <option value="@options.Brother.Data.MyId">
+                        @options.Brother.Data.MyProjectName
+                    </option>
+                    options = options.Brother;
+                }
+            </select>
+            <div class="alternate3-break"></div>
+            <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => SelectSon(idProject)">@Resource.SelectSubProject</button>
+            <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="()=>proyectoactual(options.Data.MyParentId)">@Resource.SelectCurrentProject</button>
+        }
 
     }
 </div>

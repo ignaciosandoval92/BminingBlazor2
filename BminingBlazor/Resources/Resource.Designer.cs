@@ -1087,11 +1087,29 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Select Current Project.
+        /// </summary>
+        internal static string SelectCurrentProject {
+            get {
+                return ResourceManager.GetString("SelectCurrentProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Select Member.
         /// </summary>
         internal static string SelectMember {
             get {
                 return ResourceManager.GetString("SelectMember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Select SubProject.
+        /// </summary>
+        internal static string SelectSubProject {
+            get {
+                return ResourceManager.GetString("SelectSubProject", resourceCulture);
             }
         }
         

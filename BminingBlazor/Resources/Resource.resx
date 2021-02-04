@@ -517,4 +517,10 @@
   <data name="CreateAndAddSubProjects" xml:space="preserve">
     <value>Create and add sub projects</value>
   </data>
+  <data name="SelectSubProject" xml:space="preserve">
+    <value>Select SubProject</value>
+  </data>
+  <data name="SelectCurrentProject" xml:space="preserve">
+    <value>Select Current Project</value>
+  </data>
 </root>
