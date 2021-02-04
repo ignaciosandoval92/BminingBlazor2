@@ -1,6 +1,6 @@
 ﻿@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{codeProject}"
-@*@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{projectID:int}/{levelSelect:int}"
-@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{codeProject}/{levelSelect:int}"*@
+@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{projectID:int}/{levelSelect:int}"
+@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{codeProject}/{levelSelect:int}"
 @using BminingBlazor.ViewModels.Report;
 @using System.IO;
 @using Microsoft.JSInterop;
@@ -28,7 +28,7 @@
     }
     else
     {
-        @*@if (root.Son == null || levelselect == 3 || levelselect == 4)*@
+        @if (root.Son == null || levelselect == 3 || levelselect == 4)
         {<div class="table-responsive{-sm|-md|-lg|-xl}">
                 <table class="table table-striped">
                     <thead>
@@ -59,7 +59,7 @@
 
         }
         <button class="btn-download float-right" @onclick="ExportExcel"></button>
-        @*@if (root.Son != null && levelselect != 3)*@
+        @if (root.Son != null && levelselect != 3)
         {
 
             <select class="form-control" id="projectdId" @bind="@idProject" required>
@@ -85,8 +85,8 @@
                     }
                 }
             </select>
-            @*<button class="btn-download float-right" @onclick="() => SelectSon(idProject)"></button>
-            <button class="btn float-right" @onclick="()=>proyectoactual(options.Data.MyParentId)">proyecto actual </button>*@
+            <button class="btn-download float-right" @onclick="() => SelectSon(idProject)"></button>
+            <button class="btn float-right" @onclick="()=>proyectoactual(options.Data.MyParentId)">proyecto actual </button>
         }
     }
 </div>
@@ -100,10 +100,10 @@
     public DateTime endDate { get; set; }
     [Parameter]
     public string codeProject { get; set; }
-    //[Parameter]
-    //public int levelselect { get; set; }
-    //[Parameter]
-    //public int projectId { get; set; }
+    [Parameter]
+    public int levelselect { get; set; }
+    [Parameter]
+    public int projectId { get; set; }
 
 
     public CProject project = new CProject();
@@ -122,36 +122,83 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //_projects = await ProjectDataService.ReadTreeProject(codeProject);
-        _report = await ReportService.GetUserReportFromCode(userId, startDate, endDate, codeProject);
-        //foreach (var project in _projects)
-        //{
-        //    if (project.MyLevel == 0)
-        //    {
-        //        father = project;
-        //    }
-        //    if (project.MyLevel == 1)
-        //    {
-        //        _sons.Add(project);
-        //    }
-        //    if (project.MyLevel == 2)
-        //    {
-        //        _GrandChilds.Add(project);
-        //    }
-        //}
-        //root = project.Insertar(father, null);
-        //foreach (var son in _sons)
-        //{
-        //    n = project.Insertar(son, root);
-        //    foreach (var grandchild in _GrandChilds)
-        //    {
-        //        if (grandchild.MyParentId == son.MyId)
-        //        {
-        //            project.Insertar(grandchild, n);
-        //        }
-        //    }
-        //}
+        if (levelselect == 1)
+        {
+            _projects = await ProjectDataService.ReadSonsProject(projectId);
+            _report = await ReportService.GetProjectReportSons(startDate, endDate, projectId);
+            foreach (var project in _projects)
+            {
+                if (project.MyLevel == 1)
+                {
+                    father = project;
+                }
+                if (project.MyLevel == 2)
+                {
+                    _sons.Add(project);
+                }
+            }
+            root = project.Insertar(father, null);
+            foreach (var son in _sons)
+            {
+                n = project.Insertar(son, root);
+            }
+
+        }
+        else
+        {
+            _projects = await ProjectDataService.ReadTreeProject(codeProject);
+            _report = await ReportService.GetUserReportFromCode(userId, startDate, endDate, codeProject);
+            foreach (var project in _projects)
+            {
+                if (project.MyLevel == 0)
+                {
+                    father = project;
+                }
+                if (project.MyLevel == 1)
+                {
+                    _sons.Add(project);
+                }
+                if (project.MyLevel == 2)
+                {
+                    _GrandChilds.Add(project);
+                }
+            }
+            root = project.Insertar(father, null);
+            foreach (var son in _sons)
+            {
+                n = project.Insertar(son, root);
+                foreach (var grandchild in _GrandChilds)
+                {
+                    if (grandchild.MyParentId == son.MyId)
+                    {
+                        project.Insertar(grandchild, n);
+                    }
+                }
+            }
+        }
         StateHasChanged();
+    }
+    public void SelectSon(int projectId)
+    {
+        if (levelselect == 1)
+        {
+            NavigationManager.NavigateTo($"/ViewReport/{userId}/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{2}", true);
+        }
+        else
+        {
+            NavigationManager.NavigateTo($"/ViewReport/{userId}/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{1}", true);
+        }
+    }
+    public void proyectoactual(int projectId)
+    {
+        if (levelselect == 1)
+        {
+            NavigationManager.NavigateTo($"/ViewReport/{userId}/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{4}", true);
+        }
+        else
+        {
+            NavigationManager.NavigateTo($"/ViewReport/{userId}/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{codeProject}/{3}", true);
+        }
     }
     public async Task ExportExcel()
     {
