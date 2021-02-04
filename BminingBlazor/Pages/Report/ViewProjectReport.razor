@@ -64,34 +64,25 @@
         }
 
         @if (root.Son != null && levelselect != 3)
-        {
+        {options = root.Son;       
 
-            <select class="form-control" id="projectdId" @bind="@idProject" required>
-                @{options = root.Son;
-                    _names.Add(options.Data.MyProjectName);
-                }
-                <option value="@options.Data.MyId">
-                    @options.Data.MyProjectName
+        <select class="form-control" id="projectdId" @bind="@idProject" required>
+
+
+            <option value="@options.Data.MyId">
+                @options.Data.MyProjectName
+            </option>
+            @while (options.Brother != null)
+            {
+                <option value="@options.Brother.Data.MyId">
+                    @options.Brother.Data.MyProjectName
                 </option>
-                @while (options.Brother != null)
-                {
-                    if (_names.Contains(options.Brother.Data.MyProjectName))
-                    {
-                        options = options.Brother;
-                    }
-                    else
-                    {
-                        <option value="@options.Data.MyId">
-                            @options.Brother.Data.MyProjectName
-                        </option>
-                        options = options.Brother;
-                        _names.Add(options.Data.MyProjectName);
-                    }
-                }
-            </select>
-            <button class="btn-download float-right" @onclick="() => SelectSon(idProject)"></button>
-            <button class="btn float-right" @onclick="()=>proyectoactual(options.Data.MyParentId)">proyecto actual </button>
-        }
+                options = options.Brother;
+            }
+        </select>
+        <button class="btn-download float-right" @onclick="() => SelectSon(idProject)"></button>
+        <button class="btn float-right" @onclick="()=>proyectoactual(options.Data.MyParentId)">proyecto actual </button>
+    }
 
     }
 </div>
@@ -122,7 +113,7 @@
     public List<CNode> _listSons = new List<CNode>();
     public int idProject { get; set; }
     public int levelSelect { get; set; }
-    public List<string> _names = new List<string>();
+ 
     public List<ProjectViewModel> _projects = new List<ProjectViewModel>();
 
 
@@ -131,7 +122,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (levelselect == 1) 
+        if (levelselect == 1)
         {
             _projects = await ProjectDataService.ReadSonsProject(projectId);
             _report = await ReportService.GetProjectReportSons(startDate, endDate, projectId);

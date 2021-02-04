@@ -63,26 +63,20 @@
         {
 
             <select class="form-control" id="projectdId" @bind="@idProject" required>
-                @{options = root.Son;
-                    _names.Add(options.Data.MyProjectName);
+                @{options = root.Son;                    
                 }
                 <option value="@options.Data.MyId">
                     @options.Data.MyProjectName
                 </option>
                 @while (options.Brother != null)
-                {
-                    if (_names.Contains(options.Brother.Data.MyProjectName))
-                    {
-                        options = options.Brother;
-                    }
-                    else
-                    {
-                        <option value="@options.Data.MyId">
+                {                   
+                   
+                        <option value="@options.Brother.Data.MyId">
                             @options.Brother.Data.MyProjectName
                         </option>
                         options = options.Brother;
-                        _names.Add(options.Data.MyProjectName);
-                    }
+                        
+                    
                 }
             </select>
             <button class="btn-download float-right" @onclick="() => SelectSon(idProject)"></button>
@@ -116,8 +110,7 @@
     public CNode options = new CNode();
     public List<CNode> _listSons = new List<CNode>();
     public int idProject { get; set; }
-    public int levelSelect { get; set; }
-    public List<string> _names = new List<string>();
+    public int levelSelect { get; set; } 
     public List<ProjectViewModel> _projects = new List<ProjectViewModel>();
 
     protected override async Task OnInitializedAsync()
