@@ -387,6 +387,17 @@ h1, h2, h3, h4, h5, h6 {
         transform-origin: left;
         background-size:26px 26px;
     }
+    .btn-subproject {
+        display: inline-block;
+        border: none;
+        width: 26px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/TgQjxkV/seguridad-Recurso-4-4x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+        background-size: 26px 26px;
+    }
 
     .btn-delete {
         display: inline-block;
@@ -562,6 +573,17 @@ h1, h2, h3, h4, h5, h6 {
         width: 26px;
         height: 26px;
         background-image: url(https://i.ibb.co/7S7GZsL/editar-Recurso-5-4x.png);
+        background-color: transparent;
+        transform: scale(0.75);
+        transform-origin: left;
+        background-size: 26px 26px;
+    }
+    .btn-subproject {
+        display: inline-block;
+        border: none;
+        width: 26px;
+        height: 26px;
+        background-image: url(https://i.ibb.co/TgQjxkV/seguridad-Recurso-4-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
