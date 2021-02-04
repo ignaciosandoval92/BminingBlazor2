@@ -153,7 +153,7 @@ namespace BminingBlazor.Services
 
             var query = queryFactory.Query(TableConstants.TimeTrackingTable)
                 .Where(TimeTrackingConstants.UserId, userId)
-                .Where($"{TableConstants.ProjectTable}.{ProjectConstants.StatusId}",(int)ProjectStatusEnum.Active)
+                .WhereNot($"{TableConstants.ProjectTable}.{ProjectConstants.StatusId}",(int)ProjectStatusEnum.Finished)
                 .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
                                                   $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")                
