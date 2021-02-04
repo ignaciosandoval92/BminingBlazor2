@@ -79,7 +79,7 @@
         {
             var email = AuthenticationStateProvider.GetEmail();
             var userId = await UserDataService.GetUserId(await email);
-            var projectsBelongsUserId = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
+            var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
             ViewModel = new List<ProjectResumeViewModel>();
             ViewModel.AddRange(projectsBelongsUserId);
             _project.MyStartDate = DateTime.UtcNow;

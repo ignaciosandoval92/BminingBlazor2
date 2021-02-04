@@ -1,4 +1,5 @@
-﻿using BminingBlazor.ViewModels.Report;
+﻿using BminingBlazor.ViewModels.Projects;
+using BminingBlazor.ViewModels.Report;
 using BminingBlazor.ViewModels.User;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,6 @@ namespace BminingBlazor.Services
         Task<List<MemberViewModel>> ReadMembersFromCode(string codeProject);
         Task<List<ReportViewModel>> GetUserReportFromCode(int userId, DateTime from, DateTime to, string codeProject);
         Task<List<ReportViewModel>> GetUserProjectReportSons(int userId, DateTime from, DateTime to, int projectId);
+        Task<List<ProjectResumeViewModel>> GetProjectFatherWhereBelongsUserId(int userId);
     }
 }

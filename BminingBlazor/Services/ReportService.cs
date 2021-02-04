@@ -318,5 +318,30 @@ namespace BminingBlazor.Services
             }
             return report;
         }
+        public async Task<List<ProjectResumeViewModel>> GetProjectFatherWhereBelongsUserId(int userId)
+        {
+
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var membersQuery = queryFactory.Query(TableConstants.MembersTable)
+                .Where(MemberConstants.UserId, userId)
+                .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
+                    $"{TableConstants.MembersTable}.{MemberConstants.ProjectId}").Where($"{TableConstants.ProjectTable}.{ProjectConstants.Level}",0);
+
+            var items = (await membersQuery.GetAsync()).Cast<IDictionary<string, object>>().ToList();
+
+            var projects = new List<ProjectResumeViewModel>();
+            foreach (var item in items)
+            {
+                var project = new ProjectResumeViewModel()
+                {
+                    MyProjectId = (int)item[ProjectConstants.ProjectId],
+                    MyProjectName = (string)item[ProjectConstants.ProjectName],
+                    MyProjectCode = (string)item[ProjectConstants.ProjectCode],
+                };
+
+                projects.Add(project);
+            }
+            return projects;
+        }
     }
 }
