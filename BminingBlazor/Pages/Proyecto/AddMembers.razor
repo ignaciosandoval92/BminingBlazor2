@@ -3,6 +3,7 @@
 @using ViewModels.User
 @using ViewModels.Projects
 
+@inject IMatDialogService MatDialogService
 @inject IProjectDataService ProjectDataService
 @inject IUserDataService UserDataService
 @inject IProjectDataService ProjectDataService
@@ -98,7 +99,7 @@
     private ProjectViewModel project;
     private List<ProjectViewModel> _projectSons;
     private double totalHours;
-    private ProjectViewModel projectParent;
+    private List<MemberViewModel> _membersSons = new List<MemberViewModel>();
     private bool save;
 
 
@@ -109,8 +110,13 @@
         {
             _projectSons = await ProjectDataService.ReadSonsProject(IdProject);
             project = await ProjectDataService.ReadProject(IdProject);
-            projectParent = await ProjectDataService.ReadProject(project.MyParentId);
-            save = true;
+            if (_projectSons != null)
+            {
+                foreach (var brother in _projectSons)
+                {
+                    _membersSons.AddRange(await ProjectDataService.ReadMembers(brother.MyId));
+                }
+            }
             if (project.MyParentId == 0)
             {
                 _users = await UserDataService.ReadUsers();
@@ -136,31 +142,41 @@
 
     private async Task InsertMember()
     {
-        foreach (var maxmemberhours in projectParent.OurMembers)
+        if (project.MyParentId != 0)
         {
-            foreach (var memberitem in _membersItems)
+            save = true;
+            foreach (var maxmemberhours in _members)
             {
-                totalHours = 0;
-                foreach (var sons in _projectSons)
+                foreach (var memberitem in _membersItems)
                 {
-                    foreach (var membersons in sons.OurMembers)
+                    totalHours = 0;
+                    foreach (var sons in _membersSons)
                     {
-                        if (memberitem.MyId == membersons.MyId && maxmemberhours.MyId == membersons.MyId)
+                        if (memberitem.MyId == sons.MyId && maxmemberhours.MyId == sons.MyId)
                         {
-                            totalHours = membersons.MyProjectHours + totalHours;
+                            totalHours = sons.MyProjectHours + totalHours;
                         }
 
                     }
-
-                }
-                totalHours = totalHours + memberitem.MyProjectHours;
-                if (totalHours > maxmemberhours.MyProjectHours)
-                {
-                    save = false;
+                    totalHours = totalHours + memberitem.MyProjectHours;
+                    if (totalHours > maxmemberhours.MyProjectHours)
+                    {
+                        save = false;
+                    }
                 }
             }
+
+            if (save)
+            {
+                await ProjectDataService.AddMember(_membersItems, IdProject);
+                NavigationManager.NavigateTo($"/ViewMembers/{IdProject}");
+            }
+            else
+            {
+                await MatDialogService.AlertAsync(Resource.Saved);
+            }
         }
-        if (save)
+        else
         {
             await ProjectDataService.AddMember(_membersItems, IdProject);
             NavigationManager.NavigateTo($"/ViewMembers/{IdProject}");

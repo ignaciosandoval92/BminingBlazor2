@@ -13,5 +13,6 @@
         public string HomeAddress { get; set; }
         public int CodMembers { get; set; }
         public int CodContractType { get; set; }
+        public double ProjectHours { get; set; }
     }
 }

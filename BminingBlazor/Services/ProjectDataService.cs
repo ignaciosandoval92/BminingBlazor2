@@ -284,6 +284,7 @@ namespace BminingBlazor.Services
                 .Select(UserConstants.Phone)
                 .Select(UserConstants.HomeAddress)
                 .Select(MemberConstants.CodMembers)
+                .Select(MemberConstants.ProjectHours)
                 .Where($"{MembersTable}.{MemberConstants.ProjectId}", idProject)
                 .GroupBy(UserConstants.Name)
                 .GetAsync<UserModel>()).ToList();
@@ -300,7 +301,8 @@ namespace BminingBlazor.Services
                     MyMaternalSurname = member.MaternalLastName,
                     MyName = member.Name,
                     MyPaternalSurname = member.PaternalLastName,
-                    MyRut = member.Rut
+                    MyRut = member.Rut,
+                    MyProjectHours=member.ProjectHours
 
                 });
             }
