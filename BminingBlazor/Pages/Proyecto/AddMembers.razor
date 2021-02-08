@@ -140,6 +140,7 @@
         {
             foreach (var memberitem in _membersItems)
             {
+                totalHours = 0;
                 foreach (var sons in _projectSons)
                 {
                     foreach (var membersons in sons.OurMembers)
@@ -152,6 +153,7 @@
                     }
 
                 }
+                totalHours = totalHours + memberitem.MyProjectHours;
                 if (totalHours > maxmemberhours.MyProjectHours)
                 {
                     save = false;
