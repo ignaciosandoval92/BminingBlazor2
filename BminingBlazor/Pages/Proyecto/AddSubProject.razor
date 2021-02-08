@@ -91,10 +91,10 @@
 
 @code {
 
-    [Parameter]
-    public string MyProjectCode { get; set; }
-    [Parameter]
-    public int ProjectId { get; set; }
+        [Parameter]
+        public string MyProjectCode { get; set; }
+        [Parameter]
+        public int ProjectId { get; set; }
 
     public List<ProjectViewModel> _projects { get; set; }
     private List<MemberViewModel> _users;
@@ -154,9 +154,15 @@
         {
             project.OurMembers.Add(members);
         }
+        if (project.MyLevel >2)
+        {
 
-        var id=await ProjectDataService.CreateProject(project);
-        NavigationManager.NavigateTo("/ViewProject", true);
+        }
+        else
+        {
+            var id = await ProjectDataService.CreateProject(project);
+            NavigationManager.NavigateTo("/ViewProject", true);
+        }
     }
     private void SelectFather()
     {
