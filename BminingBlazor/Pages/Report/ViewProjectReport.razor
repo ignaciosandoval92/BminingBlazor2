@@ -66,7 +66,7 @@
         @if (root.Son != null && levelselect != 3)
         {
             options = root.Son;
-
+            <label for="contract">@Resource.Project</label>
             <select class="form-control" id="projectdId" @bind="@idProject" required>
 
 
@@ -115,7 +115,6 @@
     public List<CNode> _listSons = new List<CNode>();
     public int idProject { get; set; }
     public int levelSelect { get; set; }
- 
     public List<ProjectViewModel> _projects = new List<ProjectViewModel>();
 
 

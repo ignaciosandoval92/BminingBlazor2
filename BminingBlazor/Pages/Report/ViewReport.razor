@@ -62,7 +62,7 @@
         <button class="btn-download float-right" @onclick="ExportExcel"></button>
         @if (root.Son != null && levelselect != 3)
         {
-
+            <label for="contract">@Resource.Project</label>
             <select class="form-control" id="projectdId" @bind="@idProject" required>
                 @{options = root.Son;
                 }

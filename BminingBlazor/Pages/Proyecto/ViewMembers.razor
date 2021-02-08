@@ -1,10 +1,13 @@
 ﻿@page "/ViewMembers/{idproject:int}"
+@page "/ViewMembers/{idproject:int}/{levelSelect:int}"
 @using Models
 @using BminingBlazor.Services
 @using Microsoft.AspNetCore.Components
 @using System.Data
 @using ViewModels.User
+@using ViewModels.Projects;
 
+@inject IProjectDataService ProjectDataService
 @inject IMatDialogService MatDialogService
 @inject NavigationManager NavigationManager
 @inject IProjectDataService ProjectDataService
@@ -14,13 +17,14 @@
 
 <div class="bmining-app">
     <h2>@Resource.ProjectManager</h2>
- 
+
     @if (_boss == null)
     {
         <MatProgressBar Indeterminate="true" />
     }
     else
     {
+
         <div class="table-responsive{-sm|-md|-lg|-xl}">
             <table class="table table-striped">
                 <thead>
@@ -71,7 +75,6 @@
                             <td>@member.MyRut</td>
                             <td>
                                 <button class="btn-delete" @onclick="()=>Delete(member.MyCodMember)">
-                                    
                                 </button>
                             </td>
                         </tr>
@@ -80,29 +83,121 @@
             </table>
             <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="@AddMember">@Resource.AddMember</button>
         </div>
+        <div class="alternate3-break"></div>
+        <div>
+            <div class="alternate3-break"></div>
+            @if (root.Son != null)
+            {
+
+                <select class="form-control" id="projectdId" @bind="@projectId" required>
+                    @{options = root.Son;
+                    }
+                    <option value="@options.Data.MyId">
+                        @options.Data.MyProjectName
+                    </option>
+                    @while (options.Brother != null)
+                    {
+
+                        <option value="@options.Brother.Data.MyId">
+                            @options.Brother.Data.MyProjectName
+                        </option>
+                        options = options.Brother;
+
+
+                    }
+                </select>
+                <div class="alternate3-break"></div>
+                <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => SelectSon(projectId)">@Resource.SelectSubProject</button>
+            }
+
+        </div>
+
+
     }
+
 </div>
 @code {
+
     [Parameter]
     public int IdProject { get; set; }
+    [Parameter]
+    public int levelselect { get; set; }
+
     private UserViewModel _boss;
     private List<MemberViewModel> _members;
+    public CProject project = new CProject();
+    public ProjectViewModel father = new ProjectViewModel();
+    public CNode root = new CNode();
+    public CNode n = new CNode();
+    public List<ProjectViewModel> _sons = new List<ProjectViewModel>();
+    public List<ProjectViewModel> _GrandChilds = new List<ProjectViewModel>();
+    public List<ProjectViewModel> _projects = new List<ProjectViewModel>();
+    public ProjectViewModel projectSelect = new ProjectViewModel();
+    public CNode options = new CNode();
+    public int projectId { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         var id = await ProjectDataService.ReadIdProjectManager(IdProject);
+        projectSelect = await ProjectDataService.ReadProject(IdProject);
         _boss = await UserDataService.ReadUser(id);
         _members = await ProjectDataService.ReadMembers(IdProject);
-    }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
+        if(levelselect==1)
         {
-            var id = await ProjectDataService.ReadIdProjectManager(IdProject);
-            _boss = await UserDataService.ReadUser(id);
-            _members = await ProjectDataService.ReadMembers(IdProject);
+            _projects = await ProjectDataService.ReadSonsProject(IdProject);
+            foreach (var project in _projects)
+            {
+                if (project.MyLevel == 2)
+                {
+                    _sons.Add(project);
+                }
+            }
+            father = projectSelect;
+            root = project.Insertar(father, null);
+            foreach (var son in _sons)
+            {
+                n = project.Insertar(son, root);
+            }
         }
+        else if(levelselect==2)
+        {
+
+        }
+
+        else
+        {
+            _projects = await ProjectDataService.ReadTreeProject(projectSelect.MyProjectCode);
+
+            foreach (var project in _projects)
+            {
+                if (project.MyLevel == 0)
+                {
+                    father = project;
+                }
+                if (project.MyLevel == 1)
+                {
+                    _sons.Add(project);
+                }
+                if (project.MyLevel == 2)
+                {
+                    _GrandChilds.Add(project);
+                }
+            }
+            root = project.Insertar(father, null);
+            foreach (var son in _sons)
+            {
+                n = project.Insertar(son, root);
+                foreach (var grandchild in _GrandChilds)
+                {
+                    if (grandchild.MyParentId == son.MyId)
+                    {
+                        project.Insertar(grandchild, n);
+                    }
+                }
+            }
+        }
+
     }
 
     public void AddMember()
@@ -116,6 +211,19 @@
 
         await ProjectDataService.DeleteMember(codMember);
         NavigationManager.NavigateTo($"/viewMembers/{IdProject}", true);
+
+    }
+    public void SelectSon(int projectId)
+    {
+        if (levelselect == 1)
+        {
+            NavigationManager.NavigateTo($"/ViewMembers/{projectId}/{2}", true);
+        }
+        else
+        {
+            NavigationManager.NavigateTo($"/ViewMembers/{projectId}/{1}", true);
+        }
+
 
     }
 }
