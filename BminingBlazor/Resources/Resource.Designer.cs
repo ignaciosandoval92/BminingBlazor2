@@ -709,6 +709,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Level from subproject complete.
+        /// </summary>
+        internal static string LevelFromSubprojectComplete {
+            get {
+                return ResourceManager.GetString("LevelFromSubprojectComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a List Activity Record.
         /// </summary>
         internal static string ListActivityRecord {

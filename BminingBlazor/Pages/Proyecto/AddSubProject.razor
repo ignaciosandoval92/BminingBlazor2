@@ -2,6 +2,8 @@
 @page "/AddSubProject/{myProjectCode}/{projectId:int}"
 @using ViewModels.Projects
 @using ViewModels.User
+
+@inject IMatDialogService MatDialogService
 @inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -91,10 +93,10 @@
 
 @code {
 
-        [Parameter]
-        public string MyProjectCode { get; set; }
-        [Parameter]
-        public int ProjectId { get; set; }
+    [Parameter]
+    public string MyProjectCode { get; set; }
+    [Parameter]
+    public int ProjectId { get; set; }
 
     public List<ProjectViewModel> _projects { get; set; }
     private List<MemberViewModel> _users;
@@ -156,7 +158,7 @@
         }
         if (project.MyLevel >2)
         {
-
+            await MatDialogService.AlertAsync(Resource.LevelFromSubprojectComplete);
         }
         else
         {

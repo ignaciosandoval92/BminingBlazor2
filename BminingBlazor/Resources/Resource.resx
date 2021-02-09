@@ -526,4 +526,7 @@
   <data name="HoursExceeded" xml:space="preserve">
     <value>Hours exceeded</value>
   </data>
+  <data name="LevelFromSubprojectComplete" xml:space="preserve">
+    <value>Level from subproject complete</value>
+  </data>
 </root>

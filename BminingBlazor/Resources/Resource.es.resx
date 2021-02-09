@@ -525,4 +525,7 @@
   <data name="HoursExceeded" xml:space="preserve">
     <value>Horas superadas</value>
   </data>
+  <data name="LevelFromSubprojectComplete" xml:space="preserve">
+    <value>Nivel de subproyecto excedido</value>
+  </data>
 </root>
