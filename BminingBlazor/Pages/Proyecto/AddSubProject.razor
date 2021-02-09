@@ -13,7 +13,7 @@
 
     <h2>agregar sub proyecto</h2>
 
-    @if (_users != null || _projects != null) 
+    @if (_users != null || _projects != null)
         @if (ProjectId == 0)
         {
             <div class="form-group col">
@@ -100,9 +100,14 @@
 
     public List<ProjectViewModel> _projects { get; set; }
     private List<MemberViewModel> _users;
+    private List<MemberViewModel> _members=new List<MemberViewModel>();
     private List<MemberViewModel> _membersProjectItems;
+    private List<ProjectViewModel> _projectSons;
     private ProjectViewModel _project { get; set; }
     private readonly ProjectViewModel _newCreateProjectView = new ProjectViewModel();
+    private bool save;
+    private double totalHours;
+    private string name;
 
 
     private void AddMembersProjectCallback()
@@ -125,7 +130,14 @@
         {
             _project = await ProjectDataService.ReadProject(ProjectId);
             _users = await ProjectDataService.ReadMembers(_project.MyId);
+            _projectSons= await ProjectDataService.ReadSonsProject(_project.MyId);
+            foreach(var pro in _projectSons)
+            {
+                _members.AddRange(await ProjectDataService.ReadMembers(pro.MyId));
+            }
+
             _membersProjectItems = new List<MemberViewModel>();
+
             StateHasChanged();
         }
 
@@ -156,15 +168,50 @@
         {
             project.OurMembers.Add(members);
         }
-        if (project.MyLevel >2)
+        if (project.MyLevel > 2)
         {
             await MatDialogService.AlertAsync(Resource.LevelFromSubprojectComplete);
         }
         else
         {
-            var id = await ProjectDataService.CreateProject(project);
-            NavigationManager.NavigateTo("/ViewProject", true);
+            save = true;
+            foreach (var maxmemberhours in _users)
+            {
+                foreach (var memberitem in _membersProjectItems)
+                {
+                    totalHours = 0;
+                    foreach (var sons in _members)
+                    {
+                        if (memberitem.MyId == sons.MyId && maxmemberhours.MyId == sons.MyId)
+                        {
+                            totalHours = sons.MyProjectHours + totalHours;
+                        }
+
+                    }
+                    totalHours = totalHours + memberitem.MyProjectHours;
+                    if (memberitem.MyId == maxmemberhours.MyId)
+                    {
+                        if (totalHours > maxmemberhours.MyProjectHours)
+                        {
+                            save = false;
+                            name = maxmemberhours.MyEmail;
+                        }
+                    }
+                }
+            }
+
+            if (save)
+            {
+                var id = await ProjectDataService.CreateProject(project);
+                NavigationManager.NavigateTo("/ViewProject", true);
+            }
+            else
+            {
+                await MatDialogService.AlertAsync($"{Resource.HoursExceeded} - {name}");
+            }
         }
+
+      
     }
     private void SelectFather()
     {
