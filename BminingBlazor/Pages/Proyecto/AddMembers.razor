@@ -82,6 +82,7 @@
             </table>
 
         </div>
+        <div class="alternate3-break"></div>
         <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="@InsertMember">@Resource.Add</button>
     }
     else
@@ -91,8 +92,9 @@
 </div>
 
 @code {
-    [Parameter]
-    public int IdProject { get; set; }
+        [Parameter]
+        public int IdProject { get; set; }
+
     private List<MemberViewModel> _membersItems;
     private List<MemberViewModel> _members;
     private List<UserViewModel> _users;
@@ -101,6 +103,7 @@
     private double totalHours;
     private List<MemberViewModel> _membersSons = new List<MemberViewModel>();
     private bool save;
+    private string name;
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -159,9 +162,13 @@
 
                     }
                     totalHours = totalHours + memberitem.MyProjectHours;
-                    if (totalHours > maxmemberhours.MyProjectHours)
+                    if (memberitem.MyId == maxmemberhours.MyId )
                     {
-                        save = false;
+                        if (totalHours > maxmemberhours.MyProjectHours)
+                        {
+                            save = false;
+                            name = maxmemberhours.MyEmail;
+                        }
                     }
                 }
             }
@@ -173,7 +180,7 @@
             }
             else
             {
-                await MatDialogService.AlertAsync(Resource.Saved);
+                await MatDialogService.AlertAsync($"{Resource.HoursExceeded} - {name}");
             }
         }
         else

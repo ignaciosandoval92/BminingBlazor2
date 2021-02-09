@@ -522,4 +522,7 @@
   <data name="SelectCurrentProject" xml:space="preserve">
     <value>Seleccionar proyecto actual</value>
   </data>
+  <data name="HoursExceeded" xml:space="preserve">
+    <value>Horas superadas</value>
+  </data>
 </root>

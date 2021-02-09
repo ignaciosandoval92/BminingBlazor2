@@ -619,6 +619,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Hours exceeded.
+        /// </summary>
+        internal static string HoursExceeded {
+            get {
+                return ResourceManager.GetString("HoursExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Hours Rejected.
         /// </summary>
         internal static string HoursRejected {

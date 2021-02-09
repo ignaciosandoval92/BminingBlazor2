@@ -523,4 +523,7 @@
   <data name="SelectCurrentProject" xml:space="preserve">
     <value>Select Current Project</value>
   </data>
+  <data name="HoursExceeded" xml:space="preserve">
+    <value>Hours exceeded</value>
+  </data>
 </root>
