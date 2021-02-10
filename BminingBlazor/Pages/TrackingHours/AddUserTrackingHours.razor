@@ -3,6 +3,7 @@
 
 @using BminingBlazor.ViewModels.TrackingHours
 @using Microsoft.AspNetCore.Http
+@using ViewModels.Projects
 
 @inject IReportService ReportService
 @inject IUserDataService UserDataService
@@ -65,16 +66,16 @@
 </div>
 
 @code {
-    [Parameter]
-    public int Day { get; set; }
-    [Parameter]
-    public int Month { get; set; }
-    [Parameter]
-    public int Year { get; set; }
-    [Parameter]
-    public int Level { get; set; }
-    [Parameter]
-    public int ProjectId { get; set; }
+        [Parameter]
+        public int Day { get; set; }
+        [Parameter]
+        public int Month { get; set; }
+        [Parameter]
+        public int Year { get; set; }
+        [Parameter]
+        public int Level { get; set; }
+        [Parameter]
+        public int ProjectId { get; set; }
 
 
     public bool IsLoading { get; set; }
@@ -97,7 +98,23 @@
         }
         else
         {
-            var projectsBelongsUserId = await ProjectDataService.ReadSonsProject(ProjectId);
+            var projectUser = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
+            var projectSons = await ProjectDataService.ReadSonsProject(ProjectId);
+            var projectsBelongsUserId = new List<ProjectResumeViewModel>();
+            foreach (var pro in projectSons)
+            {
+                var project = new ProjectResumeViewModel()
+                {
+                    MyProjectCode =pro.MyProjectCode,
+                    MyProjectId =pro.MyId,
+                    MyProjectName =pro.MyProjectName
+                };
+                if (projectUser.Exists(x=>x.MyProjectId==project.MyProjectId))
+                {
+                    projectsBelongsUserId.Add(project);
+                }
+            }
+
             ViewModel = new AddUserTimeTrackingViewModel(userId)
             {
                 MyTrackingHourDate = new DateTime(Year, Month, Day),
