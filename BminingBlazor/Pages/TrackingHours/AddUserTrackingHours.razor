@@ -1,4 +1,6 @@
 ﻿@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}"
+@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{level:int}"
+
 @using BminingBlazor.ViewModels.TrackingHours
 @using Microsoft.AspNetCore.Http
 
@@ -29,7 +31,7 @@
 
 <div class="bmining-app">
 
-    <h2 class="header-break">@Resource.LoadHours @ViewModel.MyTrackingHourDate.ToShortDateString()</h2>   
+    <h2 class="header-break">@Resource.LoadHours @ViewModel.MyTrackingHourDate.ToShortDateString()</h2>
 
 
     @if (!IsLoading)
@@ -69,6 +71,10 @@
     public int Month { get; set; }
     [Parameter]
     public int Year { get; set; }
+    [Parameter]
+    public int Level { get; set; }
+    [Parameter]
+    public int ProjectId { get; set; }
 
 
     public bool IsLoading { get; set; }
@@ -79,14 +85,26 @@
     {
         var email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await email);
-        var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
-
-        ViewModel = new AddUserTimeTrackingViewModel(userId)
+        if (Level == 0)
         {
-            MyTrackingHourDate = new DateTime(Year, Month, Day),
-        };
-        ViewModel.OurAvailableProjects.AddRange(projectsBelongsUserId);
-        ViewModel.MySelectedProjectId = projectsBelongsUserId.FirstOrDefault()?.MyProjectId;
+            var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
+            ViewModel = new AddUserTimeTrackingViewModel(userId)
+            {
+                MyTrackingHourDate = new DateTime(Year, Month, Day),
+            };
+            ViewModel.OurAvailableProjects.AddRange(projectsBelongsUserId);
+            ViewModel.MySelectedProjectId = projectsBelongsUserId.FirstOrDefault()?.MyProjectId;
+        }
+        else
+        {
+            var projectsBelongsUserId = await ProjectDataService.ReadSonsProject(ProjectId);
+            ViewModel = new AddUserTimeTrackingViewModel(userId)
+            {
+                MyTrackingHourDate = new DateTime(Year, Month, Day),
+            };
+            ViewModel.OurAvailableProjects.AddRange(projectsBelongsUserId);
+            ViewModel.MySelectedProjectId = projectsBelongsUserId.FirstOrDefault()?.MyProjectId;
+        }
     }
 
     private async Task SubmitCallback()
