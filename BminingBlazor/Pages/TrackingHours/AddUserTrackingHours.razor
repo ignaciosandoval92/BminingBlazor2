@@ -1,5 +1,7 @@
 ﻿@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}"
-@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{level:int}"
+@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{nameProject1}/{level:int}/{select:int}"
+@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{nameProject1}/{nameProject2}/{level:int}/{select:int}"
+@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{nameProject1}/{nameProject2}/{nameProject3}/{level:int}/{select:int}"
 
 @using BminingBlazor.ViewModels.TrackingHours
 @using Microsoft.AspNetCore.Http
@@ -37,27 +39,36 @@
 
     @if (!IsLoading)
     {
-        <EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
-            <div class="form-group">
-                <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
-                <input type="number" @bind="@ViewModel.MyHours" step="0.1" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-            </div>
-            <div class="form-group">
-                <label for="inputProject" class="load-hours-label">@Resource.Project</label>
-                <select @bind="@ViewModel.MySelectedProjectId" class="form-control" id="inputProject">
+<EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
+    @if (Select == 1)
+    {
+        <div class="form-group">
+            <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
+            <input type="number" @bind="@ViewModel.MyHours" step="0.1" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+        </div>
+        <div class="w-100">
+            <button type="submit" class="badge badge-primary badge-pill  bg-bmining-info float-right float-right">@Resource.Load</button>
+        </div>
+    }
+    else
+    {
+        <div class="form-group">
+            <label for="inputProject" class="load-hours-label">@Resource.Project</label>
+            <select @bind="@ViewModel.MySelectedProjectId" class="form-control" id="inputProject">
 
-                    @foreach (var projectDetailsViewModel in ViewModel?.OurAvailableProjects)
-                    {
-                        <option value="@projectDetailsViewModel.MyProjectId">
-                            @projectDetailsViewModel.MyProjectCode - @projectDetailsViewModel.MyProjectName
-                        </option>
-                    }
-                </select>
-            </div>
-            <div class="w-100">
-                <button type="submit" class="badge badge-primary badge-pill  bg-bmining-info float-right float-right">@Resource.Load</button>
-            </div>
-        </EditForm>
+                @foreach (var projectDetailsViewModel in ViewModel?.OurAvailableProjects)
+                {
+                    <option value="@projectDetailsViewModel.MyProjectId">
+                        @projectDetailsViewModel.MyProjectCode - @projectDetailsViewModel.MyProjectName
+                    </option>
+                }
+            </select>
+        </div>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => SelectSon(ViewModel.MySelectedProjectId)">@Resource.SelectSubProject</button>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="()=>SelectProject(ViewModel.MySelectedProjectId)">@Resource.SelectCurrentProject</button>
+    }
+
+</EditForm>
     }
     else
     {
@@ -66,19 +77,28 @@
 </div>
 
 @code {
-        [Parameter]
-        public int Day { get; set; }
-        [Parameter]
-        public int Month { get; set; }
-        [Parameter]
-        public int Year { get; set; }
-        [Parameter]
-        public int Level { get; set; }
-        [Parameter]
-        public int ProjectId { get; set; }
+    [Parameter]
+    public int Day { get; set; }
+    [Parameter]
+    public int Month { get; set; }
+    [Parameter]
+    public int Year { get; set; }
+    [Parameter]
+    public int Level { get; set; }
+    [Parameter]
+    public int ProjectId { get; set; }
+    [Parameter]
+    public string NameProject1 { get; set; }
+    [Parameter]
+    public string NameProject2 { get; set; }
+    [Parameter]
+    public string NameProject3 { get; set; }
+    [Parameter]
+    public int Select { get; set; }
 
 
     public bool IsLoading { get; set; }
+
 
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
 
@@ -105,11 +125,11 @@
             {
                 var project = new ProjectResumeViewModel()
                 {
-                    MyProjectCode =pro.MyProjectCode,
-                    MyProjectId =pro.MyId,
-                    MyProjectName =pro.MyProjectName
+                    MyProjectCode = pro.MyProjectCode,
+                    MyProjectId = pro.MyId,
+                    MyProjectName = pro.MyProjectName
                 };
-                if (projectUser.Exists(x=>x.MyProjectId==project.MyProjectId))
+                if (projectUser.Exists(x => x.MyProjectId == project.MyProjectId))
                 {
                     projectsBelongsUserId.Add(project);
                 }
@@ -145,5 +165,17 @@
         var hours = ViewModel.MyHours;
         await TimeTrackingService.AddUserTimeTracking(userId, projectId, timeTracking, hours);
         NavigationManager.NavigateTo($"/dashboard_tracking_hours/{Day}/{Month}/{Year}");
+    }
+    public async Task SelectSon(int? projectId)
+    {
+        var proId = projectId ?? default(int);
+        var pro = await ProjectDataService.ReadProject(proId);
+        NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyProjectName}/{1}/{0}",true);
+    }
+    public async Task SelectProject(int? projectId)
+    {
+        var proId = projectId ?? default(int);
+        var pro = await ProjectDataService.ReadProject(proId);
+        NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyProjectName}/{1}/{1}",true);
     }
 }
