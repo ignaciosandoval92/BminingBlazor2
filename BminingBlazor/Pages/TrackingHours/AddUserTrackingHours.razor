@@ -2,6 +2,7 @@
 @using BminingBlazor.ViewModels.TrackingHours
 @using Microsoft.AspNetCore.Http
 
+@inject IReportService ReportService
 @inject IUserDataService UserDataService
 @inject IProjectDataService ProjectDataService
 @inject ITimeTrackingService TimeTrackingService
@@ -78,7 +79,7 @@
     {
         var email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await email);
-        var projectsBelongsUserId = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
+        var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
 
         ViewModel = new AddUserTimeTrackingViewModel(userId)
         {
