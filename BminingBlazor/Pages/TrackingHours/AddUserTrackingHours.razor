@@ -39,16 +39,17 @@
 
     @if (!IsLoading)
     {
-<EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
-    @if (Select == 1)
-    {
-        <div class="form-group">
-            <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
-            <input type="number" @bind="@ViewModel.MyHours" step="0.1" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-        </div>
-        <div class="w-100">
-            <button type="submit" class="badge badge-primary badge-pill  bg-bmining-info float-right float-right">@Resource.Load</button>
-        </div>
+
+    @if (Select == 1||Level==3||projectSons.Count==0)
+    {<EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
+    <div class="form-group">
+        <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
+        <input type="number" @bind="@ViewModel.MyHours" step="0.1" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+    </div>
+    <div class="w-100">
+        <button type="submit" class="badge badge-primary badge-pill  bg-bmining-info float-right float-right">@Resource.Load</button>
+    </div>
+</EditForm>
     }
     else
     {
@@ -68,7 +69,7 @@
         <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="()=>SelectProject(ViewModel.MySelectedProjectId)">@Resource.SelectCurrentProject</button>
     }
 
-</EditForm>
+
     }
     else
     {
@@ -98,8 +99,7 @@
 
 
     public bool IsLoading { get; set; }
-
-
+    public List<ProjectViewModel> projectSons = new List<ProjectViewModel>();
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -108,6 +108,7 @@
         var userId = await UserDataService.GetUserId(await email);
         if (Level == 0)
         {
+            projectSons = await ProjectDataService.ReadSonsProject(ProjectId);
             var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
             ViewModel = new AddUserTimeTrackingViewModel(userId)
             {
@@ -119,7 +120,7 @@
         else
         {
             var projectUser = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
-            var projectSons = await ProjectDataService.ReadSonsProject(ProjectId);
+            projectSons = await ProjectDataService.ReadSonsProject(ProjectId);
             var projectsBelongsUserId = new List<ProjectResumeViewModel>();
             foreach (var pro in projectSons)
             {
@@ -146,7 +147,7 @@
 
     private async Task SubmitCallback()
     {
-        if (!ViewModel.MySelectedProjectId.HasValue)
+        if (ProjectId<0)
         {
             await MatDialogService.AlertAsync(@Resource.MissingProject);
             return;
@@ -160,22 +161,53 @@
 
         IsLoading = true;
         var userId = ViewModel.UserId;
-        var projectId = ViewModel.MySelectedProjectId.Value;
         var timeTracking = ViewModel.MyTrackingHourDate;
         var hours = ViewModel.MyHours;
-        await TimeTrackingService.AddUserTimeTracking(userId, projectId, timeTracking, hours);
+        await TimeTrackingService.AddUserTimeTracking(userId, ProjectId, timeTracking, hours);
         NavigationManager.NavigateTo($"/dashboard_tracking_hours/{Day}/{Month}/{Year}");
     }
     public async Task SelectSon(int? projectId)
     {
-        var proId = projectId ?? default(int);
-        var pro = await ProjectDataService.ReadProject(proId);
-        NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyProjectName}/{1}/{0}",true);
+        if(Level==1)
+        {
+            var proId = projectId ?? default(int);
+            var pro = await ProjectDataService.ReadProject(proId);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{pro.MyProjectName}/{2}/{0}", true);
+        }
+        else if(Level==2)
+        {
+            var proId = projectId ?? default(int);
+            var pro = await ProjectDataService.ReadProject(proId);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{NameProject2}/{pro.MyProjectName}/{3}/{0}", true);
+        }
+        else
+        {
+            var proId = projectId ?? default(int);
+            var pro = await ProjectDataService.ReadProject(proId);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyProjectName}/{1}/{0}", true);
+        }
+
     }
     public async Task SelectProject(int? projectId)
     {
-        var proId = projectId ?? default(int);
-        var pro = await ProjectDataService.ReadProject(proId);
-        NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyProjectName}/{1}/{1}",true);
+
+        if (Level == 1)
+        {
+            var proId = projectId ?? default(int);
+            var pro = await ProjectDataService.ReadProject(proId);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{pro.MyProjectName}/{2}/{1}", true);
+        }
+        else if (Level == 2)
+        {
+            var proId = projectId ?? default(int);
+            var pro = await ProjectDataService.ReadProject(proId);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{NameProject2}/{pro.MyProjectName}/{3}/{1}", true);
+        }
+        else
+        {
+            var proId = projectId ?? default(int);
+            var pro = await ProjectDataService.ReadProject(proId);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyProjectName}/{1}/{1}", true);
+        }
     }
 }
