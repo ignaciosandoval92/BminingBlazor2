@@ -9,11 +9,10 @@ namespace BminingBlazor.ViewModels.Projects
 {
     public class CNode
     {
-        private ProjectViewModel data;
-        private int level;
+        private ProjectViewModel data;        
         private CNode son;
         private CNode brother;
-        private int parentId;
+     
 
         public ProjectViewModel Data { get => data; set => data=value; }
         public CNode Son { get => son; set => son = value; }
@@ -24,8 +23,7 @@ namespace BminingBlazor.ViewModels.Projects
             data = new ProjectViewModel();
             son = null;
             brother = null;
-            level = 0;
-            parentId = 0;
+          
         }
     }
 }
