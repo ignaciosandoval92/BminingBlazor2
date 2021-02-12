@@ -5,7 +5,9 @@
 @using Models.TimeTracking
 @using System.Globalization
 @using Humanizer
+@using ViewModels.Projects
 
+@inject IProjectDataService ProjectDataService
 @inject ITimeTrackingService TimeTrackingService
 @inject IMatToaster MatToaster
 @inject IUserDataService UserDataService
@@ -166,7 +168,13 @@
                             <div class="item-dashboard-container item-dashboard-border @dayUserTrackingHourItem.MyTrackingStatusClass">
                                 <div class="circle"></div>
                                 <h6 class="projetc">
-                                    @dayUserTrackingHourItem.MyProjectName
+                                    @foreach (var dad in Fathers)
+                                    {
+                                        if (dad.MyProjectCode == dayUserTrackingHourItem.MyProjectCode)
+                                        {
+                                            <h6> @dad.MyProjectName / @dayUserTrackingHourItem.MyProjectName</h6>
+                                        }
+                                    }
                                     <div>
 
                                         <div class=" little-circle-blue"></div>
@@ -221,6 +229,7 @@
     public bool IsLoading { get; set; }
     public string Email { get; set; }
     public double TotalHours { get; set; }
+    public List<ProjectViewModel> Fathers = new List<ProjectViewModel>();
 
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
 
@@ -287,6 +296,7 @@
             var userId = await UserDataService.GetUserId(email);
             DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
             DashboardUserTracking.MyUserId = userId;
+            Fathers = await ProjectDataService.ReadFathersProjects();
             if (!Day.HasValue || !Month.HasValue || !Year.HasValue)
             {
                 var date = DateTime.UtcNow.ToLocalTime();
