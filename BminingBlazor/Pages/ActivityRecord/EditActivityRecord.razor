@@ -331,7 +331,7 @@
         ViewModel.MyNotes = await _quillNotesHtml.GetHTML();
         ViewModel.MySecurityReflection = await _quillSecurityReflectionHtml.GetHTML();
         await ActivityRecordService.EditActivityRecord(ViewModel);
-        await MatDialogService.AlertAsync(Resource.Saved);       
+        await MatDialogService.AlertAsync(Resource.Saved);
 
     }
 
@@ -344,7 +344,7 @@
         Model.MyNotes =await _quillNotesHtml.GetText();
         PdfActivityRecord oPdfActivityRecord = new PdfActivityRecord();
         JS.InvokeAsync<ActivityRecordViewModel>(
-            "savePdf",
+           "savePdf",
             $"{Model.MyProjectCode}.pdf",
             Convert.ToBase64String(oPdfActivityRecord.Report(Model)));
     }

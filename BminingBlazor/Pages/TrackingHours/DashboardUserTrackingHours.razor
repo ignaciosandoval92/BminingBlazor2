@@ -342,14 +342,14 @@
         //var answer = await MatDialogService.PromptAsync(Resource.NewHours, dayUserTrackingHourItem.MyTrackedHours.ToString("N2",CultureInfo.CreateSpecificCulture("en-US")));
         //if (answer == null)
         //    return;
-        if (!double.TryParse(answer, out var newHours))
+        if ((double)answer <0)
         {
             await MatDialogService.AlertAsync(Resource.InvalidNumber);
             return;
         }
-        await TimeTrackingService.EditStatusTimeTracking(dayUserTrackingHourItem.MyId, TimeTrackingStatusEnum.WaitingForApproval, newHours);
+        await TimeTrackingService.EditStatusTimeTracking(dayUserTrackingHourItem.MyId, TimeTrackingStatusEnum.WaitingForApproval, (double)answer);
         dayUserTrackingHourItem.MyTimeTimeTrackingStatus = TimeTrackingStatusEnum.WaitingForApproval;
-        dayUserTrackingHourItem.MyTrackedHours = newHours;
+        dayUserTrackingHourItem.MyTrackedHours = (double)answer;
         StateHasChanged();
     }
 
