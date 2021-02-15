@@ -461,7 +461,7 @@ h1, h2, h3, h4, h5, h6 {
         height: 18px;
         background: white;
         border-radius: 50%;
-        left: 506px;
+        left: 516px;
         top: 12px;
     }
 
@@ -486,7 +486,7 @@ h1, h2, h3, h4, h5, h6 {
     .totalhours {
         position: absolute;
         background-color: white;
-        width: 90px;
+        width: 100px;
         height: 18px;
         left: 425px;
         top: 12px;
@@ -496,7 +496,7 @@ h1, h2, h3, h4, h5, h6 {
     .trackedhours {
         position: absolute;
         background-color: rgb(31,36,61);
-        width: 90px;
+        width: 100px;
         height: 18px;
         left: 410px;
         top: 12px;
@@ -509,13 +509,13 @@ h1, h2, h3, h4, h5, h6 {
         height: 18px;
         background: rgb(31,36,61);
         border-radius: 50%;
-        left: 491px;
+        left: 501px;
         top: 12px;
     }
 
     .bttn {
         position: absolute;
-        left: 525px;
+        left: 540px;
     }
     .btn2{
         position:absolute;

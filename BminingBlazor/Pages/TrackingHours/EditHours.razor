@@ -1,0 +1,43 @@
+﻿@using BminingBlazor.ViewModels.ActivityRecord
+@using Models.ActivityRecord
+@inject IMatDialogService MatDialogService
+
+
+<div class="bmining-dialog">
+    <div class="bmining-dialog-inner">
+
+        <h3>@Resource.Edit</h3>
+        <div class="alternate2-break"></div>
+        <div class="form-group col">
+            <div class="form-group">
+                <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
+                <input type="number" @bind="@MyHours" step="0.01" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+            </div>
+            <div class="w-100">
+                <button type="submit" class="badge badge-primary badge-pill  bg-bmining-info float-right float-right" @onclick="Load">@Resource.Load</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@code {
+    [CascadingParameter]
+    public MatDialogReference DialogReference { get; set; }
+
+  
+    public double MyHours { get; set; }
+
+
+    private async Task Load()
+    {
+      
+        if (MyHours <0)
+        {
+            await MatDialogService.AlertAsync(Resource.MissingInformation);
+            return;
+        }
+        DialogReference.Close(MyHours);
+    }
+}

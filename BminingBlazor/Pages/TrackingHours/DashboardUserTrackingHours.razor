@@ -6,6 +6,7 @@
 @using System.Globalization
 @using Humanizer
 @using ViewModels.Projects
+@using BminingBlazor.Pages.TrackingHours
 
 @inject IProjectDataService ProjectDataService
 @inject ITimeTrackingService TimeTrackingService
@@ -178,7 +179,7 @@
                                     <div>
 
                                         <div class=" little-circle-blue"></div>
-                                        <strong><h10 class="trackedhours">@Resource.Hours : @dayUserTrackingHourItem.MyTrackedHours </h10></strong>
+                                        <strong><h12 class="trackedhours">@Resource.Hours : @dayUserTrackingHourItem.MyTrackedHours </h12></strong>
                                     </div>
                                 </h6>
 
@@ -330,9 +331,17 @@
 
     private async Task EditItem(WeekDayUserTrackingHoursItemViewModel dayUserTrackingHourItem)
     {
-        var answer = await MatDialogService.PromptAsync(Resource.NewHours, dayUserTrackingHourItem.MyTrackedHours.ToString(CultureInfo.InvariantCulture));
+        var answer = await MatDialogService.OpenAsync(typeof(BminingBlazor.Pages.TrackingHours.EditHours), new MatDialogOptions
+        {
+            CanBeClosed = true
+        });
         if (answer == null)
             return;
+
+
+        //var answer = await MatDialogService.PromptAsync(Resource.NewHours, dayUserTrackingHourItem.MyTrackedHours.ToString("N2",CultureInfo.CreateSpecificCulture("en-US")));
+        //if (answer == null)
+        //    return;
         if (!double.TryParse(answer, out var newHours))
         {
             await MatDialogService.AlertAsync(Resource.InvalidNumber);

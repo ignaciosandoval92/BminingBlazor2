@@ -55,7 +55,7 @@
         {<EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
                 <div class="form-group">
                     <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
-                    <input type="number" @bind="@ViewModel.MyHours" step="0.1" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+                    <input type="number" @bind="@ViewModel.MyHours" step="0.01" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
                 </div>
                 <div class="w-100">
                     <button type="submit" class="badge badge-primary badge-pill  bg-bmining-info float-right float-right">@Resource.Load</button>
