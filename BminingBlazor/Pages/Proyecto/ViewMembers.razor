@@ -162,7 +162,20 @@
         }
         else if(levelselect==2)
         {
-
+            _projects = await ProjectDataService.ReadSonsProject(IdProject);
+            foreach (var project in _projects)
+            {
+                if (project.MyLevel == 3)
+                {
+                    _sons.Add(project);
+                }
+            }
+            father = projectSelect;
+            root = project.Insertar(father, null);
+            foreach (var son in _sons)
+            {
+                n = project.Insertar(son, root);
+            }
         }
 
         else
