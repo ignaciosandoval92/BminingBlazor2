@@ -2,6 +2,7 @@
 @page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{nameProject1}/{level:int}/{select:int}"
 @page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{nameProject1}/{nameProject2}/{level:int}/{select:int}"
 @page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{nameProject1}/{nameProject2}/{nameProject3}/{level:int}/{select:int}"
+@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{nameProject1}/{nameProject2}/{nameProject3}/{nameProject4}/{level:int}/{select:int}"
 
 @using BminingBlazor.ViewModels.TrackingHours
 @using Microsoft.AspNetCore.Http
@@ -47,11 +48,15 @@
     {
         <h3 class="header-break">@NameProject1/@NameProject2/@NameProject3</h3>
     }
+    @if (Level == 4)
+    {
+        <h3 class="header-break">@NameProject1/@NameProject2/@NameProject3/@NameProject4</h3>
+    }
 
     @if (!IsLoading)
     {
 
-        @if (Select == 1 || Level == 3 || projectSons.Count == 0)
+        @if (Select == 1 || Level == 4 || projectSons.Count == 0)
         {<EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
                 <div class="form-group">
                     <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
@@ -106,6 +111,8 @@
     [Parameter]
     public string NameProject3 { get; set; }
     [Parameter]
+    public string NameProject4 { get; set; }
+    [Parameter]
     public int Select { get; set; }
 
 
@@ -158,7 +165,7 @@
 
     private async Task SubmitCallback()
     {
-        if (ProjectId<0)
+        if (ProjectId < 0)
         {
             await MatDialogService.AlertAsync(@Resource.MissingProject);
             return;
@@ -179,17 +186,23 @@
     }
     public async Task SelectSon(int? projectId)
     {
-        if(Level==1)
+        if (Level == 1)
         {
             var proId = projectId ?? default(int);
             var pro = await ProjectDataService.ReadProject(proId);
             NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{pro.MyProjectName}/{2}/{0}", true);
         }
-        else if(Level==2)
+        else if (Level == 2)
         {
             var proId = projectId ?? default(int);
             var pro = await ProjectDataService.ReadProject(proId);
             NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{NameProject2}/{pro.MyProjectName}/{3}/{0}", true);
+        }
+        else if (Level == 3)
+        {
+            var proId = projectId ?? default(int);
+            var pro = await ProjectDataService.ReadProject(proId);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{NameProject2}/{NameProject3}/{pro.MyProjectName}/{4}/{0}", true);
         }
         else
         {
@@ -213,6 +226,12 @@
             var proId = projectId ?? default(int);
             var pro = await ProjectDataService.ReadProject(proId);
             NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{NameProject2}/{pro.MyProjectName}/{3}/{1}", true);
+        }
+        else if (Level == 3)
+        {
+            var proId = projectId ?? default(int);
+            var pro = await ProjectDataService.ReadProject(proId);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{NameProject2}/{NameProject3}/{pro.MyProjectName}/{4}/{1}", true);
         }
         else
         {

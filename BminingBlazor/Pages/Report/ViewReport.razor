@@ -28,7 +28,7 @@
     }
     else
     {
-        @if (root.Son == null || levelselect == 3 || levelselect == 4)
+        @if (root.Son == null || levelselect == 3 || levelselect == 4||levelselect==6)
         {<div class="table-responsive{-sm|-md|-lg|-xl}">
                 <table class="table table-striped">
                     <thead>
@@ -60,7 +60,7 @@
         }
         <div class="alternate3-break"></div>
         <button class="btn-download float-right" @onclick="ExportExcel"></button>
-        @if (root.Son != null && levelselect != 3)
+        @if (root.Son != null && levelselect != 6)
         {
             <label for="contract">@Resource.Project</label>
             <select class="form-control" id="projectdId" @bind="@idProject" required>
@@ -112,7 +112,7 @@
     public CNode options = new CNode();
     public List<CNode> _listSons = new List<CNode>();
     public int idProject { get; set; }
-    public int levelSelect { get; set; } 
+    public int levelSelect { get; set; }
     public List<ProjectViewModel> _projects = new List<ProjectViewModel>();
 
     protected override async Task OnInitializedAsync()
@@ -139,12 +139,39 @@
             }
 
         }
-        else if (levelselect == 4)
+        else if (levelselect == 4||levelselect==5)
         {
+            var sons = await ProjectDataService.ReadSonsProject(projectId);
             _report = await ReportService.GetUserReport(userId,startDate, endDate, projectId);
             _report.AddRange(await ReportService.GetUserProjectReportSons(userId,startDate, endDate, projectId));
+            foreach (var pro in sons)
+            {
+                _report.AddRange(await ReportService.GetUserProjectReportSons(userId,startDate, endDate, pro.MyId));
+            }
         }
         else if (levelselect == 2)
+        {
+            _projects = await ProjectDataService.ReadSonsProject(projectId);
+            _report = await ReportService.GetUserReport(userId,startDate, endDate, projectId);
+            _report.AddRange(await ReportService.GetProjectReportSons(startDate, endDate, projectId));
+            foreach (var project in _projects)
+            {
+                if (project.MyLevel == 2)
+                {
+                    father = project;
+                }
+                if (project.MyLevel == 3)
+                {
+                    _sons.Add(project);
+                }
+            }
+            root = project.Insertar(father, null);
+            foreach (var son in _sons)
+            {
+                n = project.Insertar(son, root);
+            }
+        }
+        else if (levelselect == 3)
         {
             _report = await ReportService.GetUserReport(userId,startDate, endDate, projectId);
         }
@@ -188,6 +215,10 @@
         {
             NavigationManager.NavigateTo($"/ViewReport/{userId}/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{2}", true);
         }
+        else if (levelselect == 2)
+        {
+            NavigationManager.NavigateTo($"/ViewReport/{userId}/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{3}", true);
+        }
         else
         {
             NavigationManager.NavigateTo($"/ViewReport/{userId}/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{1}", true);
@@ -199,9 +230,15 @@
         {
             NavigationManager.NavigateTo($"/ViewReport/{userId}/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{4}", true);
         }
+        else if (levelselect == 2)
+        {
+            NavigationManager.NavigateTo($"/ViewReport/{userId}/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{projectId}/{5}", true);
+        }
         else
         {
-            NavigationManager.NavigateTo($"/ViewReport/{userId}/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{codeProject}/{3}", true);
+            NavigationManager.NavigateTo($"/ViewReport/{userId}/{startDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{endDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{codeProject}/{6}", true);
+
+            
         }
     }
     public async Task ExportExcel()
