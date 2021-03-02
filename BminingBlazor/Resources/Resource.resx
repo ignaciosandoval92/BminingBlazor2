@@ -529,4 +529,7 @@
   <data name="LevelFromSubprojectComplete" xml:space="preserve">
     <value>Level from subproject complete</value>
   </data>
+  <data name="Intro1" xml:space="preserve">
+    <value>Welcome to the Bmining Project Management System!</value>
+  </data>
 </root>

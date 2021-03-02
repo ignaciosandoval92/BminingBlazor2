@@ -1,8 +1,8 @@
 ﻿@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}"
-@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{nameProject1}/{level:int}/{select:int}"
-@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{nameProject1}/{nameProject2}/{level:int}/{select:int}"
-@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{nameProject1}/{nameProject2}/{nameProject3}/{level:int}/{select:int}"
-@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{nameProject1}/{nameProject2}/{nameProject3}/{nameProject4}/{level:int}/{select:int}"
+@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{projectId1:int}/{level:int}/{select:int}"
+@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{projectId1:int}/{projectId2:int}/{level:int}/{select:int}"
+@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{projectId1:int}/{projectId2:int}/{projectId3:int}/{level:int}/{select:int}"
+@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}/{projectId:int}/{projectId1:int}/{projectId2:int}/{projectId3:int}/{projectId4:int}/{level:int}/{select:int}"
 
 @using BminingBlazor.ViewModels.TrackingHours
 @using Microsoft.AspNetCore.Http
@@ -105,23 +105,28 @@
     [Parameter]
     public int ProjectId { get; set; }
     [Parameter]
-    public string NameProject1 { get; set; }
+    public int ProjectId1 { get; set; }
     [Parameter]
-    public string NameProject2 { get; set; }
+    public int ProjectId2 { get; set; }
     [Parameter]
-    public string NameProject3 { get; set; }
+    public int ProjectId3 { get; set; }
     [Parameter]
-    public string NameProject4 { get; set; }
+    public int ProjectId4 { get; set; }
     [Parameter]
     public int Select { get; set; }
 
 
+
+    public string NameProject1 { get; set; }
+    public string NameProject2 { get; set; }
+    public string NameProject3 { get; set; }
+    public string NameProject4 { get; set; }
     public bool IsLoading { get; set; }
     public List<ProjectViewModel> projectSons = new List<ProjectViewModel>();
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
 
     protected override async Task OnInitializedAsync()
-    {
+    {       
         var email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await email);
         if (Level == 0)
@@ -160,6 +165,28 @@
             };
             ViewModel.OurAvailableProjects.AddRange(projectsBelongsUserId);
             ViewModel.MySelectedProjectId = projectsBelongsUserId.FirstOrDefault()?.MyProjectId;
+            if( Level==1)
+            {
+                NameProject1 = (await ProjectDataService.ReadProject(ProjectId1)).MyProjectName;
+            }
+            if (Level == 2)
+            {
+                NameProject1 = (await ProjectDataService.ReadProject(ProjectId1)).MyProjectName;
+                NameProject2 = (await ProjectDataService.ReadProject(ProjectId2)).MyProjectName;
+            }
+            if (Level == 3)
+            {
+                NameProject1 = (await ProjectDataService.ReadProject(ProjectId1)).MyProjectName;
+                NameProject2 = (await ProjectDataService.ReadProject(ProjectId2)).MyProjectName;
+                NameProject3 = (await ProjectDataService.ReadProject(ProjectId3)).MyProjectName;
+            }
+            if (Level == 4)
+            {
+                NameProject1 = (await ProjectDataService.ReadProject(ProjectId1)).MyProjectName;
+                NameProject2 = (await ProjectDataService.ReadProject(ProjectId2)).MyProjectName;
+                NameProject3 = (await ProjectDataService.ReadProject(ProjectId3)).MyProjectName;
+                NameProject4 = (await ProjectDataService.ReadProject(ProjectId4)).MyProjectName;
+            }
         }
     }
 
@@ -190,25 +217,25 @@
         {
             var proId = projectId ?? default(int);
             var pro = await ProjectDataService.ReadProject(proId);
-            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{pro.MyProjectName}/{2}/{0}", true);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{ProjectId1}/{pro.MyId}/{2}/{0}", true);
         }
         else if (Level == 2)
         {
             var proId = projectId ?? default(int);
             var pro = await ProjectDataService.ReadProject(proId);
-            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{NameProject2}/{pro.MyProjectName}/{3}/{0}", true);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{ProjectId1}/{ProjectId2}/{pro.MyId}/{3}/{0}", true);
         }
         else if (Level == 3)
         {
             var proId = projectId ?? default(int);
             var pro = await ProjectDataService.ReadProject(proId);
-            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{NameProject2}/{NameProject3}/{pro.MyProjectName}/{4}/{0}", true);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{ProjectId1}/{ProjectId2}/{ProjectId3}/{pro.MyId}/{4}/{0}", true);
         }
         else
         {
             var proId = projectId ?? default(int);
             var pro = await ProjectDataService.ReadProject(proId);
-            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyProjectName}/{1}/{0}", true);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyId}/{1}/{0}", true);
         }
 
     }
@@ -219,25 +246,25 @@
         {
             var proId = projectId ?? default(int);
             var pro = await ProjectDataService.ReadProject(proId);
-            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{pro.MyProjectName}/{2}/{1}", true);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{ProjectId1}/{pro.MyId}/{2}/{1}", true);
         }
         else if (Level == 2)
         {
             var proId = projectId ?? default(int);
             var pro = await ProjectDataService.ReadProject(proId);
-            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{NameProject2}/{pro.MyProjectName}/{3}/{1}", true);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{ProjectId1}/{ProjectId2}/{pro.MyId}/{3}/{1}", true);
         }
         else if (Level == 3)
         {
             var proId = projectId ?? default(int);
             var pro = await ProjectDataService.ReadProject(proId);
-            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{NameProject1}/{NameProject2}/{NameProject3}/{pro.MyProjectName}/{4}/{1}", true);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{ProjectId1}/{ProjectId2}/{ProjectId3}/{pro.MyId}/{4}/{1}", true);
         }
         else
         {
             var proId = projectId ?? default(int);
             var pro = await ProjectDataService.ReadProject(proId);
-            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyProjectName}/{1}/{1}", true);
+            NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyId}/{1}/{1}", true);
         }
     }
 }

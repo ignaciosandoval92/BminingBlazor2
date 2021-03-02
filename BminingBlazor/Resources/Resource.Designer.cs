@@ -673,6 +673,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Welcome to the Bmining Project Management System!.
+        /// </summary>
+        internal static string Intro1 {
+            get {
+                return ResourceManager.GetString("Intro1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Invalid number.
         /// </summary>
         internal static string InvalidNumber {

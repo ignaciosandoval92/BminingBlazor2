@@ -528,4 +528,7 @@
   <data name="LevelFromSubprojectComplete" xml:space="preserve">
     <value>Nivel de subproyecto excedido</value>
   </data>
+  <data name="Intro1" xml:space="preserve">
+    <value>Bienvenido al Sistema de Gestión de Proyectos Bmining.</value>
+  </data>
 </root>
