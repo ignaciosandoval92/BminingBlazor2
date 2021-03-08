@@ -28,7 +28,7 @@
                         <th>@Resource.Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody>                 
                     @foreach (var payment in _payments)
                     {
                         <tr>
@@ -79,14 +79,16 @@
     [Parameter]
     public int IdProject { get; set; }
 
-    private List<PaymentViewModel> _payments;
+    public List<PaymentViewModel> _payments;
+    public int a;
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            _payments = await ProjectDataService.ReadPaymentStatusOfProject(IdProject);
+            _payments = await ProjectDataService.ReadPaymentStatusOfProject(IdProject);           
             StateHasChanged();
         }
     }
