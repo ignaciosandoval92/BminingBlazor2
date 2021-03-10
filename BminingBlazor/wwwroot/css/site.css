@@ -676,6 +676,41 @@ h1, h2, h3, h4, h5, h6 {
         height: 30px;
         left: 15px;
     }
+    .projetc2 {
+        position: absolute;
+        background-color: white;
+        width: 395px;
+        height: 60px;
+        left: 30px;
+    }
+    .circle2 {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: white;
+        border-radius: 50%;
+        left: 0px;
+    }
+
+    .trackedhours2 {
+        position: absolute;
+        background-color: rgb(31,36,61);
+        width: 100px;
+        height: 28px;
+        left: 395px;
+        top: 2px;
+        color: white;
+    }
+
+    .little-circle-blue2 {
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        background: rgb(31,36,61);
+        border-radius: 50%;
+        left: 484px;
+        top: 2px;
+    }
 
     .circle {
         position: absolute;
