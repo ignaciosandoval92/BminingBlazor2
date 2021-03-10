@@ -538,7 +538,7 @@ h1, h2, h3, h4, h5, h6 {
         width: 100px;
         height: 18px;
         left: 410px;
-        top: 12px;
+        top: 1px;
         color: white;
     }
 
@@ -549,7 +549,7 @@ h1, h2, h3, h4, h5, h6 {
         background: rgb(31,36,61);
         border-radius: 50%;
         left: 501px;
-        top: 12px;
+        top: 1px;
     }
 
     .bttn {

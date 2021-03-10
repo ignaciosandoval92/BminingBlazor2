@@ -166,63 +166,65 @@
                         <div class="alternate4-break"></div>
                         @foreach (var dayUserTrackingHourItem in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
                         {
-                            <div class="item-dashboard-container item-dashboard-border @dayUserTrackingHourItem.MyTrackingStatusClass">
+                    <div class="item-dashboard-container item-dashboard-border @dayUserTrackingHourItem.MyTrackingStatusClass">
 
-                                @foreach (var dad in Fathers)
-                                {
-                                    if (dad.MyProjectCode == dayUserTrackingHourItem.MyProjectCode)
-                                    {
-                                        if (dad.MyProjectName.Length + dayUserTrackingHourItem.MyProjectName.Length < 40)
-                                        {<div class="circle"></div>
-                                            <h6 class="projetc">
-                                                @dad.MyProjectName / @dayUserTrackingHourItem.MyProjectName
+                        @foreach (var dad in Fathers)
+                        {
+                            if (dad.MyProjectCode == dayUserTrackingHourItem.MyProjectCode)
+                            {
+                                if (dad.MyProjectName.Length + dayUserTrackingHourItem.MyProjectName.Length < 40)
+                                {<div class="circle"></div>
+                                    <h6 class="projetc">
+                                        @dad.MyProjectName / @dayUserTrackingHourItem.MyProjectName
 
-                                                <div>
+                                        <div>
 
-                                                    <div class=" little-circle-blue"></div>
-                                                    <strong><h12 class="trackedhours">@Resource.Hours : @dayUserTrackingHourItem.MyTrackedHours </h12></strong>
-                                                </div>
-                                            </h6>
-                                        }
-                                        else
-                                        {
-                                            <div class="circle2"></div>
-                                            <h6 class="projetc2">
-                                                @dad.MyProjectName / @dayUserTrackingHourItem.MyProjectName
-
-                                                <div>
-
-                                                    <div class=" little-circle-blue2"></div>
-                                                    <strong><h12 class="trackedhours2">@Resource.Hours : @dayUserTrackingHourItem.MyTrackedHours </h12></strong>
-                                                </div>
-                                            </h6>                                            
-                                        }
-                                    }
+                                            <div class=" little-circle-blue"></div>
+                                            <strong><h12 class="trackedhours">@Resource.Hours : @dayUserTrackingHourItem.MyTrackedHours </h12></strong>
+                                        </div>
+                                    </h6>
                                 }
+                                else
+                                {
+                                    <div class="circle2"></div>
+                                    <h6 class="projetc2">
+                                        @dad.MyProjectName / @dayUserTrackingHourItem.MyProjectName
 
-                                <div class="alternate5-break"></div>
+                                        <div>
 
-                                <div class="item-dashboard-item w-100">
+                                            <div class=" little-circle-blue2"></div>
+                                            <strong><h12 class="trackedhours2">@Resource.Hours : @dayUserTrackingHourItem.MyTrackedHours </h12></strong>
+                                        </div>
+                                    </h6>
+                                    <div class="alternate5-break"></div>
+                                }
+                               
+                            }
+                        }
 
-                                </div>
 
-                                <div class="bttn">
-                                    @if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.WaitingForApproval)
-                                    {
-                                        <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="btn-edit">
-                                        </button>
-                                        <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="btn-delete">
-                                        </button>
 
-                                    }
-                                    else if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.Rejected)
-                                    {
-                                        <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="btn-edit">
-                                        </button>
-                                    }
-                                </div>
+                        <div class="item-dashboard-item w-100">
 
-                            </div>
+                        </div>
+
+                        <div class="bttn">
+                            @if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.WaitingForApproval)
+                            {
+                                <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="btn-edit">
+                                </button>
+                                <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="btn-delete">
+                                </button>
+
+                            }
+                            else if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.Rejected)
+                            {
+                                <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="btn-edit">
+                                </button>
+                            }
+                        </div>
+
+                    </div>
                             <div class="alternate3-break"></div>
 
 
