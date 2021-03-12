@@ -420,25 +420,25 @@ h1, h2, h3, h4, h5, h6 {
     .btn-back {
         display: inline-block;
         border: none;
-        width: 26px;
-        height: 26px;
+        width: 50px;
+        height: 50px;
         background-image: url(https://i.ibb.co/28jq3rW/back-Recurso-7-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
-        background-size:26px 26px;
+        background-size:50px 50px;
     }
 
     .btn-next {
         display: inline-block;
         border: none;
-        width: 26px;
-        height: 26px;
+        width: 50px;
+        height: 50px;
         background-image: url(https://i.ibb.co/xfSfm1p/next-Recurso-8-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
-        background-size:26px 26px;
+        background-size:50px 50px;
     }
 
 
