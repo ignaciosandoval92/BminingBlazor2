@@ -18,5 +18,6 @@ namespace BminingBlazor.Services
         Task<List<ReportViewModel>> GetUserReportFromCode(int userId, DateTime from, DateTime to, string codeProject);
         Task<List<ReportViewModel>> GetUserProjectReportSons(int userId, DateTime from, DateTime to, int projectId);
         Task<List<ProjectResumeViewModel>> GetProjectFatherWhereBelongsUserId(int userId);
+        Task<List<ProjectResumeViewModel>> GetProjectFather();
     }
 }

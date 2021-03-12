@@ -80,8 +80,16 @@
             var email = AuthenticationStateProvider.GetEmail();
             var userId = await UserDataService.GetUserId(await email);
             var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
+            var projects = await ReportService.GetProjectFather();
             ViewModel = new List<ProjectResumeViewModel>();
-            ViewModel.AddRange(projectsBelongsUserId);
+            if (userId == 5)
+            {
+                ViewModel.AddRange(projects);
+            }
+            else
+            {
+                ViewModel.AddRange(projectsBelongsUserId);
+            }
             _project.MyStartDate = DateTime.UtcNow;
             _project.MyEndDate = DateTime.UtcNow;
             phase = 0;

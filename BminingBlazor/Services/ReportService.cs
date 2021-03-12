@@ -241,7 +241,7 @@ namespace BminingBlazor.Services
 
             var query = queryFactory.Query(TableConstants.TimeTrackingTable)
                 .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.UserId}", userId)
-                .Where(TimeTrackingConstants.TimeTrackingStatusId, (int)TimeTrackingStatusEnum.Approved)                
+                .Where(TimeTrackingConstants.TimeTrackingStatusId, (int)TimeTrackingStatusEnum.Approved)
                 .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
                                                   $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")
@@ -250,7 +250,7 @@ namespace BminingBlazor.Services
                 .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
                         $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode},{ProjectConstants.Level},{ProjectConstants.ParentId}}}",
-                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}").Where($"{TableConstants.ProjectTable}.{ProjectConstants.ProjectCode}",codeProject);
+                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}").Where($"{TableConstants.ProjectTable}.{ProjectConstants.ProjectCode}", codeProject);
 
 
 
@@ -276,7 +276,7 @@ namespace BminingBlazor.Services
             }
             return report;
         }
-        public async Task<List<ReportViewModel>> GetUserProjectReportSons(int userId,DateTime from, DateTime to, int projectId)
+        public async Task<List<ReportViewModel>> GetUserProjectReportSons(int userId, DateTime from, DateTime to, int projectId)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
 
@@ -292,7 +292,7 @@ namespace BminingBlazor.Services
                 .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
                         $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode},{ProjectConstants.Level},{ProjectConstants.ParentId}}}",
-                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}").Where($"{TableConstants.ProjectTable}.{ProjectConstants.ParentId}", projectId).Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.UserId}",userId);
+                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}").Where($"{TableConstants.ProjectTable}.{ProjectConstants.ParentId}", projectId).Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.UserId}", userId);
 
 
 
@@ -325,7 +325,30 @@ namespace BminingBlazor.Services
             var membersQuery = queryFactory.Query(TableConstants.MembersTable)
                 .Where(MemberConstants.UserId, userId)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
-                    $"{TableConstants.MembersTable}.{MemberConstants.ProjectId}").Where($"{TableConstants.ProjectTable}.{ProjectConstants.Level}",0);
+                    $"{TableConstants.MembersTable}.{MemberConstants.ProjectId}").Where($"{TableConstants.ProjectTable}.{ProjectConstants.Level}", 0);
+
+            var items = (await membersQuery.GetAsync()).Cast<IDictionary<string, object>>().ToList();
+
+            var projects = new List<ProjectResumeViewModel>();
+            foreach (var item in items)
+            {
+                var project = new ProjectResumeViewModel()
+                {
+                    MyProjectId = (int)item[ProjectConstants.ProjectId],
+                    MyProjectName = (string)item[ProjectConstants.ProjectName],
+                    MyProjectCode = (string)item[ProjectConstants.ProjectCode],
+                };
+
+                projects.Add(project);
+            }
+            return projects;
+        }
+        public async Task<List<ProjectResumeViewModel>> GetProjectFather()
+        {
+
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var membersQuery = queryFactory.Query(TableConstants.ProjectTable)
+            .Where($"{TableConstants.ProjectTable}.{ProjectConstants.Level}", 0);
 
             var items = (await membersQuery.GetAsync()).Cast<IDictionary<string, object>>().ToList();
 
@@ -344,4 +367,5 @@ namespace BminingBlazor.Services
             return projects;
         }
     }
+
 }
