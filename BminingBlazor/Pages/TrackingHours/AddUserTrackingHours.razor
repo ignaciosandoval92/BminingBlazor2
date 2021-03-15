@@ -72,20 +72,21 @@
         }
         else
         {
-            <div class="form-group">
-                <label for="inputProject" class="load-hours-label">@Resource.Project</label>
-                <select @bind="@ViewModel.MySelectedProjectId" class="form-control" id="inputProject">
+<div class="form-group">
+    <label for="inputProject" class="load-hours-label">@Resource.Project</label>
 
-                    @foreach (var projectDetailsViewModel in ViewModel?.OurAvailableProjects)
-                    {
-                        <option value="@projectDetailsViewModel.MyProjectId">
-                            @projectDetailsViewModel.MyProjectCode - @projectDetailsViewModel.MyProjectName
-                        </option>
-                    }
-                </select>
+    <MatAutocompleteList Items="@ViewModel?.OurAvailableProjects" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i.MyProjectCode + " " + i.MyProjectName)" Label="@Resource.Projects" @bind-Value="@value" ShowClearButton="true">
+        <ItemTemplate>
+            <div style="display: flex; flex-direction: row; width: 100%;">
+                <div style="flex:1;">@context.MyProjectCode</div>
+                <div style="flex:1;">@context.MyProjectName</div>
             </div>
-            <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => SelectSon(ViewModel.MySelectedProjectId)">@Resource.SelectSubProject</button>
-            <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="()=>SelectProject(ViewModel.MySelectedProjectId)">@Resource.SelectCurrentProject</button>
+        </ItemTemplate>
+    </MatAutocompleteList>
+
+</div>
+            <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => SelectSon(value.MyProjectId)">@Resource.SelectSubProject</button>
+            <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="()=>SelectProject(value.MyProjectId)">@Resource.SelectCurrentProject</button>
         }
 
 
@@ -127,9 +128,10 @@
     public bool IsLoading { get; set; }
     public List<ProjectViewModel> projectSons = new List<ProjectViewModel>();
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
+    ProjectResumeViewModel value = null;
 
     protected override async Task OnInitializedAsync()
-    {       
+    {
         var email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await email);
         if (Level == 0)
