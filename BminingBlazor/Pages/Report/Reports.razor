@@ -17,20 +17,23 @@
         <div class="d-inline-block">
             <h2>@Resource.Report</h2>
         </div>
-    </div>
-   
+    </div>    
+
     @if (phase == 0)
     {<div class="form-group">
-            <label for="contract">@Resource.Project</label>
-            <select class="form-control" id="contract" @bind="_project.MyProjectCode" required>
-                @foreach (var project in ViewModel)
-                {
-                    <option value="@project.MyProjectCode">
-                        @project.MyProjectCode - @project.MyProjectName
-                    </option>
-                }
-            </select>
-        </div>
+    <label for="contract">@Resource.Project</label>
+    <MatAutocompleteList Items="@ViewModel" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i.MyProjectCode+" "+i.MyProjectName)" Label="@Resource.Projects" @bind="@_project.MyProjectCode" ShowClearButton="true">
+        <ItemTemplate>
+            <div style="display: flex; flex-direction: row; width: 100%;">
+                <div style="flex:1;">@context.MyProjectCode</div>
+                <div style="flex:1;">@context.MyProjectName</div>
+            </div>
+        </ItemTemplate>
+    </MatAutocompleteList>
+   
+
+
+</div>
         <div class="form-group col">
             <label for="inputStartDate">@Resource.StartDate</label>
             <input class="form-control" type="date" id="inputStartDate" @bind="_project.MyStartDate" />
@@ -71,12 +74,16 @@
     public int phase { get; set; }
     public List<MemberViewModel> users { get; set; }
     public List<ProjectResumeViewModel> ViewModel { get; set; }
-    private readonly ProjectViewModel _project = new ProjectViewModel();
+    private  ProjectResumeViewModel _project = new ProjectResumeViewModel();
     private readonly MemberViewModel _member = new MemberViewModel();
+    public List<ProjectResumeViewModel> _projectList { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         if (codeProject == null)
         {
+            _project.MyStartDate = DateTime.UtcNow;
+            _project.MyEndDate = DateTime.UtcNow;
             var email = AuthenticationStateProvider.GetEmail();
             var userId = await UserDataService.GetUserId(await email);
             var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
@@ -90,8 +97,6 @@
             {
                 ViewModel.AddRange(projectsBelongsUserId);
             }
-            _project.MyStartDate = DateTime.UtcNow;
-            _project.MyEndDate = DateTime.UtcNow;
             phase = 0;
         }
         else
@@ -115,6 +120,16 @@
     private  void ReadHours(int IdUser, DateTime StartDate, DateTime EndDate, string CodeProject)
     {
         NavigationManager.NavigateTo($"/ViewReport/{IdUser}/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{CodeProject}");
+    }
+    private void OnSearchTextChanged(ChangeEventArgs changeEventArgs, string columnTitle)
+    {
+        string searchText = changeEventArgs.Value.ToString();
+        if (columnTitle == Resource.ProjectName)
+            _projectList = ViewModel.Where(pro => pro.MyProjectName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase)).ToList();
+        if (columnTitle == Resource.ProjectCode)
+            _projectList = ViewModel.Where(pro => pro.MyProjectCode.Contains(searchText, StringComparison.CurrentCultureIgnoreCase)).ToList();
+
+
     }
 }
 
