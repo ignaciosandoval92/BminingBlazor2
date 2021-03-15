@@ -19,221 +19,223 @@
 
 <div class="bmining-app" style="width: 100%; height: 700px; overflow-y: scroll;">
     <h2>@Resource.EditActivityRecord</h2>
-   
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
     @if (ViewModel != null)
     {
-<div>
+        <div>
 
-    <div class="col">
-        <div class="d-flex flex-row w-100 justify-content-between">
-            <div class="float-left">
-                <h5 class="font-weight-bold">@ViewModel.MyProjectCode</h5>
+            <div class="col">
+                <div class="d-flex flex-row w-100 justify-content-between">
+                    <div class="float-left">
+                        <h5 class="font-weight-bold">@ViewModel.MyProjectCode</h5>
+                    </div>
+                    <div class="float-right">
+                        <h5 class="font-weight-bold">@ViewModel.MyProjectName</h5>
+                    </div>
+                </div>
             </div>
-            <div class="float-right">
-                <h5 class="font-weight-bold">@ViewModel.MyProjectName</h5>
+
+            <div class="form-group">
+                <label for="title">@Resource.Title</label>
+                <input class="form-control" type="text" id="title" @bind-value="@ViewModel.MyTitle" />
             </div>
-        </div>
-    </div>
 
-    <div class="form-group">
-        <label for="title">@Resource.Title</label>
-        <input class="form-control" type="text" id="title" @bind-value="@ViewModel.MyTitle" />
-    </div>
+            <div class="form-group">
+                <label for="date">@Resource.Date</label>
+                <input class="form-control" type="date" id="date" @bind-value="@ViewModel.MyDate" />
+            </div>
 
-    <div class="form-group">
-        <label for="date">@Resource.Date</label>
-        <input class="form-control" type="date" id="date" @bind-value="@ViewModel.MyDate" />
-    </div>
+            <div class="form-group">
+                <label for="duration">@Resource.DurationHours</label>
+                <input class="form-control" step="0.1" type="number" id="duration" @bind-value="@ViewModel.MyDurationHours" />
+            </div>
 
-    <div class="form-group">
-        <label for="duration">@Resource.DurationHours</label>
-        <input class="form-control" step="0.1" type="number" id="duration" @bind-value="@ViewModel.MyDurationHours" />
-    </div>
+            <div class="form-group">
+                <label for="place">@Resource.Place</label>
+                <input class="form-control" type="text" id="place" @bind-value="@ViewModel.MyPlace" />
+            </div>
 
-    <div class="form-group">
-        <label for="place">@Resource.Place</label>
-        <input class="form-control" type="text" id="place" @bind-value="@ViewModel.MyPlace" />
-    </div>
-
-    <div class="d-flex justify-content-between">
-        <h4>@Resource.Members</h4>
-        <button class="btn-plus" @onclick="@AddMember">
-        </button>
-    </div>
-    @if (ViewModel.OurMembers.Any())
-    {
-        <table>
-            <tr>
-                <th>@Resource.Name</th>
-                <th>@Resource.Email</th>
-                <th>@Resource.Enterprise</th>
-                <th>@Resource.Actions</th>
-            </tr>
-
-            @foreach (var activityRecordMember in ViewModel.OurMembers)
+            <div class="d-flex justify-content-between">
+                <h4>@Resource.Members</h4>
+                <button class="btn-plus" @onclick="@AddMember">
+                </button>
+            </div>
+            @if (ViewModel.OurMembers.Any())
             {
-                <tr>
-                    <td>
-                        @($"{activityRecordMember.MyName} {activityRecordMember.MySurname}")
-                    </td>
-                    <td>
-                        @activityRecordMember.MyEmail
-                    </td>
-                    <td>
-                        @activityRecordMember.MyEnterprise
-                    </td>
-                    <td class="text-center">
-                        <button @onclick="() => RemoveMember(activityRecordMember)" class="btn-delete">
-                        </button>
-                    </td>
-                </tr>
-            }
-        </table>
-    }
-
-    <div class="d-flex justify-content-between">
-        <h4>@Resource.Commitments</h4>
-        <button class="btn-plus" @onclick="@AddCommitment">
-        </button>
-    </div>
-    @if (ViewModel.OurCommitments.Any())
-    {
-        <div >
-            <table>
-                <tr>
-                    <th>@Resource.Responsible</th>
-                    <th>@Resource.EndDate</th>
-                    <th>@Resource.Commitment</th>
-                    <th>@Resource.Status</th>
-                    <th>@Resource.Actions</th>
-                </tr>
-
-                @foreach (var activityRecordCommitment in ViewModel.OurCommitments)
-                {
+                <table>
                     <tr>
-                        <td>
-                            @($"{activityRecordCommitment.MyResponsible}")
-                        </td>
-                        <td>
-                            @($"{activityRecordCommitment.MyCommitmentDate.ToShortDateString()}")
-                        </td>
-                        <td>
-                            @($"{activityRecordCommitment.MyCommitment}")
-                        </td>
-                        <td>
-                            @switch (activityRecordCommitment.MyStatus)
-                            {
-                                case ActivityRecordStatusEnum.Initiated:
-                                    @Resource.Initiated
-                                    break;
-                                case ActivityRecordStatusEnum.Finalized:
-                                    @Resource.Finished
-                                    break;
-                                case ActivityRecordStatusEnum.Unknown:
-                                    @Resource.Unknown
-                                    break;
-                                case ActivityRecordStatusEnum.Eliminated:
-                                    @Resource.Eliminated
-                                    break;
-                                case ActivityRecordStatusEnum.NotInitiated:
-                                    @Resource.NotInitiated
-                                    break;
-                            }
-                        </td>
-                        <td class="text-center">
-                            <button @onclick="()=>EditStatus(activityRecordCommitment.MyId)" class="btn-edit">
-                            </button>
-                            <button @onclick="() => RemoveCommitment(activityRecordCommitment)" class="btn-delete">
-                            </button>
-                        </td>
+                        <th>@Resource.Name</th>
+                        <th>@Resource.Email</th>
+                        <th>@Resource.Enterprise</th>
+                        <th>@Resource.Actions</th>
                     </tr>
-                }
-            </table>
+
+                    @foreach (var activityRecordMember in ViewModel.OurMembers)
+                    {
+                        <tr>
+                            <td>
+                                @($"{activityRecordMember.MyName} {activityRecordMember.MySurname}")
+                            </td>
+                            <td>
+                                @activityRecordMember.MyEmail
+                            </td>
+                            <td>
+                                @activityRecordMember.MyEnterprise
+                            </td>
+                            <td class="text-center">
+                                <button @onclick="() => RemoveMember(activityRecordMember)" class="btn-delete">
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+
+            <div class="d-flex justify-content-between">
+                <h4>@Resource.Commitments</h4>
+                <button class="btn-plus" @onclick="@AddCommitment">
+                </button>
+            </div>
+            @if (ViewModel.OurCommitments.Any())
+            {
+                <div>
+                    <table>
+                        <tr>
+                            <th>@Resource.Responsible</th>
+                            <th>@Resource.EndDate</th>
+                            <th>@Resource.Commitment</th>
+                            <th>@Resource.Status</th>
+                            <th>@Resource.Actions</th>
+                        </tr>
+
+                        @foreach (var activityRecordCommitment in ViewModel.OurCommitments)
+                        {
+                            <tr>
+                                <td>
+                                    @($"{activityRecordCommitment.MyResponsible}")
+                                </td>
+                                <td>
+                                    @($"{activityRecordCommitment.MyCommitmentDate.ToShortDateString()}")
+                                </td>
+                                <td>
+                                    @($"{activityRecordCommitment.MyCommitment}")
+                                </td>
+                                <td>
+                                    @switch (activityRecordCommitment.MyStatus)
+                                    {
+                                        case ActivityRecordStatusEnum.Initiated:
+                                            @Resource.Initiated
+                                            break;
+                                        case ActivityRecordStatusEnum.Finalized:
+                                            @Resource.Finished
+                                            break;
+                                        case ActivityRecordStatusEnum.Unknown:
+                                            @Resource.Unknown
+                                            break;
+                                        case ActivityRecordStatusEnum.Eliminated:
+                                            @Resource.Eliminated
+                                            break;
+                                        case ActivityRecordStatusEnum.NotInitiated:
+                                            @Resource.NotInitiated
+                                            break;
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <button @onclick="()=>EditStatus(activityRecordCommitment.MyId)" class="btn-edit">
+                                    </button>
+                                    <button @onclick="() => RemoveCommitment(activityRecordCommitment)" class="btn-delete">
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+
+            <h4>@Resource.SecurityReflection</h4>
+            <div style="background-color:white">
+                <BlazoredTextEditor @ref="@_quillSecurityReflectionHtml" Placeholder="">
+                    <ToolbarContent>
+                        <select class="ql-header ">
+                            <option selected=""></option>
+                            <option value="1"></option>
+                            <option value="2"></option>
+                            <option value="3"></option>
+                            <option value="4"></option>
+                            <option value="5"></option>
+                        </select>
+                        <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                            <button class="ql-strike"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <select class="ql-color"></select>
+                            <select class="ql-background"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-list" value="bullet"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-link"></button>
+                        </span>
+                    </ToolbarContent>
+                    <EditorContent>
+                    </EditorContent>
+                </BlazoredTextEditor>
+            </div>
+
+            <h4>@Resource.Notes</h4>
+            <div style="background-color:white">
+                <BlazoredTextEditor @ref="@_quillNotesHtml" Placeholder="">
+                    <ToolbarContent>
+                        <select class="ql-header">
+                            <option selected=""></option>
+                            <option value="1"></option>
+                            <option value="2"></option>
+                            <option value="3"></option>
+                            <option value="4"></option>
+                            <option value="5"></option>
+                        </select>
+                        <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                            <button class="ql-strike"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <select class="ql-color"></select>
+                            <select class="ql-background"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-list" value="bullet"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-link"></button>
+                        </span>
+                    </ToolbarContent>
+
+                    <EditorContent>
+
+                    </EditorContent>
+
+                </BlazoredTextEditor>
+            </div>
+            <asp:HiddenField ID="html" runat="server"></asp:HiddenField>
         </div>
-    }
-
-    <h4>@Resource.SecurityReflection</h4>
-    <div style="background-color:white">
-        <BlazoredTextEditor @ref="@_quillSecurityReflectionHtml" Placeholder="">
-            <ToolbarContent>
-                <select class="ql-header ">
-                    <option selected=""></option>
-                    <option value="1"></option>
-                    <option value="2"></option>
-                    <option value="3"></option>
-                    <option value="4"></option>
-                    <option value="5"></option>
-                </select>
-                <span class="ql-formats">
-                    <button class="ql-bold"></button>
-                    <button class="ql-italic"></button>
-                    <button class="ql-underline"></button>
-                    <button class="ql-strike"></button>
-                </span>
-                <span class="ql-formats">
-                    <select class="ql-color"></select>
-                    <select class="ql-background"></select>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-list" value="ordered"></button>
-                    <button class="ql-list" value="bullet"></button>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-link"></button>
-                </span>
-            </ToolbarContent>
-            <EditorContent>
-            </EditorContent>
-        </BlazoredTextEditor>
-    </div>
-
-    <h4>@Resource.Notes</h4>
-    <div style="background-color:white">
-        <BlazoredTextEditor @ref="@_quillNotesHtml" Placeholder="">
-            <ToolbarContent>
-                <select class="ql-header">
-                    <option selected=""></option>
-                    <option value="1"></option>
-                    <option value="2"></option>
-                    <option value="3"></option>
-                    <option value="4"></option>
-                    <option value="5"></option>
-                </select>
-                <span class="ql-formats">
-                    <button class="ql-bold"></button>
-                    <button class="ql-italic"></button>
-                    <button class="ql-underline"></button>
-                    <button class="ql-strike"></button>
-                </span>
-                <span class="ql-formats">
-                    <select class="ql-color"></select>
-                    <select class="ql-background"></select>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-list" value="ordered"></button>
-                    <button class="ql-list" value="bullet"></button>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-link"></button>
-                </span>
-            </ToolbarContent>
-
-            <EditorContent>
-
-            </EditorContent>
-
-        </BlazoredTextEditor>
-    </div>
-    <asp:HiddenField ID="html" runat="server"></asp:HiddenField>
-</div>
-    <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="Save">@Resource.Save</button>
-    <button class="btn-download float-right" @onclick="@ExportToPdf">       
-    </button>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="Save">@Resource.Save</button>
+        <button class="btn-download float-right" @onclick="@ExportToPdf">
+        </button>
     }
     else
     {
-    <MatProgressBar Indeterminate="true"></MatProgressBar>
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
 </div>
 @code {

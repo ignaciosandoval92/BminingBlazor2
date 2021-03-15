@@ -532,4 +532,7 @@
   <data name="Intro1" xml:space="preserve">
     <value>Welcome to the Bmining Project Management System!</value>
   </data>
+  <data name="AddSubProject" xml:space="preserve">
+    <value>Add Sub Project</value>
+  </data>
 </root>

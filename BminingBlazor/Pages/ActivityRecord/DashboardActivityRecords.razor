@@ -11,59 +11,62 @@
             <h2>@Resource.ActivityRecords</h2>
         </div>
         <div class="d-inline-block">
-            <button @onclick="Create" class="btn-plus">              
+            <button @onclick="Create" class="btn-plus">
             </button>
         </div>
-    </div>  
+    </div>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
 
     @if (ViewModel != null)
     {<div>
-    <Filter ColumnTitle=@Resource.Title OnSearchTextChanged="OnSearchTextChanged"></Filter>
-    <table>
-        <tr>
-            <th>@Resource.Id</th>
-            <th>@Resource.Title</th>
-            <th>@Resource.Date</th>
-            <th>@Resource.Actions</th>
+            <Filter ColumnTitle=@Resource.Title OnSearchTextChanged="OnSearchTextChanged"></Filter>
+            <table>
+                <tr>
+                    <th>@Resource.Id</th>
+                    <th>@Resource.Title</th>
+                    <th>@Resource.Date</th>
+                    <th>@Resource.Actions</th>
 
-        </tr>
+                </tr>
 
-        @foreach (var dashboardActivityRecordItem in _activityRecordView)
-        {
-            <tr>
-                <td>
-                    @dashboardActivityRecordItem.MyId
-                </td>
-                <td>
-                    @dashboardActivityRecordItem.MyTitle
-                </td>
-                <td>
-                    @dashboardActivityRecordItem.MyDate
-                </td>
-                <td class="text-center">
-                    @if (dashboardActivityRecordItem.CanView)
-                    {
-                        <button @onclick="() => View(dashboardActivityRecordItem)" class="btn-view">                         
-                        </button>
-                    }
+                @foreach (var dashboardActivityRecordItem in _activityRecordView)
+                {
+                    <tr>
+                        <td>
+                            @dashboardActivityRecordItem.MyId
+                        </td>
+                        <td>
+                            @dashboardActivityRecordItem.MyTitle
+                        </td>
+                        <td>
+                            @dashboardActivityRecordItem.MyDate
+                        </td>
+                        <td class="text-center">
+                            @if (dashboardActivityRecordItem.CanView)
+                            {
+                                <button @onclick="() => View(dashboardActivityRecordItem)" class="btn-view">
+                                </button>
+                            }
 
-                    @if (dashboardActivityRecordItem.CanEdit || userId==9 || userId==23 || userId==14 )
-                    {
-                        <button @onclick="() => Edit(dashboardActivityRecordItem)" class="btn-edit">                          
-                        </button>
-                    }
-                    @if (dashboardActivityRecordItem.CanDelete)
-                    {
-                        <button @onclick="() => Remove(dashboardActivityRecordItem)" class="btn-delete">                           
-                        </button>
-                    }
-                </td>
-            </tr>
-        }
-    </table>
-    <br />
-</div>
+                            @if (dashboardActivityRecordItem.CanEdit || userId == 9 || userId == 23 || userId == 14)
+                            {
+                                <button @onclick="() => Edit(dashboardActivityRecordItem)" class="btn-edit">
+                                </button>
+                            }
+                            @if (dashboardActivityRecordItem.CanDelete)
+                            {
+                                <button @onclick="() => Remove(dashboardActivityRecordItem)" class="btn-delete">
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+            <br />
+        </div>
 
     }
 
@@ -75,7 +78,7 @@
         @for (int page = 0; page < TotalPage; page++)
         {
             int pageNumber = page;
-           
+
             <button class="@SelectedPage(page)" @onclick="@(()=>UpdateList(pageNumber))">@(page+1)</button>
         }
     </div>

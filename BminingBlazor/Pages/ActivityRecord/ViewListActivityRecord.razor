@@ -15,7 +15,10 @@
         <div class="d-inline-block">
             <h2>@Resource.ListActivityRecord</h2>
         </div>
-    </div> 
+    </div>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
     @if (_listActivityRecords == null)
     {
@@ -29,7 +32,7 @@
                     <tr>
                         <th>@Resource.Id</th>
                         <th>@Resource.Name</th>
-                        <th>@Resource.Date</th>                                              
+                        <th>@Resource.Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,7 +41,7 @@
                         <tr>
                             <td>@listActivityRecord.MyId</td>
                             <td>@listActivityRecord.MyName</td>
-                            <td>@listActivityRecord.MyDate.ToString("dd/MM/yyyy")</td>                                                
+                            <td>@listActivityRecord.MyDate.ToString("dd/MM/yyyy")</td>
                         </tr>
                     }
                 </tbody>

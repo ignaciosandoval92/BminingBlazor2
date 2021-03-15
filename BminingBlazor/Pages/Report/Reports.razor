@@ -17,23 +17,32 @@
         <div class="d-inline-block">
             <h2>@Resource.Report</h2>
         </div>
-    </div>    
+    </div>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+
+    @if (ViewModel == null)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
 
     @if (phase == 0)
     {<div class="form-group">
-    <label for="contract">@Resource.Project</label>
-    <MatAutocompleteList Items="@ViewModel" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i.MyProjectCode+" "+i.MyProjectName)" Label="@Resource.Projects" @bind="@_project.MyProjectCode" ShowClearButton="true">
-        <ItemTemplate>
-            <div style="display: flex; flex-direction: row; width: 100%;">
-                <div style="flex:1;">@context.MyProjectCode</div>
-                <div style="flex:1;">@context.MyProjectName</div>
-            </div>
-        </ItemTemplate>
-    </MatAutocompleteList>
-   
+            <MatAutocompleteList Items="@ViewModel" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i.MyProjectCode + " " + i.MyProjectName)" Label="@Resource.Projects" @bind-Value="@value" ShowClearButton="true">
+                <ItemTemplate>
+                    <div style="display: flex; flex-direction: row; width: 100%;">
+                        <div style="flex:1;">@context.MyProjectCode</div>
+                        <div style="flex:1;">@context.MyProjectName</div>
+                    </div>
+                </ItemTemplate>
+            </MatAutocompleteList>
 
 
-</div>
+
+        </div>
         <div class="form-group col">
             <label for="inputStartDate">@Resource.StartDate</label>
             <input class="form-control" type="date" id="inputStartDate" @bind="_project.MyStartDate" />
@@ -42,8 +51,8 @@
             <label for="inputEndDate">@Resource.EndDate</label>
             <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
         </div>
-        <button class="badge badge-primary badge-pill  bg-bmining-info float-md-right" @onclick="() => SelectAllMembers(_project.MyProjectCode,_project.MyStartDate,_project.MyEndDate)">@Resource.SelectAllMembers</button>
-        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => SelectProject(_project.MyProjectCode,_project.MyStartDate,_project.MyEndDate)">@Resource.SelectMember</button>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-md-right" @onclick="() => SelectAllMembers(value.MyProjectCode, _project.MyStartDate, _project.MyEndDate)">@Resource.SelectAllMembers</button>
+        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => SelectProject(value.MyProjectCode, _project.MyStartDate, _project.MyEndDate)">@Resource.SelectMember</button>
     }
     else
     {
@@ -61,52 +70,60 @@
         </div>
         <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => ReadHours(_member.MyId, _project.MyStartDate, _project.MyEndDate, codeProject)">@Resource.ViewReport</button>
     }
-
+    }
 </div>
 
 @code {
-    [Parameter]
-    public string codeProject { get; set; }
-    [Parameter]
-    public DateTime startDate { get; set; }
-    [Parameter]
-    public DateTime endDate { get; set; }
+        [Parameter]
+        public string codeProject { get; set; }
+        [Parameter]
+        public DateTime startDate { get; set; }
+        [Parameter]
+        public DateTime endDate { get; set; }
     public int phase { get; set; }
     public List<MemberViewModel> users { get; set; }
     public List<ProjectResumeViewModel> ViewModel { get; set; }
-    private  ProjectResumeViewModel _project = new ProjectResumeViewModel();
+    private  ProjectViewModel _project = new ProjectViewModel();
     private readonly MemberViewModel _member = new MemberViewModel();
-    public List<ProjectResumeViewModel> _projectList { get; set; }
+    ProjectResumeViewModel value = null;
 
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnAfterRenderAsync(bool firstrender)
     {
-        if (codeProject == null)
+        await base.OnAfterRenderAsync(firstrender);
+          
+        if (firstrender)
         {
-            _project.MyStartDate = DateTime.UtcNow;
-            _project.MyEndDate = DateTime.UtcNow;
-            var email = AuthenticationStateProvider.GetEmail();
-            var userId = await UserDataService.GetUserId(await email);
-            var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
-            var projects = await ReportService.GetProjectFather();
-            ViewModel = new List<ProjectResumeViewModel>();
-            if (userId == 5)
+            if (codeProject == null)
             {
-                ViewModel.AddRange(projects);
+                _project.MyStartDate = DateTime.UtcNow;
+                _project.MyEndDate = DateTime.UtcNow;
+                var email = AuthenticationStateProvider.GetEmail();
+                var userId = await UserDataService.GetUserId(await email);
+                var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
+                var projects = await ReportService.GetProjectFather();
+                ViewModel = new List<ProjectResumeViewModel>();
+                if (userId == 5)
+                {
+                    ViewModel.AddRange(projects);
+                }
+                else
+                {
+                    ViewModel.AddRange(projectsBelongsUserId);
+                }
+                phase = 0;
+                StateHasChanged();
             }
             else
             {
-                ViewModel.AddRange(projectsBelongsUserId);
+                var members = await ReportService.ReadMembersFromCode(codeProject);
+                _project.MyStartDate = startDate;
+                _project.MyEndDate = endDate;
+                phase = 1;
+                users = new List<MemberViewModel>();
+                users.AddRange(members);
+                StateHasChanged();
             }
-            phase = 0;
-        }
-        else
-        {
-            var members = await ReportService.ReadMembersFromCode(codeProject);
-            _project.MyStartDate = startDate;
-            _project.MyEndDate = endDate;
-            phase = 1;
-            users = new List<MemberViewModel>();
-            users.AddRange(members);
         }
     }
     private void SelectProject(string CodeProject,DateTime StartDate,DateTime EndDate)
@@ -121,15 +138,6 @@
     {
         NavigationManager.NavigateTo($"/ViewReport/{IdUser}/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{CodeProject}");
     }
-    private void OnSearchTextChanged(ChangeEventArgs changeEventArgs, string columnTitle)
-    {
-        string searchText = changeEventArgs.Value.ToString();
-        if (columnTitle == Resource.ProjectName)
-            _projectList = ViewModel.Where(pro => pro.MyProjectName.Contains(searchText, StringComparison.CurrentCultureIgnoreCase)).ToList();
-        if (columnTitle == Resource.ProjectCode)
-            _projectList = ViewModel.Where(pro => pro.MyProjectCode.Contains(searchText, StringComparison.CurrentCultureIgnoreCase)).ToList();
 
-
-    }
 }
 

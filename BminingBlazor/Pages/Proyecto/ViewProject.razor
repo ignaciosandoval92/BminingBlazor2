@@ -20,12 +20,15 @@
             <h2>@Resource.Projects</h2>
         </div>
         <div class="d-inline-block">
-            <button @onclick="NewProject" class="btn-plus">              
+            <button @onclick="NewProject" class="btn-plus">
             </button>
         </div>
     </div>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
- 
+
 
     @if (_projects == null)
     {
@@ -106,7 +109,7 @@
             </table>
         </div>
     }
-    <div >
+    <div>
 
         @for (int page = 0; page < TotalPage; page++)
         {

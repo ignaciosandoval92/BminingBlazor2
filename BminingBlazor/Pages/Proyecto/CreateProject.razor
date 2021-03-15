@@ -17,6 +17,9 @@
 <div class="bmining-app">
 
     <h2>@Resource.CreateProject</h2>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
     @if (_clients != null && _users != null)
     {
@@ -88,25 +91,25 @@
 
                         @foreach (var typeStatus in Enum.GetValues(typeof(ProjectStatusEnum)))
                         {
-                        <option value="@typeStatus">
-                            @{
-                                switch (typeStatus)
-                                {
-                                    case ProjectStatusEnum.Active:
-                                        @Resource.Active
-                                        break;
-                                    case ProjectStatusEnum.Finished:
-                                        @Resource.Finished
-                                        break;
-                                    case ProjectStatusEnum.NotInitiated:
-                                        @Resource.NotInitiated
-                                        break;
-                                    case ProjectStatusEnum.Unknown:
-                                        @Resource.Unknown
-                                        break;
+                            <option value="@typeStatus">
+                                @{
+                                    switch (typeStatus)
+                                    {
+                                        case ProjectStatusEnum.Active:
+                                            @Resource.Active
+                                            break;
+                                        case ProjectStatusEnum.Finished:
+                                            @Resource.Finished
+                                            break;
+                                        case ProjectStatusEnum.NotInitiated:
+                                            @Resource.NotInitiated
+                                            break;
+                                        case ProjectStatusEnum.Unknown:
+                                            @Resource.Unknown
+                                            break;
+                                    }
                                 }
-                            }
-                        </option>
+                            </option>
                         }
                     </select>
                 </div>

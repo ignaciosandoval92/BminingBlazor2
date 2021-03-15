@@ -17,8 +17,10 @@
             <h2>@Resource.Commitments</h2>
         </div>
     </div>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
-   
     @if (_listCommitments == null)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
@@ -35,8 +37,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
-                    @foreach (var listcomment in _listCommitment)                     
+
+                    @foreach (var listcomment in _listCommitment)
                     {
                         <tr>
                             <td>@listcomment.MyResponsible</td>

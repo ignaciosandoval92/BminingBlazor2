@@ -10,7 +10,10 @@
 
 <div class="bmining-app">
     <h2>@Resource.PaymentStatus</h2>
-    
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+
     @if (_payments == null)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
@@ -28,7 +31,7 @@
                         <th>@Resource.Actions</th>
                     </tr>
                 </thead>
-                <tbody>                 
+                <tbody>
                     @foreach (var payment in _payments)
                     {
                         <tr>

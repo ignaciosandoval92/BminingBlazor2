@@ -8,7 +8,10 @@
 
 <div class="bmining-app">
     <h2>@Resource.Edit @Email</h2>
-    
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+
 
     @if (_userEdit != null)
     {
@@ -19,28 +22,28 @@
 
                     @foreach (var typeContract in Enum.GetValues(typeof(ContractTypeEnum)))
                     {
-                    <option value="@typeContract">
-                        @{
-                            switch (typeContract)
-                            {
-                                case ContractTypeEnum.FeeContract:
-                                    @Resource.FeeContract
-                                    break;
-                                case ContractTypeEnum.FixedTermContract:
-                                    @Resource.FixedTermContract
-                                    break;
-                                case ContractTypeEnum.IndefiniteContract:
-                                    @Resource.IndefiniteContract
-                                    break;
-                                case ContractTypeEnum.ExternalConsultant:
-                                    @Resource.ExternalConsultant
-                                    break;
-                                case ContractTypeEnum.ExternalEnterprise:
-                                    @Resource.ExternalEnterprise
-                                    break;
+                        <option value="@typeContract">
+                            @{
+                                switch (typeContract)
+                                {
+                                    case ContractTypeEnum.FeeContract:
+                                        @Resource.FeeContract
+                                        break;
+                                    case ContractTypeEnum.FixedTermContract:
+                                        @Resource.FixedTermContract
+                                        break;
+                                    case ContractTypeEnum.IndefiniteContract:
+                                        @Resource.IndefiniteContract
+                                        break;
+                                    case ContractTypeEnum.ExternalConsultant:
+                                        @Resource.ExternalConsultant
+                                        break;
+                                    case ContractTypeEnum.ExternalEnterprise:
+                                        @Resource.ExternalEnterprise
+                                        break;
+                                }
                             }
-                        }
-                    </option>
+                        </option>
                     }
                 </select>
             </div>

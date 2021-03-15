@@ -21,14 +21,16 @@
             <h2>@Resource.Report</h2>
         </div>
     </div>
-
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
     @if (_report == null)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
     else
     {
-        @if (root.Son == null || levelselect == 3 || levelselect == 4||levelselect==6)
+        @if (root.Son == null || levelselect == 3 || levelselect == 4 || levelselect == 6)
         {<div class="table-responsive{-sm|-md|-lg|-xl}">
                 <table class="table table-striped">
                     <thead>

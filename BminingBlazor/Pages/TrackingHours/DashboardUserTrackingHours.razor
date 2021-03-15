@@ -100,33 +100,35 @@
     {
         <h2 class="header-break">@Resource.DashboardHours</h2>
 
-
+        <div class="main-break">
+            <div class="main-circle"></div>
+        </div>
         <div class="week-header-container">
 
 
             <div class="week-header-item d-inline-block">
                 <h4 class="m-2 txt">@Resource.Week <h4 class="bmining-button h4 txt"> @NumberWeek()</h4>&nbsp;@MyStartOfWeek.ToString("d MMMM yyyy")</h4>
             </div>
-          
-
-                <div class="week-header-item ">
-
-                    <button class="btn-back" @onclick="@PreviousWeek">
-                    </button>
-
-                </div>
 
 
-                <div class="calendar ">
-                    <MatDatePicker @bind-Value="@MySelectedDate" />&nbsp;&nbsp;&nbsp
-                </div>
+            <div class="week-header-item ">
 
-                <div class="week-header-item">
-                    <button class="btn-next" @onclick="@NextWeek">
-                    </button>
-                </div>
-            
-           
+                <button class="btn-back" @onclick="@PreviousWeek">
+                </button>
+
+            </div>
+
+
+            <div class="calendar ">
+                <MatDatePicker @bind-Value="@MySelectedDate" />&nbsp;&nbsp;&nbsp
+            </div>
+
+            <div class="week-header-item">
+                <button class="btn-next" @onclick="@NextWeek">
+                </button>
+            </div>
+
+
 
         </div>
 
@@ -143,7 +145,7 @@
                         <div class="d-flex flex-row w-100 justify-content-between">
                             <div>
                                 <div class="d-inline-block">
-                                    <h4 class="font-weight-bold">@weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize().Substring(0, 3)</h4>                               
+                                    <h4 class="font-weight-bold">@weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize().Substring(0, 3)</h4>
                                 </div>
                             </div>
 
@@ -185,7 +187,7 @@
                                             <h6 class="item-dashboard-item">
                                                 @dad.MyProjectName / @dayUserTrackingHourItem.MyProjectName
                                             </h6>
-                                            
+
                                         }
                                     }
 
@@ -212,7 +214,7 @@
                                             <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
                                                 <i class="btn-edit"></i>
                                             </button>}
-                                    </div>                                 
+                                    </div>
 
                                 </div>
                                 <div class="alternate3-break"></div>

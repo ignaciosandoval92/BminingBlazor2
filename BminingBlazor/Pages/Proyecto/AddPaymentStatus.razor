@@ -14,11 +14,13 @@
             <h2>@Resource.PaymentStatus</h2>
         </div>
         <div class="d-inline-block">
-            <button @onclick="AddPaymentStatusCallback" class="btn-plus">               
+            <button @onclick="AddPaymentStatusCallback" class="btn-plus">
             </button>
         </div>
-    </div>    
-    
+    </div>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
     @if (_paymentStatusItems != null)
     {
@@ -47,7 +49,7 @@
                                 <input class="w-100" type="date" @bind-value="@paymentStatus.InvoiceExpirationDate" />
                             </td>
                             <td>
-                                <button class="btn-delete" @onclick="()=>DeletePaymentStatus(paymentStatus)">                                  
+                                <button class="btn-delete" @onclick="()=>DeletePaymentStatus(paymentStatus)">
                                 </button>
                             </td>
                         </tr>
