@@ -72,22 +72,25 @@
         }
         else
         {
-<div class="form-group">
-    <label for="inputProject" class="load-hours-label">@Resource.Project</label>
+            <div class="form-group">
 
-    <MatAutocompleteList Items="@ViewModel?.OurAvailableProjects" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i.MyProjectCode + " " + i.MyProjectName)" Label="@Resource.Projects" @bind-Value="@value" ShowClearButton="true">
-        <ItemTemplate>
-            <div style="display: flex; flex-direction: row; width: 100%;">
-                <div style="flex:1;">@context.MyProjectCode</div>
-                <div style="flex:1;">@context.MyProjectName</div>
+                <MatAutocompleteList Items="@ViewModel?.OurAvailableProjects" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i.MyProjectCode + " " + i.MyProjectName)" Label="@Resource.Projects" @bind-Value="@value" ShowClearButton="true">
+                    <ItemTemplate>
+                        <div style="display: flex; flex-direction: row; width: 100%;">
+                            <div style="flex:1;">@context.MyProjectCode</div>
+                            <div style="flex:1;">@context.MyProjectName</div>
+                        </div>
+                    </ItemTemplate>
+                </MatAutocompleteList>
+
+
+
             </div>
-        </ItemTemplate>
-    </MatAutocompleteList>
-
-</div>
-            <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => SelectSon(value.MyProjectId)">@Resource.SelectSubProject</button>
-            <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="()=>SelectProject(value.MyProjectId)">@Resource.SelectCurrentProject</button>
-        }
+            
+            <button class="bmining-button float-right" @onclick="() => SelectSon(value.MyProjectId)">@Resource.SelectSubProject</button>
+            <button class="bmining-button float-right" @onclick="() => SelectProject(value.MyProjectId)">@Resource.SelectCurrentProject</button>
+               
+         }
 
 
     }
@@ -118,6 +121,7 @@
     public int ProjectId4 { get; set; }
     [Parameter]
     public int Select { get; set; }
+ 
 
 
 
@@ -135,7 +139,7 @@
         var email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await email);
         if (Level == 0)
-        {
+        {            
             projectSons = await ProjectDataService.ReadSonsProject(ProjectId);
             var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
             ViewModel = new AddUserTimeTrackingViewModel(userId)
@@ -272,4 +276,5 @@
             NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyId}/{1}/{1}", true);
         }
     }
+  
 }
