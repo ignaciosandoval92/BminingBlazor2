@@ -66,7 +66,7 @@
                     <input type="number" @bind="@ViewModel.MyHours" step="0.01" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
                 </div>
                 <div class="w-100">
-                    <button type="submit" class="badge badge-primary badge-pill  bg-bmining-info float-right float-right">@Resource.Load</button>
+                    <button type="submit" class="bmining-button float-right">@Resource.Load</button>
                 </div>
             </EditForm>
         }
@@ -82,13 +82,38 @@
                         </div>
                     </ItemTemplate>
                 </MatAutocompleteList>
+                <span>
+                    @if ((value?.MyProjectId) > 0)
+                    {
+                        prueba(value.MyProjectId);
+                        if (sons > 0)
+                        {
+                            <button class="bmining-button float-right" @onclick="() => SelectSon(value.MyProjectId)">@Resource.SelectSubProject</button>
+                            <button class="bmining-button float-right" @onclick="() => SelectProject(value.MyProjectId)">@Resource.SelectCurrentProject</button>
+
+                        }
+
+                        else
+                        {
+                            <EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
+                                <div class="form-group">
+                                    <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
+                                    <input type="number" @bind="@ViewModel.MyHours" step="0.01" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+                                </div>
+                                <div class="w-100">
+                                    <button type="submit" class="bmining-button float-right">@Resource.Load</button>
+                                </div>
+                            </EditForm>
+
+                        }
+                    }
+                </span>
 
 
 
             </div>
             
-            <button class="bmining-button float-right" @onclick="() => SelectSon(value.MyProjectId)">@Resource.SelectSubProject</button>
-            <button class="bmining-button float-right" @onclick="() => SelectProject(value.MyProjectId)">@Resource.SelectCurrentProject</button>
+            
                
          }
 
@@ -101,27 +126,27 @@
 </div>
 
 @code {
-    [Parameter]
-    public int Day { get; set; }
-    [Parameter]
-    public int Month { get; set; }
-    [Parameter]
-    public int Year { get; set; }
-    [Parameter]
-    public int Level { get; set; }
-    [Parameter]
-    public int ProjectId { get; set; }
-    [Parameter]
-    public int ProjectId1 { get; set; }
-    [Parameter]
-    public int ProjectId2 { get; set; }
-    [Parameter]
-    public int ProjectId3 { get; set; }
-    [Parameter]
-    public int ProjectId4 { get; set; }
-    [Parameter]
-    public int Select { get; set; }
- 
+        [Parameter]
+        public int Day { get; set; }
+        [Parameter]
+        public int Month { get; set; }
+        [Parameter]
+        public int Year { get; set; }
+        [Parameter]
+        public int Level { get; set; }
+        [Parameter]
+        public int ProjectId { get; set; }
+        [Parameter]
+        public int ProjectId1 { get; set; }
+        [Parameter]
+        public int ProjectId2 { get; set; }
+        [Parameter]
+        public int ProjectId3 { get; set; }
+        [Parameter]
+        public int ProjectId4 { get; set; }
+        [Parameter]
+        public int Select { get; set; }
+
 
 
 
@@ -132,14 +157,15 @@
     public bool IsLoading { get; set; }
     public List<ProjectViewModel> projectSons = new List<ProjectViewModel>();
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
-    ProjectResumeViewModel value = null;
+    ProjectResumeViewModel value =null;
+    public int sons;
 
     protected override async Task OnInitializedAsync()
     {
         var email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await email);
         if (Level == 0)
-        {            
+        {
             projectSons = await ProjectDataService.ReadSonsProject(ProjectId);
             var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
             ViewModel = new AddUserTimeTrackingViewModel(userId)
@@ -212,13 +238,24 @@
             await MatDialogService.AlertAsync(@Resource.InvalidNumber);
             return;
         }
-
-        IsLoading = true;
-        var userId = ViewModel.UserId;
-        var timeTracking = ViewModel.MyTrackingHourDate;
-        var hours = ViewModel.MyHours;
-        await TimeTrackingService.AddUserTimeTracking(userId, ProjectId, timeTracking, hours);
-        NavigationManager.NavigateTo($"/dashboard_tracking_hours/{Day}/{Month}/{Year}");
+        if (value.MyProjectId > 0)
+        {
+            IsLoading = true;
+            var userId = ViewModel.UserId;
+            var timeTracking = ViewModel.MyTrackingHourDate;
+            var hours = ViewModel.MyHours;
+            await TimeTrackingService.AddUserTimeTracking(userId, value.MyProjectId, timeTracking, hours);
+            NavigationManager.NavigateTo($"/dashboard_tracking_hours/{Day}/{Month}/{Year}");
+        }
+        else
+        {
+            IsLoading = true;
+            var userId = ViewModel.UserId;
+            var timeTracking = ViewModel.MyTrackingHourDate;
+            var hours = ViewModel.MyHours;
+            await TimeTrackingService.AddUserTimeTracking(userId, ProjectId, timeTracking, hours);
+            NavigationManager.NavigateTo($"/dashboard_tracking_hours/{Day}/{Month}/{Year}");
+        }
     }
     public async Task SelectSon(int? projectId)
     {
@@ -276,5 +313,11 @@
             NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyId}/{1}/{1}", true);
         }
     }
-  
+    public async Task prueba(int id)
+    {
+        var a= await ProjectDataService.ReadSonsProject(id);
+        sons = a.Count();
+
+    }
+
 }
