@@ -29,61 +29,62 @@
     else
     {
 
-    @if (phase == 0)
-    {<div class="form-group">
-            <MatAutocompleteList Items="@ViewModel" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i.MyProjectCode + " " + i.MyProjectName)" Label="@Resource.Projects" @bind-Value="@value" ShowClearButton="true">
-                <ItemTemplate>
-                    <div style="display: flex; flex-direction: row; width: 100%;">
-                        <div style="flex:1;">@context.MyProjectCode</div>
-                        <div style="flex:1;">@context.MyProjectName</div>
-                    </div>
-                </ItemTemplate>
-            </MatAutocompleteList>
+        @if (phase == 0)
+        {<div class="form-group">
+                <MatAutocompleteList Items="@ViewModel" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i.MyProjectCode + " " + i.MyProjectName)" Label="@Resource.Projects" @bind-Value="@value" ShowClearButton="true">
+                    <ItemTemplate>
+                        <div style="display: flex; flex-direction: row; width: 100%;">
+                            <div style="flex:1;">@context.MyProjectCode</div>
+                            <div style="flex:1;">@context.MyProjectName</div>
+                        </div>
+                    </ItemTemplate>
+                </MatAutocompleteList>
 
 
 
-        </div>
-        <div class="form-group col">
-            <label for="inputStartDate">@Resource.StartDate</label>
-            <input class="form-control" type="date" id="inputStartDate" @bind="_project.MyStartDate" />
-        </div>
-        <div class="form-group col">
-            <label for="inputEndDate">@Resource.EndDate</label>
-            <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
-        </div>
-        <button class="bmining-button float-md-right" @onclick="() => SelectAllMembers(value.MyProjectCode, _project.MyStartDate, _project.MyEndDate)">@Resource.SelectAllMembers</button>
-        <button class="bmining-button float-right" @onclick="() => SelectProject(value.MyProjectCode, _project.MyStartDate, _project.MyEndDate)">@Resource.SelectMember</button>
-    }
-    else
-    {
-        <div class="form-group">
-            <label for="contract">@Resource.Members</label>
-            <select class="form-control" id="contract" @bind="_member.MyId" required>
+            </div>
+            <div class="form-group col">
+                <label for="inputStartDate">@Resource.StartDate</label>
+                <input class="form-control" type="date" id="inputStartDate" @bind="_project.MyStartDate" />
+            </div>
+            <div class="form-group col">
+                <label for="inputEndDate">@Resource.EndDate</label>
+                <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
+            </div>
+            <button class="bmining-button float-md-right" @onclick="() => SelectAllMembers(value.MyProjectCode, _project.MyStartDate, _project.MyEndDate)">@Resource.SelectAllMembers</button>
+            <button class="bmining-button float-right" @onclick="() => SelectProject(value.MyProjectCode, _project.MyStartDate, _project.MyEndDate)">@Resource.SelectMember</button>
+        }
+        else
+        {
+            <div class="form-group">
+                <label for="contract">@Resource.Members</label>
+                <select class="form-control" id="contract" @bind="_member.MyId" required>
 
-                @foreach (var member in users)
-                {
-                    <option value="@member.MyId">
-                        @member.MyName @member.MyPaternalSurname
-                    </option>
-                }
-            </select>
-        </div>
-        <button class="bmining-button float-right" @onclick="() => ReadHours(_member.MyId, _project.MyStartDate, _project.MyEndDate, codeProject)">@Resource.ViewReport</button>
-    }
+                    @foreach (var member in users)
+                    {
+                        <option value="@member.MyId">
+                            @member.MyName @member.MyPaternalSurname
+                        </option>
+                    }
+                </select>
+            </div>
+            <button class="bmining-button float-right" @onclick="() => ReadHours(_member.MyId, _project.MyStartDate, _project.MyEndDate, codeProject)">@Resource.ViewReport</button>
+        }
     }
 </div>
 
 @code {
-        [Parameter]
-        public string codeProject { get; set; }
-        [Parameter]
-        public DateTime startDate { get; set; }
-        [Parameter]
-        public DateTime endDate { get; set; }
+    [Parameter]
+    public string codeProject { get; set; }
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
+    
     public int phase { get; set; }
     public List<MemberViewModel> users { get; set; }
     public List<ProjectResumeViewModel> ViewModel { get; set; }
-    private  ProjectViewModel _project = new ProjectViewModel();
+    private ProjectViewModel _project = new ProjectViewModel();
     private readonly MemberViewModel _member = new MemberViewModel();
     ProjectResumeViewModel value = null;
 
@@ -91,7 +92,7 @@
     protected override async Task OnAfterRenderAsync(bool firstrender)
     {
         await base.OnAfterRenderAsync(firstrender);
-          
+
         if (firstrender)
         {
             if (codeProject == null)
@@ -103,7 +104,7 @@
                 var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
                 var projects = await ReportService.GetProjectFather();
                 ViewModel = new List<ProjectResumeViewModel>();
-                if (userId == 5||userId==23)
+                if (userId == 5 || userId == 23)
                 {
                     ViewModel.AddRange(projects);
                 }
@@ -126,15 +127,15 @@
             }
         }
     }
-    private void SelectProject(string CodeProject,DateTime StartDate,DateTime EndDate)
+    private void SelectProject(string CodeProject, DateTime StartDate, DateTime EndDate)
     {
-        NavigationManager.NavigateTo($"/Reports/{CodeProject}/{StartDate.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture)}", true);
+        NavigationManager.NavigateTo($"/Reports/{CodeProject}/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}", true);
     }
     private void SelectAllMembers(string CodeProject, DateTime StartDate, DateTime EndDate)
     {
         NavigationManager.NavigateTo($"/ViewProjectReport/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{CodeProject}", true);
     }
-    private  void ReadHours(int IdUser, DateTime StartDate, DateTime EndDate, string CodeProject)
+    private void ReadHours(int IdUser, DateTime StartDate, DateTime EndDate, string CodeProject)
     {
         NavigationManager.NavigateTo($"/ViewReport/{IdUser}/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{CodeProject}");
     }
