@@ -212,6 +212,7 @@ namespace BminingBlazor.Services
                 .Select(MemberConstants.CodMembers)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}", $"{TableConstants.MembersTable}.{MemberConstants.ProjectId}")
                 .Where(ProjectConstants.ProjectCode, codeProject)
+                .Where(ProjectConstants.Level,0)
                 .GroupBy(UserConstants.Name)
                 .GetAsync<UserModel>()).ToList();
             var membersViewModel = new List<MemberViewModel>();
