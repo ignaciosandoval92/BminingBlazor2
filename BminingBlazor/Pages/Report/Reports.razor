@@ -29,7 +29,7 @@
     else
     {
 
-        @if (codeProject==null)
+        @if (codeProject == null)
         {<div class="form-group">
                 <MatAutocompleteList Items="@ViewModel" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i?.MyProjectCode + " " + i?.MyProjectName)" Label="@Resource.Projects" @bind-Value="@value" ShowClearButton="true">
                     <ItemTemplate>
@@ -86,7 +86,7 @@
     public List<MemberViewModel> users { get; set; }
     public List<ProjectResumeViewModel> ViewModel { get; set; }
     private ProjectViewModel _project = new ProjectViewModel();
-    public MemberViewModel _member { get; set; }
+    public MemberViewModel _member = new MemberViewModel();
     ProjectResumeViewModel value = null;
 
 
