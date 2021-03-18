@@ -103,7 +103,7 @@
                 var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
                 var projects = await ReportService.GetProjectFather();
                 ViewModel = new List<ProjectResumeViewModel>();
-                if (userId == 5)
+                if (userId == 5||userId==23)
                 {
                     ViewModel.AddRange(projects);
                 }
