@@ -22,7 +22,7 @@
         <div class="main-circle"></div>
     </div>
 
-    @if (ViewModel == null)
+    @if (ViewModel == null && _member== null)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
