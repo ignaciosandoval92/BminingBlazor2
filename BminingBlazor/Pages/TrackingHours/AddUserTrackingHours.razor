@@ -85,8 +85,8 @@
                 <span>
                     @if ((value?.MyProjectId) > 0)
                     {
-                        prueba(value.MyProjectId);
-                        if (sons > 0)
+                        ExistingSons(value.MyProjectId);
+                        if (sons > 0 && Level == 0)
                         {
                             <button class="bmining-button float-right" @onclick="() => SelectSon(value.MyProjectId)">@Resource.SelectSubProject</button>
                             <button class="bmining-button float-right" @onclick="() => SelectProject(value.MyProjectId)">@Resource.SelectCurrentProject</button>
@@ -126,26 +126,26 @@
 </div>
 
 @code {
-        [Parameter]
-        public int Day { get; set; }
-        [Parameter]
-        public int Month { get; set; }
-        [Parameter]
-        public int Year { get; set; }
-        [Parameter]
-        public int Level { get; set; }
-        [Parameter]
-        public int ProjectId { get; set; }
-        [Parameter]
-        public int ProjectId1 { get; set; }
-        [Parameter]
-        public int ProjectId2 { get; set; }
-        [Parameter]
-        public int ProjectId3 { get; set; }
-        [Parameter]
-        public int ProjectId4 { get; set; }
-        [Parameter]
-        public int Select { get; set; }
+    [Parameter]
+    public int Day { get; set; }
+    [Parameter]
+    public int Month { get; set; }
+    [Parameter]
+    public int Year { get; set; }
+    [Parameter]
+    public int Level { get; set; }
+    [Parameter]
+    public int ProjectId { get; set; }
+    [Parameter]
+    public int ProjectId1 { get; set; }
+    [Parameter]
+    public int ProjectId2 { get; set; }
+    [Parameter]
+    public int ProjectId3 { get; set; }
+    [Parameter]
+    public int ProjectId4 { get; set; }
+    [Parameter]
+    public int Select { get; set; }
 
 
 
@@ -178,7 +178,8 @@
         else
         {
             var projectUser = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
-            projectSons = await ProjectDataService.ReadSonsProject(ProjectId);
+            var code = await ProjectDataService.ReadProject(ProjectId);
+            projectSons = await ProjectDataService.ReadTreeProject(code.MyProjectCode);
             var projectsBelongsUserId = new List<ProjectResumeViewModel>();
             foreach (var pro in projectSons)
             {
@@ -313,7 +314,7 @@
             NavigationManager.NavigateTo($"/addusertrackinghour/{Day}/{Month}/{Year}/{proId}/{pro.MyId}/{1}/{1}", true);
         }
     }
-    public async Task prueba(int id)
+    public async Task ExistingSons(int id)
     {
         var a= await ProjectDataService.ReadSonsProject(id);
         sons = a.Count();
