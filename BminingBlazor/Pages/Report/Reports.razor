@@ -21,15 +21,15 @@
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
-
-    @if (ViewModel == null && _member == null)
+    
+    @if (ViewModel==null && users==null )
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
     else
     {
 
-        @if (phase == 0)
+        @if (codeProject==null)
         {<div class="form-group">
                 <MatAutocompleteList Items="@ViewModel" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i?.MyProjectCode + " " + i?.MyProjectName)" Label="@Resource.Projects" @bind-Value="@value" ShowClearButton="true">
                     <ItemTemplate>
@@ -86,7 +86,7 @@
     public List<MemberViewModel> users { get; set; }
     public List<ProjectResumeViewModel> ViewModel { get; set; }
     private ProjectViewModel _project = new ProjectViewModel();
-    private MemberViewModel _member = new MemberViewModel();
+    public MemberViewModel _member { get; set; }
     ProjectResumeViewModel value = null;
 
 
@@ -122,7 +122,7 @@
                 _project.MyStartDate = startDate;
                 _project.MyEndDate = endDate;
                 phase = 1;
-                users = new List<MemberViewModel>();
+                users= new List<MemberViewModel>();
                 users.AddRange(members);
                 StateHasChanged();
             }

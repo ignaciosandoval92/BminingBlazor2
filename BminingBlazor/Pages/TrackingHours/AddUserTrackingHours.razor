@@ -74,7 +74,7 @@
         {
             <div class="form-group">
 
-                <MatAutocompleteList Items="@ViewModel?.OurAvailableProjects" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i.MyProjectCode + " " + i.MyProjectName)" Label="@Resource.Projects" @bind-Value="@value" ShowClearButton="true">
+                <MatAutocompleteList Items="@ViewModel?.OurAvailableProjects" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i?.MyProjectCode + " " + i?.MyProjectName)" Label="@Resource.Projects" @bind-Value="@value" ShowClearButton="true">
                     <ItemTemplate>
                         <div style="display: flex; flex-direction: row; width: 100%;">
                             <div style="flex:1;">@context.MyProjectCode</div>
