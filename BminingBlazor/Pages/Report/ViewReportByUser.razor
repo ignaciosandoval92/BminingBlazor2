@@ -1,0 +1,13 @@
+﻿@page "/ViewReportByUser/{id:int}/{startDate:datetime}/{endDate:datetime}"
+
+<h3>ViewReportByUser</h3>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
+
+}

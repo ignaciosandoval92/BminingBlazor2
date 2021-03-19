@@ -1,0 +1,61 @@
+﻿@page "/ReportByUser"
+
+@using BminingBlazor.ViewModels.Projects
+@using BminingBlazor.ViewModels.User
+
+@inject IDummyProjectDataService DummyProjectDataService
+@inject IUserDataService UserDataService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IMatDialogService MatDialogService
+@inject IProjectDataService ProjectDataService
+@inject ITimeTrackingService TimeTrackingService
+@inject IReportService ReportService
+@inject NavigationManager NavigationManager
+
+<h3>ReportByUser</h3>
+
+<MatAutocompleteList Items="@users" TItem="UserViewModel" FullWidth="true" CustomStringSelector="@(i => i?.MyName + " " + i?.MyPaternalSurname)" Label="@Resource.Users" @bind-Value="@value" ShowClearButton="true">
+    <ItemTemplate>
+        <div style="display: flex; flex-direction: row; width: 100%;">
+            <div style="flex:1;">@context.MyName</div>
+            <div style="flex:1;">@context.MyPaternalSurname</div>
+        </div>
+    </ItemTemplate>
+</MatAutocompleteList>
+
+<div class="form-group col">
+    <label for="inputStartDate">@Resource.StartDate</label>
+    <input class="form-control" type="date" id="inputStartDate" @bind="_project.MyStartDate" />
+</div>
+<div class="form-group col">
+    <label for="inputEndDate">@Resource.EndDate</label>
+    <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
+</div>
+
+<button class="bmining-button float-right" @onclick="() => SelectUser(value.MyId, _project.MyStartDate, _project.MyEndDate)">@Resource.ViewReport</button>
+
+@code {
+
+    private ProjectViewModel _project = new ProjectViewModel();
+    public List<UserViewModel> users { get; set; }
+    public UserViewModel value = null;
+
+    protected override async Task OnAfterRenderAsync(bool firstrender)
+    {
+        await base.OnAfterRenderAsync(firstrender);
+
+        if (firstrender)
+        {
+            var members = await UserDataService.ReadUsers();
+            _project.MyStartDate = DateTime.UtcNow;
+            _project.MyEndDate = DateTime.UtcNow;
+            users = new List<UserViewModel>();
+            users.AddRange(members);
+            StateHasChanged();
+        }
+    }
+    private void SelectUser(int id, DateTime StartDate, DateTime EndDate)
+    {
+        NavigationManager.NavigateTo($"/ViewReportByUser/{id}/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}", true);
+    }
+}
