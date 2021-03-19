@@ -12,50 +12,68 @@
 @inject IReportService ReportService
 @inject NavigationManager NavigationManager
 
-<h3>ReportByUser</h3>
 
-<MatAutocompleteList Items="@users" TItem="UserViewModel" FullWidth="true" CustomStringSelector="@(i => i?.MyName + " " + i?.MyPaternalSurname)" Label="@Resource.Users" @bind-Value="@value" ShowClearButton="true">
-    <ItemTemplate>
-        <div style="display: flex; flex-direction: row; width: 100%;">
-            <div style="flex:1;">@context.MyName</div>
-            <div style="flex:1;">@context.MyPaternalSurname</div>
+
+<div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.Report</h2>
         </div>
-    </ItemTemplate>
-</MatAutocompleteList>
+    </div>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
-<div class="form-group col">
-    <label for="inputStartDate">@Resource.StartDate</label>
-    <input class="form-control" type="date" id="inputStartDate" @bind="_project.MyStartDate" />
-</div>
-<div class="form-group col">
-    <label for="inputEndDate">@Resource.EndDate</label>
-    <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
-</div>
-
-<button class="bmining-button float-right" @onclick="() => SelectUser(value.MyId, _project.MyStartDate, _project.MyEndDate)">@Resource.ViewReport</button>
-
-@code {
-
-    private ProjectViewModel _project = new ProjectViewModel();
-    public List<UserViewModel> users { get; set; }
-    public UserViewModel value = null;
-
-    protected override async Task OnAfterRenderAsync(bool firstrender)
+    @if (users == null)
     {
-        await base.OnAfterRenderAsync(firstrender);
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
+        <MatAutocompleteList Items="@users" TItem="UserViewModel" FullWidth="true" CustomStringSelector="@(i => i?.MyName + " " + i?.MyPaternalSurname)" Label="@Resource.Users" @bind-Value="@value" ShowClearButton="true">
+            <ItemTemplate>
+                <div style="display: flex; flex-direction: row; width: 100%;">
+                    <div style="flex:1;">@context.MyName</div>
+                    <div style="flex:1;">@context.MyPaternalSurname</div>
+                </div>
+            </ItemTemplate>
+        </MatAutocompleteList>
 
-        if (firstrender)
+        <div class="form-group col">
+            <label for="inputStartDate">@Resource.StartDate</label>
+            <input class="form-control" type="date" id="inputStartDate" @bind="_project.MyStartDate" />
+        </div>
+        <div class="form-group col">
+            <label for="inputEndDate">@Resource.EndDate</label>
+            <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
+        </div>
+
+        <button class="bmining-button float-right" @onclick="() => SelectUser(value.MyId, _project.MyStartDate, _project.MyEndDate)">@Resource.ViewReport</button>
+    }
+    </div>
+
+    @code {
+
+        private ProjectViewModel _project = new ProjectViewModel();
+        public List<UserViewModel> users { get; set; }
+        public UserViewModel value = null;
+
+        protected override async Task OnAfterRenderAsync(bool firstrender)
         {
-            var members = await UserDataService.ReadUsers();
-            _project.MyStartDate = DateTime.UtcNow;
-            _project.MyEndDate = DateTime.UtcNow;
-            users = new List<UserViewModel>();
-            users.AddRange(members);
-            StateHasChanged();
+            await base.OnAfterRenderAsync(firstrender);
+
+            if (firstrender)
+            {
+                var members = await UserDataService.ReadUsers();
+                _project.MyStartDate = DateTime.UtcNow;
+                _project.MyEndDate = DateTime.UtcNow;
+                users = new List<UserViewModel>();
+                users.AddRange(members);
+                StateHasChanged();
+            }
+        }
+        private void SelectUser(int id, DateTime StartDate, DateTime EndDate)
+        {
+            NavigationManager.NavigateTo($"/ViewReportByUser/{id}/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}", true);
         }
     }
-    private void SelectUser(int id, DateTime StartDate, DateTime EndDate)
-    {
-        NavigationManager.NavigateTo($"/ViewReportByUser/{id}/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}", true);
-    }
-}
