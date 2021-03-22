@@ -27,18 +27,19 @@
         </div>
 
         <div class="form-group">
-            <label for="projectSelect">@Resource.Project</label>
-            @if (MySelectedProject != null)
-            {
-                <select class="form-control" id="projectSelect" @bind="@MySelectedProject.MyId">
-                    @foreach (var userViewModel in OurProjectViewModels)
-                    {
-                        <option value="@userViewModel.MyId">
-                            @userViewModel.MyProjectName
-                        </option>
-                    }
-                </select>
-            }
+                       
+            
+                <MatAutocompleteList Items="@OurProjectViewModels" TItem="SimpleProjectViewModel" FullWidth="true" CustomStringSelector="@(i => i?.MyProjectCode + " " + i?.MyProjectName)" Label="@Resource.Projects" @bind-Value="@MySelectedProject" ShowClearButton="true">
+                    <ItemTemplate>
+                        <div style="display: flex; flex-direction: row; width: 100%;">
+                            <div style="flex:1;">@context.MyProjectCode</div>
+                            <div style="flex:1;">@context.MyProjectName</div>
+                        </div>
+                    </ItemTemplate>
+                </MatAutocompleteList>
+
+             
+            
         </div>
         <button class="bmining-button float-right" @onclick="Create">@Resource.Create</button>
     }
@@ -48,7 +49,7 @@
     public string MyTitle { get; set; }
     public int MyCreatorId { get; set; }
     public List<SimpleProjectViewModel> OurProjectViewModels { get; set; }
-    public SimpleProjectViewModel MySelectedProject { get; set; }
+    public SimpleProjectViewModel MySelectedProject = null;
     public bool IsLoading { get; set; } = true;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
