@@ -534,4 +534,7 @@
   <data name="AddSubProject" xml:space="preserve">
     <value>Agregar Sub Proyecto</value>
   </data>
+  <data name="SubProject" xml:space="preserve">
+    <value>SubProyecto</value>
+  </data>
 </root>

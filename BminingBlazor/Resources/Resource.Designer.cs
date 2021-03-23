@@ -1186,6 +1186,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a SubProject.
+        /// </summary>
+        internal static string SubProject {
+            get {
+                return ResourceManager.GetString("SubProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Surname.
         /// </summary>
         internal static string Surname {
