@@ -214,10 +214,12 @@
             {
                 var email = AuthenticationStateProvider.GetEmail();
                 var userId = await UserDataService.GetUserId(await email);
+                TrackingHoursItem = new List<AddUserTimeTrackingViewModel>();
+                projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
                 if (Level == 0)
                 {
                     projectSons = await ProjectDataService.ReadSonsProject(ProjectId);
-                    var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
+                    //var projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
                     ViewModel = new AddUserTimeTrackingViewModel(userId)
                     {
                         MyTrackingHourDate = new DateTime(Year, Month, Day),
@@ -230,7 +232,7 @@
                     var projectUser = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
                     var code = await ProjectDataService.ReadProject(ProjectId);
                     projectSons = await ProjectDataService.ReadTreeProject(code.MyProjectCode);
-                    var projectsBelongsUserId = new List<ProjectResumeViewModel>();
+                    //var projectsBelongsUserId = new List<ProjectResumeViewModel>();
                     foreach (var pro in projectSons)
                     {
                         var project = new ProjectResumeViewModel()
