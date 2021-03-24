@@ -65,20 +65,23 @@
 
             @foreach (var trackingHours in TrackingHoursItem)
             {
-                trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
-                trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
-                trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
-                trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
-                trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
-                trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
-                trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
-                trackingHours.ElementAt(0).MyTrackingHourDate = ViewModel.MyTrackingHourDate;
-                trackingHours.ElementAt(1).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(1);
-                trackingHours.ElementAt(2).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(2);
-                trackingHours.ElementAt(3).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(3);
-                trackingHours.ElementAt(4).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(4);
-                trackingHours.ElementAt(5).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(5);
-                trackingHours.ElementAt(6).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(6);
+                if (trackingHours.Count() < 6)
+                {
+                    trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                    trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                    trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                    trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                    trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                    trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                    trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                    trackingHours.ElementAt(0).MyTrackingHourDate = ViewModel.MyTrackingHourDate;
+                    trackingHours.ElementAt(1).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(1);
+                    trackingHours.ElementAt(2).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(2);
+                    trackingHours.ElementAt(3).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(3);
+                    trackingHours.ElementAt(4).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(4);
+                    trackingHours.ElementAt(5).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(5);
+                    trackingHours.ElementAt(6).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(6);
+                }
 
 
             <tr>
@@ -246,7 +249,7 @@
     protected override async Task OnInitializedAsync()
     {
         var email = AuthenticationStateProvider.GetEmail();
-        var userId = await UserDataService.GetUserId(await email);
+        userId = await UserDataService.GetUserId(await email);
         TrackingHoursItem = new List<List<AddUserTimeTrackingViewModel>>();
         projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
         if (Level == 0)
@@ -417,10 +420,10 @@
     {
         foreach(var Hours in week)
         {
-            IsLoading = true;
-            var userId = Hours.UserId;
+            IsLoading = true;            
             var timeTracking = Hours.MyTrackingHourDate;
             var hours = Hours.MyHours;
+            var userId = Hours.UserId;
             await TimeTrackingService.AddUserTimeTracking(userId, projectId, timeTracking, hours);
 
 
