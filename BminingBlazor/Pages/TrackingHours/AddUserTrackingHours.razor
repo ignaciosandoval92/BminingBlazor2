@@ -49,7 +49,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>@Resource.Project</th>                      
+                        <th>@Resource.Project</th>
                         <th>Sab</th>
                         <th>Dom</th>
                         <th>Lun</th>
@@ -65,31 +65,33 @@
 
                     @foreach (var trackingHours in TrackingHoursItem)
                     {
-                    <tr>
-                        <td>
-                            <div class="form-group col-md-6">
-                                <select style="min-width:200px;" class="form-control" @bind="trackingHours.MySelectedProjectId" required>
-                                    @foreach (var project in projectsBelongsUserId)
-                                    {
-                                        <option value="@project.MyProjectId">@project.MyProjectName</option>
-                                    }
-                                </select>
-                            </div>
-                        </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.MyHours" /> </td>
-                        <td>
-                            <button class="btn-delete" @onclick="() => DeleteTrackingHours(trackingHours)">
-                            </button>
-                        </td>
-                    </tr>
-
+                        
+                        trackingHours.Add(Saturday);
+    <tr>
+        <td>
+            <div class="form-group col-md-6">
+                <select style="min-width:200px;" class="form-control" @bind="Saturday.MySelectedProjectId" required>
+                    @foreach (var project in projectsBelongsUserId)
+                    {
+                        <option value="@project.MyProjectId">@project.MyProjectName</option>
                     }
+                </select>
+            </div>
+        </td>
+        <td><input style="max-width:40px;" @bind="Saturday.MyHours" /> </td>
+        <td><input style="max-width:40px;" @bind="@Sunday.MyHours" /> </td>
+        <td><input style="max-width:40px;" @bind="@Monday.MyHours" /> </td>
+        <td><input style="max-width:40px;" @bind="@Tuesday.MyHours" /> </td>
+        <td><input style="max-width:40px;" @bind="@Wednesday.MyHours" /> </td>
+        <td><input style="max-width:40px;" @bind="@Thursday.MyHours" /> </td>
+        <td><input style="max-width:40px;" @bind="@Friday.MyHours" /> </td>
+        <td>
+            <button class="btn-delete" @onclick="() => DeleteTrackingHours(trackingHours)">
+            </button>
+        </td>
+    </tr>
+
+}
                 </tbody>
             </table>
             @*@if (Level == 1)
@@ -213,7 +215,7 @@
     public bool IsLoading { get; set; }
     public List<ProjectViewModel> projectSons = new List<ProjectViewModel>();
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
-    public List<AddUserTimeTrackingViewModel> TrackingHoursItem;
+    public List<List<AddUserTimeTrackingViewModel>> TrackingHoursItem;
     ProjectResumeViewModel value = null;
     public List<ProjectResumeViewModel> projectsBelongsUserId;
     public int sons;
@@ -223,7 +225,14 @@
     {
         var email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await email);
-        TrackingHoursItem = new List<AddUserTimeTrackingViewModel>();
+        TrackingHoursItem = new List<List<AddUserTimeTrackingViewModel>>();
+        var Saturday = new AddUserTimeTrackingViewModel(userId);
+        var Sunday = new AddUserTimeTrackingViewModel(userId);
+        var Monday = new AddUserTimeTrackingViewModel(userId);
+        var Tuesday = new AddUserTimeTrackingViewModel(userId);
+        var Wednesday = new AddUserTimeTrackingViewModel(userId);
+        var Thursday = new AddUserTimeTrackingViewModel(userId);
+        var Friday = new AddUserTimeTrackingViewModel(userId);
         projectsBelongsUserId = await ReportService.GetProjectFatherWhereBelongsUserId(userId);
         if (Level == 0)
         {
@@ -383,9 +392,9 @@
     }
     private void AddTrackingHours(int userId)
     {
-        TrackingHoursItem.Add(new AddUserTimeTrackingViewModel(userId));
+        TrackingHoursItem.Add(new List<AddUserTimeTrackingViewModel>());
     }
-    private void DeleteTrackingHours(AddUserTimeTrackingViewModel trackingHours)
+    private void DeleteTrackingHours(List<AddUserTimeTrackingViewModel> trackingHours)
     {
         TrackingHoursItem.Remove(trackingHours);
     }
