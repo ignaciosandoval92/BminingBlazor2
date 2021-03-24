@@ -84,39 +84,39 @@
                 }
 
 
-            <tr>
-                <td>
-                    <div class="form-group col-md-6">
-                        <select style="min-width:200px;" class="form-control" @bind="@IdProject" required>
-                            @foreach (var project in projectsBelongsUserId)
-                            {
-                                <option value="@project.MyProjectId">@project.MyProjectName</option>
-                            }
-                        </select>
-                    </div>
-                </td>
-                <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(0).MyHours" /> </td>
-                <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(1).MyHours" /> </td>
-                <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(2).MyHours" /> </td>
-                <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(3).MyHours" /> </td>
-                <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(4).MyHours" /> </td>
-                <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(5).MyHours" /> </td>
-                <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(6).MyHours" /> </td>                
-                <td>
-                    <button class="btn-delete" @onclick="() => DeleteTrackingHours(trackingHours)">
-                    </button>
-                    <button class="btn-delete" @onclick="() => Load(trackingHours,IdProject)">
-                    </button>
-                    <button type="submit" class="bmining-button float-right">@Resource.Load</button>
-                </td>
-            </tr>
-                
+                <tr>
+                    <td>
+                        <div class="form-group col-md-6">
+                            <select style="min-width:200px;" class="form-control" @bind="@trackingHours.ElementAt(0).MySelectedProjectId" required>
+                                @foreach (var project in projectsBelongsUserId)
+                                {
+                                    <option value="@project.MyProjectId">@project.MyProjectName</option>
+                                }
+                            </select>
+                        </div>
+                    </td>
+                    <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(0).MyHours" /> </td>
+                    <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(1).MyHours" /> </td>
+                    <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(2).MyHours" /> </td>
+                    <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(3).MyHours" /> </td>
+                    <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(4).MyHours" /> </td>
+                    <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(5).MyHours" /> </td>
+                    <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(6).MyHours" /> </td>
+                    <td>
+                        <button class="btn-delete" @onclick="() => DeleteTrackingHours(trackingHours)">
+                        </button>
+
+                    </td>
+                </tr>
+
 
             }
-            
+
         </tbody>
     </table>
-    
+    <button class="bmining-button" @onclick="() => Load(TrackingHoursItem)">@Resource.Load
+    </button>
+
     @*@if (Level == 1)
         {
             <h3 class="header-break">@NameProject1</h3>
@@ -207,26 +207,26 @@
 </div>
 
 @code {
-    [Parameter]
-    public int Day { get; set; }
-    [Parameter]
-    public int Month { get; set; }
-    [Parameter]
-    public int Year { get; set; }
-    [Parameter]
-    public int Level { get; set; }
-    [Parameter]
-    public int ProjectId { get; set; }
-    [Parameter]
-    public int ProjectId1 { get; set; }
-    [Parameter]
-    public int ProjectId2 { get; set; }
-    [Parameter]
-    public int ProjectId3 { get; set; }
-    [Parameter]
-    public int ProjectId4 { get; set; }
-    [Parameter]
-    public int Select { get; set; }
+        [Parameter]
+        public int Day { get; set; }
+        [Parameter]
+        public int Month { get; set; }
+        [Parameter]
+        public int Year { get; set; }
+        [Parameter]
+        public int Level { get; set; }
+        [Parameter]
+        public int ProjectId { get; set; }
+        [Parameter]
+        public int ProjectId1 { get; set; }
+        [Parameter]
+        public int ProjectId2 { get; set; }
+        [Parameter]
+        public int ProjectId3 { get; set; }
+        [Parameter]
+        public int ProjectId4 { get; set; }
+        [Parameter]
+        public int Select { get; set; }
 
 
 
@@ -416,17 +416,20 @@
     {
         TrackingHoursItem.Remove(trackingHours);
     }
-    private async Task Load(List<AddUserTimeTrackingViewModel> week,int projectId)
+    private async Task Load(List<List<AddUserTimeTrackingViewModel>> trackedWeek)
     {
-        foreach(var Hours in week)
+        foreach (var week in trackedWeek)
         {
-            IsLoading = true;            
-            var timeTracking = Hours.MyTrackingHourDate;
-            var hours = Hours.MyHours;
-            var userId = Hours.UserId;
-            await TimeTrackingService.AddUserTimeTracking(userId, projectId, timeTracking, hours);
+            foreach (var Hours in week)
+            {
+                IsLoading = true;
+                var timeTracking = Hours.MyTrackingHourDate;
+                var hours = Hours.MyHours;
+                var userId = Hours.UserId;
+                await TimeTrackingService.AddUserTimeTracking(userId, week.ElementAt(0).MySelectedProjectId ?? default(int), timeTracking, hours);
 
 
+            }
         }
         NavigationManager.NavigateTo($"/dashboard_tracking_hours/{Day}/{Month}/{Year}");
 
