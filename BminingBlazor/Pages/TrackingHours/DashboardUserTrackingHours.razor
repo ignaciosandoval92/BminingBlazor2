@@ -29,7 +29,6 @@
         vertical-align: middle;
         display: inline;
         text-align: center;
-       
     }
 
     .calendar {
@@ -146,150 +145,198 @@
             <th>Jue</th>
             <th>Vie</th>
             </thead>
-            <tbody>
-                @foreach (var i in ListHours)
-                {
-                    @foreach (var hours in ListHours)
-                    {
-                        if (hours.MyProjectId == i.MyProjectId)
-                        {
-                        <td>
+            @foreach (var i in ListHours)
+            {
+                <tbody>
+                <tr>
 
-                        <th> @hours.MyProjectName</th>
-                        @if (hours.MyTimeTrackingDate == MyStartOfWeek)
+                    
+
+
+                    <td>
+                        @foreach (var hours in ListHours)
                         {
-                            <th> @hours.MyTrackedHours</th>
-                        }
-                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(1))
-                        {
-                            <th> @hours.MyTrackedHours</th>
-                        }
-                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(2))
-                        {
-                            <th> @hours.MyTrackedHours</th>
-                        }
-                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(3))
-                        {
-                            <th> @hours.MyTrackedHours</th>
-                        }
-                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(4))
-                        {
-                            <th> @hours.MyTrackedHours</th>
-                        }
-                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(5))
-                        {
-                            <th> @hours.MyTrackedHours</th>
-                        }
-                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(6))
-                        {
-                            <th> @hours.MyTrackedHours</th>
-}
-                        
+                            @if (hours.MyProjectId == i.MyProjectId)
+                            {
+
+                                @hours.MyProjectName
+                                }
+                            }
                         </td>
-                    }
-                }
-                }
+                    <td>
+                        @foreach (var hours in ListHours)
+                        {
+                            @if (hours.MyTimeTrackingDate == DateTime.Today)
+                            {
+                                @hours.MyTrackedHours
 
-                </tbody>
-            </table>
+                                }
+                            }
+                        </td>
+                    <td>
+                        @foreach (var hours in ListHours)
+                        {
+                            @if (hours.MyTimeTrackingDate == DateTime.Today.AddDays(1))
+                            {
+                                @hours.MyTrackedHours
+
+                                }
+                            }
+                        </td>
+                    <td>
+                        @foreach (var hours in ListHours)
+                        {
+                            @if (hours.MyTimeTrackingDate == DateTime.Today.AddDays(2))
+                            {
+                                @hours.MyTrackedHours
+
+                                }
+                            }
+                        </td>
+                    <td>
+                        @foreach (var hours in ListHours)
+                        {
+                            @if (hours.MyTimeTrackingDate == DateTime.Today.AddDays(3))
+                            {
+                                @hours.MyTrackedHours
+
+
+                                }
+                            }
+                        </td>
+                    <td>
+                        @foreach (var hours in ListHours)
+                        {
+                            @if (hours.MyTimeTrackingDate == DateTime.Today.AddDays(4))
+                            {
+                                @hours.MyTrackedHours
+
+                                }
+                            }
+                        </td>
+                    <td>
+                        @foreach (var hours in ListHours)
+                        {
+                            @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(5))
+                            {
+                                @hours.MyTrackedHours
+
+                                }
+                            }
+                        </td>
+                    <td>
+                        @foreach (var hours in ListHours)
+                        {
+                            @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(6))
+                            {
+                                @hours.MyTrackedHours
+
+                                }
+                            }
+                        </td>
+                
+                    </tr>
+                    </tbody>
+                }
+        </table>
 
         @*<div class="w-100">
-            @if (DashboardUserTracking != null)
-            {
-                @foreach (var weekDayUserTrackingHours in DashboardUserTracking.WeekDayUserTrackingHours)
+                @if (DashboardUserTracking != null)
                 {
-                    TotalHours = 0;
-                    <div class="col">
-                        <div class="d-flex flex-row w-100 justify-content-between">
-                            <div>
-                                <div class="d-inline-block">
-                                    <h4 class="font-weight-bold">@weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize().Substring(0, 3)</h4>
-                                </div>
-                            </div>
-
-                            @foreach (var day in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
-                            {
-                                TotalHours = TotalHours + day.MyTrackedHours;
-                            }
-
-                            <div>
-                                <div class="item-dashboard-item2">
-                                    <span class="badge badge-primary badge-pill m-1 bg-bmining-@TotalHoursStatus(TotalHours,weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize())">
-                                        <h10>@Resource.Hours : @(Math.Truncate(TotalHours*100)/100)</h10>
-                                    </span>
-                                </div>
-
-
-                            </div>
-
-                            <div class="d-inline-block">
-
-                                <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="btn-plus ">
-                                </button>
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="list-group">
-                            @foreach (var dayUserTrackingHourItem in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
-                            {
-                                <div class="item-dashboard-container item-dashboard-border @dayUserTrackingHourItem.MyTrackingStatusClass">
-
-                                    @foreach (var dad in Fathers)
-                                    {
-                                        if (dad.MyProjectCode == dayUserTrackingHourItem.MyProjectCode)
-                                        {
-
-                                            <h6 class="item-dashboard-item">
-                                                @dad.MyProjectName / @dayUserTrackingHourItem.MyProjectName
-                                            </h6>
-
-                                        }
-                                    }
-
-
-
-                                    <div class="item-dashboard-item w-100">
-
+                    @foreach (var weekDayUserTrackingHours in DashboardUserTracking.WeekDayUserTrackingHours)
+                    {
+                        TotalHours = 0;
+                        <div class="col">
+                            <div class="d-flex flex-row w-100 justify-content-between">
+                                <div>
+                                    <div class="d-inline-block">
+                                        <h4 class="font-weight-bold">@weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize().Substring(0, 3)</h4>
                                     </div>
+                                </div>
 
-                                    <div class="item-dashboard-item">
-                                        <span class="badge badge-primary badge-pill m-1 bg-bmining-info">
-                                            @dayUserTrackingHourItem.MyTrackedHours
+                                @foreach (var day in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
+                                {
+                                    TotalHours = TotalHours + day.MyTrackedHours;
+                                }
+
+                                <div>
+                                    <div class="item-dashboard-item2">
+                                        <span class="badge badge-primary badge-pill m-1 bg-bmining-@TotalHoursStatus(TotalHours,weekDayUserTrackingHours.ItemTime.ToString("dddd").Pascalize())">
+                                            <h10>@Resource.Hours : @(Math.Truncate(TotalHours*100)/100)</h10>
                                         </span>
-                                        @if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.WaitingForApproval)
-                                        {
-                                            <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="btn">
-                                                <i class="btn-edit"></i>
-                                            </button>
-                                            <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="btn">
-                                                <i class="btn-delete"></i>
-                                            </button> }
-                                        else if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.Rejected)
-                                        {
-                                            <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                                <i class="btn-edit"></i>
-                                            </button>}
                                     </div>
 
+
                                 </div>
-                                <div class="alternate3-break"></div>
+
+                                <div class="d-inline-block">
+
+                                    <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="btn-plus ">
+                                    </button>
+                                </div>
+
+                            </div>
 
 
 
-                            }
-                            <div class="alternate2-break"></div>
+                            <div class="list-group">
+                                @foreach (var dayUserTrackingHourItem in weekDayUserTrackingHours.OurWeekDayUserTrackingHourItems)
+                                {
+                                    <div class="item-dashboard-container item-dashboard-border @dayUserTrackingHourItem.MyTrackingStatusClass">
+
+                                        @foreach (var dad in Fathers)
+                                        {
+                                            if (dad.MyProjectCode == dayUserTrackingHourItem.MyProjectCode)
+                                            {
+
+                                                <h6 class="item-dashboard-item">
+                                                    @dad.MyProjectName / @dayUserTrackingHourItem.MyProjectName
+                                                </h6>
+
+                                            }
+                                        }
+
+
+
+                                        <div class="item-dashboard-item w-100">
+
+                                        </div>
+
+                                        <div class="item-dashboard-item">
+                                            <span class="badge badge-primary badge-pill m-1 bg-bmining-info">
+                                                @dayUserTrackingHourItem.MyTrackedHours
+                                            </span>
+                                            @if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.WaitingForApproval)
+                                            {
+                                                <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="btn">
+                                                    <i class="btn-edit"></i>
+                                                </button>
+                                                <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="btn">
+                                                    <i class="btn-delete"></i>
+                                                </button> }
+                                            else if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.Rejected)
+                                            {
+                                                <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
+                                                    <i class="btn-edit"></i>
+                                                </button>}
+                                        </div>
+
+                                    </div>
+                                    <div class="alternate3-break"></div>
+
+
+
+                                }
+                                <div class="alternate2-break"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="alternate3-break"></div>
+                        <div class="alternate3-break"></div>
 
+                    }
                 }
-            }
 
-            <button @onclick="@CopyLastWeek" class="bmining-button float-right ">@Resource.CopyLastWeek</button>
-        </div>*@
+                <button @onclick="@CopyLastWeek" class="bmining-button float-right ">@Resource.CopyLastWeek</button>
+            </div>*@
     }
 
 </div>
@@ -361,12 +408,14 @@
     {
         IsLoading = true;
         await base.OnInitializedAsync();
+        MySelectedDate = DateTime.UtcNow;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+
 
             var email = await AuthenticationStateProvider.GetEmail();
             var userId = await UserDataService.GetUserId(email);
