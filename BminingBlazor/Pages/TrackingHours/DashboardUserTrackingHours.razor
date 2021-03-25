@@ -156,13 +156,18 @@
                             <td>
                                 @foreach (var hours in ListHours )
                                 {
-                                    @if (hours.MyProjectId == i.MyProjectId )
+                                    if (idsProjects.Contains(hours.MyProjectId))
+                                    { }
+                                    else
+                                    {
+                                    @if (hours.MyProjectId == i.MyProjectId)
                                     {
 
                                         @hours.MyProjectName
-                                        
-                                        }
-                                   
+
+                                    }
+                                        idsProjects.Add(hours.MyProjectId);
+                                    }
                                 }
                             </td>
                             <td>
@@ -183,7 +188,7 @@
                                 {
                                     if (hours.MyProjectId == i.MyProjectId)
                                     {
-                                        @if (hours.MyTimeTrackingDate == DateTime.Today.AddDays(1))
+                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(1).Day)
                                         {
                                             @hours.MyTrackedHours
 
@@ -196,7 +201,7 @@
                                 {
                                     if (hours.MyProjectId == i.MyProjectId )
                                     {
-                                        @if (hours.MyTimeTrackingDate == DateTime.Today.AddDays(2))
+                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(2).Day)
                                         {
                                             @hours.MyTrackedHours
 
@@ -209,7 +214,7 @@
                                 {
                                     if (hours.MyProjectId == i.MyProjectId )
                                     {
-                                        @if (hours.MyTimeTrackingDate == DateTime.Today.AddDays(3))
+                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(3).Day)
                                         {
                                             @hours.MyTrackedHours
 
@@ -223,7 +228,7 @@
                                 {
                                     if (hours.MyProjectId == i.MyProjectId )
                                     {
-                                        @if (hours.MyTimeTrackingDate == DateTime.Today.AddDays(4))
+                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(4).Day)
                                         {
                                             @hours.MyTrackedHours
 
@@ -236,7 +241,7 @@
                                 {
                                     if (hours.MyProjectId == i.MyProjectId )
                                     {
-                                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(5))
+                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(5).Day)
                                         {
                                             @hours.MyTrackedHours
 
@@ -249,7 +254,7 @@
                                 {
                                     if (hours.MyProjectId == i.MyProjectId )
                                     {
-                                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(6))
+                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(6).Day)
                                         {
                                             @hours.MyTrackedHours
 
