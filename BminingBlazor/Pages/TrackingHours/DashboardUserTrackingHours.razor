@@ -135,7 +135,65 @@
 
         <div class="alternate1-break"></div>
 
-        <div class="w-100">
+        <table>
+            <thead>
+            <th>@Resource.Project</th>
+            <th>Sab</th>
+            <th>Dom</th>
+            <th>Lun</th>
+            <th>Mar</th>
+            <th>Mie</th>
+            <th>Jue</th>
+            <th>Vie</th>
+            </thead>
+            <tbody>
+                @foreach (var i in ListHours)
+                {
+                    @foreach (var hours in ListHours)
+                    {
+                        if (hours.MyProjectId == i.MyProjectId)
+                        {
+                        <td>
+
+                        <th> @hours.MyProjectName</th>
+                        @if (hours.MyTimeTrackingDate == MyStartOfWeek)
+                        {
+                            <th> @hours.MyTrackedHours</th>
+                        }
+                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(1))
+                        {
+                            <th> @hours.MyTrackedHours</th>
+                        }
+                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(2))
+                        {
+                            <th> @hours.MyTrackedHours</th>
+                        }
+                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(3))
+                        {
+                            <th> @hours.MyTrackedHours</th>
+                        }
+                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(4))
+                        {
+                            <th> @hours.MyTrackedHours</th>
+                        }
+                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(5))
+                        {
+                            <th> @hours.MyTrackedHours</th>
+                        }
+                        @if (hours.MyTimeTrackingDate == MyStartOfWeek.AddDays(6))
+                        {
+                            <th> @hours.MyTrackedHours</th>
+}
+                        
+                        </td>
+                    }
+                }
+                }
+
+                </tbody>
+            </table>
+
+        @*<div class="w-100">
             @if (DashboardUserTracking != null)
             {
                 @foreach (var weekDayUserTrackingHours in DashboardUserTracking.WeekDayUserTrackingHours)
@@ -231,7 +289,7 @@
             }
 
             <button @onclick="@CopyLastWeek" class="bmining-button float-right ">@Resource.CopyLastWeek</button>
-        </div>
+        </div>*@
     }
 
 </div>
@@ -248,7 +306,7 @@
     public string Email { get; set; }
     public double TotalHours { get; set; }
     public List<ProjectViewModel> Fathers = new List<ProjectViewModel>();
-
+    public List<ReportViewModel> ListHours = new List<ReportViewModel>();
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
 
 
@@ -313,6 +371,7 @@
             var email = await AuthenticationStateProvider.GetEmail();
             var userId = await UserDataService.GetUserId(email);
             DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
+            ListHours = await TimeTrackingService.GetUserTrackingModels(userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
             DashboardUserTracking.MyUserId = userId;
             Fathers = await ProjectDataService.ReadFathersProjects();
             if (!Day.HasValue || !Month.HasValue || !Year.HasValue)
