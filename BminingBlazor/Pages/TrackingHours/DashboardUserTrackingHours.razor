@@ -156,11 +156,13 @@
                             <td>
                                 @foreach (var hours in ListHours )
                                 {
-                                    @if (hours.MyProjectId == i.MyProjectId && !(idsProjects.Contains(i.MyProjectId)))
+                                    @if (hours.MyProjectId == i.MyProjectId )
                                     {
 
                                         @hours.MyProjectName
-                                    }
+                                        
+                                        }
+                                    idsProjects.Add(hours.MyProjectId);
                                 }
                             </td>
                             <td>
