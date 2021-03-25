@@ -165,7 +165,9 @@
                                     @if (hours.MyProjectId == i)
                                     {
 
-                                        @hours.MyProjectName
+                                        @hours.MyProjectCode <br/><txt>@hours.MyProjectName</txt>
+
+
 
                                     }
                                     idsProjects1.Add(hours.MyProjectId);
@@ -461,7 +463,7 @@
             var email = await AuthenticationStateProvider.GetEmail();
             var userId = await UserDataService.GetUserId(email);
             DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
-            ListHours = await TimeTrackingService.GetUserTrackingModels(userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+            ListHours = await TimeTrackingService.GetUserTrackingModels(userId, MyStartOfWeek.AddDays(-1), MyStartOfWeek.AddDays(6));
             DashboardUserTracking.MyUserId = userId;
             Fathers = await ProjectDataService.ReadFathersProjects();
             foreach (var id in ListHours)

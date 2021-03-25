@@ -426,7 +426,8 @@
                 var timeTracking = Hours.MyTrackingHourDate;
                 var hours = Hours.MyHours;
                 var userId = Hours.UserId;
-                await TimeTrackingService.AddUserTimeTracking(userId, week.ElementAt(0).MySelectedProjectId ?? default(int), timeTracking, hours);
+                var projectId = week.ElementAt(0).MySelectedProjectId??default(int);
+                await TimeTrackingService.AddUserTimeTracking(userId,projectId , timeTracking, hours);
 
 
             }
