@@ -1,5 +1,5 @@
 ﻿@page "/ReportsAdmin"
-
+@attribute [Authorize(Roles = "AdminRRHH,Administracion")]
 @inject NavigationManager NavigationManager
 <div class="bmining-app">
     <div class="d-flex flex-row w-100 justify-content-between">
@@ -19,23 +19,23 @@
 
     <button @onclick="@ReportHoursCharged" class="bmining-button float-right">reporte horas cargadas</button>
     <button @onclick="@ReportHoursApproved" class="bmining-button float-right">reporte horas aprobadas</button>
-    </div>
-    @code {
-        DateTime StartDate;
-        DateTime EndDate;
+</div>
+@code {
+    DateTime StartDate;
+    DateTime EndDate;
 
-        protected override void OnInitialized()
-        {
-            StartDate = DateTime.UtcNow;
-            EndDate = DateTime.UtcNow;
-        }
-        private void ReportHoursCharged()
-        {
-            NavigationManager.NavigateTo($"/viewreporthourscharged/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}");
-        }
-        private void ReportHoursApproved()
-        {
-            NavigationManager.NavigateTo($"/viewreporthoursapproved/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}");
-        }
-
+    protected override void OnInitialized()
+    {
+        StartDate = DateTime.UtcNow;
+        EndDate = DateTime.UtcNow;
     }
+    private void ReportHoursCharged()
+    {
+        NavigationManager.NavigateTo($"/viewreporthourscharged/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}");
+    }
+    private void ReportHoursApproved()
+    {
+        NavigationManager.NavigateTo($"/viewreporthoursapproved/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}");
+    }
+
+}
