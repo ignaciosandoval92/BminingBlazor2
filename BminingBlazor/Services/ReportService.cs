@@ -104,5 +104,83 @@ namespace BminingBlazor.Services
             }
             return report;
         }
+        public async Task<List<ReportViewModel>> GetHoursChargedReport( DateTime from, DateTime to)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+
+            var userQuery = queryFactory.Query(TableConstants.UserTable);
+
+            var query = queryFactory.Query(TableConstants.TimeTrackingTable)                
+                .Where(TimeTrackingConstants.TimeTrackingStatusId, (int)TimeTrackingStatusEnum.WaitingForApproval)               
+                .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
+                .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
+                                                  $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")
+                .Join(TableConstants.UserTable, $"{TableConstants.UserTable}.{UserConstants.UserId}",
+                $"{TableConstants.TimeTrackingTable}.{UserConstants.UserId}")
+                .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
+                .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
+                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}",
+                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}");
+
+
+
+            var items = (await query.GetAsync()).Cast<IDictionary<string, object>>().ToList();
+
+            var report = new List<ReportViewModel>();
+            foreach (var item in items)
+            {
+                var user = (IDictionary<string, object>)item[TableConstants.UserTable];
+                var reportViewModel = new ReportViewModel
+                {
+                    MyCodProject = (string)item[ProjectConstants.ProjectCode],
+                    MyNameProject = (string)item[ProjectConstants.ProjectName],
+                    MyName = (string)item[UserConstants.Name],
+                    MyPaternalSurname = (string)item[UserConstants.PaternalLastName],
+                    MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
+                    MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate]
+                };
+                report.Add(reportViewModel);
+            }
+            return report;
+        }
+        public async Task<List<ReportViewModel>> GetHoursApprovedReport(DateTime from, DateTime to)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+
+            var userQuery = queryFactory.Query(TableConstants.UserTable);
+
+            var query = queryFactory.Query(TableConstants.TimeTrackingTable)
+                .Where(TimeTrackingConstants.TimeTrackingStatusId, (int)TimeTrackingStatusEnum.Approved)
+                .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
+                .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
+                                                  $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")
+                .Join(TableConstants.UserTable, $"{TableConstants.UserTable}.{UserConstants.UserId}",
+                $"{TableConstants.TimeTrackingTable}.{UserConstants.UserId}")
+                .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
+                .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
+                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}",
+                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}");
+
+
+
+            var items = (await query.GetAsync()).Cast<IDictionary<string, object>>().ToList();
+
+            var report = new List<ReportViewModel>();
+            foreach (var item in items)
+            {
+                var user = (IDictionary<string, object>)item[TableConstants.UserTable];
+                var reportViewModel = new ReportViewModel
+                {
+                    MyCodProject = (string)item[ProjectConstants.ProjectCode],
+                    MyNameProject = (string)item[ProjectConstants.ProjectName],
+                    MyName = (string)item[UserConstants.Name],
+                    MyPaternalSurname = (string)item[UserConstants.PaternalLastName],
+                    MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
+                    MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate]
+                };
+                report.Add(reportViewModel);
+            }
+            return report;
+        }
     }
 }
