@@ -39,8 +39,8 @@
             <label for="inputEndDate">@Resource.EndDate</label>
             <input class="form-control" type="date" id="inputEndDate" @bind="_project.MyEndDate" />
         </div>
-        <button class="badge badge-primary badge-pill  bg-bmining-info float-md-right" @onclick="() => SelectAllMembers(_project.MyId,_project.MyStartDate,_project.MyEndDate)">@Resource.SelectAllMembers</button>
-        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => SelectProject(_project.MyId,_project.MyStartDate,_project.MyEndDate)">@Resource.SelectMember</button>
+        <button class="bmining-button float-right" @onclick="() => SelectAllMembers(_project.MyId,_project.MyStartDate,_project.MyEndDate)">@Resource.SelectAllMembers</button>
+        <button class="bmining-button float-right" @onclick="() => SelectProject(_project.MyId,_project.MyStartDate,_project.MyEndDate)">@Resource.SelectMember</button>
     }
     else
     {
@@ -56,7 +56,7 @@
                 }
             </select>
         </div>
-        <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="() => ReadHours(_member.MyId, _project.MyStartDate, _project.MyEndDate, projectId)">@Resource.ViewReport</button>
+        <button class="bmining-button float-right" @onclick="() => ReadHours(_member.MyId, _project.MyStartDate, _project.MyEndDate, projectId)">@Resource.ViewReport</button>
     }
 
 </div>

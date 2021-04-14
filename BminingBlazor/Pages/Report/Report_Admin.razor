@@ -1,36 +1,41 @@
-﻿@page "/Reports_Admin"
+﻿@page "/ReportsAdmin"
 
 @inject NavigationManager NavigationManager
-<h3>Report_Admin</h3>
+<div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.Report</h2>
+        </div>
+    </div>
 
-<div class="form-group col">
-    <label for="inputStartDate">@Resource.StartDate</label>
-    <input class="form-control" type="date" id="inputStartDate" @bind="StartDate" />
-</div>
-<div class="form-group col">
-    <label for="inputEndDate">@Resource.EndDate</label>
-    <input class="form-control" type="date" id="inputEndDate" @bind="EndDate" />
-</div>
+    <div class="form-group col">
+        <label for="inputStartDate">@Resource.StartDate</label>
+        <input class="form-control" type="date" id="inputStartDate" @bind="StartDate" />
+    </div>
+    <div class="form-group col">
+        <label for="inputEndDate">@Resource.EndDate</label>
+        <input class="form-control" type="date" id="inputEndDate" @bind="EndDate" />
+    </div>
 
-<button @onclick="@ReportHoursCharged" class="bmining-button float-right">reporte horas cargadas</button>
-<button @onclick="@ReportHoursApproved" class="bmining-button float-right">reporte horas aprobadas</button>
+    <button @onclick="@ReportHoursCharged" class="bmining-button float-right">reporte horas cargadas</button>
+    <button @onclick="@ReportHoursApproved" class="bmining-button float-right">reporte horas aprobadas</button>
+    </div>
+    @code {
+        DateTime StartDate;
+        DateTime EndDate;
 
-@code {
-    DateTime StartDate;
-    DateTime EndDate;
+        protected override void OnInitialized()
+        {
+            StartDate = DateTime.UtcNow;
+            EndDate = DateTime.UtcNow;
+        }
+        private void ReportHoursCharged()
+        {
+            NavigationManager.NavigateTo($"/viewreporthourscharged/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}");
+        }
+        private void ReportHoursApproved()
+        {
+            NavigationManager.NavigateTo($"/viewreporthoursapproved/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}");
+        }
 
-    protected override void OnInitialized()
-    {
-        StartDate = DateTime.UtcNow;
-        EndDate = DateTime.UtcNow;
     }
-    private void ReportHoursCharged()
-    {
-        NavigationManager.NavigateTo($"/viewreporthourscharged/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}");
-    }
-    private void ReportHoursApproved()
-    {
-        NavigationManager.NavigateTo($"/viewreporthoursapproved/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}");
-    }
-
-}

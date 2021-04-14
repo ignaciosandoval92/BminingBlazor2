@@ -56,12 +56,29 @@
                 <span class="oi icon-plus" aria-hidden="true"></span> @Resource.AddClient
             </NavLink>
         </li>
-
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/Reports">
-                <span class="oi icon-report" aria-hidden="true"></span> @Resource.Report
+            <NavLink class="nav-link pointer-hover" @onclick="() => _expandAuditHours = !_expandAuditHours">
+                @if (!_expandAuditHours)
+                {
+                    <span class="oi icon-report" aria-hidden="true"></span>
+                }
+                else
+                {
+                    <span class="oi icon-report" aria-hidden="true"></span>
+                }
+                @Resource.Report
             </NavLink>
-        </li>
+
+            @if (_expandAuditHours)
+            {
+                <NavLink class="nav-link" href="/Reports">
+                    @Resource.Users
+                </NavLink>
+                <NavLink class="nav-link" href="/reportsadmin">
+                    @Resource.Administration
+                </NavLink>
+            }
+        </li>      
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="/dashboard_tracking_hours">
                 <span class=" oi icon-calendar" aria-hidden="true"></span> @Resource.DashboardHours
@@ -92,7 +109,7 @@
                 </NavLink>
                 <NavLink class="nav-link" href="/admin_dashboard">
                     @Resource.Administration
-                </NavLink>                
+                </NavLink>
             }
         </li>
 

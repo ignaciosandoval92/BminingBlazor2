@@ -514,4 +514,10 @@
   <data name="Saved" xml:space="preserve">
     <value>Saved</value>
   </data>
+  <data name="GeneralReports" xml:space="preserve">
+    <value>General Reports</value>
+  </data>
+  <data name="GeneralReport" xml:space="preserve">
+    <value>General Report</value>
+  </data>
 </root>

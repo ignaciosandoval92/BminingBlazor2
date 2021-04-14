@@ -14,7 +14,7 @@
         <label for="clientName">@Resource.Name</label>
         <input class="form-control" id="clientName" @bind-value="@_newClient.MyName" />
     </div>
-    <button class="badge badge-primary badge-pill  bg-bmining-info float-right" @onclick="@InsertClient">@Resource.Save</button>
+    <button class="bmining-button float-right" @onclick="@InsertClient">@Resource.Save</button>
 </div>
 @code {
     private ClientViewModel _newClient = new ClientViewModel();
