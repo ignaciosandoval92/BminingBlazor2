@@ -1,6 +1,6 @@
 ﻿@page "/addusertrackinghour/{day:int}/{month:int}/{year:int}"
 @using BminingBlazor.ViewModels.TrackingHours
-@using Microsoft.AspNetCore.Http
+@using BminingBlazor.ViewModels.Projects
 
 @inject IUserDataService UserDataService
 @inject IProjectDataService ProjectDataService
@@ -35,27 +35,26 @@
 
     @if (!IsLoading)
     {
-        <EditForm Model="@ViewModel" OnValidSubmit="SubmitCallback">
-            <div class="form-group">
-                <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
-                <input type="number" @bind="@ViewModel.MyHours" step="0.1" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-            </div>
-            <div class="form-group">
-                <label for="inputProject" class="load-hours-label">@Resource.Project</label>
-                <select @bind="@ViewModel.MySelectedProjectId" class="form-control" id="inputProject">
+        <div class="form-group">
+            <MatAutocompleteList Items="@ViewModel?.OurAvailableProjects" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i?.MyProjectCode + " " + i?.MyProjectName)" Label="@Resource.Projects" @bind-Value="@value" ShowClearButton="true">
+                <ItemTemplate>
+                    <div style="display: flex; flex-direction: row; width: 100%;">
+                        <div style="flex:1;">@context.MyProjectCode</div>
+                        <div style="flex:1;">@context.MyProjectName</div>
+                    </div>
+                </ItemTemplate>
+            </MatAutocompleteList>
+        </div>
 
-                    @foreach (var projectDetailsViewModel in ViewModel?.OurAvailableProjects)
-                    {
-                        <option value="@projectDetailsViewModel.MyProjectId">
-                            @projectDetailsViewModel.MyProjectCode - @projectDetailsViewModel.MyProjectName
-                        </option>
-                    }
-                </select>
-            </div>
-            <div class="w-100">
-                <button type="submit" class="badge badge-primary badge-pill  bg-bmining-info float-right float-right">@Resource.Load</button>
-            </div>
-        </EditForm>
+        <div class="form-group">
+            <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
+            <input type="number" @bind="@ViewModel.MyHours" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+        </div>
+
+        <div class="w-100">
+            <button class="bmining-button float-right" @onclick="()=>LoadHours()">@Resource.Load</button>
+        </div>
+
     }
     else
     {
@@ -73,7 +72,7 @@
 
 
     public bool IsLoading { get; set; }
-
+    ProjectResumeViewModel value = null;
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -90,8 +89,9 @@
         ViewModel.MySelectedProjectId = projectsBelongsUserId.FirstOrDefault()?.MyProjectId;
     }
 
-    private async Task SubmitCallback()
+    private async Task LoadHours()
     {
+        ViewModel.MySelectedProjectId = value.MyProjectId;
         if (!ViewModel.MySelectedProjectId.HasValue)
         {
             await MatDialogService.AlertAsync(@Resource.MissingProject);
