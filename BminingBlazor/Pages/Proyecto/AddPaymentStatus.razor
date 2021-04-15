@@ -5,7 +5,7 @@
 @inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@*@attribute [Authorize(Roles = "Administracion")]*@
+@attribute [Authorize(Roles = "Administracion")]
 
 
 <div class="bmining-app">
@@ -18,7 +18,9 @@
             </button>
         </div>
     </div>    
-    
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
     @if (_paymentStatusItems != null)
     {

@@ -15,7 +15,9 @@
             <h2>@Resource.Report</h2>
         </div>
     </div>
-
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
     @if (_report == null)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
@@ -52,7 +54,7 @@
 
     }
     <button class="btn-download float-right" @onclick="ExportExcel"></button>
-    </div>
+</div>
     @code {
         [Parameter]
         public DateTime startDate { get; set; }

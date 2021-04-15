@@ -12,12 +12,14 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IClientDataService ClientDataService
-@*@attribute [Authorize(Roles = "Administracion")]*@
+@attribute [Authorize(Roles = "Administracion")]
 
 <div class="bmining-app">
 
     <h2>@Resource.CreateProject</h2>
-
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
     @if (_clients != null && _users != null)
     {
         <div class="container">

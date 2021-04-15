@@ -5,12 +5,14 @@
 @inject IProjectDataService ProjectDataService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@*@attribute [Authorize(Roles = "Administracion")]*@
+@attribute [Authorize(Roles = "Administracion")]
 
 
 <div class="bmining-app">
     <h2>@Resource.Members</h2>
-   
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
 
     @if (_users != null)

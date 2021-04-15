@@ -20,12 +20,14 @@
             <h2>@Resource.Projects</h2>
         </div>
         <div class="d-inline-block">
-            <button @onclick="NewProject" class="btn-plus">              
+            <button @onclick="NewProject" class="btn-plus">
             </button>
         </div>
     </div>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
 
- 
 
     @if (_projects == null)
     {
@@ -91,11 +93,11 @@
                                 }
                             </td>
                             <td>
-                                <button class="btn-member" @onclick=@(()=>ViewMembers(p.MyId))>                                   
+                                <button class="btn-member" @onclick=@(()=>ViewMembers(p.MyId))>
                                 </button>
-                                <button class="btn-edit" @onclick=@(()=>EditPaymentStatus(p.MyId))>                                  
+                                <button class="btn-edit" @onclick=@(()=>EditPaymentStatus(p.MyId))>
                                 </button>
-                                <button class="btn-delete" @onclick=@(()=>Delete(p.MyId))>                                    
+                                <button class="btn-delete" @onclick=@(()=>Delete(p.MyId))>
                                 </button>
                             </td>
                         </tr>
@@ -104,7 +106,7 @@
             </table>
         </div>
     }
-    <div >
+    <div>
 
         @for (int page = 0; page < TotalPage; page++)
         {
