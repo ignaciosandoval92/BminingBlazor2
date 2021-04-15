@@ -154,8 +154,7 @@
                             </div>
 
                             <div class="d-inline-block">
-                                <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="bmining-btn-icon">
-                                    <i class="fa fa-plus"></i>
+                                <button @onclick="() => AddItem(weekDayUserTrackingHours)" class="btn-plus">                                   
                                 </button>
                             </div>
                         </div>
@@ -176,18 +175,16 @@
                                         </span>
                                         @if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.WaitingForApproval)
                                         {
-                                            <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                            <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
+                                            <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="btn-edit"/>
+                                         
+                                            <button @onclick="() => RemoveItem(weekDayUserTrackingHours, dayUserTrackingHourItem)" class="btn-delete"/>                                  
+                                           
                                         }
                                         else if (dayUserTrackingHourItem.MyTimeTimeTrackingStatus == TimeTrackingStatusEnum.Rejected)
                                         {
-                                            <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="bmining-btn-icon">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
+                                            <button @onclick="() => EditItem(dayUserTrackingHourItem)" class="btn-delete"/>
+                                                
+                                          
                                         }
                                     </div>
                                 </div>
