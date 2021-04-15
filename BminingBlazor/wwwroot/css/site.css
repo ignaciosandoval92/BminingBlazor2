@@ -367,13 +367,13 @@ h1, h2, h3, h4, h5, h6 {
     .btn-plus {
         display: inline-block;
         border: none;
-        width: 26px;
-        height: 26px;
+        width: 36px;
+        height: 36px;
         background-image: url(https://i.ibb.co/QJtjZY4/boton-mas-Recurso-5-4x.png);
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
-        background-size:26px 26px;
+        background-size:36px 36px;
     }
 
     .btn-edit {
@@ -745,17 +745,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 .icon-arrow {
     background-image: url(https://i.ibb.co/kDXKqfY/flecha-Recurso-6-4x.png);
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     background-repeat: no-repeat;
-    background-size: 20px 20px;
+    background-size: 15px 15px;
 }
 .icon-home {
     background-image: url(https://i.ibb.co/vkxz1RP/home-Recurso-5-4x.png);
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     background-repeat: no-repeat;
-    background-size: 20px 20px;
+    background-size: 15px 15px;
 }
 .icon-info {
     background-image: url(https://i.ibb.co/rtXqp4D/seguridad-Recurso-10-4x.png);
@@ -773,10 +773,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 .icon-arrowselect {
     background-image: url(https://i.ibb.co/1fRp2rZ/flecha-abajo-Recurso-10-4x.png);
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     background-repeat: no-repeat;
-    background-size: 20px 20px;
+    background-size: 15px 15px;
 }
 .btn-member {
     background-image: url(https://i.ibb.co/nBB0xsg/member-Recurso-14-4x.png);
