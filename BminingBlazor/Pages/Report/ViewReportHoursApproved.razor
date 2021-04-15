@@ -56,16 +56,20 @@
     <button class="btn-download float-right" @onclick="ExportExcel"></button>
 </div>
 @code {
-    [Parameter]
-    public DateTime startDate { get; set; }
-    [Parameter]
-    public DateTime endDate { get; set; }
+        [Parameter]
+        public DateTime startDate { get; set; }
+        [Parameter]
+        public DateTime endDate { get; set; }
 
     private List<ReportViewModel> _report;
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _report = await ReportService.GetHoursApprovedReport(startDate, endDate);
-        StateHasChanged();
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            _report = await ReportService.GetHoursApprovedReport(startDate, endDate);
+            StateHasChanged();
+        }
 
     }
     public async Task ExportExcel()
