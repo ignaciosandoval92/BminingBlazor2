@@ -28,39 +28,105 @@
 
 <div class="bmining-app">
 
+
     <h2 class="header-break">@Resource.LoadHours @ViewModel.MyTrackingHourDate.ToShortDateString()</h2>
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
-
-    @if (!IsLoading)
+    @if(IsLoading)
     {
-        <div class="form-group">
-            <MatAutocompleteList Items="@ViewModel?.OurAvailableProjects" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i?.MyProjectCode + " " + i?.MyProjectName)" Label="@Resource.Projects" @bind-Value="@value" ShowClearButton="true">
-                <ItemTemplate>
-                    <div style="display: flex; flex-direction: row; width: 100%;">
-                        <div style="flex:1;">@context.MyProjectCode</div>
-                        <div style="flex:1;">@context.MyProjectName</div>
-                    </div>
-                </ItemTemplate>
-            </MatAutocompleteList>
-        </div>
-
-        <div class="form-group">
-            <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
-            <input type="number" @bind="@ViewModel.MyHours" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-        </div>
-
-        <div class="w-100">
-            <button class="bmining-button float-right" @onclick="()=>LoadHours()">@Resource.Load</button>
-        </div>
-
+    <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
     else
     {
-        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    <div>
+        <button class="btn-plus float-right" @onclick="()=>AddTrackingHours(userId)">
+        </button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>@Resource.Project</th>
+                    <th>Sab</th>
+                    <th>Dom</th>
+                    <th>Lun</th>
+                    <th>Mar</th>
+                    <th>Mie</th>
+                    <th>Jue</th>
+                    <th>Vie</th>
+                    <th>@Resource.Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @foreach (var trackingHours in TrackingHoursItem)
+                {
+                    if (trackingHours.Count() < 6)
+                    {
+                        trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                        trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                        trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                        trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                        trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                        trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                        trackingHours.Add(new AddUserTimeTrackingViewModel(userId));
+                        trackingHours.ElementAt(0).MyTrackingHourDate = ViewModel.MyTrackingHourDate;
+                        trackingHours.ElementAt(1).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(1);
+                        trackingHours.ElementAt(2).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(2);
+                        trackingHours.ElementAt(3).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(3);
+                        trackingHours.ElementAt(4).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(4);
+                        trackingHours.ElementAt(5).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(5);
+                        trackingHours.ElementAt(6).MyTrackingHourDate = ViewModel.MyTrackingHourDate.AddDays(6);
+                    }
+
+
+                    <tr>
+                        <td>
+                            <div class="form-group col-md-6">
+                                <select style="min-width:200px;" class="form-control" @bind="@trackingHours.ElementAt(0).MySelectedProjectId" required>
+                                    @foreach (var project in projectsBelongsUserId)
+                                    {
+                                        <option value="@project.MyProjectId">@project.MyProjectName</option>
+                                    }
+                                </select>
+                            </div>
+                        </td>
+                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(0).MyHours" /> </td>
+                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(1).MyHours" /> </td>
+                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(2).MyHours" /> </td>
+                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(3).MyHours" /> </td>
+                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(4).MyHours" /> </td>
+                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(5).MyHours" /> </td>
+                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(6).MyHours" /> </td>
+                        <td>
+                            <button class="btn-delete" @onclick="() => DeleteTrackingHours(trackingHours)">
+                            </button>
+
+                        </td>
+                    </tr>
+
+
+                }
+
+            </tbody>
+        </table>
+        <button class="bmining-button" @onclick="() => Load(TrackingHoursItem)">
+            @Resource.Load
+        </button>
+
+
+
+
+
+
+
+    </div>
     }
+
 </div>
+
+
 
 @code {
     [Parameter]
@@ -74,12 +140,17 @@
     public bool IsLoading { get; set; }
     ProjectResumeViewModel value = null;
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
+    public List<List<AddUserTimeTrackingViewModel>> TrackingHoursItem = new List<List<AddUserTimeTrackingViewModel>>();
+    public int userId;
+    public List<ProjectResumeViewModel> projectsBelongsUserId = new List<ProjectResumeViewModel>();
+
 
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         var email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await email);
-        var projectsBelongsUserId = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
+        projectsBelongsUserId = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
 
         ViewModel = new AddUserTimeTrackingViewModel(userId)
         {
@@ -87,29 +158,43 @@
         };
         ViewModel.OurAvailableProjects.AddRange(projectsBelongsUserId);
         ViewModel.MySelectedProjectId = projectsBelongsUserId.FirstOrDefault()?.MyProjectId;
+        IsLoading = false;
     }
 
-    private async Task LoadHours()
+    private async Task Load(List<List<AddUserTimeTrackingViewModel>> trackingHoursItem)
     {
-        ViewModel.MySelectedProjectId = value.MyProjectId;
-        if (!ViewModel.MySelectedProjectId.HasValue)
+
+        if (trackingHoursItem == null)
         {
             await MatDialogService.AlertAsync(@Resource.MissingProject);
             return;
         }
 
-        if (ViewModel.MyHours <= 0)
-        {
-            await MatDialogService.AlertAsync(@Resource.InvalidNumber);
-            return;
-        }
 
         IsLoading = true;
         var userId = ViewModel.UserId;
-        var projectId = ViewModel.MySelectedProjectId.Value;
-        var timeTracking = ViewModel.MyTrackingHourDate;
-        var hours = ViewModel.MyHours;
-        await TimeTrackingService.AddUserTimeTracking(userId, projectId, timeTracking, hours);
+        foreach (var week in trackingHoursItem)
+        {
+            var projectId = week.ElementAt(0).MySelectedProjectId;
+            foreach (var day in week)
+            {
+                var timeTracking = day.MyTrackingHourDate;
+                var hours = day.MyHours;
+                await TimeTrackingService.AddUserTimeTracking(userId, (int)projectId, timeTracking, hours);
+
+            }
+
+        }
+
+
         NavigationManager.NavigateTo($"/dashboard_tracking_hours/{Day}/{Month}/{Year}");
+    }
+    private void AddTrackingHours(int userId)
+    {
+        TrackingHoursItem.Add(new List<AddUserTimeTrackingViewModel>());
+    }
+    private void DeleteTrackingHours(List<AddUserTimeTrackingViewModel> trackingHours)
+    {
+        TrackingHoursItem.Remove(trackingHours);
     }
 }
