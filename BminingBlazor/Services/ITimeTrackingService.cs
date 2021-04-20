@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BminingBlazor.ViewModels.TrackingHours;
+using BminingBlazor.ViewModels.Projects;
 
 namespace BminingBlazor.Services
 {
@@ -16,5 +17,6 @@ namespace BminingBlazor.Services
         Task RemoveTimeTrackingHour(int id);
         Task EditStatusTimeTracking(int id, TimeTrackingStatusEnum waitingForApproval, double hours);
         Task<ProjectManagerTrackingHoursApprovalViewModel> GetPendingTimeTrackingHoursByAdmin(int adminId);
+        Task<List<ProjectResumeViewModel>> ChargedProject(int userId, DateTime from, DateTime to);
     }
 }

@@ -94,7 +94,7 @@
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
-    @if (IsLoading)
+    @if (_projects.Count==0)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
@@ -349,8 +349,8 @@
     protected override async Task OnInitializedAsync()
     {
         IsLoading = true;
-        await base.OnInitializedAsync();
         MySelectedDate = DateTime.UtcNow;
+        await base.OnInitializedAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

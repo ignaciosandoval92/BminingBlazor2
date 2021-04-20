@@ -33,7 +33,7 @@
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
-    @if(IsLoading)
+    @if(ViewModel.OurAvailableProjects.Count==0)
     {
     <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
@@ -156,8 +156,16 @@
         {
             MyTrackingHourDate = new DateTime(Year, Month, Day),
         };
+        var _project = await TimeTrackingService.ChargedProject(userId, ViewModel.MyTrackingHourDate, ViewModel.MyTrackingHourDate.AddDays(6));
+        foreach (var project in _project)
+        {
+            var itemToRemove = projectsBelongsUserId.Single(r => r.MyProjectId == project.MyProjectId);
+            this.projectsBelongsUserId.Remove(itemToRemove);
+        }
         ViewModel.OurAvailableProjects.AddRange(projectsBelongsUserId);
+
         ViewModel.MySelectedProjectId = projectsBelongsUserId.FirstOrDefault()?.MyProjectId;
+
         IsLoading = false;
     }
 
