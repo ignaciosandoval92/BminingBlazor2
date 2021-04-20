@@ -389,7 +389,8 @@
 
     private void AddItem(DateTime date)
     {
-        NavigationManager.NavigateTo($"/addusertrackinghour/{date.Day}/{date.Month}/{date.Year}");
+        _projects.Clear();
+        NavigationManager.NavigateTo($"/addusertrackinghour/{date.Day}/{date.Month}/{date.Year}",true);
     }
 
     private async Task RemoveItem(WeekDayUserTrackingHoursViewModel dayUserTrackingHours, WeekDayUserTrackingHoursItemViewModel weekDayUserTrackingHours)
