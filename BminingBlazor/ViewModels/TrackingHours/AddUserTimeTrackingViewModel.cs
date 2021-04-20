@@ -9,6 +9,7 @@ namespace BminingBlazor.ViewModels.TrackingHours
     {
         public int UserId { get; }
         public List<ProjectResumeViewModel> OurAvailableProjects { get; set; }
+        public ProjectResumeViewModel SelectedProject { get; set; }
         public int? MySelectedProjectId { get; set; }
         [Required]
         public double MyHours { get; set; }

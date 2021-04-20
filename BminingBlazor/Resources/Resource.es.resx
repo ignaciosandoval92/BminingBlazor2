@@ -519,4 +519,7 @@
   <data name="GeneralReport" xml:space="preserve">
     <value>Reporte General</value>
   </data>
+  <data name="DuplicateProject" xml:space="preserve">
+    <value>Proyecto duplicado</value>
+  </data>
 </root>
