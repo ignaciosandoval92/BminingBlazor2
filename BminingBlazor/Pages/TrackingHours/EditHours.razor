@@ -1,7 +1,10 @@
-﻿@using BminingBlazor.ViewModels.ActivityRecord
+﻿@page "/EditHours/{projectId:int}/{userId:int}/{startDate:datetime}/{endDate:datetime}"
+@using BminingBlazor.ViewModels.ActivityRecord
 @using Models.ActivityRecord
+@using BminingBlazor.ViewModels.Projects
+@using BminingBlazor.ViewModels.TrackingHours
 @inject IMatDialogService MatDialogService
-
+@inject ITimeTrackingService TimeTrackingService
 
 <div class="bmining-dialog">
     <div class="bmining-dialog-inner">
@@ -10,12 +13,34 @@
         <div class="alternate2-break"></div>
         <div class="form-group col">
             <div class="form-group">
-                <label for="inputHours" class="load-hours-label">@Resource.InvestedHours</label>
-                <input type="number" @bind="@MyHours"  class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+                <label for="inputHours" class="load-hours-label">sab</label>
+                <input type="number" @bind="@MyHoursSat" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
             </div>
-            <div class="w-100">
-                <button type="submit" class="badge badge-primary badge-pill  bg-bmining-info float-right float-right" @onclick="Load">@Resource.Load</button>
+            <div class="form-group">
+                <label for="inputHours" class="load-hours-label">dom</label>
+                <input type="number" @bind="@MyHoursSun" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
             </div>
+            <div class="form-group">
+                <label for="inputHours" class="load-hours-label">lun</label>
+                <input type="number" @bind="@MyHoursMon" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+            </div>
+            <div class="form-group">
+                <label for="inputHours" class="load-hours-label">mar</label>
+                <input type="number" @bind="@MyHoursTue" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+            </div>
+            <div class="form-group">
+                <label for="inputHours" class="load-hours-label">mie</label>
+                <input type="number" @bind="@MyHoursWed" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+            </div>
+            <div class="form-group">
+                <label for="inputHours" class="load-hours-label">jue</label>
+                <input type="number" @bind="@MyHoursThu" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+            </div>
+            <div class="form-group">
+                <label for="inputHours" class="load-hours-label">vie</label>
+                <input type="number" @bind="@MyHoursFri" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
+            </div>
+
         </div>
     </div>
 
@@ -23,21 +48,37 @@
 
 
 @code {
-    [CascadingParameter]
-    public MatDialogReference DialogReference { get; set; }
+
+    [Parameter]
+    public int userId { get; set; }
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
+    [Parameter]
+    public int projectId { get; set; }
 
 
-    public double MyHours { get; set; }
+    public List<double> MyHours;
+    public double MyHoursSat { get; set; }
+    public double MyHoursSun { get; set; }
+    public double MyHoursMon { get; set; }
+    public double MyHoursTue { get; set; }
+    public double MyHoursWed { get; set; }
+    public double MyHoursThu { get; set; }
+    public double MyHoursFri { get; set; }
+    public ProjectTrackingWeekViewModel _project = new ProjectTrackingWeekViewModel();
 
-
-    private async Task Load()
+    protected override async Task OnInitializedAsync()
     {
-
-        if (MyHours < 0)
-        {
-            await MatDialogService.AlertAsync(Resource.MissingInformation);
-            return;
-        }
-        DialogReference.Close(MyHours);
+        _project = await TimeTrackingService.ReadProjectWeek(projectId, userId, startDate, endDate);
+        MyHoursSun = _project.TrackedHoursSun;
+        MyHoursSat = _project.TrackedHoursSat;
+        MyHoursMon = _project.TrackedHoursMon;
+        MyHoursTue = _project.TrackedHoursTue;
+        MyHoursWed = _project.TrackedHoursWed;
+        MyHoursThu = _project.TrackedHoursThu;
+        MyHoursFri = _project.TrackedHoursFri;
     }
+
 }

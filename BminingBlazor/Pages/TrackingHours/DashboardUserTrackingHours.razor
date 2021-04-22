@@ -144,129 +144,130 @@
             <th>Mie</th>
             <th>Jue</th>
             <th>Vie</th>
+            <th>@Resource.Actions</th>
             </thead>
             @foreach (var i in _projects)
             {               
 
                 <tbody>
-                    <tr>                      
+                    <tr>
 
 
-                            <td>
-                                @foreach (var hours in ListHours)
+                        <td>
+                            @foreach (var hours in ListHours)
+                            {
+                                if (idsProjects1.Contains(hours.MyProjectId))
+                                { }
+                                else
                                 {
-                                    if (idsProjects1.Contains(hours.MyProjectId))
-                                    { }
-                                    else
+                                    @if (hours.MyProjectId == i)
                                     {
-                                        @if (hours.MyProjectId == i)
-                                        {
 
-                                            @hours.MyProjectCode <br /><txt>@hours.MyProjectName</txt>
+                                        @hours.MyProjectCode <br /><txt>@hours.MyProjectName</txt>
 
-                                            idsProjects1.Add(hours.MyProjectId);
+                                        idsProjects1.Add(hours.MyProjectId);
 
-                                        }
-                                      
+                                    }
+
+                                }
+                            }
+                        </td>
+                        <td>
+                            @foreach (var hours in ListHours)
+                            {
+                                if (hours.MyProjectId == i)
+                                {
+                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.Day)
+                                    {
+                                        @hours.MyTrackedHours
+
                                     }
                                 }
-                            </td>
-                            <td>
-                                @foreach (var hours in ListHours)
+                            }
+                        </td>
+                        <td>
+                            @foreach (var hours in ListHours)
+                            {
+                                if (hours.MyProjectId == i)
                                 {
-                                    if (hours.MyProjectId == i)
+                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(1).Day)
                                     {
-                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.Day)
-                                        {
-                                            @hours.MyTrackedHours
+                                        @hours.MyTrackedHours
 
-                                        }
                                     }
                                 }
-                            </td>
-                            <td>
-                                @foreach (var hours in ListHours)
+                            }
+                        </td>
+                        <td>
+                            @foreach (var hours in ListHours)
+                            {
+                                if (hours.MyProjectId == i)
                                 {
-                                    if (hours.MyProjectId == i)
+                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(2).Day)
                                     {
-                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(1).Day)
-                                        {
-                                            @hours.MyTrackedHours
+                                        @hours.MyTrackedHours
 
-                                        }
                                     }
                                 }
-                            </td>
-                            <td>
-                                @foreach (var hours in ListHours)
+                            }
+                        </td>
+                        <td>
+                            @foreach (var hours in ListHours)
+                            {
+                                if (hours.MyProjectId == i)
                                 {
-                                    if (hours.MyProjectId == i)
+                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(3).Day)
                                     {
-                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(2).Day)
-                                        {
-                                            @hours.MyTrackedHours
+                                        @hours.MyTrackedHours
 
-                                        }
+
                                     }
                                 }
-                            </td>
-                            <td>
-                                @foreach (var hours in ListHours)
+                            }
+                        </td>
+                        <td>
+                            @foreach (var hours in ListHours)
+                            {
+                                if (hours.MyProjectId == i)
                                 {
-                                    if (hours.MyProjectId == i)
+                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(4).Day)
                                     {
-                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(3).Day)
-                                        {
-                                            @hours.MyTrackedHours
+                                        @hours.MyTrackedHours
 
-
-                                        }
                                     }
                                 }
-                            </td>
-                            <td>
-                                @foreach (var hours in ListHours)
+                            }
+                        </td>
+                        <td>
+                            @foreach (var hours in ListHours)
+                            {
+                                if (hours.MyProjectId == i)
                                 {
-                                    if (hours.MyProjectId == i)
+                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(5).Day)
                                     {
-                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(4).Day)
-                                        {
-                                            @hours.MyTrackedHours
+                                        @hours.MyTrackedHours
 
-                                        }
                                     }
                                 }
-                            </td>
-                            <td>
-                                @foreach (var hours in ListHours)
+                            }
+                        </td>
+                        <td>
+                            @foreach (var hours in ListHours)
+                            {
+                                if (hours.MyProjectId == i)
                                 {
-                                    if (hours.MyProjectId == i)
+                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(6).Day)
                                     {
-                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(5).Day)
-                                        {
-                                            @hours.MyTrackedHours
+                                        @hours.MyTrackedHours
 
-                                        }
                                     }
                                 }
-                            </td>
-                            <td>
-                                @foreach (var hours in ListHours)
-                                {
-                                    if (hours.MyProjectId == i)
-                                    {
-                                        @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(6).Day)
-                                        {
-                                            @hours.MyTrackedHours
-
-                                        }
-                                    }
-                                }
-                            </td>
-
-
-
-
+                            }
+                        </td>
+                        <td>
+                            <button class="btn-delete" @onclick="()=>RemoveItem(i)"></button>
+                            <button class="btn-edit"@onclick="()=>EditItem(i)"></button>
+                        </td>                    
 
                     </tr>
 
@@ -284,12 +285,12 @@
 
 
 @code {
-    [Parameter]
-    public int? Day { get; set; }
-    [Parameter]
-    public int? Month { get; set; }
-    [Parameter]
-    public int? Year { get; set; }
+        [Parameter]
+        public int? Day { get; set; }
+        [Parameter]
+        public int? Month { get; set; }
+        [Parameter]
+        public int? Year { get; set; }
 
     public bool IsLoading { get; set; }
     public string Email { get; set; }
@@ -298,7 +299,7 @@
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
     public List<int> _projects =new List<int>();
     public List<int> idsProjects1 = new List<int>();
-
+    public int userId;
     private DateTime _mySelectedDate;
     public DateTime MySelectedDate
     {
@@ -358,7 +359,7 @@
         if (firstRender)
         {
             var email = await AuthenticationStateProvider.GetEmail();
-            var userId = await UserDataService.GetUserId(email);
+            userId = await UserDataService.GetUserId(email);
             ListHours = await TimeTrackingService.GetUserTrackingModels(userId, MyStartOfWeek.AddDays(-1), MyStartOfWeek.AddDays(6));
             DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
             DashboardUserTracking.MyUserId = userId;
@@ -393,30 +394,27 @@
         NavigationManager.NavigateTo($"/addusertrackinghour/{date.Day}/{date.Month}/{date.Year}",true);
     }
 
-    private async Task RemoveItem(WeekDayUserTrackingHoursViewModel dayUserTrackingHours, WeekDayUserTrackingHoursItemViewModel weekDayUserTrackingHours)
+    private async Task RemoveItem(int idProject)
     {
+        _projects.Clear();
         var status = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
-        if (!status) return;
-        await TimeTrackingService.RemoveTimeTrackingHour(weekDayUserTrackingHours.MyId);
-        dayUserTrackingHours.OurWeekDayUserTrackingHourItems.Remove(weekDayUserTrackingHours);
-        StateHasChanged();
+        if (!status)
+        { 
+            NavigationManager.NavigateTo($"/dashboard_tracking_hours", true); 
+        }
+        else
+        {
+            await TimeTrackingService.RemoveWeekTrackingHoursFromProject(idProject, userId, MyStartOfWeek.AddDays(-1), MyStartOfWeek.AddDays(6));
+            NavigationManager.NavigateTo($"/dashboard_tracking_hours", true);
+        }
+
     }
 
-    private async Task EditItem(WeekDayUserTrackingHoursItemViewModel dayUserTrackingHourItem)
+    private async Task EditItem(int idProject)
     {
-        var answer = await MatDialogService.OpenAsync(typeof(EditHours), new MatDialogOptions
-        {
-            CanBeClosed = true
-        });
-        if (answer == null)
-            return;
-        if (answer is double newHours)
-        {
-            dayUserTrackingHourItem.MyTimeTimeTrackingStatus = TimeTrackingStatusEnum.WaitingForApproval;
-            dayUserTrackingHourItem.MyTrackedHours = newHours;
-            await TimeTrackingService.EditStatusTimeTracking(dayUserTrackingHourItem.MyId, TimeTrackingStatusEnum.WaitingForApproval, newHours);
-        }
-        StateHasChanged();
+        _projects.Clear();
+        NavigationManager.NavigateTo($"/EditHours/{idProject}/{userId}/{MyStartOfWeek.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{MyStartOfWeek.AddDays(6).ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}", true);
+
     }
 
     private void NextWeek()
