@@ -307,8 +307,7 @@ namespace BminingBlazor.Services
             var timeTrackingViewModels = new List<ProjectResumeViewModel>();
             foreach (var item in items)
             {
-                var user = (IDictionary<string, object>)item[TableConstants.UserTable];
-                var projectManagerUser = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
+               
                 var timeTrackingViewModel = new ProjectResumeViewModel
                 {
 
@@ -358,6 +357,13 @@ namespace BminingBlazor.Services
             double wed = new double();
             double thu = new double();
             double fri = new double();
+            int idSat = new int();
+            int idSun = new int();
+            int idMon = new int();
+            int idTue = new int();
+            int idWed = new int();
+            int idThu = new int();
+            int idFri = new int();
             string projectName ="";
             string projectCode="";
 
@@ -369,30 +375,37 @@ namespace BminingBlazor.Services
                 if (from.Day == ((DateTime)item[TimeTrackingConstants.TimeTrackingDate]).Day)
                 {
                     sat = (double)item[TimeTrackingConstants.TrackedHours];
+                    idSat = (int)item[TimeTrackingConstants.TimeTrackingId];
                 }
                 if (from.AddDays(1).Day == ((DateTime)item[TimeTrackingConstants.TimeTrackingDate]).Day)
                 {
                     sun = (double)item[TimeTrackingConstants.TrackedHours];
+                    idSun = (int)item[TimeTrackingConstants.TimeTrackingId];
                 }
                 if (from.AddDays(2).Day == ((DateTime)item[TimeTrackingConstants.TimeTrackingDate]).Day)
                 {
                     mon = (double)item[TimeTrackingConstants.TrackedHours];
+                    idMon = (int)item[TimeTrackingConstants.TimeTrackingId];
                 }
                 if (from.AddDays(3).Day == ((DateTime)item[TimeTrackingConstants.TimeTrackingDate]).Day)
                 {
                     tue = (double)item[TimeTrackingConstants.TrackedHours];
+                    idTue = (int)item[TimeTrackingConstants.TimeTrackingId];
                 }
                 if (from.AddDays(4).Day == ((DateTime)item[TimeTrackingConstants.TimeTrackingDate]).Day)
                 {
                     wed = (double)item[TimeTrackingConstants.TrackedHours];
+                    idWed = (int)item[TimeTrackingConstants.TimeTrackingId];
                 }
                 if (from.AddDays(5).Day == ((DateTime)item[TimeTrackingConstants.TimeTrackingDate]).Day)
                 {
                     thu = (double)item[TimeTrackingConstants.TrackedHours];
+                    idThu = (int)item[TimeTrackingConstants.TimeTrackingId];
                 }
                 if (from.AddDays(6).Day == ((DateTime)item[TimeTrackingConstants.TimeTrackingDate]).Day)
                 {
                     fri = (double)item[TimeTrackingConstants.TrackedHours];
+                    idFri = (int)item[TimeTrackingConstants.TimeTrackingId];
                 }
                 var user = (IDictionary<string, object>)item[TableConstants.UserTable];
                 var projectManagerUser = (IDictionary<string, object>)item[ProjectConstants.ProjectManager];
@@ -414,7 +427,14 @@ namespace BminingBlazor.Services
                 TrackedHoursTue = tue,
                 TrackedHoursWed = wed,
                 TrackedHoursThu = thu,
-                TrackedHoursFri = fri
+                TrackedHoursFri = fri,
+                IdSat=idSat,
+                IdSun=idSun,
+                IdMon=idMon,
+                IdTue=idTue,
+                IdWed=idWed,
+                IdThu=idThu,
+                IdFri=idFri
             };
             return timeTrackingViewModel;
         }

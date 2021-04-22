@@ -5,47 +5,44 @@
 @using BminingBlazor.ViewModels.TrackingHours
 @inject IMatDialogService MatDialogService
 @inject ITimeTrackingService TimeTrackingService
+@inject NavigationManager NavigationManager
+<div class="bmining-app">
 
-<div class="bmining-dialog">
-    <div class="bmining-dialog-inner">
-
-        <h3>@Resource.Edit</h3>
-        <div class="alternate2-break"></div>
-        <div class="form-group col">
-            <div class="form-group">
-                <label for="inputHours" class="load-hours-label">sab</label>
-                <input type="number" @bind="@MyHoursSat" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-            </div>
-            <div class="form-group">
-                <label for="inputHours" class="load-hours-label">dom</label>
-                <input type="number" @bind="@MyHoursSun" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-            </div>
-            <div class="form-group">
-                <label for="inputHours" class="load-hours-label">lun</label>
-                <input type="number" @bind="@MyHoursMon" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-            </div>
-            <div class="form-group">
-                <label for="inputHours" class="load-hours-label">mar</label>
-                <input type="number" @bind="@MyHoursTue" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-            </div>
-            <div class="form-group">
-                <label for="inputHours" class="load-hours-label">mie</label>
-                <input type="number" @bind="@MyHoursWed" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-            </div>
-            <div class="form-group">
-                <label for="inputHours" class="load-hours-label">jue</label>
-                <input type="number" @bind="@MyHoursThu" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-            </div>
-            <div class="form-group">
-                <label for="inputHours" class="load-hours-label">vie</label>
-                <input type="number" @bind="@MyHoursFri" class="form-control" id="inputHours" placeholder="@Resource.InvestedHours">
-            </div>
-
-        </div>
+    <h3>@Resource.Edit</h3>
+    <div class="main-break">
+        <div class="main-circle"></div>
     </div>
-
+    <table>
+        <thead>
+            <tr>
+                <th>@Resource.Project</th>
+                <th>Sab</th>
+                <th>Dom</th>
+                <th>Lun</th>
+                <th>Mar</th>
+                <th>Mie</th>
+                <th>Jue</th>
+                <th>Vie</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pro in _projects)
+            {
+                <tr>
+                    <td>@pro.MyProjectCode<br /><txt>@pro.MyProjectName</txt></td>
+                    <td><input type="number" @bind="@pro.TrackedHoursSat" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@pro.TrackedHoursSun" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@pro.TrackedHoursMon" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@pro.TrackedHoursTue" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@pro.TrackedHoursWed" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@pro.TrackedHoursThu" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@pro.TrackedHoursFri" class="form-control" id="inputHours"></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button @onclick="() => SaveHours(_projects)" class="bmining-button ">@Resource.Save</button>
 </div>
-
 
 @code {
 
@@ -68,17 +65,31 @@
     public double MyHoursThu { get; set; }
     public double MyHoursFri { get; set; }
     public ProjectTrackingWeekViewModel _project = new ProjectTrackingWeekViewModel();
+    public List<ProjectTrackingWeekViewModel> _projects = new List<ProjectTrackingWeekViewModel>();
 
     protected override async Task OnInitializedAsync()
     {
-        _project = await TimeTrackingService.ReadProjectWeek(projectId, userId, startDate, endDate);
-        MyHoursSun = _project.TrackedHoursSun;
-        MyHoursSat = _project.TrackedHoursSat;
-        MyHoursMon = _project.TrackedHoursMon;
-        MyHoursTue = _project.TrackedHoursTue;
-        MyHoursWed = _project.TrackedHoursWed;
-        MyHoursThu = _project.TrackedHoursThu;
-        MyHoursFri = _project.TrackedHoursFri;
+        var chargedProjects = await TimeTrackingService.ChargedProject(userId, startDate, endDate);
+        foreach (var i in chargedProjects)
+        {
+            _project = await TimeTrackingService.ReadProjectWeek(i.MyProjectId, userId, startDate, endDate);
+            _projects.Add(_project);
+        }
+
+    }
+    public async Task SaveHours(List<ProjectTrackingWeekViewModel> projects)
+    {
+        foreach (var pro in projects)
+        {
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdSat, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSat);
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdSun, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSun);
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdMon, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursMon);
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdTue, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursTue);
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdWed, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursWed);
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdThu, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursThu);
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdFri, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursFri);
+        }
+        NavigationManager.NavigateTo("/dashboard_tracking_hours", true);
     }
 
 }

@@ -19,6 +19,13 @@ namespace BminingBlazor.ViewModels.TrackingHours
         public double TrackedHoursWed { get; set; }
         public double TrackedHoursThu { get; set; }
         public double TrackedHoursFri { get; set; }
+        public int IdSat { get; set; }
+        public int IdSun { get; set; }
+        public int IdMon { get; set; }
+        public int IdTue { get; set; }
+        public int IdWed { get; set; }
+        public int IdThu { get; set; }
+        public int IdFri { get; set; }
 
 
     }
