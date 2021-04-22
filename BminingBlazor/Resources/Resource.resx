@@ -523,4 +523,13 @@
   <data name="DuplicateProject" xml:space="preserve">
     <value>Duplicate project</value>
   </data>
+  <data name="OrdinaryHours" xml:space="preserve">
+    <value>Ordinary hours</value>
+  </data>
+  <data name="ExtraordinaryHours" xml:space="preserve">
+    <value>Extra ordinary hours</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-﻿@page "/EditHours/{projectId:int}/{userId:int}/{startDate:datetime}/{endDate:datetime}"
+﻿@page "/EditHours/{userId:int}/{startDate:datetime}/{endDate:datetime}"
 @using BminingBlazor.ViewModels.ActivityRecord
 @using Models.ActivityRecord
 @using BminingBlazor.ViewModels.Projects
@@ -12,6 +12,8 @@
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
+    <h6 class="header-break">@Resource.OrdinaryHours</h6>
+    <div class="alternate2-break"></div>
     <table>
         <thead>
             <tr>
@@ -41,6 +43,8 @@
             }
         </tbody>
     </table>
+    <h6 class="header-break">@Resource.ExtraordinaryHours</h6>
+    <div class="alternate2-break"></div>
     <button @onclick="() => SaveHours(_projects)" class="bmining-button ">@Resource.Save</button>
 </div>
 
@@ -52,8 +56,7 @@
     public DateTime startDate { get; set; }
     [Parameter]
     public DateTime endDate { get; set; }
-    [Parameter]
-    public int projectId { get; set; }
+
 
 
     public List<double> MyHours;

@@ -94,7 +94,7 @@
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
-    @if (_projects.Count==0)
+    @if (_projects.Count == 0)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
@@ -126,10 +126,10 @@
                 </button>
             </div>
 
-        </div>     
+        </div>
 
 
-     
+
 
 
         <div class="alternate1-break"></div>
@@ -147,7 +147,7 @@
             <th>@Resource.Actions</th>
             </thead>
             @foreach (var i in _projects)
-            {               
+            {
 
                 <tbody>
                     <tr>
@@ -266,8 +266,8 @@
                         </td>
                         <td>
                             <button class="btn-delete" @onclick="()=>RemoveItem(i)"></button>
-                            <button class="btn-edit"@onclick="()=>EditItem(i)"></button>
-                        </td>                    
+
+                        </td>
 
                     </tr>
 
@@ -278,6 +278,8 @@
 
         </table>
         <button @onclick="() => AddItem(MyStartOfWeek)" class="bmining-button ">@Resource.Load</button>
+        <button @onclick="EditHours" class="bmining-button">@Resource.Edit</button>
+        <button  class="bmining-button">@Resource.Send</button>
     }
 
 </div>
@@ -410,10 +412,10 @@
 
     }
 
-    private async Task EditItem(int idProject)
+    private async Task EditHours()
     {
         _projects.Clear();
-        NavigationManager.NavigateTo($"/EditHours/{idProject}/{userId}/{MyStartOfWeek.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{MyStartOfWeek.AddDays(6).ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}", true);
+        NavigationManager.NavigateTo($"/EditHours/{userId}/{MyStartOfWeek.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{MyStartOfWeek.AddDays(6).ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}", true);
 
     }
 

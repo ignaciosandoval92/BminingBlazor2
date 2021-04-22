@@ -556,6 +556,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extra ordinary hours.
+        /// </summary>
+        internal static string ExtraordinaryHours {
+            get {
+                return ResourceManager.GetString("ExtraordinaryHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fee Contract.
         /// </summary>
         internal static string FeeContract {
@@ -880,6 +889,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ordinary hours.
+        /// </summary>
+        internal static string OrdinaryHours {
+            get {
+                return ResourceManager.GetString("OrdinaryHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paternal Last Name.
         /// </summary>
         internal static string PaternalLastName {
@@ -1110,6 +1128,15 @@ namespace BminingBlazor.Resources {
         internal static string SelectMember {
             get {
                 return ResourceManager.GetString("SelectMember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send.
+        /// </summary>
+        internal static string Send {
+            get {
+                return ResourceManager.GetString("Send", resourceCulture);
             }
         }
         

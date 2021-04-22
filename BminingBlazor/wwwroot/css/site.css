@@ -357,7 +357,7 @@ h1, h2, h3, h4, h5, h6 {
     }
     .alternate4-break {
         width: 100%;
-        height: 20px;
+        height: 10px;
         position: relative;
         margin: 4px;
     }
@@ -373,6 +373,7 @@ h1, h2, h3, h4, h5, h6 {
         background-color: transparent;
         transform: scale(0.75);
         transform-origin: left;
+        z-index:3;
         background-size:36px 36px;
     }
 
