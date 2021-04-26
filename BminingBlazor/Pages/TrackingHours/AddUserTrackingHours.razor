@@ -239,7 +239,7 @@
         {
             MyTrackingHourDate = new DateTime(Year, Month, Day),
         };
-        _project = await TimeTrackingService.ChargedProject(userId, ViewModel.MyTrackingHourDate, ViewModel.MyTrackingHourDate.AddDays(6));
+        _project = await TimeTrackingService.ChargedProjectOrdinary(userId, ViewModel.MyTrackingHourDate, ViewModel.MyTrackingHourDate.AddDays(6));
         foreach (var project in _project)
         {
             var itemToRemove = projectsBelongsUserId.Single(r => r.MyProjectId == project.MyProjectId);

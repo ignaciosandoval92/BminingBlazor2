@@ -9,5 +9,6 @@
         public const string UserId = "UserId";
         public const string TimeTrackingStatusId = "TimeTrackingStatusId";
         public const string TrackedHours = "TrackedHours";
+        public const string TypeTrackingHours = "TypeTrackingHours";
     }
 }

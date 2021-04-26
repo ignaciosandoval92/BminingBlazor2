@@ -72,10 +72,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var chargedProjects = await TimeTrackingService.ChargedProject(userId, startDate, endDate);
+        var chargedProjects = await TimeTrackingService.ChargedProjectOrdinary(userId, startDate, endDate);
         foreach (var i in chargedProjects)
         {
-            _project = await TimeTrackingService.ReadProjectWeek(i.MyProjectId, userId, startDate, endDate);
+            _project = await TimeTrackingService.ReadProjectWeekOrdinary(i.MyProjectId, userId, startDate, endDate);
             _projects.Add(_project);
         }
 

@@ -94,7 +94,7 @@
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
-    @if (_projects.Count == 0)
+    @if (IsLoading)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
@@ -287,12 +287,12 @@
 
 
 @code {
-        [Parameter]
-        public int? Day { get; set; }
-        [Parameter]
-        public int? Month { get; set; }
-        [Parameter]
-        public int? Year { get; set; }
+    [Parameter]
+    public int? Day { get; set; }
+    [Parameter]
+    public int? Month { get; set; }
+    [Parameter]
+    public int? Year { get; set; }
 
     public bool IsLoading { get; set; }
     public string Email { get; set; }
@@ -379,7 +379,7 @@
                     _projects.Add(id.MyProjectId);
                 }
             }
-
+            IsLoading = false;
             this.StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
@@ -401,8 +401,8 @@
         _projects.Clear();
         var status = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
         if (!status)
-        { 
-            NavigationManager.NavigateTo($"/dashboard_tracking_hours", true); 
+        {
+            NavigationManager.NavigateTo($"/dashboard_tracking_hours", true);
         }
         else
         {
