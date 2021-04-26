@@ -134,152 +134,73 @@
 
         <div class="alternate1-break"></div>
 
+        <h6 class="header-break">@Resource.OrdinaryHours</h6>
+        <div class="alternate2-break"></div>
+
         <table>
             <thead>
-            <th>@Resource.Project</th>
-            <th>Sab</th>
-            <th>Dom</th>
-            <th>Lun</th>
-            <th>Mar</th>
-            <th>Mie</th>
-            <th>Jue</th>
-            <th>Vie</th>
-            <th>@Resource.Actions</th>
+                <tr>
+                    <th>@Resource.Project</th>
+                    <th>Sab</th>
+                    <th>Dom</th>
+                    <th>Lun</th>
+                    <th>Mar</th>
+                    <th>Mie</th>
+                    <th>Jue</th>
+                    <th>Vie</th>
+                </tr>
             </thead>
-            @foreach (var i in _projects)
-            {
-
-                <tbody>
+            <tbody>
+                @foreach (var proord in _projectsOrdinary)
+                {
                     <tr>
-
-
-                        <td>
-                            @foreach (var hours in ListHours)
-                            {
-                                if (idsProjects1.Contains(hours.MyProjectId))
-                                { }
-                                else
-                                {
-                                    @if (hours.MyProjectId == i)
-                                    {
-
-                                        @hours.MyProjectCode <br /><txt>@hours.MyProjectName</txt>
-
-                                        idsProjects1.Add(hours.MyProjectId);
-
-                                    }
-
-                                }
-                            }
-                        </td>
-                        <td>
-                            @foreach (var hours in ListHours)
-                            {
-                                if (hours.MyProjectId == i)
-                                {
-                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.Day)
-                                    {
-                                        @hours.MyTrackedHours
-
-                                    }
-                                }
-                            }
-                        </td>
-                        <td>
-                            @foreach (var hours in ListHours)
-                            {
-                                if (hours.MyProjectId == i)
-                                {
-                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(1).Day)
-                                    {
-                                        @hours.MyTrackedHours
-
-                                    }
-                                }
-                            }
-                        </td>
-                        <td>
-                            @foreach (var hours in ListHours)
-                            {
-                                if (hours.MyProjectId == i)
-                                {
-                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(2).Day)
-                                    {
-                                        @hours.MyTrackedHours
-
-                                    }
-                                }
-                            }
-                        </td>
-                        <td>
-                            @foreach (var hours in ListHours)
-                            {
-                                if (hours.MyProjectId == i)
-                                {
-                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(3).Day)
-                                    {
-                                        @hours.MyTrackedHours
-
-
-                                    }
-                                }
-                            }
-                        </td>
-                        <td>
-                            @foreach (var hours in ListHours)
-                            {
-                                if (hours.MyProjectId == i)
-                                {
-                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(4).Day)
-                                    {
-                                        @hours.MyTrackedHours
-
-                                    }
-                                }
-                            }
-                        </td>
-                        <td>
-                            @foreach (var hours in ListHours)
-                            {
-                                if (hours.MyProjectId == i)
-                                {
-                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(5).Day)
-                                    {
-                                        @hours.MyTrackedHours
-
-                                    }
-                                }
-                            }
-                        </td>
-                        <td>
-                            @foreach (var hours in ListHours)
-                            {
-                                if (hours.MyProjectId == i)
-                                {
-                                    @if (hours.MyTimeTrackingDate.Day == MyStartOfWeek.AddDays(6).Day)
-                                    {
-                                        @hours.MyTrackedHours
-
-                                    }
-                                }
-                            }
-                        </td>
-                        <td>
-                            <button class="btn-delete" @onclick="()=>RemoveItem(i)"></button>
-
-                        </td>
-
+                        <td>@proord.MyProjectCode<br /><txt>@proord.MyProjectName</txt></td>
+                        <td>@proord.TrackedHoursSat</td>
+                        <td>@proord.TrackedHoursSun</td>
+                        <td>@proord.TrackedHoursMon</td>
+                        <td>@proord.TrackedHoursTue</td>
+                        <td>@proord.TrackedHoursWed</td>
+                        <td>@proord.TrackedHoursThu</td>
+                        <td>@proord.TrackedHoursFri</td>
                     </tr>
+                }
+            </tbody>
+        </table>
+        <h6 class="header-break">@Resource.ExtraordinaryHours</h6>
+        <div class="alternate2-break"></div>
 
-                </tbody>
-
-            }
-
-
+        <table>
+            <thead>
+                <tr>
+                    <th>@Resource.Project</th>
+                    <th>Sab</th>
+                    <th>Dom</th>
+                    <th>Lun</th>
+                    <th>Mar</th>
+                    <th>Mie</th>
+                    <th>Jue</th>
+                    <th>Vie</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var proext in _projectsExtraordinary)
+                {
+                    <tr>
+                        <td>@proext.MyProjectCode<br /><txt>@proext.MyProjectName</txt></td>
+                        <td>@proext.TrackedHoursSat</td>
+                        <td>@proext.TrackedHoursSun</td>
+                        <td>@proext.TrackedHoursMon</td>
+                        <td>@proext.TrackedHoursTue</td>
+                        <td>@proext.TrackedHoursWed</td>
+                        <td>@proext.TrackedHoursThu</td>
+                        <td>@proext.TrackedHoursFri</td>
+                    </tr>
+                }
+            </tbody>
         </table>
         <button @onclick="() => AddItem(MyStartOfWeek)" class="bmining-button ">@Resource.Load</button>
         <button @onclick="EditHours" class="bmining-button">@Resource.Edit</button>
-        <button  class="bmining-button">@Resource.Send</button>
+        <button class="bmining-button">@Resource.Send</button>
     }
 
 </div>
@@ -287,12 +208,12 @@
 
 
 @code {
-    [Parameter]
-    public int? Day { get; set; }
-    [Parameter]
-    public int? Month { get; set; }
-    [Parameter]
-    public int? Year { get; set; }
+        [Parameter]
+        public int? Day { get; set; }
+        [Parameter]
+        public int? Month { get; set; }
+        [Parameter]
+        public int? Year { get; set; }
 
     public bool IsLoading { get; set; }
     public string Email { get; set; }
@@ -301,6 +222,10 @@
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
     public List<int> _projects =new List<int>();
     public List<int> idsProjects1 = new List<int>();
+    public ProjectTrackingWeekViewModel _projectOrdinary = new ProjectTrackingWeekViewModel();
+    public List<ProjectTrackingWeekViewModel> _projectsOrdinary = new List<ProjectTrackingWeekViewModel>();
+    public ProjectTrackingWeekViewModel _projectExtraordinary = new ProjectTrackingWeekViewModel();
+    public List<ProjectTrackingWeekViewModel> _projectsExtraordinary = new List<ProjectTrackingWeekViewModel>();
     public int userId;
     private DateTime _mySelectedDate;
     public DateTime MySelectedDate
@@ -378,6 +303,18 @@
                 {
                     _projects.Add(id.MyProjectId);
                 }
+            }
+            var chargedProjectsOrdinary = await TimeTrackingService.ChargedProjectOrdinary(userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+            foreach (var i in chargedProjectsOrdinary)
+            {
+                _projectOrdinary = await TimeTrackingService.ReadProjectWeekOrdinary(i.MyProjectId, userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+                _projectsOrdinary.Add(_projectOrdinary);
+            }
+            var chargedProjectsExtraordinary = await TimeTrackingService.ChargedProjectExtraordinary(userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+            foreach (var i in chargedProjectsExtraordinary)
+            {
+                _projectExtraordinary = await TimeTrackingService.ReadProjectWeekExtraordinary(i.MyProjectId, userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+                _projectsExtraordinary.Add(_projectExtraordinary);
             }
             IsLoading = false;
             this.StateHasChanged();
@@ -475,7 +412,7 @@
             var projectId = hoursLastWeek.MyProjectId;
             var hours = hoursLastWeek.MyTrackedHours;
             var timeTracking = hoursLastWeek.MyTimeTrackingDate.AddDays(+7);
-            await TimeTrackingService.AddUserTimeTracking(userId, projectId, timeTracking, hours);
+            await TimeTrackingService.AddUserTimeTrackingOrdinary(userId, projectId, timeTracking, hours);
         }
         NavigationManager.NavigateTo($"/dashboard_tracking_hours/", true);
     }

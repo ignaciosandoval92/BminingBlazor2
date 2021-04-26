@@ -33,7 +33,7 @@
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
-    @if (projectsBelongsUserId.Count == 0)
+    @if (projectsBelongsUserIdOrdinary.Count == 0)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
@@ -159,7 +159,7 @@
                 <tbody>
                     <tr>
                         <td style="min-width:350px">
-                            <MatAutocompleteList Style="font-size:9pt" Items="@ViewModel?.OurAvailableProjects" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i?.MyProjectCode + " " + i?.MyProjectName)" Label="@Resource.Projects" @bind-Value="@trackingHours.ElementAt(0).SelectedProject" ShowClearButton="true">
+                            <MatAutocompleteList Style="font-size:9pt" Items="@ViewModel2?.OurAvailableProjects" TItem="ProjectResumeViewModel" FullWidth="true" CustomStringSelector="@(i => i?.MyProjectCode + " " + i?.MyProjectName)" Label="@Resource.Projects" @bind-Value="@trackingHours.ElementAt(0).SelectedProject" ShowClearButton="true">
                                 <ItemTemplate>
                                     <div style="display: flex; flex-direction: row; min-width:100%;">
                                         <div style="flex:1;font-size:8pt">@context.MyProjectCode</div>
@@ -189,7 +189,7 @@
             }
 
         </table>
-        <button class="bmining-button" @onclick="() => Load(TrackingHoursItemOrdinary)">
+        <button class="bmining-button" @onclick="() => Load(TrackingHoursItemOrdinary,TrackingHoursItemExtraordinary)">
             @Resource.Load
         </button>
 
@@ -220,12 +220,15 @@
     public bool IsLoading { get; set; }
     ProjectResumeViewModel value = null;
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
+    public AddUserTimeTrackingViewModel ViewModel2 { get; set; }
     public List<List<AddUserTimeTrackingViewModel>> TrackingHoursItemOrdinary = new List<List<AddUserTimeTrackingViewModel>>();
     public List<List<AddUserTimeTrackingViewModel>> TrackingHoursItemExtraordinary = new List<List<AddUserTimeTrackingViewModel>>();
     public int userId;
-    public List<ProjectResumeViewModel> projectsBelongsUserId = new List<ProjectResumeViewModel>();
+    public List<ProjectResumeViewModel> projectsBelongsUserIdOrdinary = new List<ProjectResumeViewModel>();
+    public List<ProjectResumeViewModel> projectsBelongsUserIdExtraordinary = new List<ProjectResumeViewModel>();
     public List<ProjectResumeViewModel> values = new List<ProjectResumeViewModel>();
-    public List<ProjectResumeViewModel> _project = new List<ProjectResumeViewModel>();
+    public List<ProjectResumeViewModel> _projectOrdinary = new List<ProjectResumeViewModel>();
+    public List<ProjectResumeViewModel> _projectExtraordinary = new List<ProjectResumeViewModel>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -233,36 +236,50 @@
 
         var email = AuthenticationStateProvider.GetEmail();
         var userId = await UserDataService.GetUserId(await email);
-        projectsBelongsUserId = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
+        projectsBelongsUserIdOrdinary = await DummyProjectDataService.GetProjectWhereBelongsUserId(userId);
+        projectsBelongsUserIdExtraordinary.AddRange(projectsBelongsUserIdOrdinary);
 
         ViewModel = new AddUserTimeTrackingViewModel(userId)
         {
             MyTrackingHourDate = new DateTime(Year, Month, Day),
         };
-        _project = await TimeTrackingService.ChargedProjectOrdinary(userId, ViewModel.MyTrackingHourDate, ViewModel.MyTrackingHourDate.AddDays(6));
-        foreach (var project in _project)
+        _projectOrdinary = await TimeTrackingService.ChargedProjectOrdinary(userId, ViewModel.MyTrackingHourDate, ViewModel.MyTrackingHourDate.AddDays(6));
+        foreach (var project in _projectOrdinary)
         {
-            var itemToRemove = projectsBelongsUserId.Single(r => r.MyProjectId == project.MyProjectId);
-            this.projectsBelongsUserId.Remove(itemToRemove);
+            var itemToRemove = projectsBelongsUserIdOrdinary.Single(r => r.MyProjectId == project.MyProjectId);
+            this.projectsBelongsUserIdOrdinary.Remove(itemToRemove);
         }
-        ViewModel.OurAvailableProjects.AddRange(projectsBelongsUserId);
+        ViewModel.OurAvailableProjects.AddRange(projectsBelongsUserIdOrdinary);
 
-        ViewModel.MySelectedProjectId = projectsBelongsUserId.FirstOrDefault()?.MyProjectId;
+        ViewModel.MySelectedProjectId = projectsBelongsUserIdOrdinary.FirstOrDefault()?.MyProjectId;
+        ViewModel2 = new AddUserTimeTrackingViewModel(userId)
+        {
+            MyTrackingHourDate = new DateTime(Year, Month, Day),
+        };
+        _projectExtraordinary = await TimeTrackingService.ChargedProjectExtraordinary(userId, ViewModel2.MyTrackingHourDate, ViewModel2.MyTrackingHourDate.AddDays(6));
+        foreach (var project in _projectExtraordinary)
+        {
+            var itemToRemove = projectsBelongsUserIdExtraordinary.Single(r => r.MyProjectId == project.MyProjectId);
+            this.projectsBelongsUserIdExtraordinary.Remove(itemToRemove);
+        }
+        ViewModel2.OurAvailableProjects.AddRange(projectsBelongsUserIdExtraordinary);
+
+        ViewModel2.MySelectedProjectId = projectsBelongsUserIdExtraordinary.FirstOrDefault()?.MyProjectId;
 
 
 
 
     }
 
-    private async Task Load(List<List<AddUserTimeTrackingViewModel>> trackingHoursItem)
+    private async Task Load(List<List<AddUserTimeTrackingViewModel>> trackingHoursItemOrdinary, List<List<AddUserTimeTrackingViewModel>> trackingHoursItemExtraordinary)
     {
         List<int> projectsCharged = new List<int>();
-        if (trackingHoursItem == null)
+        if (trackingHoursItemOrdinary == null && trackingHoursItemExtraordinary==null)
         {
             await MatDialogService.AlertAsync(@Resource.MissingProject);
             return;
         }
-        foreach(var i in trackingHoursItem)
+        foreach(var i in trackingHoursItemOrdinary)
         {
             if(projectsCharged.Contains(i.ElementAt(0).SelectedProject.MyProjectId))
             {
@@ -271,17 +288,38 @@
             }
             projectsCharged.Add(i.ElementAt(0).SelectedProject.MyProjectId);
         }
+        foreach (var i in trackingHoursItemExtraordinary)
+        {
+            if (projectsCharged.Contains(i.ElementAt(0).SelectedProject.MyProjectId))
+            {
+                await MatDialogService.AlertAsync(@Resource.DuplicateProject);
+                return;
+            }
+            projectsCharged.Add(i.ElementAt(0).SelectedProject.MyProjectId);
+        }
 
-        projectsBelongsUserId.Clear();
+        projectsBelongsUserIdOrdinary.Clear();
         var userId = ViewModel.UserId;
-        foreach (var week in trackingHoursItem)
+        foreach (var week in trackingHoursItemOrdinary)
         {
             var projectId = week.ElementAt(0).SelectedProject.MyProjectId;
             foreach (var day in week)
             {
                 var timeTracking = day.MyTrackingHourDate;
                 var hours = day.MyHours;
-                await TimeTrackingService.AddUserTimeTracking(userId, (int)projectId, timeTracking, hours);
+                await TimeTrackingService.AddUserTimeTrackingOrdinary(userId, (int)projectId, timeTracking, hours);
+
+            }
+
+        }
+        foreach (var week in trackingHoursItemExtraordinary)
+        {
+            var projectId = week.ElementAt(0).SelectedProject.MyProjectId;
+            foreach (var day in week)
+            {
+                var timeTracking = day.MyTrackingHourDate;
+                var hours = day.MyHours;
+                await TimeTrackingService.AddUserTimeTrackingExtraordinary(userId, (int)projectId, timeTracking, hours);
 
             }
 

@@ -28,24 +28,53 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var pro in _projects)
+            @foreach (var proord in _projectsOrdinary)
             {
                 <tr>
-                    <td>@pro.MyProjectCode<br /><txt>@pro.MyProjectName</txt></td>
-                    <td><input type="number" @bind="@pro.TrackedHoursSat" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@pro.TrackedHoursSun" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@pro.TrackedHoursMon" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@pro.TrackedHoursTue" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@pro.TrackedHoursWed" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@pro.TrackedHoursThu" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@pro.TrackedHoursFri" class="form-control" id="inputHours"></td>
+                    <td>@proord.MyProjectCode<br /><txt>@proord.MyProjectName</txt></td>
+                    <td><input type="number" @bind="@proord.TrackedHoursSat" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@proord.TrackedHoursSun" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@proord.TrackedHoursMon" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@proord.TrackedHoursTue" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@proord.TrackedHoursWed" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@proord.TrackedHoursThu" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@proord.TrackedHoursFri" class="form-control" id="inputHours"></td>
                 </tr>
             }
         </tbody>
     </table>
     <h6 class="header-break">@Resource.ExtraordinaryHours</h6>
     <div class="alternate2-break"></div>
-    <button @onclick="() => SaveHours(_projects)" class="bmining-button ">@Resource.Save</button>
+    <table>
+        <thead>
+            <tr>
+                <th>@Resource.Project</th>
+                <th>Sab</th>
+                <th>Dom</th>
+                <th>Lun</th>
+                <th>Mar</th>
+                <th>Mie</th>
+                <th>Jue</th>
+                <th>Vie</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var proext in _projectsExtraordinary)
+            {
+                <tr>
+                    <td>@proext.MyProjectCode<br /><txt>@proext.MyProjectName</txt></td>
+                    <td><input type="number" @bind="@proext.TrackedHoursSat" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@proext.TrackedHoursSun" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@proext.TrackedHoursMon" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@proext.TrackedHoursTue" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@proext.TrackedHoursWed" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@proext.TrackedHoursThu" class="form-control" id="inputHours"></td>
+                    <td><input type="number" @bind="@proext.TrackedHoursFri" class="form-control" id="inputHours"></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button @onclick="() => SaveHours(_projectsOrdinary,_projectsExtraordinary)" class="bmining-button ">@Resource.Save</button>
 </div>
 
 @code {
@@ -67,22 +96,40 @@
     public double MyHoursWed { get; set; }
     public double MyHoursThu { get; set; }
     public double MyHoursFri { get; set; }
-    public ProjectTrackingWeekViewModel _project = new ProjectTrackingWeekViewModel();
-    public List<ProjectTrackingWeekViewModel> _projects = new List<ProjectTrackingWeekViewModel>();
+    public ProjectTrackingWeekViewModel _projectOrdinary = new ProjectTrackingWeekViewModel();
+    public List<ProjectTrackingWeekViewModel> _projectsOrdinary = new List<ProjectTrackingWeekViewModel>();
+    public ProjectTrackingWeekViewModel _projectExtraordinary = new ProjectTrackingWeekViewModel();
+    public List<ProjectTrackingWeekViewModel> _projectsExtraordinary = new List<ProjectTrackingWeekViewModel>();
 
     protected override async Task OnInitializedAsync()
     {
-        var chargedProjects = await TimeTrackingService.ChargedProjectOrdinary(userId, startDate, endDate);
-        foreach (var i in chargedProjects)
+        var chargedProjectsOrdinary = await TimeTrackingService.ChargedProjectOrdinary(userId, startDate, endDate);
+        foreach (var i in chargedProjectsOrdinary)
         {
-            _project = await TimeTrackingService.ReadProjectWeekOrdinary(i.MyProjectId, userId, startDate, endDate);
-            _projects.Add(_project);
+            _projectOrdinary = await TimeTrackingService.ReadProjectWeekOrdinary(i.MyProjectId, userId, startDate, endDate);
+            _projectsOrdinary.Add(_projectOrdinary);
+        }
+        var chargedProjectsExtraordinary = await TimeTrackingService.ChargedProjectExtraordinary(userId, startDate, endDate);
+        foreach (var i in chargedProjectsExtraordinary)
+        {
+            _projectExtraordinary = await TimeTrackingService.ReadProjectWeekExtraordinary(i.MyProjectId, userId, startDate, endDate);
+            _projectsExtraordinary.Add(_projectExtraordinary);
         }
 
     }
-    public async Task SaveHours(List<ProjectTrackingWeekViewModel> projects)
+    public async Task SaveHours(List<ProjectTrackingWeekViewModel> projectsordinary, List<ProjectTrackingWeekViewModel> projectsextraordinary)
     {
-        foreach (var pro in projects)
+        foreach (var pro in projectsordinary)
+        {
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdSat, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSat);
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdSun, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSun);
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdMon, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursMon);
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdTue, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursTue);
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdWed, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursWed);
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdThu, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursThu);
+            await TimeTrackingService.EditStatusTimeTracking(pro.IdFri, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursFri);
+        }
+        foreach (var pro in projectsextraordinary)
         {
             await TimeTrackingService.EditStatusTimeTracking(pro.IdSat, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSat);
             await TimeTrackingService.EditStatusTimeTracking(pro.IdSun, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSun);
