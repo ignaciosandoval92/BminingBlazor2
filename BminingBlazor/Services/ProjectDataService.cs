@@ -473,5 +473,42 @@ namespace BminingBlazor.Services
 
             return paymentViewModel;
         }
+        public async Task<List<ProjectViewModel>> ReadProjectsOwnedByManager(int managerId)
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var projects = (await queryFactory
+                .Query()
+                .From(ProjectTable)
+                .Join(UserTable, $"{UserTable}.{UserConstants.UserId}", $"{ProjectTable}.{ProjectConstants.ProjectManagerId}")
+                .Join(ClientTable, $"{ClientTable}.{ClientConstants.ClientId}", $"{ProjectTable}.{ProjectConstants.ClientId}")                
+                .Select($"{ProjectTable}.{ProjectConstants.ProjectId}")
+                .Select(ProjectConstants.ProjectCode)
+                .Select(ProjectConstants.ProjectName)
+                .Select(ProjectConstants.ProjectManagerId)
+                .Select(UserConstants.EmailBmining)
+                .Select(ClientConstants.ClientName)
+                .Select(ProjectConstants.CodProjectType)
+                .Select(ProjectConstants.StatusId)
+                .Select($"{ClientTable}.{ClientConstants.ClientId}")
+                .Where(ProjectConstants.ProjectManagerId,managerId)
+                .GroupBy($"{ProjectTable}.{ProjectConstants.ProjectId}")
+                .GetAsync<ProjectModel>()).ToList();
+            var projectViewModel = new List<ProjectViewModel>();
+            foreach (var projectModel in projects)
+            {
+                projectViewModel.Add(new ProjectViewModel
+                {
+                    MyId = projectModel.ProjectId,
+                    MyProjectCode = projectModel.CodProject,
+                    MyProjectName = projectModel.ProjectName,
+                    MyProjectStatus = (ProjectStatusEnum)projectModel.StatusId,
+                    MyProjectType = (ProjectTypeEnum)projectModel.CodProjectType,
+                    MyClientId = projectModel.ClientId,
+                    MyClientName = projectModel.ClientName,
+                    MyProjectManager = new UserViewModel { MyId = projectModel.ProjectManagerId, MyEmail = projectModel.EmailBmining },
+                });
+            }
+            return projectViewModel.ToList();
+        }
     }
 }

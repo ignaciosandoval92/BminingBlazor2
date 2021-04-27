@@ -10,6 +10,7 @@ namespace BminingBlazor.ViewModels.TrackingHours
         public int MyProjectId { get; set; }
         public string MyProjectCode { get; set; }
         public string MyProjectName { get; set; }
+        public int SendHours { get; set; }
         public DateTime StartWeek { get; set; }
         public DateTime EndWeek { get; set; }
         public double TrackedHoursSat { get; set; }

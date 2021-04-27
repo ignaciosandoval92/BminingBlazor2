@@ -273,7 +273,8 @@
 
     private async Task Load(List<List<AddUserTimeTrackingViewModel>> trackingHoursItemOrdinary, List<List<AddUserTimeTrackingViewModel>> trackingHoursItemExtraordinary)
     {
-        List<int> projectsCharged = new List<int>();
+        List<int> projectsChargedOrdinary = new List<int>();
+        List<int> projectsChargedExtraordinary = new List<int>();
         if (trackingHoursItemOrdinary == null && trackingHoursItemExtraordinary==null)
         {
             await MatDialogService.AlertAsync(@Resource.MissingProject);
@@ -281,21 +282,21 @@
         }
         foreach(var i in trackingHoursItemOrdinary)
         {
-            if(projectsCharged.Contains(i.ElementAt(0).SelectedProject.MyProjectId))
+            if(projectsChargedOrdinary.Contains(i.ElementAt(0).SelectedProject.MyProjectId))
             {
                 await MatDialogService.AlertAsync(@Resource.DuplicateProject);
                 return;
             }
-            projectsCharged.Add(i.ElementAt(0).SelectedProject.MyProjectId);
+            projectsChargedOrdinary.Add(i.ElementAt(0).SelectedProject.MyProjectId);
         }
         foreach (var i in trackingHoursItemExtraordinary)
         {
-            if (projectsCharged.Contains(i.ElementAt(0).SelectedProject.MyProjectId))
+            if (projectsChargedExtraordinary.Contains(i.ElementAt(0).SelectedProject.MyProjectId))
             {
                 await MatDialogService.AlertAsync(@Resource.DuplicateProject);
                 return;
             }
-            projectsCharged.Add(i.ElementAt(0).SelectedProject.MyProjectId);
+            projectsChargedExtraordinary.Add(i.ElementAt(0).SelectedProject.MyProjectId);
         }
 
         projectsBelongsUserIdOrdinary.Clear();

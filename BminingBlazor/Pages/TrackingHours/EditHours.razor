@@ -32,13 +32,76 @@
             {
                 <tr>
                     <td>@proord.MyProjectCode<br /><txt>@proord.MyProjectName</txt></td>
-                    <td><input type="number" @bind="@proord.TrackedHoursSat" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@proord.TrackedHoursSun" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@proord.TrackedHoursMon" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@proord.TrackedHoursTue" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@proord.TrackedHoursWed" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@proord.TrackedHoursThu" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@proord.TrackedHoursFri" class="form-control" id="inputHours"></td>
+                    <td>
+                        @if (proord.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proord.TrackedHoursSat" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proord.TrackedHoursSat
+                        }
+                    </td>
+                    <td>
+                        @if (proord.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proord.TrackedHoursSun" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proord.TrackedHoursSun
+                        }
+                    </td>
+                    <td>
+                        @if (proord.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proord.TrackedHoursMon" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proord.TrackedHoursMon
+                        }
+                        </td>
+                    <td>
+                        @if (proord.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proord.TrackedHoursTue" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proord.TrackedHoursTue
+                        }
+                        </td>
+                    <td>
+                        @if (proord.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proord.TrackedHoursWed" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proord.TrackedHoursWed
+                        }
+                        </td>
+                    <td>
+                        @if (proord.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proord.TrackedHoursThu" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proord.TrackedHoursThu
+                        }
+                        </td>
+                    <td>
+                        @if (proord.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proord.TrackedHoursFri" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proord.TrackedHoursFri
+                        }
+                        </td>
                 </tr>
             }
         </tbody>
@@ -63,13 +126,76 @@
             {
                 <tr>
                     <td>@proext.MyProjectCode<br /><txt>@proext.MyProjectName</txt></td>
-                    <td><input type="number" @bind="@proext.TrackedHoursSat" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@proext.TrackedHoursSun" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@proext.TrackedHoursMon" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@proext.TrackedHoursTue" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@proext.TrackedHoursWed" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@proext.TrackedHoursThu" class="form-control" id="inputHours"></td>
-                    <td><input type="number" @bind="@proext.TrackedHoursFri" class="form-control" id="inputHours"></td>
+                    <td>
+                        @if (proext.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proext.TrackedHoursSat" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proext.TrackedHoursSat
+                        }
+                    </td>
+                    <td>
+                        @if (proext.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proext.TrackedHoursSun" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proext.TrackedHoursSun
+                        }
+                    </td>
+                    <td>
+                        @if (proext.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proext.TrackedHoursMon" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proext.TrackedHoursMon
+                        }
+                    </td>
+                    <td>
+                        @if (proext.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proext.TrackedHoursTue" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proext.TrackedHoursTue
+                        }
+                    </td>
+                    <td>
+                        @if (proext.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proext.TrackedHoursWed" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proext.TrackedHoursWed
+                        }
+                    </td>
+                    <td>
+                        @if (proext.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proext.TrackedHoursThu" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proext.TrackedHoursThu
+                        }
+                    </td>
+                    <td>
+                        @if (proext.SendHours == 0)
+                        {
+                            <input type="number" @bind="@proext.TrackedHoursFri" class="form-control" id="inputHours">
+                        }
+                        else
+                        {
+                            @proext.TrackedHoursFri
+                        }
+                    </td>
                 </tr>
             }
         </tbody>
@@ -121,23 +247,29 @@
     {
         foreach (var pro in projectsordinary)
         {
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdSat, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSat);
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdSun, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSun);
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdMon, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursMon);
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdTue, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursTue);
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdWed, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursWed);
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdThu, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursThu);
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdFri, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursFri);
+            if (pro.SendHours == 0)
+            {
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdSat, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSat);
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdSun, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSun);
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdMon, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursMon);
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdTue, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursTue);
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdWed, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursWed);
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdThu, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursThu);
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdFri, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursFri);
+            }
         }
         foreach (var pro in projectsextraordinary)
         {
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdSat, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSat);
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdSun, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSun);
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdMon, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursMon);
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdTue, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursTue);
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdWed, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursWed);
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdThu, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursThu);
-            await TimeTrackingService.EditStatusTimeTracking(pro.IdFri, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursFri);
+            if (pro.SendHours == 0)
+            {
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdSat, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSat);
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdSun, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursSun);
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdMon, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursMon);
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdTue, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursTue);
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdWed, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursWed);
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdThu, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursThu);
+                await TimeTrackingService.EditStatusTimeTracking(pro.IdFri, Models.TimeTracking.TimeTrackingStatusEnum.WaitingForApproval, pro.TrackedHoursFri);
+            }
         }
         NavigationManager.NavigateTo("/dashboard_tracking_hours", true);
     }

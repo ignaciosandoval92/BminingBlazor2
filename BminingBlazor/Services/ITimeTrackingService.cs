@@ -20,8 +20,11 @@ namespace BminingBlazor.Services
         Task<ProjectManagerTrackingHoursApprovalViewModel> GetPendingTimeTrackingHoursByAdmin(int adminId);
         Task<List<ProjectResumeViewModel>> ChargedProjectOrdinary(int userId, DateTime from, DateTime to);
         Task<List<ProjectResumeViewModel>> ChargedProjectExtraordinary(int userId, DateTime from, DateTime to);
-        Task RemoveWeekTrackingHoursFromProject(int idProject, int idUser, DateTime from, DateTime to);
-        Task<ProjectTrackingWeekViewModel> ReadProjectWeekOrdinary(int idProject, int idUser, DateTime from, DateTime to);
-        Task<ProjectTrackingWeekViewModel> ReadProjectWeekExtraordinary(int idProject, int idUser, DateTime from, DateTime to);
+        Task RemoveWeekTrackingHoursFromProject(int idProject, int idUser, DateTime from, DateTime to,int TypeHours);
+        Task<ProjectTrackingWeekViewModel> ReadProjectWeekOrdinary(int idProject, int idUser, DateTime startDate, DateTime to);
+        Task<ProjectTrackingWeekViewModel> ReadProjectWeekExtraordinary(int idProject, int idUser, DateTime startDate, DateTime to);
+        Task SendTrackedHours(int id);
+        Task<List<ProjectTrackingWeekViewModel>> GetPendingWeekExtraordinaryFromManager(int idProject, int idManager, DateTime startDate, DateTime to);
+        Task<List<ProjectResumeViewModel>> GetProjectExtraordinaryByManager(int managerId, DateTime from, DateTime to);
     }
 }

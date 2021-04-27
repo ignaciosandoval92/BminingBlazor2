@@ -148,21 +148,28 @@
                     <th>Mie</th>
                     <th>Jue</th>
                     <th>Vie</th>
+                    <th>@Resource.Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var proord in _projectsOrdinary)
                 {
-                    <tr>
-                        <td>@proord.MyProjectCode<br /><txt>@proord.MyProjectName</txt></td>
-                        <td>@proord.TrackedHoursSat</td>
-                        <td>@proord.TrackedHoursSun</td>
-                        <td>@proord.TrackedHoursMon</td>
-                        <td>@proord.TrackedHoursTue</td>
-                        <td>@proord.TrackedHoursWed</td>
-                        <td>@proord.TrackedHoursThu</td>
-                        <td>@proord.TrackedHoursFri</td>
-                    </tr>
+                <tr>
+                    <td>@proord.MyProjectCode<br /><txt>@proord.MyProjectName</txt></td>
+                    <td>@proord.TrackedHoursSat</td>
+                    <td>@proord.TrackedHoursSun</td>
+                    <td>@proord.TrackedHoursMon</td>
+                    <td>@proord.TrackedHoursTue</td>
+                    <td>@proord.TrackedHoursWed</td>
+                    <td>@proord.TrackedHoursThu</td>
+                    <td>@proord.TrackedHoursFri</td>
+                    <td>
+                        @if (proord.SendHours == 0)
+                        {
+                    <button class="btn-delete" @onclick="() => RemoveItem(proord.MyProjectId, 0)"></button>
+                        }
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -180,6 +187,7 @@
                     <th>Mie</th>
                     <th>Jue</th>
                     <th>Vie</th>
+                    <th>@Resource.Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -194,13 +202,22 @@
                         <td>@proext.TrackedHoursWed</td>
                         <td>@proext.TrackedHoursThu</td>
                         <td>@proext.TrackedHoursFri</td>
+                        <td>
+                            @if (proext.SendHours == 0)
+                            {
+                        <button class="btn-delete" @onclick="() => RemoveItem(proext.MyProjectId, 1)"></button>
+                            }
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
+        if (differenceInDays < 21&&differenceInDays>=0)
+        {
         <button @onclick="() => AddItem(MyStartOfWeek)" class="bmining-button ">@Resource.Load</button>
         <button @onclick="EditHours" class="bmining-button">@Resource.Edit</button>
-        <button class="bmining-button">@Resource.Send</button>
+        <button @onclick="()=>SendHours(_projectsOrdinary,_projectsExtraordinary)" class="bmining-button">@Resource.Send</button>
+        }
     }
 
 </div>
@@ -208,17 +225,16 @@
 
 
 @code {
-        [Parameter]
-        public int? Day { get; set; }
-        [Parameter]
-        public int? Month { get; set; }
-        [Parameter]
-        public int? Year { get; set; }
+    [Parameter]
+    public int? Day { get; set; }
+    [Parameter]
+    public int? Month { get; set; }
+    [Parameter]
+    public int? Year { get; set; }
 
     public bool IsLoading { get; set; }
     public string Email { get; set; }
     public double TotalHours { get; set; }
-    public List<ReportViewModel> ListHours = new List<ReportViewModel>();
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
     public List<int> _projects =new List<int>();
     public List<int> idsProjects1 = new List<int>();
@@ -227,6 +243,8 @@
     public ProjectTrackingWeekViewModel _projectExtraordinary = new ProjectTrackingWeekViewModel();
     public List<ProjectTrackingWeekViewModel> _projectsExtraordinary = new List<ProjectTrackingWeekViewModel>();
     public int userId;
+    public int differenceInDays;
+
     private DateTime _mySelectedDate;
     public DateTime MySelectedDate
     {
@@ -264,14 +282,17 @@
             }
 
             MyStartOfWeek = MySelectedDate.AddDays(-numberOfDay);
-
+            MyComparativeWeek = DateTime.UtcNow.AddDays(-numberOfDay);
+            TimeSpan ts = MyComparativeWeek - MyStartOfWeek;
+            differenceInDays = ts.Days;
             this.StateHasChanged();
             SetDate(MyStartOfWeek).Wait();
-            IsLoading = false;
+            IsLoading = true;
         }
     }
 
     public DateTime MyStartOfWeek { get; set; }
+    public DateTime MyComparativeWeek { get; set; }
 
 
     protected override async Task OnInitializedAsync()
@@ -287,35 +308,13 @@
         {
             var email = await AuthenticationStateProvider.GetEmail();
             userId = await UserDataService.GetUserId(email);
-            ListHours = await TimeTrackingService.GetUserTrackingModels(userId, MyStartOfWeek.AddDays(-1), MyStartOfWeek.AddDays(6));
-            DashboardUserTracking = new DashboardUserTrackingViewModel(TimeTrackingService);
-            DashboardUserTracking.MyUserId = userId;
+
             if (!Day.HasValue || !Month.HasValue || !Year.HasValue)
             {
                 var date = DateTime.UtcNow.ToLocalTime();
                 MySelectedDate = new DateTime(date.Year, date.Month, date.Day);
             }
             else MySelectedDate = new DateTime(Year.Value, Month.Value, Day.Value);
-
-            foreach (var id in ListHours)
-            {
-                if (!_projects.Contains(id.MyProjectId))
-                {
-                    _projects.Add(id.MyProjectId);
-                }
-            }
-            var chargedProjectsOrdinary = await TimeTrackingService.ChargedProjectOrdinary(userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
-            foreach (var i in chargedProjectsOrdinary)
-            {
-                _projectOrdinary = await TimeTrackingService.ReadProjectWeekOrdinary(i.MyProjectId, userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
-                _projectsOrdinary.Add(_projectOrdinary);
-            }
-            var chargedProjectsExtraordinary = await TimeTrackingService.ChargedProjectExtraordinary(userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
-            foreach (var i in chargedProjectsExtraordinary)
-            {
-                _projectExtraordinary = await TimeTrackingService.ReadProjectWeekExtraordinary(i.MyProjectId, userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
-                _projectsExtraordinary.Add(_projectExtraordinary);
-            }
             IsLoading = false;
             this.StateHasChanged();
         }
@@ -324,7 +323,22 @@
 
     private async Task SetDate(DateTime fromTime)
     {
-        //await DashboardUserTracking.SetStartDate(fromTime);
+
+        _projectsExtraordinary.Clear();
+        _projectsOrdinary.Clear();
+        var chargedProjectsOrdinary = await TimeTrackingService.ChargedProjectOrdinary(userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+        foreach (var i in chargedProjectsOrdinary)
+        {
+            _projectOrdinary = await TimeTrackingService.ReadProjectWeekOrdinary(i.MyProjectId, userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+            _projectsOrdinary.Add(_projectOrdinary);
+        }
+        var chargedProjectsExtraordinary = await TimeTrackingService.ChargedProjectExtraordinary(userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+        foreach (var i in chargedProjectsExtraordinary)
+        {
+            _projectExtraordinary = await TimeTrackingService.ReadProjectWeekExtraordinary(i.MyProjectId, userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+            _projectsExtraordinary.Add(_projectExtraordinary);
+        }
+        this.StateHasChanged();
     }
 
     private void AddItem(DateTime date)
@@ -333,7 +347,7 @@
         NavigationManager.NavigateTo($"/addusertrackinghour/{date.Day}/{date.Month}/{date.Year}",true);
     }
 
-    private async Task RemoveItem(int idProject)
+    private async Task RemoveItem(int idProject,int typeHours)
     {
         _projects.Clear();
         var status = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
@@ -343,7 +357,7 @@
         }
         else
         {
-            await TimeTrackingService.RemoveWeekTrackingHoursFromProject(idProject, userId, MyStartOfWeek.AddDays(-1), MyStartOfWeek.AddDays(6));
+            await TimeTrackingService.RemoveWeekTrackingHoursFromProject(idProject, userId, MyStartOfWeek.AddDays(-1), MyStartOfWeek.AddDays(6),typeHours);
             NavigationManager.NavigateTo($"/dashboard_tracking_hours", true);
         }
 
@@ -358,12 +372,18 @@
 
     private void NextWeek()
     {
+        IsLoading = true;
         MySelectedDate = MySelectedDate.AddDays(7);
+        IsLoading = false;
+
     }
 
     private void PreviousWeek()
     {
+        IsLoading = true;
         MySelectedDate = MySelectedDate.AddDays(-7);
+        IsLoading = false;
+
     }
     private string TotalHoursStatus(double totalHours, string day)
     {
@@ -421,5 +441,29 @@
     {
         int numberWeek = System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(MySelectedDate, System.Globalization.CalendarWeekRule.FirstDay, MySelectedDate.DayOfWeek);
         return numberWeek;
+    }
+    public async Task SendHours(List<ProjectTrackingWeekViewModel> projectsordinary, List<ProjectTrackingWeekViewModel> projectsextraordinary)
+    {
+        foreach (var pro in projectsordinary)
+        {
+            await TimeTrackingService.SendTrackedHours(pro.IdSat);
+            await TimeTrackingService.SendTrackedHours(pro.IdSun);
+            await TimeTrackingService.SendTrackedHours(pro.IdMon);
+            await TimeTrackingService.SendTrackedHours(pro.IdTue);
+            await TimeTrackingService.SendTrackedHours(pro.IdWed);
+            await TimeTrackingService.SendTrackedHours(pro.IdThu);
+            await TimeTrackingService.SendTrackedHours(pro.IdFri);
+        }
+        foreach (var pro in projectsextraordinary)
+        {
+            await TimeTrackingService.SendTrackedHours(pro.IdSat);
+            await TimeTrackingService.SendTrackedHours(pro.IdSun);
+            await TimeTrackingService.SendTrackedHours(pro.IdMon);
+            await TimeTrackingService.SendTrackedHours(pro.IdTue);
+            await TimeTrackingService.SendTrackedHours(pro.IdWed);
+            await TimeTrackingService.SendTrackedHours(pro.IdThu);
+            await TimeTrackingService.SendTrackedHours(pro.IdFri);          
+        }
+        NavigationManager.NavigateTo("/dashboard_tracking_hours", true);
     }
 }

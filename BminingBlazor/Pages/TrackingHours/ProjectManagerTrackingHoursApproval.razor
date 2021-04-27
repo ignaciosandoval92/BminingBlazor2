@@ -5,6 +5,7 @@
 @inject IMatDialogService MatDialogService
 @inject ITimeTrackingService TimeTrackingService
 @inject IUserDataService UserDataService
+@inject IProjectDataService ProjectDataService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <style>
@@ -33,18 +34,23 @@
     @if (ViewModel != null)
     {
 
-        @foreach (var projectManagerTrackingHoursProject in ViewModel.OurProjectManagerTrackingHoursProjects)
+        @foreach (var proext in _projectsExtraordinary)
         {
-            <h4>@projectManagerTrackingHoursProject.MyProjectName</h4>
+            <h4>@proext.MyProjectName</h4>
             <table>
                 <tr>
                     <th>@Resource.Name</th>
-                    <th>@Resource.Hours</th>
-                    <th>@Resource.Date</th>
+                    <th>Sab</th>
+                    <th>Dom</th>
+                    <th>Lun</th>
+                    <th>Mar</th>
+                    <th>Mie</th>
+                    <th>Jue</th>
+                    <th>Vie</th>
                     <th>@Resource.Actions</th>
                 </tr>
 
-                @foreach (var projectManagerTrackingHoursProjectMember in projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers)
+                @*@foreach (var projectManagerTrackingHoursProjectMember in projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers)
                 {
                     <tr>
                         <td>
@@ -63,7 +69,7 @@
                             </button>
                         </td>
                     </tr>
-                }
+                }*@
             </table>
             <div class="alternate1-break"></div>
         }
@@ -77,6 +83,60 @@
 
 
 @code {
+    [Parameter]
+    public int? Day { get; set; }
+    [Parameter]
+    public int? Month { get; set; }
+    [Parameter]
+    public int? Year { get; set; }
+    private DateTime _mySelectedDate;
+    public List<ProjectTrackingWeekViewModel> _projectExtraordinary = new List<ProjectTrackingWeekViewModel>();
+    public List<ProjectTrackingWeekViewModel> _projectsExtraordinary = new List<ProjectTrackingWeekViewModel>();
+    public DateTime MyStartOfWeek { get; set; }
+    public DateTime MySelectedDate
+    {
+        get { return _mySelectedDate; }
+        set
+        {
+            _mySelectedDate = value;
+            var dayOfWeek = value.DayOfWeek;
+            int numberOfDay;
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Saturday:
+                    numberOfDay = 0;
+                    break;
+                case DayOfWeek.Sunday:
+                    numberOfDay = 1;
+                    break;
+                case DayOfWeek.Monday:
+                    numberOfDay = 2;
+                    break;
+                case DayOfWeek.Tuesday:
+                    numberOfDay = 3;
+                    break;
+                case DayOfWeek.Wednesday:
+                    numberOfDay = 4;
+                    break;
+                case DayOfWeek.Thursday:
+                    numberOfDay = 5;
+                    break;
+                case DayOfWeek.Friday:
+                    numberOfDay = 6;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+
+            MyStartOfWeek = DateTime.UtcNow.AddDays(-numberOfDay);
+
+            this.StateHasChanged();
+
+        }
+    }
+
+
     public ProjectManagerTrackingHoursApprovalViewModel ViewModel { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -90,6 +150,18 @@
         if (firstRender)
         {
             var id = await UserDataService.GetUserId(await AuthenticationStateProvider.GetEmail());
+            if (!Day.HasValue || !Month.HasValue || !Year.HasValue)
+            {
+                var date = DateTime.UtcNow.ToLocalTime();
+                MySelectedDate = new DateTime(date.Year, date.Month, date.Day);
+            }
+            else MySelectedDate = new DateTime(Year.Value, Month.Value, Day.Value);
+            var _projectsExtra = await TimeTrackingService.GetProjectExtraordinaryByManager(id,MyStartOfWeek,MyStartOfWeek.AddDays(6));
+            foreach (var pro in _projectsExtra)
+            {
+                _projectExtraordinary = await TimeTrackingService.GetPendingWeekExtraordinaryFromManager(pro.MyProjectId, id, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+                _projectsExtraordinary.AddRange(_projectExtraordinary);
+            }
             ViewModel = await TimeTrackingService.GetPendingTimeTrackingHoursByProjectManager(id);
             StateHasChanged();
         }

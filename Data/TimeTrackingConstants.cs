@@ -10,5 +10,6 @@
         public const string TimeTrackingStatusId = "TimeTrackingStatusId";
         public const string TrackedHours = "TrackedHours";
         public const string TypeTrackingHours = "TypeTrackingHours";
+        public const string SendHours = "SendHours";
     }
 }
