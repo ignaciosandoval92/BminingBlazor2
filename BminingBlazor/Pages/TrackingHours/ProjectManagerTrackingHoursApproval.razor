@@ -1,7 +1,9 @@
 ﻿@page "/project_manager_dashboard"
 @using BminingBlazor.ViewModels.TrackingHours
 @using Microsoft.AspNetCore.Http
-
+@using BminingBlazor.ViewModels.Projects
+@using SendGrid;
+@using SendGrid.Helpers.Mail;
 @inject IMatDialogService MatDialogService
 @inject ITimeTrackingService TimeTrackingService
 @inject IUserDataService UserDataService
@@ -31,53 +33,96 @@
         <div class="main-circle"></div>
     </div>
 
-    @if (ViewModel != null)
+    @if (!IsLoading)
+    {<h6 class="header-break">@Resource.OrdinaryHours</h6>
+    <div class="alternate2-break"></div>
+    @foreach (var proord in _projectsOrdi)
     {
-
-        @foreach (var proext in _projectsExtraordinary)
-        {
-            <h4>@proext.MyProjectName</h4>
-            <table>
-                <tr>
-                    <th>@Resource.Name</th>
-                    <th>Sab</th>
-                    <th>Dom</th>
-                    <th>Lun</th>
-                    <th>Mar</th>
-                    <th>Mie</th>
-                    <th>Jue</th>
-                    <th>Vie</th>
-                    <th>@Resource.Actions</th>
-                </tr>
-
-                @*@foreach (var projectManagerTrackingHoursProjectMember in projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers)
+        <h4>@proord.MyProjectName</h4>
+        <table>
+            <tr>
+                <th>@Resource.Email</th>
+                <th>Sab</th>
+                <th>Dom</th>
+                <th>Lun</th>
+                <th>Mar</th>
+                <th>Mie</th>
+                <th>Jue</th>
+                <th>Vie</th>
+                <th>@Resource.Actions</th>
+            </tr>
+            @foreach (var pro in _projectsOrdinary)
+            {
+                if (proord.MyProjectId == pro.MyProjectId)
                 {
                     <tr>
+                        <td>@pro.MyUserEmail</td>
+                        <td>@pro.TrackedHoursSat</td>
+                        <td>@pro.TrackedHoursSun</td>
+                        <td>@pro.TrackedHoursMon</td>
+                        <td>@pro.TrackedHoursTue</td>
+                        <td>@pro.TrackedHoursWed</td>
+                        <td>@pro.TrackedHoursThu</td>
+                        <td>@pro.TrackedHoursFri</td>
                         <td>
-                            @projectManagerTrackingHoursProjectMember.MyMemberName
-                        </td>
-                        <td>
-                            @projectManagerTrackingHoursProjectMember.MyHoursLoaded
-                        </td>
-                        <td>
-                            @projectManagerTrackingHoursProjectMember.DateOfHours.ToLongDateString()
-                        </td>
-                        <td class="text-center">
-                            <button @onclick="() => RejectHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="btn-disapproved float-left">
-                            </button>
-                            <button @onclick="() => ApproveHours(projectManagerTrackingHoursProject,projectManagerTrackingHoursProjectMember)" class="btn-approved">
-                            </button>
+                        <button class="btn-approved" @onclick="()=>ApproveHoursOrdinary(pro)"></button>
+                        <button class="btn-disapproved" @onclick="()=>RejectHoursOrdinary(pro)"></button>
                         </td>
                     </tr>
-                }*@
-            </table>
-            <div class="alternate1-break"></div>
-        }
+                }
+
+            }
+
+        </table>
+        <div class="alternate1-break"></div>
     }
-    else
+    <h6 class="header-break">@Resource.ExtraordinaryHours</h6>
+    <div class="alternate2-break"></div>
+    @foreach (var proext in _projectsExtra)
     {
-        <MatProgressBar Indeterminate="true"></MatProgressBar>
+        <h4>@proext.MyProjectName</h4>
+        <table>
+            <tr>
+                <th>@Resource.Email</th>
+                <th>Sab</th>
+                <th>Dom</th>
+                <th>Lun</th>
+                <th>Mar</th>
+                <th>Mie</th>
+                <th>Jue</th>
+                <th>Vie</th>
+                <th>@Resource.Actions</th>
+            </tr>
+            @foreach (var pro in _projectsExtraordinary)
+            {
+                if (proext.MyProjectId == pro.MyProjectId)
+                {
+                    <tr>
+                        <td>@pro.MyUserEmail</td>
+                        <td>@pro.TrackedHoursSat</td>
+                        <td>@pro.TrackedHoursSun</td>
+                        <td>@pro.TrackedHoursMon</td>
+                        <td>@pro.TrackedHoursTue</td>
+                        <td>@pro.TrackedHoursWed</td>
+                        <td>@pro.TrackedHoursThu</td>
+                        <td>@pro.TrackedHoursFri</td>
+                        <td>
+                            <button class="btn-approved" @onclick="()=>ApproveHoursExtraordinary(pro)"></button>                        
+                            <button class="btn-disapproved" @onclick="()=>RejectHoursExtraordinary(pro)"></button>
+                        </td>
+                    </tr>
+                }
+
+            }
+
+        </table>
+        <div class="alternate1-break"></div>
     }
+}
+else
+{
+    <MatProgressBar Indeterminate="true"></MatProgressBar>
+}
 
 </div>
 
@@ -92,6 +137,11 @@
     private DateTime _mySelectedDate;
     public List<ProjectTrackingWeekViewModel> _projectExtraordinary = new List<ProjectTrackingWeekViewModel>();
     public List<ProjectTrackingWeekViewModel> _projectsExtraordinary = new List<ProjectTrackingWeekViewModel>();
+    public List<ProjectTrackingWeekViewModel> _projectOrdinary = new List<ProjectTrackingWeekViewModel>();
+    public List<ProjectTrackingWeekViewModel> _projectsOrdinary = new List<ProjectTrackingWeekViewModel>();
+    public List<ProjectResumeViewModel> _projectsExtra = new List<ProjectResumeViewModel>();
+    public List<ProjectResumeViewModel> _projectsOrdi = new List<ProjectResumeViewModel>();
+    public bool IsLoading = true;
     public DateTime MyStartOfWeek { get; set; }
     public DateTime MySelectedDate
     {
@@ -156,30 +206,88 @@
                 MySelectedDate = new DateTime(date.Year, date.Month, date.Day);
             }
             else MySelectedDate = new DateTime(Year.Value, Month.Value, Day.Value);
-            var _projectsExtra = await TimeTrackingService.GetProjectExtraordinaryByManager(id,MyStartOfWeek,MyStartOfWeek.AddDays(6));
+            _projectsExtra = await TimeTrackingService.GetProjectExtraordinaryByManager(id, MyStartOfWeek, MyStartOfWeek.AddDays(6));
             foreach (var pro in _projectsExtra)
             {
                 _projectExtraordinary = await TimeTrackingService.GetPendingWeekExtraordinaryFromManager(pro.MyProjectId, id, MyStartOfWeek, MyStartOfWeek.AddDays(6));
                 _projectsExtraordinary.AddRange(_projectExtraordinary);
             }
-            ViewModel = await TimeTrackingService.GetPendingTimeTrackingHoursByProjectManager(id);
+            _projectsOrdi = await TimeTrackingService.GetProjectOrdinaryByManager(id, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+            foreach (var pro in _projectsOrdi)
+            {
+                _projectOrdinary = await TimeTrackingService.GetPendingWeekOrdinaryFromManager(pro.MyProjectId, id, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+                _projectsOrdinary.AddRange(_projectOrdinary);
+            }
+            IsLoading = false;
             StateHasChanged();
         }
     }
 
-    private async Task ApproveHours(ProjectManagerTrackingHoursProjectViewModel projectManagerTrackingHoursProject,
-                                    ProjectManagerTrackingHoursProjectMemberViewModel projectManagerTrackingHoursProjectMember)
+    private async Task ApproveHoursOrdinary(ProjectTrackingWeekViewModel project)
     {
-        await TimeTrackingService.ApproveUserTimeTracking(projectManagerTrackingHoursProjectMember.TimeTrackingHoursId);
-        projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers.Remove(projectManagerTrackingHoursProjectMember);
+
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdSat);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdSun);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdMon);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdTue);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdWed);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdThu);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdFri);
+        _projectsOrdinary.Remove(project);
+    }
+    private async Task ApproveHoursExtraordinary(ProjectTrackingWeekViewModel project)
+    {
+
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdSat);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdSun);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdMon);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdTue);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdWed);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdThu);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdFri);
+        _projectsOrdinary.Remove(project);
     }
 
-    private async Task RejectHours(ProjectManagerTrackingHoursProjectViewModel projectManagerTrackingHoursProject,
-                                   ProjectManagerTrackingHoursProjectMemberViewModel projectManagerTrackingHoursProjectMember)
+    private async Task RejectHoursOrdinary(ProjectTrackingWeekViewModel project)
     {
         var reasons = await MatDialogService.PromptAsync(Resource.Reasons);
         if (string.IsNullOrEmpty(reasons)) return;
-        await TimeTrackingService.RejectUserTimeTracking(projectManagerTrackingHoursProjectMember.TimeTrackingHoursId, reasons);
-        projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers.Remove(projectManagerTrackingHoursProjectMember);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdSat);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdSun);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdMon);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdTue);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdWed);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdThu);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdFri);
+        var client = new SendGridClient(SendGridConstants.ApiKey);
+        var from = new EmailAddress(SendGridConstants.SenderEmail, $"{project.MyManagerName} {project.MyManagerLastName}");
+        var subject = string.Format(Resource.HoursRejected, project.MyProjectCode, project.StartWeek.ToShortDateString());
+        var to = new EmailAddress(project.MyUserEmail, $"{project.MyUserName} {project.MyUserLastName}");
+        var plainTextContent = $"{reasons}";
+        var htmlContent = $"<strong>{reasons}</strong>";
+        var sendGridMessage = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+        var response = await client.SendEmailAsync(sendGridMessage);
+        _projectsOrdinary.Remove(project);
+    }
+    private async Task RejectHoursExtraordinary(ProjectTrackingWeekViewModel project)
+    {
+        var reasons = await MatDialogService.PromptAsync(Resource.Reasons);
+        if (string.IsNullOrEmpty(reasons)) return;
+        await TimeTrackingService.RejectUserTimeTracking(project.IdSat);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdSun);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdMon);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdTue);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdWed);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdThu);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdFri);
+        var client = new SendGridClient(SendGridConstants.ApiKey);
+        var from = new EmailAddress(SendGridConstants.SenderEmail, $"{project.MyManagerName} {project.MyManagerLastName}");
+        var subject = string.Format(Resource.HoursRejected, project.MyProjectCode, project.StartWeek.ToShortDateString());
+        var to = new EmailAddress(project.MyUserEmail, $"{project.MyUserName} {project.MyUserLastName}");
+        var plainTextContent = $"{reasons}";
+        var htmlContent = $"<strong>{reasons}</strong>";
+        var sendGridMessage = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+        var response = await client.SendEmailAsync(sendGridMessage);
+        _projectsExtraordinary.Remove(project);
     }
 }

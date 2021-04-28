@@ -107,7 +107,7 @@
     {
         var reasons = await MatDialogService.PromptAsync(Resource.Reasons);
         if (string.IsNullOrEmpty(reasons)) return;
-        await TimeTrackingService.RejectUserTimeTracking(projectManagerTrackingHoursProjectMember.TimeTrackingHoursId, reasons);
+        await TimeTrackingService.RejectUserTimeTracking(projectManagerTrackingHoursProjectMember.TimeTrackingHoursId);
         projectManagerTrackingHoursProject.OurProjectManagerTrackingHoursProjectMembers.Remove(projectManagerTrackingHoursProjectMember);
     }
 }

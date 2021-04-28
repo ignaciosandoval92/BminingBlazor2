@@ -7,6 +7,14 @@ namespace BminingBlazor.ViewModels.TrackingHours
 {
     public class ProjectTrackingWeekViewModel
     {
+        public int? MyManagerId { get; set; }
+        public string MyManagerEmail { get; set; }
+        public string MyManagerName { get; set; }
+        public string MyManagerLastName { get; set; }
+        public int? MyUserId { get; set; }
+        public string MyUserEmail{ get; set; }
+        public string MyUserName { get; set; }
+        public string MyUserLastName { get; set; }
         public int MyProjectId { get; set; }
         public string MyProjectCode { get; set; }
         public string MyProjectName { get; set; }

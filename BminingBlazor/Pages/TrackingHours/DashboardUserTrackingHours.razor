@@ -7,6 +7,8 @@
 @using Humanizer
 @using BminingBlazor.Pages.TrackingHours
 @using BminingBlazor.ViewModels.Projects
+@using SendGrid;
+@using SendGrid.Helpers.Mail;
 
 @inject ITimeTrackingService TimeTrackingService
 @inject IMatToaster MatToaster
@@ -154,22 +156,22 @@
             <tbody>
                 @foreach (var proord in _projectsOrdinary)
                 {
-                <tr>
-                    <td>@proord.MyProjectCode<br /><txt>@proord.MyProjectName</txt></td>
-                    <td>@proord.TrackedHoursSat</td>
-                    <td>@proord.TrackedHoursSun</td>
-                    <td>@proord.TrackedHoursMon</td>
-                    <td>@proord.TrackedHoursTue</td>
-                    <td>@proord.TrackedHoursWed</td>
-                    <td>@proord.TrackedHoursThu</td>
-                    <td>@proord.TrackedHoursFri</td>
-                    <td>
-                        @if (proord.SendHours == 0)
-                        {
-                    <button class="btn-delete" @onclick="() => RemoveItem(proord.MyProjectId, 0)"></button>
-                        }
-                    </td>
-                </tr>
+                    <tr>
+                        <td>@proord.MyProjectCode<br /><txt>@proord.MyProjectName</txt></td>
+                        <td>@proord.TrackedHoursSat</td>
+                        <td>@proord.TrackedHoursSun</td>
+                        <td>@proord.TrackedHoursMon</td>
+                        <td>@proord.TrackedHoursTue</td>
+                        <td>@proord.TrackedHoursWed</td>
+                        <td>@proord.TrackedHoursThu</td>
+                        <td>@proord.TrackedHoursFri</td>
+                        <td>
+                            @if (proord.SendHours == 0)
+                            {
+                                <button class="btn-delete" @onclick="() => RemoveItem(proord.MyProjectId, 0)"></button>
+                            }
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -205,18 +207,18 @@
                         <td>
                             @if (proext.SendHours == 0)
                             {
-                        <button class="btn-delete" @onclick="() => RemoveItem(proext.MyProjectId, 1)"></button>
+                                <button class="btn-delete" @onclick="() => RemoveItem(proext.MyProjectId, 1)"></button>
                             }
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        if (differenceInDays < 21&&differenceInDays>=0)
+        if (differenceInDays < 21 && differenceInDays >= 0)
         {
-        <button @onclick="() => AddItem(MyStartOfWeek)" class="bmining-button ">@Resource.Load</button>
-        <button @onclick="EditHours" class="bmining-button">@Resource.Edit</button>
-        <button @onclick="()=>SendHours(_projectsOrdinary,_projectsExtraordinary)" class="bmining-button">@Resource.Send</button>
+            <button @onclick="() => AddItem(MyStartOfWeek)" class="bmining-button ">@Resource.Load</button>
+            <button @onclick="EditHours" class="bmining-button">@Resource.Edit</button>
+            <button @onclick="()=>SendHours(_projectsOrdinary,_projectsExtraordinary)" class="bmining-button">@Resource.Send</button>
         }
     }
 
@@ -225,18 +227,18 @@
 
 
 @code {
-    [Parameter]
-    public int? Day { get; set; }
-    [Parameter]
-    public int? Month { get; set; }
-    [Parameter]
-    public int? Year { get; set; }
+        [Parameter]
+        public int? Day { get; set; }
+        [Parameter]
+        public int? Month { get; set; }
+        [Parameter]
+        public int? Year { get; set; }
 
     public bool IsLoading { get; set; }
     public string Email { get; set; }
     public double TotalHours { get; set; }
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
-    public List<int> _projects =new List<int>();
+    public List<int> _projects = new List<int>();
     public List<int> idsProjects1 = new List<int>();
     public ProjectTrackingWeekViewModel _projectOrdinary = new ProjectTrackingWeekViewModel();
     public List<ProjectTrackingWeekViewModel> _projectsOrdinary = new List<ProjectTrackingWeekViewModel>();
@@ -344,10 +346,10 @@
     private void AddItem(DateTime date)
     {
         _projects.Clear();
-        NavigationManager.NavigateTo($"/addusertrackinghour/{date.Day}/{date.Month}/{date.Year}",true);
+        NavigationManager.NavigateTo($"/addusertrackinghour/{date.Day}/{date.Month}/{date.Year}", true);
     }
 
-    private async Task RemoveItem(int idProject,int typeHours)
+    private async Task RemoveItem(int idProject, int typeHours)
     {
         _projects.Clear();
         var status = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
@@ -357,7 +359,7 @@
         }
         else
         {
-            await TimeTrackingService.RemoveWeekTrackingHoursFromProject(idProject, userId, MyStartOfWeek.AddDays(-1), MyStartOfWeek.AddDays(6),typeHours);
+            await TimeTrackingService.RemoveWeekTrackingHoursFromProject(idProject, userId, MyStartOfWeek.AddDays(-1), MyStartOfWeek.AddDays(6), typeHours);
             NavigationManager.NavigateTo($"/dashboard_tracking_hours", true);
         }
 
@@ -446,23 +448,38 @@
     {
         foreach (var pro in projectsordinary)
         {
-            await TimeTrackingService.SendTrackedHours(pro.IdSat);
-            await TimeTrackingService.SendTrackedHours(pro.IdSun);
-            await TimeTrackingService.SendTrackedHours(pro.IdMon);
-            await TimeTrackingService.SendTrackedHours(pro.IdTue);
-            await TimeTrackingService.SendTrackedHours(pro.IdWed);
-            await TimeTrackingService.SendTrackedHours(pro.IdThu);
-            await TimeTrackingService.SendTrackedHours(pro.IdFri);
+            if (pro.SendHours == 0)
+            {
+                await TimeTrackingService.SendTrackedHours(pro.IdSat);
+                await TimeTrackingService.SendTrackedHours(pro.IdSun);
+                await TimeTrackingService.SendTrackedHours(pro.IdMon);
+                await TimeTrackingService.SendTrackedHours(pro.IdTue);
+                await TimeTrackingService.SendTrackedHours(pro.IdWed);
+                await TimeTrackingService.SendTrackedHours(pro.IdThu);
+                await TimeTrackingService.SendTrackedHours(pro.IdFri);
+                var client = new SendGridClient(SendGridConstants.ApiKey);
+                var from = new EmailAddress(SendGridConstants.SenderEmail, $"{pro.MyUserName} {pro.MyUserLastName}");
+                var subject = string.Format(Resource.SendHours, pro.MyProjectCode, pro.StartWeek);
+                var to = new EmailAddress(pro.MyManagerEmail, $"{pro.MyManagerName} {pro.MyManagerLastName}");
+                var comment = $"{Resource.SendHours} {pro.MyProjectCode}-{pro.MyProjectName} {Resource.For} {pro.MyUserName} {pro.MyUserLastName}";
+                var plainTextContent = $"{comment}";
+                var htmlContent = $"<strong>{comment}</strong>";
+                var sendGridMessage = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+                var response = await client.SendEmailAsync(sendGridMessage);
+            }
         }
         foreach (var pro in projectsextraordinary)
         {
-            await TimeTrackingService.SendTrackedHours(pro.IdSat);
-            await TimeTrackingService.SendTrackedHours(pro.IdSun);
-            await TimeTrackingService.SendTrackedHours(pro.IdMon);
-            await TimeTrackingService.SendTrackedHours(pro.IdTue);
-            await TimeTrackingService.SendTrackedHours(pro.IdWed);
-            await TimeTrackingService.SendTrackedHours(pro.IdThu);
-            await TimeTrackingService.SendTrackedHours(pro.IdFri);          
+            if (pro.SendHours == 0)
+            {
+                await TimeTrackingService.SendTrackedHours(pro.IdSat);
+                await TimeTrackingService.SendTrackedHours(pro.IdSun);
+                await TimeTrackingService.SendTrackedHours(pro.IdMon);
+                await TimeTrackingService.SendTrackedHours(pro.IdTue);
+                await TimeTrackingService.SendTrackedHours(pro.IdWed);
+                await TimeTrackingService.SendTrackedHours(pro.IdThu);
+                await TimeTrackingService.SendTrackedHours(pro.IdFri);
+            }
         }
         NavigationManager.NavigateTo("/dashboard_tracking_hours", true);
     }

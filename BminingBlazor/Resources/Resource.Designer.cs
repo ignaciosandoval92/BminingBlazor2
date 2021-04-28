@@ -592,6 +592,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to for.
+        /// </summary>
+        internal static string For {
+            get {
+                return ResourceManager.GetString("For", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Friday.
         /// </summary>
         internal static string Friday {
@@ -1137,6 +1146,15 @@ namespace BminingBlazor.Resources {
         internal static string Send {
             get {
                 return ResourceManager.GetString("Send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send hours.
+        /// </summary>
+        internal static string SendHours {
+            get {
+                return ResourceManager.GetString("SendHours", resourceCulture);
             }
         }
         

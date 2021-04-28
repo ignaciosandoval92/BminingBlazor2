@@ -12,7 +12,7 @@ namespace BminingBlazor.Services
         Task<int> AddUserTimeTrackingOrdinary(int userId, int projectId, DateTime timeTrackingDate, double trackedHours);
         Task<int> AddUserTimeTrackingExtraordinary(int userId, int projectId, DateTime timeTrackingDate, double trackedHours);
         Task ApproveUserTimeTracking(int timeTrackingId);
-        Task RejectUserTimeTracking(int timeTrackingId, string reason);
+        Task RejectUserTimeTracking(int timeTrackingId);
         Task<ProjectManagerTrackingHoursApprovalViewModel> GetPendingTimeTrackingHoursByProjectManager(int projectManagerId);
         Task<List<ReportViewModel>> GetUserTrackingModels(int userId, DateTime from, DateTime to);
         Task RemoveTimeTrackingHour(int id);
@@ -25,6 +25,8 @@ namespace BminingBlazor.Services
         Task<ProjectTrackingWeekViewModel> ReadProjectWeekExtraordinary(int idProject, int idUser, DateTime startDate, DateTime to);
         Task SendTrackedHours(int id);
         Task<List<ProjectTrackingWeekViewModel>> GetPendingWeekExtraordinaryFromManager(int idProject, int idManager, DateTime startDate, DateTime to);
+        Task<List<ProjectTrackingWeekViewModel>> GetPendingWeekOrdinaryFromManager(int idProject, int idManager, DateTime startDate, DateTime to);
         Task<List<ProjectResumeViewModel>> GetProjectExtraordinaryByManager(int managerId, DateTime from, DateTime to);
+        Task<List<ProjectResumeViewModel>> GetProjectOrdinaryByManager(int managerId, DateTime from, DateTime to);
     }
 }
