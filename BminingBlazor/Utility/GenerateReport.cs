@@ -50,6 +50,11 @@ namespace Data
                 workSheet.Cells[1, 6].Style.Font.Size = 12;
                 workSheet.Cells[1, 6].Style.Font.Bold = true;
                 workSheet.Cells[1, 6].Style.Border.Top.Style = ExcelBorderStyle.Hair;
+
+                workSheet.Cells[1, 7].Value = Resource.WorkArea;
+                workSheet.Cells[1, 7].Style.Font.Size = 12;
+                workSheet.Cells[1, 7].Style.Font.Bold = true;
+                workSheet.Cells[1, 7].Style.Border.Top.Style = ExcelBorderStyle.Hair;
                 #endregion
                 foreach (var report in _reports)
                 {
@@ -85,6 +90,12 @@ namespace Data
                     workSheet.Cells[line, 6].Style.Font.Bold = true;
                     workSheet.Cells[line, 6].Style.Border.Top.Style = ExcelBorderStyle.Hair;
                     workSheet.Cells[line, 6].Style.Numberformat.Format = "dd/MM/yyyy";
+
+                    workSheet.Cells[line, 7].Value = report.MyWorkArea;
+                    workSheet.Cells[line, 7].Style.Font.Size = 12;
+                    workSheet.Cells[line, 7].Style.Font.Bold = true;
+                    workSheet.Cells[line, 7].Style.Border.Top.Style = ExcelBorderStyle.Hair;
+                    workSheet.Cells[line, 7].Style.Numberformat.Format = "dd/MM/yyyy";
                     #endregion
 
                 }

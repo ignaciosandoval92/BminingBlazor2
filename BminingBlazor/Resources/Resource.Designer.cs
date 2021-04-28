@@ -1312,6 +1312,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Work area.
+        /// </summary>
+        internal static string WorkArea {
+            get {
+                return ResourceManager.GetString("WorkArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
         internal static string Yes {

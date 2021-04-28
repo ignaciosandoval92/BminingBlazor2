@@ -538,4 +538,7 @@
   <data name="For" xml:space="preserve">
     <value>for</value>
   </data>
+  <data name="WorkArea" xml:space="preserve">
+    <value>Work area</value>
+  </data>
 </root>

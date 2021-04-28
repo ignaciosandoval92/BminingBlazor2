@@ -4,6 +4,7 @@ using BminingBlazor.ViewModels.Report;
 using Data;
 using Microsoft.Extensions.Configuration;
 using Models.TimeTracking;
+using Models.User;
 using SqlKata.Execution;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace BminingBlazor.Services
                 .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)                
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
                         $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}",
-                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}");
+                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName},{UserConstants.WorkArea}}}");
 
 
 
@@ -57,7 +58,8 @@ namespace BminingBlazor.Services
                     MyName = (string)item[UserConstants.Name],
                     MyPaternalSurname = (string)item[UserConstants.PaternalLastName],
                     MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
-                    MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate]
+                    MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate],
+                    MyWorkArea = (WorkAreaModelEnum)item[UserConstants.WorkArea]
                 };
                 report.Add(reportViewModel);
             }
@@ -81,7 +83,7 @@ namespace BminingBlazor.Services
                 .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
                         $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}",
-                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}");
+                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName},{UserConstants.WorkArea}}}");
 
 
 
@@ -98,7 +100,8 @@ namespace BminingBlazor.Services
                     MyName = (string)item[UserConstants.Name],
                     MyPaternalSurname = (string)item[UserConstants.PaternalLastName],
                     MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
-                    MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate]
+                    MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate],
+                    MyWorkArea = (WorkAreaModelEnum)item[UserConstants.WorkArea]
                 };
                 report.Add(reportViewModel);
             }
@@ -120,7 +123,7 @@ namespace BminingBlazor.Services
                 .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
                         $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}",
-                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}");
+                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName},{UserConstants.WorkArea}}}");
 
 
 
@@ -137,7 +140,8 @@ namespace BminingBlazor.Services
                     MyName = (string)item[UserConstants.Name],
                     MyPaternalSurname = (string)item[UserConstants.PaternalLastName],
                     MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
-                    MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate]
+                    MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate],
+                    MyWorkArea=(WorkAreaModelEnum)item[UserConstants.WorkArea]
                 };
                 report.Add(reportViewModel);
             }
@@ -159,7 +163,7 @@ namespace BminingBlazor.Services
                 .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
                         $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode}}}",
-                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName}}}");
+                        $"{TableConstants.UserTable}.{{{UserConstants.Name},{UserConstants.PaternalLastName},{UserConstants.WorkArea}}}");
 
 
 
@@ -176,7 +180,8 @@ namespace BminingBlazor.Services
                     MyName = (string)item[UserConstants.Name],
                     MyPaternalSurname = (string)item[UserConstants.PaternalLastName],
                     MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
-                    MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate]
+                    MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate],
+                    MyWorkArea = (WorkAreaModelEnum)item[UserConstants.WorkArea]
                 };
                 report.Add(reportViewModel);
             }

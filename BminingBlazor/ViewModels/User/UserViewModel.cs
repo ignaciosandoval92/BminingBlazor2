@@ -1,4 +1,6 @@
-﻿namespace BminingBlazor.ViewModels.User
+﻿using Models.User;
+
+namespace BminingBlazor.ViewModels.User
 {
     public class UserViewModel
     {
@@ -11,6 +13,7 @@
         public string MyJob { get; set; }
         public string MyTelephone { get; set; }
         public string MyAddress { get; set; }
+        public WorkAreaModelEnum MyWorkArea { get; set; }
         public ContractTypeEnum MyContractType { get; set; }
         
     }

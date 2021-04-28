@@ -2,6 +2,7 @@
 using Data;
 using Microsoft.Extensions.Configuration;
 using Models;
+using Models.User;
 using SqlKata.Execution;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace BminingBlazor.Services
                 .Select(UserConstants.Phone)
                 .Select(UserConstants.HomeAddress)
                 .Select(UserConstants.CodContractType)
+                .Select(UserConstants.WorkArea)
                 .GetAsync<UserModel>()).ToList();
             var usersViewModel = new List<UserViewModel>();
             foreach (var user in users)
@@ -54,7 +56,8 @@ namespace BminingBlazor.Services
                     MyJob = user.Job,
                     MyTelephone = user.Phone,
                     MyAddress = user.HomeAddress,
-                    MyContractType = (ContractTypeEnum)user.CodContractType
+                    MyContractType = (ContractTypeEnum)user.CodContractType,
+                    MyWorkArea=(WorkAreaModelEnum)user.WorkArea
 
                 });
             }
