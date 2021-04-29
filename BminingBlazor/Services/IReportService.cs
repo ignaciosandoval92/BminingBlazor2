@@ -12,5 +12,6 @@ namespace BminingBlazor.Services
         Task<List<ReportViewModel>> GetProjectReport(DateTime from, DateTime to, int projectId);
         Task<List<ReportViewModel>> GetHoursChargedReport(DateTime from, DateTime to);
         Task<List<ReportViewModel>> GetHoursApprovedReport(DateTime from, DateTime to);
+        Task<List<ReportViewModel>> GetNotChargedReport(DateTime from, DateTime to);
     }
 }

@@ -541,4 +541,13 @@
   <data name="WorkArea" xml:space="preserve">
     <value>Work area</value>
   </data>
+  <data name="Engeneering" xml:space="preserve">
+    <value>Engeneering</value>
+  </data>
+  <data name="Thesist" xml:space="preserve">
+    <value>Thesis</value>
+  </data>
+  <data name="StrategicCommunication" xml:space="preserve">
+    <value>Strategic communication</value>
+  </data>
 </root>

@@ -520,6 +520,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Engeneering.
+        /// </summary>
+        internal static string Engeneering {
+            get {
+                return ResourceManager.GetString("Engeneering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enterprise.
         /// </summary>
         internal static string Enterprise {
@@ -1195,6 +1204,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Strategic communication.
+        /// </summary>
+        internal static string StrategicCommunication {
+            get {
+                return ResourceManager.GetString("StrategicCommunication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Surname.
         /// </summary>
         internal static string Surname {
@@ -1209,6 +1227,15 @@ namespace BminingBlazor.Resources {
         internal static string Thesis {
             get {
                 return ResourceManager.GetString("Thesis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thesis.
+        /// </summary>
+        internal static string Thesist {
+            get {
+                return ResourceManager.GetString("Thesist", resourceCulture);
             }
         }
         

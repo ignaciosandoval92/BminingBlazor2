@@ -47,7 +47,26 @@
                             <td>@reportMember.MyNameProject</td>
                             <td>@reportMember.MyTrackedHours</td>
                             <td>@reportMember.MyDateTracked</td>
-                            <td>@reportMember.MyWorkArea</td>
+                            <td>
+                                @switch (reportMember.MyWorkArea)
+                                {
+                                    case Models.User.WorkAreaModelEnum.Unknown:
+                                        @Resource.Unknown
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.Administration:
+                                        @Resource.Administration
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.Engineering:
+                                        @Resource.Engeneering
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.Thesis:
+                                        @Resource.Thesist
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.Strategic_communication:
+                                        @Resource.StrategicCommunication
+                                        break;
+                                }
+                                                    </td>
                         </tr>
                     }
                 </tbody>

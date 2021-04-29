@@ -1,13 +1,13 @@
-﻿@page "/ViewReport/{userId:int}/{startDate:datetime}/{endDate:datetime}/{projectId:int}"
+﻿@page "/ViewReportNotcharged/{startDate:datetime}/{endDate:datetime}"
 @using BminingBlazor.ViewModels.Report;
+@using BminingBlazor.ViewModels.User
 @using System.IO;
 @using Microsoft.JSInterop;
 @using OfficeOpenXml;
 @using OfficeOpenXml.Style;
 @using Data;
-
-
 @inject IReportService ReportService
+@inject IUserDataService UserDataService
 @inject IJSRuntime iJSRuntime
 
 
@@ -32,25 +32,17 @@
                     <tr>
                         <th>@Resource.Name</th>
                         <th>@Resource.Surname</th>
-                        <th>@Resource.ProjectCode</th>
-                        <th>@Resource.ProjectName</th>
-                        <th>@Resource.Hours</th>
-                        <th>@Resource.Date</th>
                         <th>@Resource.WorkArea</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var reportMember in _report)
+                    @foreach (var user in _userReport)
                     {
                         <tr>
-                            <td>@reportMember.MyName</td>
-                            <td>@reportMember.MyPaternalSurname</td>
-                            <td>@reportMember.MyCodProject</td>
-                            <td>@reportMember.MyNameProject</td>
-                            <td>@reportMember.MyTrackedHours</td>
-                            <td>@reportMember.MyDateTracked</td>
+                            <td>@user.MyName</td>
+                            <td>@user.MyPaternalSurname</td>
                             <td>
-                                @switch (reportMember.MyWorkArea)
+                                @switch (user.MyWorkArea)
                                 {
                                     case Models.User.WorkAreaModelEnum.Unknown:
                                         @Resource.Unknown
@@ -67,7 +59,7 @@
                                     case Models.User.WorkAreaModelEnum.Strategic_communication:
                                         @Resource.StrategicCommunication
                                         break;
-                                }
+                                }                                                       
                                                     </td>
                         </tr>
                     }
@@ -79,32 +71,33 @@
     <button class="btn-download float-right" @onclick="ExportExcel"></button>
 </div>
 @code {
-
-        [Parameter]
-        public int userId { get; set; }
-        [Parameter]
-        public DateTime startDate { get; set; }
-        [Parameter]
-        public DateTime endDate { get; set; }
-        [Parameter]
-        public int projectId { get; set; }
-
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
 
     private List<ReportViewModel> _report;
-
+    public List<UserViewModel> _userReport;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            _report = await ReportService.GetUserReport(userId, startDate, endDate, projectId);
+            var _users = await UserDataService.ReadUsers();
+            _userReport = _users;
+            _report = await ReportService.GetNotChargedReport(startDate, endDate);
+            foreach (var user in _report)
+            {
+                var itemToRemove = _users.Single(r => r.MyId == user.MyId);
+                this._userReport.Remove(itemToRemove);
+            }
             StateHasChanged();
         }
     }
     public async Task ExportExcel()
     {
-        GenerateReport generateReport = new GenerateReport()
-        { _reports = _report };
+        GenerateReportNotCharged generateReport = new GenerateReportNotCharged()
+        { _reports = _userReport };
         generateReport.GenerateExcel(iJSRuntime);
     }
 }

@@ -14,5 +14,6 @@ namespace BminingBlazor.ViewModels.Report
         public string MyCodProject { get; set; }
         public string MyNameProject { get; set; }
         public WorkAreaModelEnum MyWorkArea { get; set; }
+        
     }
 }

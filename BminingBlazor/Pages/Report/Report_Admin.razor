@@ -21,6 +21,7 @@
 
     <button @onclick="@ReportHoursCharged" class="bmining-button float-right">reporte horas cargadas</button>
     <button @onclick="@ReportHoursApproved" class="bmining-button float-right">reporte horas aprobadas</button>
+    <button @onclick="@ReportNotCharged" class="bmining-button float-right">reporte horas no cargadas</button>
 </div>
 @code {
     DateTime StartDate;
@@ -39,5 +40,8 @@
     {
         NavigationManager.NavigateTo($"/viewreporthoursapproved/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}");
     }
-
+    private void ReportNotCharged()
+    {
+        NavigationManager.NavigateTo($"/viewreportNotcharged/{StartDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{EndDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}");
+    }
 }

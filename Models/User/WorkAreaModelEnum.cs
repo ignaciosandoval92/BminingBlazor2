@@ -4,7 +4,9 @@
     {
         Unknown = 0,
         Administration = 1,
-        engineering=2,
+        Engineering=2,
+        Thesis=3,
+        Strategic_communication=4,
 
     }
 }
