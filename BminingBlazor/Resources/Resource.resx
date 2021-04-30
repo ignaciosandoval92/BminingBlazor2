@@ -553,4 +553,7 @@
   <data name="WrongNumberOfHours" xml:space="preserve">
     <value>Wrong number of hours</value>
   </data>
+  <data name="RadiationToDay" xml:space="preserve">
+    <value>Radiation to day</value>
+  </data>
 </root>

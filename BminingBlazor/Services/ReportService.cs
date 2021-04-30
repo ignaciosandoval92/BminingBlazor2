@@ -273,5 +273,28 @@ namespace BminingBlazor.Services
             }
             return report;
         }
+        public async Task<int> ReadRadiationUV()
+        {
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            var Radiation = (await queryFactory
+                .Query()
+                .From(TableConstants.RadiationUV)
+                .Select(RadiationUVConstant.RadiationUV)
+                .Where(RadiationUVConstant.IdRadiationUV,1)               
+                .GetAsync<int>()).ToList();
+            var RadiationUV = Radiation.First();         
+            
+            return RadiationUV;
+        }
+        public async Task EditRadiationUV(int RadiationUV)
+        {            
+            var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
+            await queryFactory.Query(TableConstants.RadiationUV).Where(RadiationUVConstant.IdRadiationUV, 1)
+                .UpdateAsync(new Dictionary<string, object>
+                {
+                    {RadiationUVConstant.RadiationUV, RadiationUV}
+                    
+                });
+        }
     }
 }

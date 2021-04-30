@@ -1042,6 +1042,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Radiation to day.
+        /// </summary>
+        internal static string RadiationToDay {
+            get {
+                return ResourceManager.GetString("RadiationToDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reasons.
         /// </summary>
         internal static string Reasons {

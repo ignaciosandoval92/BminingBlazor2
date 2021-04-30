@@ -1,4 +1,125 @@
 @page "/"
+@inject IReportService ReportService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IUserDataService UserDataService
+@inject IMatDialogService MatDialogService
+<h6 style="min-height:13pt;max-width:50pt;font-size:10pt;background-color:#002060;color:azure;" class="text-center"> @TypeRadiation()</h6>
+<h4 style="background-color:@ColorRadiation();max-width:50pt;" class="text-center">@RadiationUV</h4>
+<h1 style="min-height: 15pt; max-width: 50pt; font-size: 5pt; background-color: #002060; color: azure;" class="text-center"> @SecurityRadiation()</h1>
+<img src="https://i.ibb.co/C0VbHxM/Tabla-radiacio-n-UV.png" class="center" />
 
+@if (UserId == 37)
+{
+    <button class="bmining-button" @onclick="EditRadiationUV">@Resource.Edit</button>
+}
 
+@code{
+    public int RadiationUV;
+    public int UserId = new int();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            var email = await AuthenticationStateProvider.GetEmail();
+            UserId = await UserDataService.GetUserId(email);
+            RadiationUV = await ReportService.ReadRadiationUV();
 
+            StateHasChanged();
+        }
+    }
+    private string TypeRadiation()
+    {
+        if (RadiationUV == 1 || RadiationUV == 2)
+        {
+            return "BAJO";
+        }
+        if (RadiationUV == 3 || RadiationUV == 4||RadiationUV==5)
+        {
+            return "MODERADO";
+        }
+        if (RadiationUV == 6 || RadiationUV == 7 )
+        {
+            return "ALTO";
+        }
+        if (RadiationUV == 8 || RadiationUV == 9 || RadiationUV == 10)
+        {
+            return "MUY ALTO";
+        }
+        if(RadiationUV==11)
+        {
+            return "EXTREMO";
+        }
+        else
+        {
+            return "";
+        }
+    }
+    private string SecurityRadiation()
+    {
+        if (RadiationUV == 1 || RadiationUV == 2)
+        {
+            return "NO NECESITA PROTECCIÓN";
+        }
+        if (RadiationUV == 3 || RadiationUV == 4 || RadiationUV == 5)
+        {
+            return "NECESITA PROTECCIÓN";
+        }
+        if (RadiationUV == 6 || RadiationUV == 7 )
+        {
+            return "NECESITA PROTECCIÓN";
+        }
+        if (RadiationUV == 8 || RadiationUV == 9 || RadiationUV == 10)
+        {
+            return "NECESITA PROTECCIÓN EXTRA";
+        }
+        if (RadiationUV == 11)
+        {
+            return "NECESITA PROTECCIÓN EXTRA";
+        }
+        else
+        {
+            return "";
+        }
+    }
+    private string ColorRadiation()
+    {
+        if (RadiationUV == 1 || RadiationUV == 2)
+        {
+            return "green";
+        }
+        if (RadiationUV == 3 || RadiationUV == 4 || RadiationUV == 5)
+        {
+            return "yellow";
+        }
+        if (RadiationUV == 6 || RadiationUV == 7)
+        {
+            return "orange";
+        }
+        if (RadiationUV == 8 || RadiationUV == 9 || RadiationUV == 10)
+        {
+            return "red";
+        }
+        if (RadiationUV == 11)
+        {
+            return "violet";
+        }
+        else
+        {
+            return "";
+        }
+    }
+    private async Task EditRadiationUV()
+    {
+        var answer = await MatDialogService.PromptAsync(Resource.RadiationToDay, RadiationUV.ToString());
+        if (answer == null)
+            return;
+        if (!int.TryParse(answer, out var newRadiation))
+        {
+            await MatDialogService.AlertAsync(Resource.InvalidNumber);
+            return;
+        }
+        await ReportService.EditRadiationUV(newRadiation);
+        RadiationUV = newRadiation;
+    }
+}

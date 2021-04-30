@@ -14,5 +14,7 @@ namespace BminingBlazor.Services
         Task<List<ReportViewModel>> GetHoursApprovedReport(DateTime from, DateTime to);
         Task<List<ReportViewModel>> GetNotChargedReport(DateTime from, DateTime to);
         Task<List<ReportViewModel>> GetManagerNotApprovedHoursReport(DateTime from, DateTime to);
+        Task<int> ReadRadiationUV();
+        Task EditRadiationUV(int RadiationUV);
     }
 }
