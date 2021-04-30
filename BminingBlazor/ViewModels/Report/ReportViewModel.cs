@@ -9,6 +9,7 @@ namespace BminingBlazor.ViewModels.Report
 {
     public class ReportViewModel : UserViewModel 
     {
+        public int MyManagerId { get; set; }
         public double MyTrackedHours { get; set; }
         public DateTime MyDateTracked { get; set; }
         public string MyCodProject { get; set; }

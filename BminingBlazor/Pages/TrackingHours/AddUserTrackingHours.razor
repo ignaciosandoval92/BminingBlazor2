@@ -15,7 +15,15 @@
         display: inline-grid;
         grid-template-rows: auto 1fr auto 1fr;
     }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
     .load-hours-item {
         display: inline;
     }
@@ -95,13 +103,13 @@
                             </MatAutocompleteList>
                         </td>
 
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(0).MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(1).MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(2).MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(3).MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(4).MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(5).MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(6).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(0).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(1).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(2).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(3).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(4).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(5).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(6).MyHours" /> </td>
                         <td>
                             <button class="btn-delete" @onclick="() => DeleteTrackingHoursOrdinary(trackingHours)">
                             </button>
@@ -169,13 +177,13 @@
                             </MatAutocompleteList>
                         </td>
 
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(0).MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(1).MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(2).MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(3).MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(4).MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(5).MyHours" /> </td>
-                        <td><input style="max-width:40px;" @bind="@trackingHours.ElementAt(6).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(0).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(1).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(2).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(3).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(4).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(5).MyHours" /> </td>
+                        <td><input type="number" style="max-width:40px;" @bind="@trackingHours.ElementAt(6).MyHours" /> </td>
                         <td>
                             <button class="btn-delete" @onclick="() => DeleteTrackingHoursExtraordinary(trackingHours)">
                             </button>

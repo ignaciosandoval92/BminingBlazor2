@@ -549,4 +549,7 @@
   <data name="StrategicCommunication" xml:space="preserve">
     <value>Comunicación Estratégica</value>
   </data>
+  <data name="WrongNumberOfHours" xml:space="preserve">
+    <value>Cantidad errónea de horas</value>
+  </data>
 </root>

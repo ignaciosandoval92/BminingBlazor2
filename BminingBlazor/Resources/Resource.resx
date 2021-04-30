@@ -550,4 +550,7 @@
   <data name="StrategicCommunication" xml:space="preserve">
     <value>Strategic communication</value>
   </data>
+  <data name="WrongNumberOfHours" xml:space="preserve">
+    <value>Wrong number of hours</value>
+  </data>
 </root>

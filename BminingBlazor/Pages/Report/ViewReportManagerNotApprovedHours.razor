@@ -1,0 +1,102 @@
+﻿@page "/ViewReportManagerNotApproved/{startDate:datetime}/{endDate:datetime}"
+@using BminingBlazor.ViewModels.Report;
+@using BminingBlazor.ViewModels.User
+@using System.IO;
+@using Microsoft.JSInterop;
+@using OfficeOpenXml;
+@using OfficeOpenXml.Style;
+@using Data;
+@inject IReportService ReportService
+@inject IUserDataService UserDataService
+@inject IJSRuntime iJSRuntime
+
+
+<div class="bmining-app">
+    <div class="d-flex flex-row w-100 justify-content-between">
+        <div class="d-inline-block">
+            <h2>@Resource.Report</h2>
+        </div>
+    </div>
+    <div class="main-break">
+        <div class="main-circle"></div>
+    </div>
+    @if (_report == null)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
+        <div class="table-responsive{-sm|-md|-lg|-xl}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>@Resource.Name</th>
+                        <th>@Resource.Surname</th>
+                        <th>@Resource.WorkArea</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in _userReport)
+                    {
+                        <tr>
+                            <td>@user.MyName</td>
+                            <td>@user.MyPaternalSurname</td>
+                            <td>
+                                @switch (user.MyWorkArea)
+                                {
+                                    case Models.User.WorkAreaModelEnum.Unknown:
+                                        @Resource.Unknown
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.Administration:
+                                        @Resource.Administration
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.Engineering:
+                                        @Resource.Engeneering
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.Thesis:
+                                        @Resource.Thesist
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.Strategic_communication:
+                                        @Resource.StrategicCommunication
+                                        break;
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+    <button class="btn-download float-right" @onclick="ExportExcel"></button>
+</div>
+@code {
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
+
+    private List<ReportViewModel> _report;
+    public List<UserViewModel> _userReport =new List<UserViewModel>();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            var _users = await UserDataService.ReadUsers();           
+            _report = await ReportService.GetManagerNotApprovedHoursReport(startDate, endDate);
+            foreach (var user in _report)
+            {
+                var itemToRemove = _users.Single(r => r.MyId == user.MyManagerId);
+                this._userReport.Add(itemToRemove);
+            }
+            StateHasChanged();
+        }
+    }
+    public async Task ExportExcel()
+    {
+        GenerateReportNotCharged generateReport = new GenerateReportNotCharged()
+        { _reports = _userReport };
+        generateReport.GenerateExcel(iJSRuntime);
+    }
+}

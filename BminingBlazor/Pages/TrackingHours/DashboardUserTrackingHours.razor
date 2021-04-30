@@ -227,16 +227,15 @@
 
 
 @code {
-        [Parameter]
-        public int? Day { get; set; }
-        [Parameter]
-        public int? Month { get; set; }
-        [Parameter]
-        public int? Year { get; set; }
+    [Parameter]
+    public int? Day { get; set; }
+    [Parameter]
+    public int? Month { get; set; }
+    [Parameter]
+    public int? Year { get; set; }
 
     public bool IsLoading { get; set; }
     public string Email { get; set; }
-    public double TotalHours { get; set; }
     public DashboardUserTrackingViewModel DashboardUserTracking { get; set; }
     public List<int> _projects = new List<int>();
     public List<int> idsProjects1 = new List<int>();
@@ -446,6 +445,29 @@
     }
     public async Task SendHours(List<ProjectTrackingWeekViewModel> projectsordinary, List<ProjectTrackingWeekViewModel> projectsextraordinary)
     {
+        double TotalHours;
+        double HoursMon=0;
+        double HoursTue=0;
+        double HoursWed=0;
+        double HoursThu=0;
+        double HoursFri=0;
+
+        foreach (var pro in projectsordinary)
+        {
+            HoursMon = pro.TrackedHoursMon + HoursMon;
+            HoursTue = pro.TrackedHoursTue + HoursTue;
+            HoursWed = pro.TrackedHoursMon + HoursWed;
+            HoursThu = pro.TrackedHoursMon + HoursThu;
+            HoursFri = pro.TrackedHoursMon + HoursFri;
+        }
+        TotalHours = HoursMon + HoursTue + HoursWed + HoursThu + HoursFri;
+
+        if(HoursMon<9||HoursTue<9||HoursWed<9||HoursThu<9||HoursFri<5||TotalHours>41)
+        {
+            await MatDialogService.AlertAsync(@Resource.WrongNumberOfHours);
+            return;
+        }
+
         foreach (var pro in projectsordinary)
         {
             if (pro.SendHours == 0)

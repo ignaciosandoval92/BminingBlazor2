@@ -72,7 +72,7 @@ namespace BminingBlazor.Services
                     $"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.ProjectId}")
                 .Where($"{ProjectConstants.ProjectManagerId}", projectManagerId)
                 .Where($"{TimeTrackingConstants.TimeTrackingStatusId}", (int)TimeTrackingStatusEnum.WaitingForApproval)
-                .Where($"{TimeTrackingConstants.SendHours}",(int)TimeTrackingSendHoursEnum.Send)
+                .Where($"{TimeTrackingConstants.SendHours}", (int)TimeTrackingSendHoursEnum.Send)
                 .Include(TableConstants.UserTable, memberQuery, $"{UserConstants.UserId}",
                                                                           $"{MemberConstants.UserId}")
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
@@ -288,8 +288,8 @@ namespace BminingBlazor.Services
                 {
                     {TimeTrackingConstants.TimeTrackingStatusId, (int) TimeTrackingStatusEnum.Rejected},
                     {TimeTrackingConstants.SendHours,(int)TimeTrackingSendHoursEnum.NotSend }
-                });        
-            
+                });
+
         }
         public async Task<List<ProjectResumeViewModel>> ChargedProjectOrdinary(int userId, DateTime from, DateTime to)
         {
@@ -300,7 +300,7 @@ namespace BminingBlazor.Services
 
             var query = queryFactory.Query(TableConstants.TimeTrackingTable)
                 .Where(TimeTrackingConstants.UserId, userId)
-                .Where($"{TableConstants.ProjectTable}.{ProjectConstants.StatusId}", (int)ProjectStatusEnum.Active)                
+                .Where($"{TableConstants.ProjectTable}.{ProjectConstants.StatusId}", (int)ProjectStatusEnum.Active)
                 .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
                                                   $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")
@@ -317,7 +317,7 @@ namespace BminingBlazor.Services
             var timeTrackingViewModels = new List<ProjectResumeViewModel>();
             foreach (var item in items)
             {
-               
+
                 var timeTrackingViewModel = new ProjectResumeViewModel
                 {
 
@@ -369,13 +369,13 @@ namespace BminingBlazor.Services
             }
             return timeTrackingViewModels;
         }
-        public async Task RemoveWeekTrackingHoursFromProject(int idProject, int idUser, DateTime from, DateTime to,int TypeHours)
+        public async Task RemoveWeekTrackingHoursFromProject(int idProject, int idUser, DateTime from, DateTime to, int TypeHours)
         {
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             await queryFactory.Query(TableConstants.TimeTrackingTable)
                 .Where(TimeTrackingConstants.ProjectId, idProject)
                 .Where(TimeTrackingConstants.UserId, idUser)
-                .Where(TimeTrackingConstants.TypeTrackingHours,TypeHours)
+                .Where(TimeTrackingConstants.TypeTrackingHours, TypeHours)
                 .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
                 .DeleteAsync();
         }
@@ -414,8 +414,8 @@ namespace BminingBlazor.Services
             int idWed = new int();
             int idThu = new int();
             int idFri = new int();
-            string projectName ="";
-            string projectCode="";
+            string projectName = "";
+            string projectCode = "";
             int SendHours = new int();
             string UserEmail = "";
             string UserName = "";
@@ -427,7 +427,7 @@ namespace BminingBlazor.Services
 
             foreach (var item in items)
             {
-                
+
                 if (from.Day == ((DateTime)item[TimeTrackingConstants.TimeTrackingDate]).Day)
                 {
                     sat = (double)item[TimeTrackingConstants.TrackedHours];
@@ -490,20 +490,20 @@ namespace BminingBlazor.Services
                 TrackedHoursWed = wed,
                 TrackedHoursThu = thu,
                 TrackedHoursFri = fri,
-                IdSat=idSat,
-                IdSun=idSun,
-                IdMon=idMon,
-                IdTue=idTue,
-                IdWed=idWed,
-                IdThu=idThu,
-                IdFri=idFri,
-                SendHours=SendHours,
-                MyUserEmail=UserEmail,
-                MyUserName=UserName,
-                MyUserLastName=UserLastName,
-                MyManagerEmail=ManagerEmail,
-                MyManagerName=ManagerName,
-                MyManagerLastName=ManagerLastName
+                IdSat = idSat,
+                IdSun = idSun,
+                IdMon = idMon,
+                IdTue = idTue,
+                IdWed = idWed,
+                IdThu = idThu,
+                IdFri = idFri,
+                SendHours = SendHours,
+                MyUserEmail = UserEmail,
+                MyUserName = UserName,
+                MyUserLastName = UserLastName,
+                MyManagerEmail = ManagerEmail,
+                MyManagerName = ManagerName,
+                MyManagerLastName = ManagerLastName
             };
             return timeTrackingViewModel;
         }
@@ -544,7 +544,7 @@ namespace BminingBlazor.Services
             int idFri = new int();
             string projectName = "";
             string projectCode = "";
-            int SendHours=new int();
+            int SendHours = new int();
 
 
 
@@ -621,13 +621,13 @@ namespace BminingBlazor.Services
         }
         public async Task SendTrackedHours(int id)
         {
-            
+
             var queryFactory = _dataAccess.GetQueryFactory(_connectionString);
             await queryFactory.Query(TableConstants.TimeTrackingTable).Where(TimeTrackingConstants.TimeTrackingId, id)
                 .UpdateAsync(new Dictionary<string, object>
                 {
                     {TimeTrackingConstants.SendHours, (int)TimeTrackingSendHoursEnum.Send}
-                   
+
                 });
         }
         public async Task<List<ProjectTrackingWeekViewModel>> GetPendingWeekExtraordinaryFromManager(int idProject, int idManager, DateTime startDate, DateTime to)
@@ -637,17 +637,19 @@ namespace BminingBlazor.Services
             var userQuery = queryFactory.Query(TableConstants.UserTable);
             var managerQuery = queryFactory.Query(TableConstants.UserTable);
 
-            var query = queryFactory.Query(TableConstants.TimeTrackingTable)               
+            var query = queryFactory.Query(TableConstants.TimeTrackingTable)
                 .Where($"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}", idProject)
                 .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
                                                   $"{TableConstants.TimeTrackingTable}.{ProjectConstants.ProjectId}")
                 .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
                 .Include(ProjectConstants.ProjectManager, managerQuery, ProjectConstants.ProjectManagerId, UserConstants.UserId)
-                .Select($"{TableConstants.TimeTrackingTable}.{{*}}",              
-                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode},{ProjectConstants.ProjectManagerId}}}").Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.TypeTrackingHours}", (int)TimeTrackingTypeEnum.Extraordinary)
+                .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
+                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode},{ProjectConstants.ProjectManagerId}}}")
+                .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.TypeTrackingHours}", (int)TimeTrackingTypeEnum.Extraordinary)
                         .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.SendHours}", (int)TimeTrackingSendHoursEnum.Send)
-                        .Where($"{TableConstants.ProjectTable}.{ProjectConstants.ProjectManagerId}",idManager);
+                        .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.TimeTrackingStatusId}", (int)TimeTrackingStatusEnum.WaitingForApproval)
+                        .Where($"{TableConstants.ProjectTable}.{ProjectConstants.ProjectManagerId}", idManager);
 
 
 
@@ -655,9 +657,9 @@ namespace BminingBlazor.Services
             List<ProjectTrackingWeekViewModel> timeTrackingsViewModel = new List<ProjectTrackingWeekViewModel>();
             List<int> Users = new List<int>();
 
-            foreach(var item in items)
+            foreach (var item in items)
             {
-                if(Users.Contains((int)item[UserConstants.UserId]))
+                if (Users.Contains((int)item[UserConstants.UserId]))
                 {
 
                 }
@@ -687,7 +689,7 @@ namespace BminingBlazor.Services
                 int sendHours = new int();
                 int? userId = new int();
                 string userEmail = "";
-                
+
 
 
                 foreach (var item in items)
@@ -734,37 +736,37 @@ namespace BminingBlazor.Services
                         sendHours = (int)item[TimeTrackingConstants.SendHours];
                         userId = (int)item[UserConstants.UserId];
                         var user = (IDictionary<string, object>)item[TableConstants.UserTable];
-                        userEmail =(string)user[UserConstants.EmailBmining];
-                        
+                        userEmail = (string)user[UserConstants.EmailBmining];
+
                     }
                 };
-                    var timeTrackingViewModel = new ProjectTrackingWeekViewModel
-                    {
+                var timeTrackingViewModel = new ProjectTrackingWeekViewModel
+                {
 
-                        MyProjectId = idProject,
-                        MyProjectName = projectName,
-                        MyProjectCode = projectCode,
-                        StartWeek = from,
-                        EndWeek = to,
-                        TrackedHoursSat = sat,
-                        TrackedHoursSun = sun,
-                        TrackedHoursMon = mon,
-                        TrackedHoursTue = tue,
-                        TrackedHoursWed = wed,
-                        TrackedHoursThu = thu,
-                        TrackedHoursFri = fri,
-                        IdSat = idSat,
-                        IdSun = idSun,
-                        IdMon = idMon,
-                        IdTue = idTue,
-                        IdWed = idWed,
-                        IdThu = idThu,
-                        IdFri = idFri,
-                        SendHours = sendHours,
-                        MyUserId=userId,
-                        MyUserEmail=userEmail
-                    };
-                
+                    MyProjectId = idProject,
+                    MyProjectName = projectName,
+                    MyProjectCode = projectCode,
+                    StartWeek = from,
+                    EndWeek = to,
+                    TrackedHoursSat = sat,
+                    TrackedHoursSun = sun,
+                    TrackedHoursMon = mon,
+                    TrackedHoursTue = tue,
+                    TrackedHoursWed = wed,
+                    TrackedHoursThu = thu,
+                    TrackedHoursFri = fri,
+                    IdSat = idSat,
+                    IdSun = idSun,
+                    IdMon = idMon,
+                    IdTue = idTue,
+                    IdWed = idWed,
+                    IdThu = idThu,
+                    IdFri = idFri,
+                    SendHours = sendHours,
+                    MyUserId = userId,
+                    MyUserEmail = userEmail
+                };
+
                 timeTrackingsViewModel.Add(timeTrackingViewModel);
             }
             return timeTrackingsViewModel;
@@ -776,7 +778,7 @@ namespace BminingBlazor.Services
             var userQuery = queryFactory.Query(TableConstants.UserTable);
             var managerQuery = queryFactory.Query(TableConstants.UserTable);
 
-            var query = queryFactory.Query(TableConstants.TimeTrackingTable)                
+            var query = queryFactory.Query(TableConstants.TimeTrackingTable)
                 .Where($"{TableConstants.ProjectTable}.{ProjectConstants.StatusId}", (int)ProjectStatusEnum.Active)
                 .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
@@ -786,8 +788,9 @@ namespace BminingBlazor.Services
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
                         $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode},{ProjectConstants.ProjectManagerId}}}")
                 .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.TypeTrackingHours}", (int)TimeTrackingTypeEnum.Extraordinary)
+                .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.TimeTrackingStatusId}", (int)TimeTrackingStatusEnum.WaitingForApproval)
                 .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.SendHours}", (int)TimeTrackingSendHoursEnum.Send)
-                .Where($"{ProjectConstants.ProjectManagerId}",managerId)
+                .Where($"{ProjectConstants.ProjectManagerId}", managerId)
                         .GroupBy(ProjectConstants.ProjectId);
 
 
@@ -828,6 +831,7 @@ namespace BminingBlazor.Services
                         $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode},{ProjectConstants.ProjectManagerId}}}")
                 .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.TypeTrackingHours}", (int)TimeTrackingTypeEnum.Ordinary)
                 .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.SendHours}", (int)TimeTrackingSendHoursEnum.Send)
+                .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.TimeTrackingStatusId}", (int)TimeTrackingStatusEnum.WaitingForApproval)
                 .Where($"{ProjectConstants.ProjectManagerId}", managerId)
                         .GroupBy(ProjectConstants.ProjectId);
 
@@ -866,8 +870,10 @@ namespace BminingBlazor.Services
                 .Include(TableConstants.UserTable, userQuery, TimeTrackingConstants.UserId, UserConstants.UserId)
                 .Include(ProjectConstants.ProjectManager, managerQuery, ProjectConstants.ProjectManagerId, UserConstants.UserId)
                 .Select($"{TableConstants.TimeTrackingTable}.{{*}}",
-                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode},{ProjectConstants.ProjectManagerId}}}").Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.TypeTrackingHours}", (int)TimeTrackingTypeEnum.Ordinary)
+                        $"{TableConstants.ProjectTable}.{{{ProjectConstants.ProjectName},{ProjectConstants.ProjectCode},{ProjectConstants.ProjectManagerId}}}")
+                .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.TypeTrackingHours}", (int)TimeTrackingTypeEnum.Ordinary)
                         .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.SendHours}", (int)TimeTrackingSendHoursEnum.Send)
+                        .Where($"{TableConstants.TimeTrackingTable}.{TimeTrackingConstants.TimeTrackingStatusId}", (int)TimeTrackingStatusEnum.WaitingForApproval)
                         .Where($"{TableConstants.ProjectTable}.{ProjectConstants.ProjectManagerId}", idManager);
 
 

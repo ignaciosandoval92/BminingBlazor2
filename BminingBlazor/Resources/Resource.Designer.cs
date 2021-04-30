@@ -1348,6 +1348,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wrong number of hours.
+        /// </summary>
+        internal static string WrongNumberOfHours {
+            get {
+                return ResourceManager.GetString("WrongNumberOfHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
         internal static string Yes {

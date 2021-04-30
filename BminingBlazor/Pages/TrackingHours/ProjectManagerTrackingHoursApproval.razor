@@ -245,7 +245,7 @@ else
         await TimeTrackingService.ApproveUserTimeTracking(project.IdWed);
         await TimeTrackingService.ApproveUserTimeTracking(project.IdThu);
         await TimeTrackingService.ApproveUserTimeTracking(project.IdFri);
-        _projectsOrdinary.Remove(project);
+        _projectsExtraordinary.Remove(project);
     }
 
     private async Task RejectHoursOrdinary(ProjectTrackingWeekViewModel project)
