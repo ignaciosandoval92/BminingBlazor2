@@ -24,6 +24,12 @@
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
+    @if (IsLoading)
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
+    else
+    {
     <h6 class="header-break">@Resource.OrdinaryHours</h6>
     <div class="alternate2-break"></div>
     <table>
@@ -73,7 +79,7 @@
                         {
                             @proord.TrackedHoursMon
                         }
-                        </td>
+                    </td>
                     <td>
                         @if (proord.SendHours == 0)
                         {
@@ -83,7 +89,7 @@
                         {
                             @proord.TrackedHoursTue
                         }
-                        </td>
+                    </td>
                     <td>
                         @if (proord.SendHours == 0)
                         {
@@ -93,7 +99,7 @@
                         {
                             @proord.TrackedHoursWed
                         }
-                        </td>
+                    </td>
                     <td>
                         @if (proord.SendHours == 0)
                         {
@@ -103,7 +109,7 @@
                         {
                             @proord.TrackedHoursThu
                         }
-                        </td>
+                    </td>
                     <td>
                         @if (proord.SendHours == 0)
                         {
@@ -113,7 +119,7 @@
                         {
                             @proord.TrackedHoursFri
                         }
-                        </td>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -212,7 +218,8 @@
             }
         </tbody>
     </table>
-    <button @onclick="() => SaveHours(_projectsOrdinary,_projectsExtraordinary)" class="bmining-button ">@Resource.Save</button>
+    <button @onclick="() => SaveHours(_projectsOrdinary, _projectsExtraordinary)" class="bmining-button ">@Resource.Save</button>
+    }
 </div>
 
 @code {
@@ -238,22 +245,28 @@
     public List<ProjectTrackingWeekViewModel> _projectsOrdinary = new List<ProjectTrackingWeekViewModel>();
     public ProjectTrackingWeekViewModel _projectExtraordinary = new ProjectTrackingWeekViewModel();
     public List<ProjectTrackingWeekViewModel> _projectsExtraordinary = new List<ProjectTrackingWeekViewModel>();
+    bool IsLoading=true;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var chargedProjectsOrdinary = await TimeTrackingService.ChargedProjectOrdinary(userId, startDate, endDate);
-        foreach (var i in chargedProjectsOrdinary)
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
         {
-            _projectOrdinary = await TimeTrackingService.ReadProjectWeekOrdinary(i.MyProjectId, userId, startDate, endDate);
-            _projectsOrdinary.Add(_projectOrdinary);
+            var chargedProjectsOrdinary = await TimeTrackingService.ChargedProjectOrdinary(userId, startDate, endDate);
+            foreach (var i in chargedProjectsOrdinary)
+            {
+                _projectOrdinary = await TimeTrackingService.ReadProjectWeekOrdinary(i.MyProjectId, userId, startDate, endDate);
+                _projectsOrdinary.Add(_projectOrdinary);
+            }
+            var chargedProjectsExtraordinary = await TimeTrackingService.ChargedProjectExtraordinary(userId, startDate, endDate);
+            foreach (var i in chargedProjectsExtraordinary)
+            {
+                _projectExtraordinary = await TimeTrackingService.ReadProjectWeekExtraordinary(i.MyProjectId, userId, startDate, endDate);
+                _projectsExtraordinary.Add(_projectExtraordinary);
+            }
+            IsLoading = false;
+            StateHasChanged();
         }
-        var chargedProjectsExtraordinary = await TimeTrackingService.ChargedProjectExtraordinary(userId, startDate, endDate);
-        foreach (var i in chargedProjectsExtraordinary)
-        {
-            _projectExtraordinary = await TimeTrackingService.ReadProjectWeekExtraordinary(i.MyProjectId, userId, startDate, endDate);
-            _projectsExtraordinary.Add(_projectExtraordinary);
-        }
-
     }
     public async Task SaveHours(List<ProjectTrackingWeekViewModel> projectsordinary, List<ProjectTrackingWeekViewModel> projectsextraordinary)
     {
