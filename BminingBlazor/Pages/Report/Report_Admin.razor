@@ -19,10 +19,10 @@
         <input class="form-control" type="date" id="inputEndDate" @bind="EndDate" />
     </div>
 
-    <button @onclick="@ReportHoursCharged" class="bmining-button float-right">reporte horas cargadas</button>
-    <button @onclick="@ReportHoursApproved" class="bmining-button float-right">reporte horas aprobadas</button>
-    <button @onclick="@ReportNotCharged" class="bmining-button float-right">reporte horas no cargadas</button>
-    <button @onclick="@ReportManagerNotApproved" class="bmining-button float-right">reporte jefes no aprobados</button>
+    <button @onclick="@ReportHoursCharged" class="bmining-button float-right">Reporte horas cargadas</button>
+    <button @onclick="@ReportHoursApproved" class="bmining-button float-right">Reporte horas aprobadas</button>
+    <button @onclick="@ReportNotCharged" class="bmining-button float-right">Reporte usuarios que no cargaron</button>
+    <button @onclick="@ReportManagerNotApproved" class="bmining-button float-right">Reporte jefes que no aprobaron</button>
 </div>
 @code {
     DateTime StartDate;

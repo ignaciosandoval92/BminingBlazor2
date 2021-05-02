@@ -34,95 +34,186 @@
     </div>
 
     @if (!IsLoading)
-    {<h6 class="header-break">@Resource.OrdinaryHours</h6>
-    <div class="alternate2-break"></div>
-    @foreach (var proord in _projectsOrdi)
     {
-        <h4>@proord.MyProjectName</h4>
-        <table>
-            <tr>
-                <th>@Resource.Email</th>
-                <th>Sab</th>
-                <th>Dom</th>
-                <th>Lun</th>
-                <th>Mar</th>
-                <th>Mie</th>
-                <th>Jue</th>
-                <th>Vie</th>
-                <th>@Resource.Actions</th>
-            </tr>
-            @foreach (var pro in _projectsOrdinary)
-            {
-                if (proord.MyProjectId == pro.MyProjectId)
+        <h4 class="header-break">@Resource.Week @MyStartOfWeek.ToString("d MMMM yyyy")</h4>
+        <div class="alternate2-break"></div>
+        <h5 class="header-break">@Resource.OrdinaryHours</h5>
+        <div class="alternate2-break"></div>
+        @foreach (var proord in _projectsOrdi)
+        {
+            <h6>@proord.MyProjectName</h6>
+            <table>
+                <tr>
+                    <th>@Resource.Email</th>
+                    <th>Sab</th>
+                    <th>Dom</th>
+                    <th>Lun</th>
+                    <th>Mar</th>
+                    <th>Mie</th>
+                    <th>Jue</th>
+                    <th>Vie</th>
+                    <th>@Resource.Actions</th>
+                </tr>
+                @foreach (var pro in _projectsOrdinary)
                 {
-                    <tr>
-                        <td>@pro.MyUserEmail</td>
-                        <td>@pro.TrackedHoursSat</td>
-                        <td>@pro.TrackedHoursSun</td>
-                        <td>@pro.TrackedHoursMon</td>
-                        <td>@pro.TrackedHoursTue</td>
-                        <td>@pro.TrackedHoursWed</td>
-                        <td>@pro.TrackedHoursThu</td>
-                        <td>@pro.TrackedHoursFri</td>
-                        <td>
-                        <button class="btn-approved" @onclick="()=>ApproveHoursOrdinary(pro)"></button>
-                        <button class="btn-disapproved" @onclick="()=>RejectHoursOrdinary(pro)"></button>
-                        </td>
-                    </tr>
+                    if (proord.MyProjectId == pro.MyProjectId)
+                    {
+                        <tr>
+                            <td>@pro.MyUserEmail</td>
+                            <td>@pro.TrackedHoursSat</td>
+                            <td>@pro.TrackedHoursSun</td>
+                            <td>@pro.TrackedHoursMon</td>
+                            <td>@pro.TrackedHoursTue</td>
+                            <td>@pro.TrackedHoursWed</td>
+                            <td>@pro.TrackedHoursThu</td>
+                            <td>@pro.TrackedHoursFri</td>
+                            <td>
+                                <button class="btn-approved" @onclick="()=>ApproveHoursOrdinary(pro)"></button>
+                                <button class="btn-disapproved" @onclick="()=>RejectHoursOrdinary(pro)"></button>
+                            </td>
+                        </tr>
+                    }
+
                 }
 
-            }
-
-        </table>
-        <div class="alternate1-break"></div>
-    }
-    <h6 class="header-break">@Resource.ExtraordinaryHours</h6>
-    <div class="alternate2-break"></div>
-    @foreach (var proext in _projectsExtra)
-    {
-        <h4>@proext.MyProjectName</h4>
-        <table>
-            <tr>
-                <th>@Resource.Email</th>
-                <th>Sab</th>
-                <th>Dom</th>
-                <th>Lun</th>
-                <th>Mar</th>
-                <th>Mie</th>
-                <th>Jue</th>
-                <th>Vie</th>
-                <th>@Resource.Actions</th>
-            </tr>
-            @foreach (var pro in _projectsExtraordinary)
-            {
-                if (proext.MyProjectId == pro.MyProjectId)
+            </table>
+            <div class="alternate1-break"></div>
+        }
+        <h5 class="header-break">@Resource.ExtraordinaryHours</h5>
+        <div class="alternate2-break"></div>
+        @foreach (var proext in _projectsExtra)
+        {
+            <h6>@proext.MyProjectName</h6>
+            <table>
+                <tr>
+                    <th>@Resource.Email</th>
+                    <th>Sab</th>
+                    <th>Dom</th>
+                    <th>Lun</th>
+                    <th>Mar</th>
+                    <th>Mie</th>
+                    <th>Jue</th>
+                    <th>Vie</th>
+                    <th>@Resource.Actions</th>
+                </tr>
+                @foreach (var pro in _projectsExtraordinary)
                 {
-                    <tr>
-                        <td>@pro.MyUserEmail</td>
-                        <td>@pro.TrackedHoursSat</td>
-                        <td>@pro.TrackedHoursSun</td>
-                        <td>@pro.TrackedHoursMon</td>
-                        <td>@pro.TrackedHoursTue</td>
-                        <td>@pro.TrackedHoursWed</td>
-                        <td>@pro.TrackedHoursThu</td>
-                        <td>@pro.TrackedHoursFri</td>
-                        <td>
-                            <button class="btn-approved" @onclick="()=>ApproveHoursExtraordinary(pro)"></button>                        
-                            <button class="btn-disapproved" @onclick="()=>RejectHoursExtraordinary(pro)"></button>
-                        </td>
-                    </tr>
+                    if (proext.MyProjectId == pro.MyProjectId)
+                    {
+                        <tr>
+                            <td>@pro.MyUserEmail</td>
+                            <td>@pro.TrackedHoursSat</td>
+                            <td>@pro.TrackedHoursSun</td>
+                            <td>@pro.TrackedHoursMon</td>
+                            <td>@pro.TrackedHoursTue</td>
+                            <td>@pro.TrackedHoursWed</td>
+                            <td>@pro.TrackedHoursThu</td>
+                            <td>@pro.TrackedHoursFri</td>
+                            <td>
+                                <button class="btn-approved" @onclick="()=>ApproveHoursExtraordinary(pro)"></button>
+                                <button class="btn-disapproved" @onclick="()=>RejectHoursExtraordinary(pro)"></button>
+                            </td>
+                        </tr>
+                    }
+
                 }
 
-            }
+            </table>
+            <div class="alternate1-break"></div>
+        }
 
-        </table>
-        <div class="alternate1-break"></div>
+
+        <h4 class="header-break">@Resource.Week @MyStartOfWeek.AddDays(-7).ToString("d MMMM yyyy")</h4>
+        <div class="alternate2-break"></div>
+        <h5 class="header-break">@Resource.OrdinaryHours</h5>
+        <div class="alternate2-break"></div>
+        @foreach (var proord in _projectsOrdiLastWeek)
+        {
+            <h6>@proord.MyProjectName</h6>
+            <table>
+                <tr>
+                    <th>@Resource.Email</th>
+                    <th>Sab</th>
+                    <th>Dom</th>
+                    <th>Lun</th>
+                    <th>Mar</th>
+                    <th>Mie</th>
+                    <th>Jue</th>
+                    <th>Vie</th>
+                    <th>@Resource.Actions</th>
+                </tr>
+                @foreach (var pro in _projectsOrdinaryLastWeek)
+                {
+                    if (proord.MyProjectId == pro.MyProjectId)
+                    {
+                        <tr>
+                            <td>@pro.MyUserEmail</td>
+                            <td>@pro.TrackedHoursSat</td>
+                            <td>@pro.TrackedHoursSun</td>
+                            <td>@pro.TrackedHoursMon</td>
+                            <td>@pro.TrackedHoursTue</td>
+                            <td>@pro.TrackedHoursWed</td>
+                            <td>@pro.TrackedHoursThu</td>
+                            <td>@pro.TrackedHoursFri</td>
+                            <td>
+                                <button class="btn-approved" @onclick="()=>ApproveHoursOrdinary(pro)"></button>
+                                <button class="btn-disapproved" @onclick="()=>RejectHoursOrdinary(pro)"></button>
+                            </td>
+                        </tr>
+                    }
+
+                }
+
+            </table>
+            <div class="alternate1-break"></div>
+        }
+        <h5 class="header-break">@Resource.ExtraordinaryHours</h5>
+        <div class="alternate2-break"></div>
+        @foreach (var proext in _projectsExtra)
+        {
+            <h6>@proext.MyProjectName</h6>
+            <table>
+                <tr>
+                    <th>@Resource.Email</th>
+                    <th>Sab</th>
+                    <th>Dom</th>
+                    <th>Lun</th>
+                    <th>Mar</th>
+                    <th>Mie</th>
+                    <th>Jue</th>
+                    <th>Vie</th>
+                    <th>@Resource.Actions</th>
+                </tr>
+                @foreach (var pro in _projectsExtraordinary)
+                {
+                    if (proext.MyProjectId == pro.MyProjectId)
+                    {
+                        <tr>
+                            <td>@pro.MyUserEmail</td>
+                            <td>@pro.TrackedHoursSat</td>
+                            <td>@pro.TrackedHoursSun</td>
+                            <td>@pro.TrackedHoursMon</td>
+                            <td>@pro.TrackedHoursTue</td>
+                            <td>@pro.TrackedHoursWed</td>
+                            <td>@pro.TrackedHoursThu</td>
+                            <td>@pro.TrackedHoursFri</td>
+                            <td>
+                                <button class="btn-approved" @onclick="()=>ApproveHoursExtraordinary(pro)"></button>
+                                <button class="btn-disapproved" @onclick="()=>RejectHoursExtraordinary(pro)"></button>
+                            </td>
+                        </tr>
+                    }
+
+                }
+
+            </table>
+            <div class="alternate1-break"></div>
+        }
     }
-}
-else
-{
-    <MatProgressBar Indeterminate="true"></MatProgressBar>
-}
+    else
+    {
+        <MatProgressBar Indeterminate="true"></MatProgressBar>
+    }
 
 </div>
 
@@ -141,6 +232,12 @@ else
     public List<ProjectTrackingWeekViewModel> _projectsOrdinary = new List<ProjectTrackingWeekViewModel>();
     public List<ProjectResumeViewModel> _projectsExtra = new List<ProjectResumeViewModel>();
     public List<ProjectResumeViewModel> _projectsOrdi = new List<ProjectResumeViewModel>();
+    public List<ProjectTrackingWeekViewModel> _projectExtraordinaryLastWeek = new List<ProjectTrackingWeekViewModel>();
+    public List<ProjectTrackingWeekViewModel> _projectsExtraordinaryLastWeek = new List<ProjectTrackingWeekViewModel>();
+    public List<ProjectTrackingWeekViewModel> _projectOrdinaryLastWeek = new List<ProjectTrackingWeekViewModel>();
+    public List<ProjectTrackingWeekViewModel> _projectsOrdinaryLastWeek = new List<ProjectTrackingWeekViewModel>();
+    public List<ProjectResumeViewModel> _projectsExtraLastWeek = new List<ProjectResumeViewModel>();
+    public List<ProjectResumeViewModel> _projectsOrdiLastWeek = new List<ProjectResumeViewModel>();
     public bool IsLoading = true;
     public DateTime MyStartOfWeek { get; set; }
     public DateTime MySelectedDate
@@ -217,6 +314,20 @@ else
             {
                 _projectOrdinary = await TimeTrackingService.GetPendingWeekOrdinaryFromManager(pro.MyProjectId, id, MyStartOfWeek, MyStartOfWeek.AddDays(6));
                 _projectsOrdinary.AddRange(_projectOrdinary);
+            }
+
+
+            _projectsExtraLastWeek = await TimeTrackingService.GetProjectExtraordinaryByManager(id, MyStartOfWeek.AddDays(-7), MyStartOfWeek.AddDays(-1));
+            foreach (var pro in _projectsExtraLastWeek)
+            {
+                _projectExtraordinaryLastWeek = await TimeTrackingService.GetPendingWeekExtraordinaryFromManager(pro.MyProjectId, id, MyStartOfWeek.AddDays(-7), MyStartOfWeek.AddDays(-1));
+                _projectsExtraordinaryLastWeek.AddRange(_projectExtraordinaryLastWeek);
+            }
+            _projectsOrdiLastWeek = await TimeTrackingService.GetProjectOrdinaryByManager(id, MyStartOfWeek.AddDays(-7), MyStartOfWeek.AddDays(-1));
+            foreach (var pro in _projectsOrdiLastWeek)
+            {
+                _projectOrdinaryLastWeek = await TimeTrackingService.GetPendingWeekOrdinaryFromManager(pro.MyProjectId, id, MyStartOfWeek.AddDays(-7), MyStartOfWeek.AddDays(-1));
+                _projectsOrdinaryLastWeek.AddRange(_projectOrdinaryLastWeek);
             }
             IsLoading = false;
             StateHasChanged();
