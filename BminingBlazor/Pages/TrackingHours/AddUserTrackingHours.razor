@@ -288,7 +288,28 @@
             await MatDialogService.AlertAsync(@Resource.MissingProject);
             return;
         }
-        foreach(var i in trackingHoursItemOrdinary)
+        foreach (var pros in trackingHoursItemExtraordinary)
+        {
+            
+                if (pros.ElementAt(0).SelectedProject is null)
+                {
+                    await MatDialogService.AlertAsync(@Resource.MissingProject);
+                    return;
+                }
+            
+        }
+        foreach (var pros in trackingHoursItemOrdinary)
+        {
+            
+            
+                if (pros.ElementAt(0).SelectedProject is null)
+                {
+                    await MatDialogService.AlertAsync(@Resource.MissingProject);
+                    return;
+                }
+            
+        }
+        foreach (var i in trackingHoursItemOrdinary)
         {
             if(projectsChargedOrdinary.Contains(i.ElementAt(0).SelectedProject.MyProjectId))
             {
