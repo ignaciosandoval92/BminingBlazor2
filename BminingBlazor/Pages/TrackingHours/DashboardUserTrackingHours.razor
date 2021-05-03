@@ -101,8 +101,7 @@
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
     else
-    {
-
+    {       
         <div class="week-header-container">
 
 
@@ -219,6 +218,7 @@
             <button @onclick="() => AddItem(MyStartOfWeek)" class="bmining-button ">@Resource.Load</button>
             <button @onclick="EditHours" class="bmining-button">@Resource.Edit</button>
             <button @onclick="()=>SendHours(_projectsOrdinary,_projectsExtraordinary)" class="bmining-button">@Resource.Send</button>
+            <button @onclick="CopyLastWeek" class="bmining-button">@Resource.CopyLastWeek</button>
         }
     }
 
@@ -425,8 +425,7 @@
     }
     private async void CopyLastWeek()
     {
-        var email = AuthenticationStateProvider.GetEmail();
-        var userId = await UserDataService.GetUserId(await email);
+        IsLoading = true;        
         var lastWeek = await TimeTrackingService.GetUserTrackingModels(userId, MyStartOfWeek.AddDays(-7), MyStartOfWeek);
         foreach (var hoursLastWeek in lastWeek)
         {

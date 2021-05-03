@@ -15,6 +15,7 @@
         display: inline-grid;
         grid-template-rows: auto 1fr auto 1fr;
     }
+
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
         -webkit-appearance: none;
@@ -24,6 +25,7 @@
     input[type=number] {
         -moz-appearance: textfield;
     }
+
     .load-hours-item {
         display: inline;
     }
@@ -41,7 +43,7 @@
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
-    @if (projectsBelongsUserIdOrdinary.Count == 0)
+    @if (load)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
@@ -237,6 +239,7 @@
     public List<ProjectResumeViewModel> values = new List<ProjectResumeViewModel>();
     public List<ProjectResumeViewModel> _projectOrdinary = new List<ProjectResumeViewModel>();
     public List<ProjectResumeViewModel> _projectExtraordinary = new List<ProjectResumeViewModel>();
+    public bool load = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -281,43 +284,45 @@
 
     private async Task Load(List<List<AddUserTimeTrackingViewModel>> trackingHoursItemOrdinary, List<List<AddUserTimeTrackingViewModel>> trackingHoursItemExtraordinary)
     {
+
         List<int> projectsChargedOrdinary = new List<int>();
         List<int> projectsChargedExtraordinary = new List<int>();
-        if (trackingHoursItemOrdinary == null && trackingHoursItemExtraordinary==null)
+        if (trackingHoursItemOrdinary == null && trackingHoursItemExtraordinary == null)
         {
             await MatDialogService.AlertAsync(@Resource.MissingProject);
             return;
         }
         foreach (var pros in trackingHoursItemExtraordinary)
         {
-            
-                if (pros.ElementAt(0).SelectedProject is null)
-                {
-                    await MatDialogService.AlertAsync(@Resource.MissingProject);
-                    return;
-                }
-            
+
+            if (pros.ElementAt(0).SelectedProject is null)
+            {
+                await MatDialogService.AlertAsync(@Resource.MissingProject);
+                return;
+            }
+
         }
         foreach (var pros in trackingHoursItemOrdinary)
         {
-            
-            
-                if (pros.ElementAt(0).SelectedProject is null)
-                {
-                    await MatDialogService.AlertAsync(@Resource.MissingProject);
-                    return;
-                }
-            
+
+
+            if (pros.ElementAt(0).SelectedProject is null)
+            {
+                await MatDialogService.AlertAsync(@Resource.MissingProject);
+                return;
+            }
+
         }
         foreach (var i in trackingHoursItemOrdinary)
         {
-            if(projectsChargedOrdinary.Contains(i.ElementAt(0).SelectedProject.MyProjectId))
+            if (projectsChargedOrdinary.Contains(i.ElementAt(0).SelectedProject.MyProjectId))
             {
                 await MatDialogService.AlertAsync(@Resource.DuplicateProject);
                 return;
             }
             projectsChargedOrdinary.Add(i.ElementAt(0).SelectedProject.MyProjectId);
         }
+
         foreach (var i in trackingHoursItemExtraordinary)
         {
             if (projectsChargedExtraordinary.Contains(i.ElementAt(0).SelectedProject.MyProjectId))
@@ -328,7 +333,7 @@
             projectsChargedExtraordinary.Add(i.ElementAt(0).SelectedProject.MyProjectId);
         }
 
-        projectsBelongsUserIdOrdinary.Clear();
+        load = true;
         var userId = ViewModel.UserId;
         foreach (var week in trackingHoursItemOrdinary)
         {
@@ -354,7 +359,7 @@
             }
 
         }
-
+        load = false;
 
         NavigationManager.NavigateTo($"/dashboard_tracking_hours/{Day}/{Month}/{Year}", true);
     }
