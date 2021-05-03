@@ -456,13 +456,13 @@
         {
             HoursMon = pro.TrackedHoursMon + HoursMon;
             HoursTue = pro.TrackedHoursTue + HoursTue;
-            HoursWed = pro.TrackedHoursMon + HoursWed;
-            HoursThu = pro.TrackedHoursMon + HoursThu;
-            HoursFri = pro.TrackedHoursMon + HoursFri;
+            HoursWed = pro.TrackedHoursWed + HoursWed;
+            HoursThu = pro.TrackedHoursThu + HoursThu;
+            HoursFri = pro.TrackedHoursFri + HoursFri;
         }
         TotalHours = HoursMon + HoursTue + HoursWed + HoursThu + HoursFri;
 
-        if(HoursMon<9||HoursTue<9||HoursWed<9||HoursThu<9||HoursFri<5||TotalHours>41)
+        if(HoursMon<9||HoursTue<9||HoursWed<9||HoursThu<9||HoursFri<5||TotalHours>41.5)
         {
             await MatDialogService.AlertAsync(@Resource.WrongNumberOfHours);
             return;
