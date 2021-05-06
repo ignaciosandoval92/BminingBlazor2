@@ -120,8 +120,23 @@
                             @proord.TrackedHoursFri
                         }
                     </td>
+
                 </tr>
             }
+            
+        <tr>
+
+            <td>@Resource.TotalHours:</td>
+            <td>@TotalHours(_projectsOrdinary).ElementAt(0)</td>
+            <td>@TotalHours(_projectsOrdinary).ElementAt(1)</td>
+            <td>@TotalHours(_projectsOrdinary).ElementAt(2)</td>
+            <td>@TotalHours(_projectsOrdinary).ElementAt(3)</td>
+            <td>@TotalHours(_projectsOrdinary).ElementAt(4)</td>
+            <td>@TotalHours(_projectsOrdinary).ElementAt(5)</td>
+            <td>@TotalHours(_projectsOrdinary).ElementAt(6)</td>
+
+        </tr>
+
         </tbody>
     </table>
     <h6 class="header-break">@Resource.ExtraordinaryHours</h6>
@@ -224,12 +239,12 @@
 
 @code {
 
-    [Parameter]
-    public int userId { get; set; }
-    [Parameter]
-    public DateTime startDate { get; set; }
-    [Parameter]
-    public DateTime endDate { get; set; }
+        [Parameter]
+        public int userId { get; set; }
+        [Parameter]
+        public DateTime startDate { get; set; }
+        [Parameter]
+        public DateTime endDate { get; set; }
 
 
 
@@ -241,11 +256,18 @@
     public double MyHoursWed { get; set; }
     public double MyHoursThu { get; set; }
     public double MyHoursFri { get; set; }
+    public double TotalHoursSat { get; set; }
+    public double TotalHoursSun { get; set; }
+    public double TotalHoursMon { get; set; }
+    public double TotalHoursTue { get; set; }
+    public double TotalHoursWed { get; set; }
+    public double TotalHoursThu { get; set; }
+    public double TotalHoursFri { get; set; }
     public ProjectTrackingWeekViewModel _projectOrdinary = new ProjectTrackingWeekViewModel();
     public List<ProjectTrackingWeekViewModel> _projectsOrdinary = new List<ProjectTrackingWeekViewModel>();
     public ProjectTrackingWeekViewModel _projectExtraordinary = new ProjectTrackingWeekViewModel();
     public List<ProjectTrackingWeekViewModel> _projectsExtraordinary = new List<ProjectTrackingWeekViewModel>();
-    bool IsLoading=true;
+    bool IsLoading = true;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -270,6 +292,8 @@
     }
     public async Task SaveHours(List<ProjectTrackingWeekViewModel> projectsordinary, List<ProjectTrackingWeekViewModel> projectsextraordinary)
     {
+        IsLoading = true;
+        await Task.Delay(500);
         foreach (var pro in projectsordinary)
         {
             if (pro.SendHours == 0)
@@ -298,5 +322,33 @@
         }
         NavigationManager.NavigateTo("/dashboard_tracking_hours", true);
     }
-
+    public List<double> TotalHours(List<ProjectTrackingWeekViewModel> project)
+    {
+        TotalHoursSat = 0;
+        TotalHoursSun = 0;
+        TotalHoursMon = 0;
+        TotalHoursTue = 0;
+        TotalHoursWed = 0;
+        TotalHoursThu = 0;
+        TotalHoursFri = 0;
+        List<double> TotalHours = new List<double>();
+        foreach (var proord in project)
+        {
+            TotalHoursSat = proord.TrackedHoursSat + TotalHoursSat;
+            TotalHoursSun = proord.TrackedHoursSun + TotalHoursSun;
+            TotalHoursMon = proord.TrackedHoursMon + TotalHoursMon;
+            TotalHoursTue = proord.TrackedHoursTue + TotalHoursTue;
+            TotalHoursWed = proord.TrackedHoursWed + TotalHoursWed;
+            TotalHoursThu = proord.TrackedHoursThu + TotalHoursThu;
+            TotalHoursFri = proord.TrackedHoursFri + TotalHoursFri;
+        }
+        TotalHours.Add(TotalHoursSat);
+        TotalHours.Add(TotalHoursSun);
+        TotalHours.Add(TotalHoursMon);
+        TotalHours.Add(TotalHoursTue);
+        TotalHours.Add(TotalHoursWed);
+        TotalHours.Add(TotalHoursThu);
+        TotalHours.Add(TotalHoursFri);
+        return TotalHours;
+    }
 }

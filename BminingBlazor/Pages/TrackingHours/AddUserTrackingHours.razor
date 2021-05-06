@@ -43,7 +43,7 @@
     <div class="main-break">
         <div class="main-circle"></div>
     </div>
-    @if (load)
+    @if (IsLoading)
     {
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
@@ -227,8 +227,8 @@
     public int Year { get; set; }
 
 
-    public bool IsLoading { get; set; }
-    ProjectResumeViewModel value = null;
+    public bool IsLoading = true;
+    public ProjectResumeViewModel value = new ProjectResumeViewModel();
     public AddUserTimeTrackingViewModel ViewModel { get; set; }
     public AddUserTimeTrackingViewModel ViewModel2 { get; set; }
     public List<List<AddUserTimeTrackingViewModel>> TrackingHoursItemOrdinary = new List<List<AddUserTimeTrackingViewModel>>();
@@ -239,7 +239,7 @@
     public List<ProjectResumeViewModel> values = new List<ProjectResumeViewModel>();
     public List<ProjectResumeViewModel> _projectOrdinary = new List<ProjectResumeViewModel>();
     public List<ProjectResumeViewModel> _projectExtraordinary = new List<ProjectResumeViewModel>();
-    public bool load = false;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -276,6 +276,7 @@
         ViewModel2.OurAvailableProjects.AddRange(projectsBelongsUserIdExtraordinary);
 
         ViewModel2.MySelectedProjectId = projectsBelongsUserIdExtraordinary.FirstOrDefault()?.MyProjectId;
+        IsLoading = false;
 
 
 
@@ -300,7 +301,6 @@
                 await MatDialogService.AlertAsync(@Resource.MissingProject);
                 return;
             }
-
         }
         foreach (var pros in trackingHoursItemOrdinary)
         {
@@ -333,7 +333,8 @@
             projectsChargedExtraordinary.Add(i.ElementAt(0).SelectedProject.MyProjectId);
         }
 
-        load = true;
+        IsLoading = true;
+        await Task.Delay(500);
         var userId = ViewModel.UserId;
         foreach (var week in trackingHoursItemOrdinary)
         {
@@ -358,8 +359,7 @@
 
             }
 
-        }
-        load = false;
+        }       
 
         NavigationManager.NavigateTo($"/dashboard_tracking_hours/{Day}/{Month}/{Year}", true);
     }

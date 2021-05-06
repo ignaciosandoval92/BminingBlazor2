@@ -344,13 +344,13 @@
 
     private void AddItem(DateTime date)
     {
-        _projects.Clear();
+        IsLoading = true;
         NavigationManager.NavigateTo($"/addusertrackinghour/{date.Day}/{date.Month}/{date.Year}", true);
     }
 
     private async Task RemoveItem(int idProject, int typeHours)
     {
-        _projects.Clear();
+        IsLoading = true;
         var status = await MatDialogService.ConfirmAsync(Resource.AreYouSureToDelete);
         if (!status)
         {
@@ -425,7 +425,8 @@
     }
     private async void CopyLastWeek()
     {
-        IsLoading = true;        
+        IsLoading = true;
+        await Task.Delay(500);       
         var lastWeek = await TimeTrackingService.GetUserTrackingModels(userId, MyStartOfWeek.AddDays(-7), MyStartOfWeek);
         foreach (var hoursLastWeek in lastWeek)
         {
@@ -466,7 +467,8 @@
             await MatDialogService.AlertAsync(@Resource.WrongNumberOfHours);
             return;
         }
-
+        IsLoading = true;
+        await Task.Delay(500);
         foreach (var pro in projectsordinary)
         {
             if (pro.SendHours == 0)

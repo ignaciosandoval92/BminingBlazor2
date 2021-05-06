@@ -1267,6 +1267,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total hours.
+        /// </summary>
+        internal static string TotalHours {
+            get {
+                return ResourceManager.GetString("TotalHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown.
         /// </summary>
         internal static string Unknown {
