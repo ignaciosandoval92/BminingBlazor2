@@ -626,7 +626,8 @@ namespace BminingBlazor.Services
             await queryFactory.Query(TableConstants.TimeTrackingTable).Where(TimeTrackingConstants.TimeTrackingId, id)
                 .UpdateAsync(new Dictionary<string, object>
                 {
-                    {TimeTrackingConstants.SendHours, (int)TimeTrackingSendHoursEnum.Send}
+                    {TimeTrackingConstants.SendHours, (int)TimeTrackingSendHoursEnum.Send},
+                    {TimeTrackingConstants.TimeTrackingStatusId,(int)TimeTrackingStatusEnum.WaitingForApproval}
 
                 });
         }

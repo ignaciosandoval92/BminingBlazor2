@@ -619,6 +619,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to from.
+        /// </summary>
+        internal static string From {
+            get {
+                return ResourceManager.GetString("From", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General Report.
         /// </summary>
         internal static string GeneralReport {

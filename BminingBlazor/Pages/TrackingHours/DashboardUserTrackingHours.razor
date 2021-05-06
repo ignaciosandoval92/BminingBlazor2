@@ -9,6 +9,8 @@
 @using BminingBlazor.ViewModels.Projects
 @using SendGrid;
 @using SendGrid.Helpers.Mail;
+@using System.Net.Mail;
+@using System.Net;
 
 @inject ITimeTrackingService TimeTrackingService
 @inject IMatToaster MatToaster
@@ -101,7 +103,7 @@
         <MatProgressBar Indeterminate="true"></MatProgressBar>
     }
     else
-    {       
+    {
         <div class="week-header-container">
 
 
@@ -218,7 +220,7 @@
             <button @onclick="() => AddItem(MyStartOfWeek)" class="bmining-button ">@Resource.Load</button>
             <button @onclick="EditHours" class="bmining-button">@Resource.Edit</button>
             <button @onclick="()=>SendHours(_projectsOrdinary,_projectsExtraordinary)" class="bmining-button">@Resource.Send</button>
-            <button @onclick="CopyLastWeek" class="bmining-button">@Resource.CopyLastWeek</button>
+            <button @onclick="CopyLastWeek" class="bmining-button">@Resource.CopyLastWeek</button>          
         }
     }
 
@@ -426,7 +428,7 @@
     private async void CopyLastWeek()
     {
         IsLoading = true;
-        await Task.Delay(500);       
+        await Task.Delay(500);
         var lastWeek = await TimeTrackingService.GetUserTrackingModels(userId, MyStartOfWeek.AddDays(-7), MyStartOfWeek);
         foreach (var hoursLastWeek in lastWeek)
         {
@@ -446,11 +448,11 @@
     public async Task SendHours(List<ProjectTrackingWeekViewModel> projectsordinary, List<ProjectTrackingWeekViewModel> projectsextraordinary)
     {
         double TotalHours;
-        double HoursMon=0;
-        double HoursTue=0;
-        double HoursWed=0;
-        double HoursThu=0;
-        double HoursFri=0;
+        double HoursMon = 0;
+        double HoursTue = 0;
+        double HoursWed = 0;
+        double HoursThu = 0;
+        double HoursFri = 0;
 
         foreach (var pro in projectsordinary)
         {
@@ -462,7 +464,7 @@
         }
         TotalHours = HoursMon + HoursTue + HoursWed + HoursThu + HoursFri;
 
-        if(HoursMon<9||HoursTue<9||HoursWed<9||HoursThu<9||HoursFri<5||TotalHours>41.5)
+        if (HoursMon < 9 || HoursTue < 9 || HoursWed < 9 || HoursThu < 9 || HoursFri < 5 || TotalHours > 41.5)
         {
             await MatDialogService.AlertAsync(@Resource.WrongNumberOfHours);
             return;
@@ -480,15 +482,14 @@
                 await TimeTrackingService.SendTrackedHours(pro.IdWed);
                 await TimeTrackingService.SendTrackedHours(pro.IdThu);
                 await TimeTrackingService.SendTrackedHours(pro.IdFri);
-                var client = new SendGridClient(SendGridConstants.ApiKey);
-                var from = new EmailAddress(SendGridConstants.SenderEmail, $"{pro.MyUserName} {pro.MyUserLastName}");
-                var subject = string.Format(Resource.SendHours, pro.MyProjectCode, pro.StartWeek);
-                var to = new EmailAddress(pro.MyManagerEmail, $"{pro.MyManagerName} {pro.MyManagerLastName}");
-                var comment = $"{Resource.SendHours} {pro.MyProjectCode}-{pro.MyProjectName} {Resource.For} {pro.MyUserName} {pro.MyUserLastName}";
-                var plainTextContent = $"{comment}";
-                var htmlContent = $"<strong>{comment}</strong>";
-                var sendGridMessage = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-                var response = await client.SendEmailAsync(sendGridMessage);
+                var smtpClient = new SmtpClient("mail.bmining.cl")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("hours@bmining.cl", "BminingChile2021"),
+                    EnableSsl = true
+                };
+
+                smtpClient.Send("hours@bmining.cl", pro.MyManagerEmail, $"{Resource.SendHours} {Resource.From} {pro.MyUserName} {pro.MyUserLastName} ", $"{Resource.SendHours} {pro.MyProjectCode}-{pro.MyProjectName} {Resource.For} {pro.MyUserName} {pro.MyUserLastName}");             
             }
         }
         foreach (var pro in projectsextraordinary)
@@ -505,5 +506,17 @@
             }
         }
         NavigationManager.NavigateTo("/dashboard_tracking_hours", true);
+    }
+
+    public void send()
+    {
+        var smtpClient = new SmtpClient("mail.bmining.cl")
+        {
+            Port = 587,
+            Credentials = new NetworkCredential("hours@bmining.cl", "BminingChile2021"),
+            EnableSsl = true
+        };
+
+        smtpClient.Send("hours@bmining.cl", "ignacio.sandoval@bmining.cl", "prueba", "prueba");
     }
 }

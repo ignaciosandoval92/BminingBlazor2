@@ -558,4 +558,7 @@
   <data name="TotalHours" xml:space="preserve">
     <value>Horas totales</value>
   </data>
+  <data name="From" xml:space="preserve">
+    <value>por</value>
+  </data>
 </root>
