@@ -129,7 +129,7 @@
         if (firstRender)
         {
             PageSize = 4;
-            _projects = await ProjectDataService.ReadProjects();
+            _projects = await ProjectDataService.ReadActiveProjects();
             _projectList = _projects.Take(PageSize).ToList();
             TotalPage = (int)Math.Ceiling(_projects.Count() / (decimal)PageSize);
 
