@@ -561,4 +561,7 @@
   <data name="From" xml:space="preserve">
     <value>por</value>
   </data>
+  <data name="TypeHours" xml:space="preserve">
+    <value>Tipo de horas</value>
+  </data>
 </root>

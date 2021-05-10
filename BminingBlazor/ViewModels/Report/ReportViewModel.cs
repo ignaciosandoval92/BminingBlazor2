@@ -1,4 +1,5 @@
 ﻿using BminingBlazor.ViewModels.User;
+using Models.TimeTracking;
 using Models.User;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace BminingBlazor.ViewModels.Report
         public string MyCodProject { get; set; }
         public string MyNameProject { get; set; }
         public WorkAreaModelEnum MyWorkArea { get; set; }
-        
+        public TimeTrackingTypeEnum MyTypeHours { get; set; }
+
     }
 }

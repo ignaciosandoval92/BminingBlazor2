@@ -41,20 +41,25 @@ namespace Data
                 workSheet.Cells[1, 4].Style.Font.Bold = true;
                 workSheet.Cells[1, 4].Style.Border.Top.Style = ExcelBorderStyle.Hair;
 
-                workSheet.Cells[1, 5].Value = Resource.Hours;
+                workSheet.Cells[1, 5].Value = Resource.TypeHours;
                 workSheet.Cells[1, 5].Style.Font.Size = 12;
                 workSheet.Cells[1, 5].Style.Font.Bold = true;
                 workSheet.Cells[1, 5].Style.Border.Top.Style = ExcelBorderStyle.Hair;
 
-                workSheet.Cells[1, 6].Value = Resource.Date;
+                workSheet.Cells[1, 6].Value = Resource.Hours;
                 workSheet.Cells[1, 6].Style.Font.Size = 12;
                 workSheet.Cells[1, 6].Style.Font.Bold = true;
                 workSheet.Cells[1, 6].Style.Border.Top.Style = ExcelBorderStyle.Hair;
 
-                workSheet.Cells[1, 7].Value = Resource.WorkArea;
+                workSheet.Cells[1, 7].Value = Resource.Date;
                 workSheet.Cells[1, 7].Style.Font.Size = 12;
                 workSheet.Cells[1, 7].Style.Font.Bold = true;
                 workSheet.Cells[1, 7].Style.Border.Top.Style = ExcelBorderStyle.Hair;
+
+                workSheet.Cells[1, 8].Value = Resource.WorkArea;
+                workSheet.Cells[1, 8].Style.Font.Size = 12;
+                workSheet.Cells[1, 8].Style.Font.Bold = true;
+                workSheet.Cells[1, 8].Style.Border.Top.Style = ExcelBorderStyle.Hair;
                 #endregion
                 foreach (var report in _reports)
                 {
@@ -80,22 +85,53 @@ namespace Data
                     workSheet.Cells[line, 4].Style.Font.Bold = true;
                     workSheet.Cells[line, 4].Style.Border.Top.Style = ExcelBorderStyle.Hair;
 
-                    workSheet.Cells[line, 5].Value = report.MyTrackedHours;
+                     switch(report.MyTypeHours)
+                    {
+                        case Models.TimeTracking.TimeTrackingTypeEnum.Ordinary:
+                            workSheet.Cells[line, 5].Value = Resource.OrdinaryHours;
+                                        break;
+                            case Models.TimeTracking.TimeTrackingTypeEnum.Extraordinary:
+                            workSheet.Cells[line, 5].Value = Resource.ExtraordinaryHours;
+                                        break;                        
+                    };
                     workSheet.Cells[line, 5].Style.Font.Size = 12;
                     workSheet.Cells[line, 5].Style.Font.Bold = true;
                     workSheet.Cells[line, 5].Style.Border.Top.Style = ExcelBorderStyle.Hair;
 
-                    workSheet.Cells[line, 6].Value = report.MyDateTracked;
+                    workSheet.Cells[line, 6].Value = report.MyTrackedHours;
                     workSheet.Cells[line, 6].Style.Font.Size = 12;
                     workSheet.Cells[line, 6].Style.Font.Bold = true;
                     workSheet.Cells[line, 6].Style.Border.Top.Style = ExcelBorderStyle.Hair;
-                    workSheet.Cells[line, 6].Style.Numberformat.Format = "dd/MM/yyyy";
 
-                    workSheet.Cells[line, 7].Value = report.MyWorkArea;
+                    workSheet.Cells[line, 7].Value = report.MyDateTracked;
                     workSheet.Cells[line, 7].Style.Font.Size = 12;
                     workSheet.Cells[line, 7].Style.Font.Bold = true;
                     workSheet.Cells[line, 7].Style.Border.Top.Style = ExcelBorderStyle.Hair;
                     workSheet.Cells[line, 7].Style.Numberformat.Format = "dd/MM/yyyy";
+
+
+                    switch (report.MyWorkArea)
+                    {
+                        case Models.User.WorkAreaModelEnum.Unknown:
+                            workSheet.Cells[line, 8].Value = Resource.Unknown;
+                                        break;
+                        case Models.User.WorkAreaModelEnum.Administration:
+                            workSheet.Cells[line, 8].Value = Resource.Administration;
+                                        break;
+                        case Models.User.WorkAreaModelEnum.Engineering:
+                            workSheet.Cells[line, 8].Value = Resource.Engeneering;
+                                        break;
+                        case Models.User.WorkAreaModelEnum.Thesis:
+                            workSheet.Cells[line, 8].Value = Resource.Thesist;
+                                        break;
+                        case Models.User.WorkAreaModelEnum.Strategic_communication:
+                            workSheet.Cells[line, 8].Value = Resource.StrategicCommunication;
+                                        break;
+                    }                 
+                    workSheet.Cells[line, 8].Style.Font.Size = 12;
+                    workSheet.Cells[line, 8].Style.Font.Bold = true;
+                    workSheet.Cells[line, 8].Style.Border.Top.Style = ExcelBorderStyle.Hair;
+                    workSheet.Cells[line, 8].Style.Numberformat.Format = "dd/MM/yyyy";
                     #endregion
 
                 }

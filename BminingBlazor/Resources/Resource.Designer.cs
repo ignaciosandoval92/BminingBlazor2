@@ -1285,6 +1285,15 @@ namespace BminingBlazor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Type hours.
+        /// </summary>
+        internal static string TypeHours {
+            get {
+                return ResourceManager.GetString("TypeHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown.
         /// </summary>
         internal static string Unknown {

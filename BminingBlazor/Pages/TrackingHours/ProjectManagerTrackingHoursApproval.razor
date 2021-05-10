@@ -159,8 +159,8 @@
                             <td>@pro.TrackedHoursThu</td>
                             <td>@pro.TrackedHoursFri</td>
                             <td>
-                                <button class="btn-approved" @onclick="()=>ApproveHoursOrdinary(pro)"></button>
-                                <button class="btn-disapproved" @onclick="()=>RejectHoursOrdinary(pro)"></button>
+                                <button class="btn-approved" @onclick="()=>ApproveHoursOrdinaryLastWeek(pro)"></button>
+                                <button class="btn-disapproved" @onclick="()=>RejectHoursOrdinaryLastWeek(pro)"></button>
                             </td>
                         </tr>
                     }
@@ -201,8 +201,8 @@
                             <td>@pro.TrackedHoursThu</td>
                             <td>@pro.TrackedHoursFri</td>
                             <td>
-                                <button class="btn-approved" @onclick="()=>ApproveHoursExtraordinary(pro)"></button>
-                                <button class="btn-disapproved" @onclick="()=>RejectHoursExtraordinary(pro)"></button>
+                                <button class="btn-approved" @onclick="()=>ApproveHoursExtraordinaryLastWeek(pro)"></button>
+                                <button class="btn-disapproved" @onclick="()=>RejectHoursExtraordinaryLastWeek(pro)"></button>
                             </td>
                         </tr>
                     }
@@ -352,6 +352,21 @@
         IsLoading = false;
 
     }
+    private async Task ApproveHoursOrdinaryLastWeek(ProjectTrackingWeekViewModel project)
+    {
+        IsLoading = true;
+        await Task.Delay(500);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdSat);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdSun);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdMon);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdTue);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdWed);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdThu);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdFri);
+        _projectsOrdinaryLastWeek.Remove(project);
+        IsLoading = false;
+
+    }
     private async Task ApproveHoursExtraordinary(ProjectTrackingWeekViewModel project)
     {
         IsLoading = true;
@@ -364,6 +379,21 @@
         await TimeTrackingService.ApproveUserTimeTracking(project.IdThu);
         await TimeTrackingService.ApproveUserTimeTracking(project.IdFri);
         _projectsExtraordinary.Remove(project);
+        IsLoading = false;
+
+    }
+    private async Task ApproveHoursExtraordinaryLastWeek(ProjectTrackingWeekViewModel project)
+    {
+        IsLoading = true;
+        await Task.Delay(500);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdSat);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdSun);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdMon);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdTue);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdWed);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdThu);
+        await TimeTrackingService.ApproveUserTimeTracking(project.IdFri);
+        _projectsExtraordinaryLastWeek.Remove(project);
         IsLoading = false;
 
     }
@@ -397,6 +427,35 @@
         IsLoading = false;
 
     }
+    private async Task RejectHoursOrdinaryLastWeek(ProjectTrackingWeekViewModel project)
+    {
+        IsLoading = true;
+        await Task.Delay(500);
+        var reasons = await MatDialogService.PromptAsync(Resource.Reasons);
+        if (string.IsNullOrEmpty(reasons))
+        {
+            IsLoading = false;
+            return;
+        }
+        await TimeTrackingService.RejectUserTimeTracking(project.IdSat);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdSun);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdMon);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdTue);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdWed);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdThu);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdFri);
+        var smtpClient = new SmtpClient("mail.bmining.cl")
+        {
+            Port = 587,
+            Credentials = new NetworkCredential("hours@bmining.cl", "BminingChile2021"),
+            EnableSsl = true
+        };
+
+        smtpClient.Send("hours@bmining.cl", project.MyUserEmail, $"{Resource.HoursRejected} {project.MyProjectCode} / {project.MyProjectName} ", reasons);
+        _projectsOrdinaryLastWeek.Remove(project);
+        IsLoading = false;
+
+    }
     private async Task RejectHoursExtraordinary(ProjectTrackingWeekViewModel project)
     {
         IsLoading = true;
@@ -423,6 +482,34 @@
 
         smtpClient.Send("hours@bmining.cl", project.MyUserEmail, $"{Resource.HoursRejected} {project.MyProjectCode} / {project.MyProjectName} ", reasons);
         _projectsExtraordinary.Remove(project);
+        IsLoading = false;
+    }
+    private async Task RejectHoursExtraordinaryLastWeek(ProjectTrackingWeekViewModel project)
+    {
+        IsLoading = true;
+        await Task.Delay(500);
+        var reasons = await MatDialogService.PromptAsync(Resource.Reasons);
+        if (string.IsNullOrEmpty(reasons))
+        {
+            IsLoading = false;
+            return;
+        }
+        await TimeTrackingService.RejectUserTimeTracking(project.IdSat);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdSun);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdMon);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdTue);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdWed);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdThu);
+        await TimeTrackingService.RejectUserTimeTracking(project.IdFri);
+        var smtpClient = new SmtpClient("mail.bmining.cl")
+        {
+            Port = 587,
+            Credentials = new NetworkCredential("hours@bmining.cl", "BminingChile2021"),
+            EnableSsl = true
+        };
+
+        smtpClient.Send("hours@bmining.cl", project.MyUserEmail, $"{Resource.HoursRejected} {project.MyProjectCode} / {project.MyProjectName} ", reasons);
+        _projectsExtraordinaryLastWeek.Remove(project);
         IsLoading = false;
     }
 }

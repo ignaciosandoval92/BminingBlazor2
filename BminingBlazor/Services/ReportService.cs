@@ -60,7 +60,8 @@ namespace BminingBlazor.Services
                     MyPaternalSurname = (string)item[UserConstants.PaternalLastName],
                     MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
                     MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate],
-                    MyWorkArea = (WorkAreaModelEnum)item[UserConstants.WorkArea]
+                    MyWorkArea = (WorkAreaModelEnum)item[UserConstants.WorkArea],
+                    MyTypeHours = (TimeTrackingTypeEnum)item[TimeTrackingConstants.TypeTrackingHours]
                 };
                 report.Add(reportViewModel);
             }
@@ -103,7 +104,8 @@ namespace BminingBlazor.Services
                     MyPaternalSurname = (string)item[UserConstants.PaternalLastName],
                     MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
                     MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate],
-                    MyWorkArea = (WorkAreaModelEnum)item[UserConstants.WorkArea]
+                    MyWorkArea = (WorkAreaModelEnum)item[UserConstants.WorkArea],
+                    MyTypeHours = (TimeTrackingTypeEnum)item[TimeTrackingConstants.TypeTrackingHours]
                 };
                 report.Add(reportViewModel);
             }
@@ -145,7 +147,8 @@ namespace BminingBlazor.Services
                     MyPaternalSurname = (string)item[UserConstants.PaternalLastName],
                     MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
                     MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate],
-                    MyWorkArea = (WorkAreaModelEnum)item[UserConstants.WorkArea]
+                    MyWorkArea = (WorkAreaModelEnum)item[UserConstants.WorkArea],
+                    MyTypeHours = (TimeTrackingTypeEnum)item[TimeTrackingConstants.TypeTrackingHours]
                 };
                 report.Add(reportViewModel);
             }
@@ -186,7 +189,8 @@ namespace BminingBlazor.Services
                     MyPaternalSurname = (string)item[UserConstants.PaternalLastName],
                     MyTrackedHours = (double)item[TimeTrackingConstants.TrackedHours],
                     MyDateTracked = (DateTime)item[TimeTrackingConstants.TimeTrackingDate],
-                    MyWorkArea = (WorkAreaModelEnum)item[UserConstants.WorkArea]
+                    MyWorkArea = (WorkAreaModelEnum)item[UserConstants.WorkArea],
+                    MyTypeHours=(TimeTrackingTypeEnum)item[TimeTrackingConstants.TypeTrackingHours]
                 };
                 report.Add(reportViewModel);
             }

@@ -32,6 +32,7 @@
                         <th>@Resource.Surname</th>
                         <th>@Resource.ProjectCode</th>
                         <th>@Resource.ProjectName</th>
+                        <th>@Resource.TypeHours</th>
                         <th>@Resource.Hours</th>
                         <th>@Resource.Date</th>
                         <th>@Resource.WorkArea</th>
@@ -40,34 +41,47 @@
                 <tbody>
                     @foreach (var reportMember in _report)
                     {
-                        <tr>
-                            <td>@reportMember.MyName</td>
-                            <td>@reportMember.MyPaternalSurname</td>
-                            <td>@reportMember.MyCodProject</td>
-                            <td>@reportMember.MyNameProject</td>
-                            <td>@reportMember.MyTrackedHours</td>
-                            <td>@reportMember.MyDateTracked</td>
-                            <td>
-                                @switch (reportMember.MyWorkArea)
-                                {
-                                    case Models.User.WorkAreaModelEnum.Unknown:
-                                        @Resource.Unknown
-                                        break;
-                                    case Models.User.WorkAreaModelEnum.Administration:
-                                        @Resource.Administration
-                                        break;
-                                    case Models.User.WorkAreaModelEnum.Engineering:
-                                        @Resource.Engeneering
-                                        break;
-                                    case Models.User.WorkAreaModelEnum.Thesis:
-                                        @Resource.Thesist
-                                        break;
-                                    case Models.User.WorkAreaModelEnum.Strategic_communication:
-                                        @Resource.StrategicCommunication
-                                        break;
-                                }
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>@reportMember.MyName</td>
+                        <td>@reportMember.MyPaternalSurname</td>
+                        <td>@reportMember.MyCodProject</td>
+                        <td>@reportMember.MyNameProject</td>
+                        <td>
+                            @switch (reportMember.MyTypeHours)
+                            {
+                                case Models.TimeTracking.TimeTrackingTypeEnum.Ordinary:
+                                    @Resource.OrdinaryHours
+                                    break;
+                                case Models.TimeTracking.TimeTrackingTypeEnum.Extraordinary:
+                                    @Resource.ExtraordinaryHours
+                                    break;
+
+                            }
+
+                        </td>
+                        <td>@reportMember.MyTrackedHours</td>
+                        <td>@reportMember.MyDateTracked</td>
+                        <td>
+                            @switch (reportMember.MyWorkArea)
+                            {
+                                case Models.User.WorkAreaModelEnum.Unknown:
+                                    @Resource.Unknown
+                                    break;
+                                case Models.User.WorkAreaModelEnum.Administration:
+                                    @Resource.Administration
+                                    break;
+                                case Models.User.WorkAreaModelEnum.Engineering:
+                                    @Resource.Engeneering
+                                    break;
+                                case Models.User.WorkAreaModelEnum.Thesis:
+                                    @Resource.Thesist
+                                    break;
+                                case Models.User.WorkAreaModelEnum.Strategic_communication:
+                                    @Resource.StrategicCommunication
+                                    break;
+                            }
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

@@ -482,15 +482,7 @@
                 await TimeTrackingService.SendTrackedHours(pro.IdWed);
                 await TimeTrackingService.SendTrackedHours(pro.IdThu);
                 await TimeTrackingService.SendTrackedHours(pro.IdFri);
-                var smtpClient = new SmtpClient("mail.bmining.cl")
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential("hours@bmining.cl", "BminingChile2021"),
-                    EnableSsl = true
-                };
-
-                smtpClient.Send("hours@bmining.cl", pro.MyManagerEmail, $"{Resource.SendHours} {Resource.From} {pro.MyUserName} {pro.MyUserLastName} ", $"{Resource.SendHours} {pro.MyProjectCode}-{pro.MyProjectName} {Resource.For} {pro.MyUserName} {pro.MyUserLastName}");             
-            }
+               }
         }
         foreach (var pro in projectsextraordinary)
         {
@@ -508,15 +500,5 @@
         NavigationManager.NavigateTo("/dashboard_tracking_hours", true);
     }
 
-    public void send()
-    {
-        var smtpClient = new SmtpClient("mail.bmining.cl")
-        {
-            Port = 587,
-            Credentials = new NetworkCredential("hours@bmining.cl", "BminingChile2021"),
-            EnableSsl = true
-        };
-
-        smtpClient.Send("hours@bmining.cl", "ignacio.sandoval@bmining.cl", "prueba", "prueba");
-    }
+    
 }
