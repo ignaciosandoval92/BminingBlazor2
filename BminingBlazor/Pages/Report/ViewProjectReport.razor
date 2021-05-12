@@ -44,47 +44,50 @@
                 <tbody>
                     @foreach (var reportMember in _report)
                     {
-                    <tr>
-                        <td>@reportMember.MyName</td>
-                        <td>@reportMember.MyPaternalSurname</td>
-                        <td>@reportMember.MyCodProject</td>
-                        <td>@reportMember.MyNameProject</td>
-                        <td>
-                            @switch (reportMember.MyTypeHours)
-                            {
-                                case Models.TimeTracking.TimeTrackingTypeEnum.Ordinary:
-                                    @Resource.OrdinaryHours
-                                    break;
-                                case Models.TimeTracking.TimeTrackingTypeEnum.Extraordinary:
-                                    @Resource.ExtraordinaryHours
-                                    break;
+                        <tr>
+                            <td>@reportMember.MyName</td>
+                            <td>@reportMember.MyPaternalSurname</td>
+                            <td>@reportMember.MyCodProject</td>
+                            <td>@reportMember.MyNameProject</td>
+                            <td>
+                                @switch (reportMember.MyTypeHours)
+                                {
+                                    case Models.TimeTracking.TimeTrackingTypeEnum.Ordinary:
+                                        @Resource.OrdinaryHours
+                                        break;
+                                    case Models.TimeTracking.TimeTrackingTypeEnum.Extraordinary:
+                                        @Resource.ExtraordinaryHours
+                                        break;
 
-                            }
+                                }
 
-                        </td>
-                        <td>@reportMember.MyTrackedHours</td>
-                        <td>@reportMember.MyDateTracked</td>
-                        <td>
-                            @switch (reportMember.MyWorkArea)
-                            {
-                                case Models.User.WorkAreaModelEnum.Unknown:
-                                    @Resource.Unknown
-                                    break;
-                                case Models.User.WorkAreaModelEnum.Administration:
-                                    @Resource.Administration
-                                    break;
-                                case Models.User.WorkAreaModelEnum.Engineering:
-                                    @Resource.Engeneering
-                                    break;
-                                case Models.User.WorkAreaModelEnum.Thesis:
-                                    @Resource.Thesist
-                                    break;
-                                case Models.User.WorkAreaModelEnum.Strategic_communication:
-                                    @Resource.StrategicCommunication
-                                    break;
-                            }
-                        </td>
-                    </tr>
+                            </td>
+                            <td>@reportMember.MyTrackedHours</td>
+                            <td>@reportMember.MyDateTracked</td>
+                            <td>
+                                @switch (reportMember.MyWorkArea)
+                                {
+                                    case Models.User.WorkAreaModelEnum.Unknown:
+                                        @Resource.Unknown
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.Administration:
+                                        @Resource.Administration
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.Engineering:
+                                        @Resource.Engeneering
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.Thesis:
+                                        @Resource.Thesist
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.Strategic_communication:
+                                        @Resource.StrategicCommunication
+                                        break;
+                                    case Models.User.WorkAreaModelEnum.ExternalConsultant:
+                                        @Resource.ExternalConsultant
+                                        break;
+                                }
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -95,14 +98,14 @@
 </div>
 @code {
 
-        [Parameter]
-        public int userId { get; set; }
-        [Parameter]
-        public DateTime startDate { get; set; }
-        [Parameter]
-        public DateTime endDate { get; set; }
-        [Parameter]
-        public int projectId { get; set; }
+    [Parameter]
+    public int userId { get; set; }
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
+    [Parameter]
+    public int projectId { get; set; }
 
 
     private List<ReportViewModel> _report;

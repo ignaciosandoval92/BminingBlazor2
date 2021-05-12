@@ -127,6 +127,9 @@ namespace Data
                         case Models.User.WorkAreaModelEnum.Strategic_communication:
                             workSheet.Cells[line, 8].Value = Resource.StrategicCommunication;
                                         break;
+                        case Models.User.WorkAreaModelEnum.ExternalConsultant:
+                            workSheet.Cells[line, 8].Value = Resource.ExternalConsultant;
+                                        break;
                     }                 
                     workSheet.Cells[line, 8].Style.Font.Size = 12;
                     workSheet.Cells[line, 8].Style.Font.Bold = true;

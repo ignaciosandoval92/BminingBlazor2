@@ -49,9 +49,29 @@ namespace Data
                     workSheet.Cells[line, 2].Value = report.MyPaternalSurname;
                     workSheet.Cells[line, 2].Style.Font.Size = 12;
                     workSheet.Cells[line, 2].Style.Font.Bold = true;
-                    workSheet.Cells[line, 2].Style.Border.Top.Style = ExcelBorderStyle.Hair;                   
+                    workSheet.Cells[line, 2].Style.Border.Top.Style = ExcelBorderStyle.Hair;
 
-                    workSheet.Cells[line, 3].Value = report.MyWorkArea;
+                    switch (report.MyWorkArea)
+                    {
+                        case Models.User.WorkAreaModelEnum.Unknown:
+                            workSheet.Cells[line, 3].Value = Resource.Unknown;
+                            break;
+                        case Models.User.WorkAreaModelEnum.Administration:
+                            workSheet.Cells[line, 3].Value = Resource.Administration;
+                            break;
+                        case Models.User.WorkAreaModelEnum.Engineering:
+                            workSheet.Cells[line, 3].Value = Resource.Engeneering;
+                            break;
+                        case Models.User.WorkAreaModelEnum.Thesis:
+                            workSheet.Cells[line, 3].Value = Resource.Thesist;
+                            break;
+                        case Models.User.WorkAreaModelEnum.Strategic_communication:
+                            workSheet.Cells[line, 3].Value = Resource.StrategicCommunication;
+                            break;
+                        case Models.User.WorkAreaModelEnum.ExternalConsultant:
+                            workSheet.Cells[line, 3].Value = Resource.ExternalConsultant;
+                            break;
+                    }          
                     workSheet.Cells[line, 3].Style.Font.Size = 12;
                     workSheet.Cells[line, 3].Style.Font.Bold = true;
                     workSheet.Cells[line, 3].Style.Border.Top.Style = ExcelBorderStyle.Hair;
