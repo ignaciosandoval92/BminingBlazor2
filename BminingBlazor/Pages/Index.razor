@@ -1,22 +1,27 @@
-@page "/"
+ï»¿@page "/"
+
 @inject IReportService ReportService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IUserDataService UserDataService
 @inject IMatDialogService MatDialogService
+
+
 @if (RadiationUV < 1)
 {
     <MatProgressBar Indeterminate="true"></MatProgressBar>
 }
 else
-{ <h6 style="min-height:13pt;max-width:50pt;font-size:10pt;background-color:#002060;color:azure;" class="text-center"> @TypeRadiation()</h6>
-<h4 style="background-color:@ColorRadiation();max-width:50pt;" class="text-center">@RadiationUV</h4>
-<h1 style="min-height: 15pt; max-width: 50pt; font-size: 5pt; background-color: #002060; color: azure;" class="text-center"> @SecurityRadiation()</h1>
-<img src="https://i.ibb.co/C0VbHxM/Tabla-radiacio-n-UV.png" class="center" />
-
-@if (UserId == 26||UserId==25)
 {
-    <button class="bmining-button" @onclick="EditRadiationUV">@Resource.Edit</button>
-}
+    <div>
+        <h6 style="min-height:13pt;max-width:50pt;font-size:10pt;background-color:#002060;color:azure;" class="text-center"> @TypeRadiation()</h6>
+        <h4 style="background-color:@ColorRadiation();max-width:50pt;" class="text-center">@RadiationUV</h4>
+        <h1 style="min-height: 15pt; max-width: 50pt; font-size: 5pt; background-color: #002060; color: azure;" class="text-center"> @SecurityRadiation()</h1>
+        <img src="https://i.ibb.co/C0VbHxM/Tabla-radiacio-n-UV.png" class="center" />
+    </div>
+    @if (UserId == 26 || UserId == 25)
+    {
+        <button class="bmining-button" @onclick="EditRadiationUV">@Resource.Edit</button>
+    }
 }
 
 
@@ -66,23 +71,23 @@ else
     {
         if (RadiationUV == 1 || RadiationUV == 2)
         {
-            return "NO NECESITA PROTECCIÓN";
+            return "NO NECESITA PROTECCIÃ“N";
         }
         if (RadiationUV == 3 || RadiationUV == 4 || RadiationUV == 5)
         {
-            return "NECESITA PROTECCIÓN";
+            return "NECESITA PROTECCIÃ“N";
         }
         if (RadiationUV == 6 || RadiationUV == 7)
         {
-            return "NECESITA PROTECCIÓN";
+            return "NECESITA PROTECCIÃ“N";
         }
         if (RadiationUV == 8 || RadiationUV == 9 || RadiationUV == 10)
         {
-            return "NECESITA PROTECCIÓN EXTRA";
+            return "NECESITA PROTECCIÃ“N EXTRA";
         }
         if (RadiationUV == 11)
         {
-            return "NECESITA PROTECCIÓN EXTRA";
+            return "NECESITA PROTECCIÃ“N EXTRA";
         }
         else
         {
