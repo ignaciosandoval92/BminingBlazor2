@@ -370,7 +370,7 @@
     <value>Inicio</value>
   </data>
   <data name="CreateActivityRecord" xml:space="preserve">
-    <value>Crear registro de actividad</value>
+    <value>Crear R.A.</value>
   </data>
   <data name="SecurityReflection" xml:space="preserve">
     <value>Reflexión de seguridad</value>
@@ -499,7 +499,7 @@
     <value>Buscar</value>
   </data>
   <data name="ListActivityRecord" xml:space="preserve">
-    <value>Listado de Registro de Actividad</value>
+    <value>Listado de R.A.</value>
   </data>
   <data name="Notauthorized" xml:space="preserve">
     <value>No Autorizado</value>

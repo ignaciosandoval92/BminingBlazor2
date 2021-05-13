@@ -28,5 +28,9 @@ namespace BminingBlazor.Services
         Task<List<ProjectTrackingWeekViewModel>> GetPendingWeekOrdinaryFromManager(int idProject, int idManager, DateTime startDate, DateTime to);
         Task<List<ProjectResumeViewModel>> GetProjectExtraordinaryByManager(int managerId, DateTime from, DateTime to);
         Task<List<ProjectResumeViewModel>> GetProjectOrdinaryByManager(int managerId, DateTime from, DateTime to);
+        Task<List<ProjectTrackingWeekViewModel>> GetPendingWeekOrdinaryFromAdmin(int idProject, int idAdmin, DateTime startDate, DateTime to);
+        Task<List<ProjectResumeViewModel>> GetProjectOrdinaryByAdmin(int AdminId, DateTime from, DateTime to);
+        Task<List<ProjectTrackingWeekViewModel>> GetPendingWeekExtraordinaryFromAdmin(int idProject, int idAdmin, DateTime startDate, DateTime to);
+        Task<List<ProjectResumeViewModel>> GetProjectExtraordinaryByAdmin(int AdminId, DateTime from, DateTime to);
     }
 }

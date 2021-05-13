@@ -709,12 +709,33 @@ h1, h2, h3, h4, h5, h6 {
     }
         
 }
+.icon-audit-hours {
+    background-image: url(https://i.ibb.co/QMyvpQB/2.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+.icon-register-activity {
+    background-image: url(https://i.ibb.co/zxDT7b3/4.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
 .icon-calendar {
     background-image: url(https://i.ibb.co/GpQzssx/calendario-Recurso-28-4x.png);
     width: 20px;
     height: 20px;
     background-repeat:no-repeat;
     background-size:20px 20px;
+}
+.icon-users {
+    background-image: url(https://i.ibb.co/1snJs8G/6.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
 }
 .icon-user {
     background-image: url(https://i.ibb.co/3pY8531/user-Recurso-8-4x.png);
@@ -738,11 +759,11 @@ h1, h2, h3, h4, h5, h6 {
     background-size: 20px 20px;
 }
 .icon-report {
-    background-image: url(https://i.ibb.co/Qc5PvcX/reporte-Recurso-8-4x.png);
-    width: 20px;
+    background-image: url(https://i.ibb.co/BLcd096/3.png);
+    width: 16.6px;
     height: 20px;
     background-repeat: no-repeat;
-    background-size: 20px 20px;
+    background-size: 16.6px 20px;
 }
 .icon-arrow {
     background-image: url(https://i.ibb.co/kDXKqfY/flecha-Recurso-6-4x.png);
@@ -753,24 +774,39 @@ h1, h2, h3, h4, h5, h6 {
 }
 .icon-home {
     background-image: url(https://i.ibb.co/vkxz1RP/home-Recurso-5-4x.png);
-    width: 15px;
-    height: 15px;
-    background-repeat: no-repeat;
-    background-size: 15px 15px;
-}
-.icon-info {
-    background-image: url(https://i.ibb.co/rtXqp4D/seguridad-Recurso-10-4x.png);
-    width: 18px;
-    height: 20px;
-    background-repeat: no-repeat;
-    background-size: 18px 20px;
-}
-.icon-projects {
-    background-image: url(https://i.ibb.co/Brnp1Qd/proyectos-Recurso-10-4x.png);
     width: 20px;
     height: 20px;
     background-repeat: no-repeat;
     background-size: 20px 20px;
+}
+.icon-info {
+    background-image: url(https://i.ibb.co/GCT18sR/1.png);
+    width: 16.6px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 16.6px 20px;
+}
+.icon-client {
+    background-image: url(https://i.ibb.co/2K5ztdp/agregar-Recurso-4-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+}
+.icon-point {
+    background-image: url(https://i.ibb.co/6Y8byrs/5.png);
+    width: 5px;
+    height: 5px;
+    background-repeat: no-repeat;
+    background-size: 5px 5px;
+}
+
+.icon-projects {
+    background-image: url(https://i.ibb.co/cwhGC3K/14.png);
+    width: 28px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 28px 20px;
 }
 .icon-arrowselect {
     background-image: url(https://i.ibb.co/1fRp2rZ/flecha-abajo-Recurso-10-4x.png);
@@ -780,7 +816,7 @@ h1, h2, h3, h4, h5, h6 {
     background-size: 15px 15px;
 }
 .btn-member {
-    background-image: url(https://i.ibb.co/nBB0xsg/member-Recurso-14-4x.png);
+    background-image: url(https://i.ibb.co/1snJs8G/6.png);
     width: 20px;
     height: 20px;
     background-repeat: no-repeat;
@@ -788,7 +824,7 @@ h1, h2, h3, h4, h5, h6 {
     background-color: transparent;
     display: inline-block;
     border: none;
-    transform-origin:left;
+    transform-origin: left;
 }
 .btn-download {
     background-image: url(https://i.ibb.co/LxyFZFj/download-Recurso-15-4x.png);
@@ -825,6 +861,39 @@ h1, h2, h3, h4, h5, h6 {
 }
 .btn-view {
     background-image: url(https://i.ibb.co/Q8KbjrF/view-Recurso-18-4x.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-color: transparent;
+    display: inline-block;
+    border: none;
+    transform-origin: left;
+}
+.approved {
+    background-image: url(https://i.ibb.co/Vv8WrTd/9.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-color: transparent;
+    display: inline-block;
+    border: none;
+    transform-origin: left;
+}
+.waiting-approved {
+    background-image: url(https://i.ibb.co/jDHt0T5/13.png);
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-color: transparent;
+    display: inline-block;
+    border: none;
+    transform-origin: left;
+}
+.not-approved {
+    background-image: url(https://i.ibb.co/44bYJSC/10.png);
     width: 20px;
     height: 20px;
     background-repeat: no-repeat;

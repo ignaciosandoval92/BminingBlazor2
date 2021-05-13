@@ -137,7 +137,7 @@
 
         <div class="alternate1-break"></div>
 
-        <h6 class="header-break">@Resource.OrdinaryHours</h6>
+        <h5 class="header-break">@Resource.OrdinaryHours</h5>
         <div class="alternate2-break"></div>
 
         <table>
@@ -167,16 +167,32 @@
                         <td>@proord.TrackedHoursThu</td>
                         <td>@proord.TrackedHoursFri</td>
                         <td>
+                            @if (proord.SendHours == 1)
+                            {
+                                if (proord.MyStatusHours == 0)
+                                {
+                                    <p class="waiting-approved" />
+                                }
+                                else
+                                {
+                                    <p class="approved" />
+                                }
+
+                            }
                             @if (proord.SendHours == 0)
                             {
-                                <button class="btn-delete" @onclick="() => RemoveItem(proord.MyProjectId, 0)"></button>
+                                if (proord.MyStatusHours == 2)
+                                {
+                                    <p class="not-approved align-bottom float-left" />
+                                }
+                                <button class="btn-delete align-bottom " @onclick="() => RemoveItem(proord.MyProjectId, 0)"></button>
                             }
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        <h6 class="header-break">@Resource.ExtraordinaryHours</h6>
+        <h5 class="header-break">@Resource.ExtraordinaryHours</h5>
         <div class="alternate2-break"></div>
 
         <table>
@@ -206,9 +222,25 @@
                         <td>@proext.TrackedHoursThu</td>
                         <td>@proext.TrackedHoursFri</td>
                         <td>
+                            @if (proext.SendHours == 1)
+                            {
+                                if (proext.MyStatusHours == 0)
+                                {
+                                    <p class="waiting-approved" />
+                                }
+                                else
+                                {
+                                    <p class="approved" />
+                                }
+
+                            }
                             @if (proext.SendHours == 0)
                             {
-                                <button class="btn-delete" @onclick="() => RemoveItem(proext.MyProjectId, 1)"></button>
+                                if (proext.MyStatusHours == 2)
+                                {
+                                    <p class="not-approved align-bottom float-left" />
+                                }
+                                <button class="btn-delete align-bottom " @onclick="() => RemoveItem(proext.MyProjectId, 0)"></button>
                             }
                         </td>
                     </tr>
@@ -220,7 +252,7 @@
             <button @onclick="() => AddItem(MyStartOfWeek)" class="bmining-button ">@Resource.Load</button>
             <button @onclick="EditHours" class="bmining-button">@Resource.Edit</button>
             <button @onclick="()=>SendHours(_projectsOrdinary,_projectsExtraordinary)" class="bmining-button">@Resource.Send</button>
-            <button @onclick="CopyLastWeek" class="bmining-button">@Resource.CopyLastWeek</button>          
+            <button @onclick="CopyLastWeek" class="bmining-button">@Resource.CopyLastWeek</button>
         }
     }
 
@@ -366,9 +398,8 @@
 
     }
 
-    private async Task EditHours()
-    {
-        _projects.Clear();
+    private void EditHours()
+    {       
         NavigationManager.NavigateTo($"/EditHours/{userId}/{MyStartOfWeek.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}/{MyStartOfWeek.AddDays(6).ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}", true);
 
     }
@@ -388,43 +419,7 @@
         IsLoading = false;
 
     }
-    private string TotalHoursStatus(double totalHours, string day)
-    {
-        if (totalHours > 9)
-        {
-            return "error";
-        }
-        else if (totalHours == 9)
-        {
-            if (day == Resource.Friday)
-            {
-                return "error";
-            }
-            return "info";
-        }
-        else
-        {
-            if (day == Resource.Friday)
-            {
 
-                if (totalHours == 5)
-                {
-                    return "info";
-                }
-                else if (totalHours > 5)
-                {
-                    return "error";
-                }
-                else
-                {
-                    return " ";
-                }
-
-            }
-
-            return " ";
-        }
-    }
     private async void CopyLastWeek()
     {
         IsLoading = true;
@@ -482,7 +477,7 @@
                 await TimeTrackingService.SendTrackedHours(pro.IdWed);
                 await TimeTrackingService.SendTrackedHours(pro.IdThu);
                 await TimeTrackingService.SendTrackedHours(pro.IdFri);
-               }
+            }
         }
         foreach (var pro in projectsextraordinary)
         {
@@ -500,5 +495,5 @@
         NavigationManager.NavigateTo("/dashboard_tracking_hours", true);
     }
 
-    
+
 }

@@ -41,7 +41,7 @@
 
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="ViewUsers">
-                <span class="oi icon-user"></span>@Resource.Users
+                <span class="oi icon-users"></span>@Resource.Users
             </NavLink>
         </li>
 
@@ -53,7 +53,7 @@
 
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="AddClient">
-                <span class="oi icon-plus" aria-hidden="true"></span> @Resource.AddClient
+                <span class="oi icon-client" aria-hidden="true"></span> @Resource.AddClient
             </NavLink>
         </li>
         <li class="nav-item px-3">
@@ -72,10 +72,10 @@
             @if (_expandReports)
             {
                 <NavLink class="nav-link" href="/Reports">
-                    @Resource.Users
+                    <span class="oi icon-point" aria-hidden="true"></span> @Resource.Users
                 </NavLink>
                 <NavLink class="nav-link" href="/reportsadmin">
-                    @Resource.Administration
+                    <span class="oi icon-point" aria-hidden="true"></span>@Resource.Administration
                 </NavLink>
             }
         </li>      
@@ -93,11 +93,11 @@
             <NavLink class="nav-link pointer-hover" @onclick="() => _expandAuditHours = !_expandAuditHours">
                 @if (!_expandAuditHours)
                 {
-                    <span class="oi icon-arrow" aria-hidden="true"></span>
+                    <span class="oi icon-audit-hours" aria-hidden="true"></span>
                 }
                 else
                 {
-                    <span class="oi icon-arrowselect" aria-hidden="true"></span>
+                    <span class="oi icon-audit-hours" aria-hidden="true"></span>
                 }
                 @Resource.AuditHours
             </NavLink>
@@ -105,10 +105,10 @@
             @if (_expandAuditHours)
             {
                 <NavLink class="nav-link" href="/project_manager_dashboard">
-                    @Resource.ProjectManager
+                    <span class="oi icon-point" aria-hidden="true"></span> @Resource.ProjectManager
                 </NavLink>
                 <NavLink class="nav-link" href="/admin_dashboard">
-                    @Resource.Administration
+                    <span class="oi icon-point" aria-hidden="true"></span> @Resource.Administration
                 </NavLink>
             }
         </li>
@@ -117,27 +117,27 @@
             <NavLink class="nav-link pointer-hover" @onclick="() => _expandActivityRecord = !_expandActivityRecord">
                 @if (!_expandActivityRecord)
                 {
-                    <span class="oi icon-arrow" aria-hidden="true"></span>
+                    <span class="oi icon-register-activity" aria-hidden="true"></span>
                 }
                 else
                 {
-                    <span class="oi icon-arrowselect" aria-hidden="true"></span>
+                    <span class="oi icon-register-activity" aria-hidden="true"></span>
                 }
                 @Resource.ActivityRecord
             </NavLink>
             @if (_expandActivityRecord)
             {
-                <NavLink class="nav-link px-1" href="/dashboard_activity_record">
-                    @Resource.ActivityRecords
+                <NavLink class="nav-link "  href="/dashboard_activity_record">
+                    <span class="oi icon-point" aria-hidden="true"></span> @Resource.ActivityRecords
                 </NavLink>
-                <NavLink class="nav-link px-1 " href="/create_activity_record">
-                    @Resource.CreateActivityRecord
+                <NavLink class="nav-link"  href="/create_activity_record">
+                    <span class="oi icon-point" aria-hidden="true"></span>  @Resource.CreateActivityRecord
                 </NavLink>
-                <NavLink class="nav-link px-1 " href="/ListViewActivityRecord">
-                    @Resource.ListActivityRecord
+                <NavLink class="nav-link  "  href="/ListViewActivityRecord">
+                    <span class="oi icon-point" aria-hidden="true"></span> @Resource.ListActivityRecord
                 </NavLink>
-                <NavLink class="nav-link px-1 " href="/ViewVisibleAndActivesCommitments">
-                    @Resource.ViewCommitments
+                <NavLink class="nav-link  "  href="/ViewVisibleAndActivesCommitments">
+                    <span class="oi icon-point" aria-hidden="true"></span>  @Resource.ViewCommitments
                 </NavLink>
             }
         </li>
