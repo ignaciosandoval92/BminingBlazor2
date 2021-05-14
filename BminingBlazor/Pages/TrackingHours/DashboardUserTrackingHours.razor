@@ -361,18 +361,10 @@
 
         _projectsExtraordinary.Clear();
         _projectsOrdinary.Clear();
-        var chargedProjectsOrdinary = await TimeTrackingService.ChargedProjectOrdinary(userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
-        foreach (var i in chargedProjectsOrdinary)
-        {
-            _projectOrdinary = await TimeTrackingService.ReadProjectWeekOrdinary(i.MyProjectId, userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
-            _projectsOrdinary.Add(_projectOrdinary);
-        }
-        var chargedProjectsExtraordinary = await TimeTrackingService.ChargedProjectExtraordinary(userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
-        foreach (var i in chargedProjectsExtraordinary)
-        {
-            _projectExtraordinary = await TimeTrackingService.ReadProjectWeekExtraordinary(i.MyProjectId, userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
-            _projectsExtraordinary.Add(_projectExtraordinary);
-        }
+        _projectsOrdinary = await TimeTrackingService.ChargedProjectOrdinary(userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+    
+        _projectsExtraordinary = await TimeTrackingService.ChargedProjectExtraordinary(userId, MyStartOfWeek, MyStartOfWeek.AddDays(6));
+      
         this.StateHasChanged();
     }
 

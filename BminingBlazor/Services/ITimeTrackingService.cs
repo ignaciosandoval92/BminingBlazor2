@@ -18,8 +18,8 @@ namespace BminingBlazor.Services
         Task RemoveTimeTrackingHour(int id);
         Task EditStatusTimeTracking(int id, TimeTrackingStatusEnum waitingForApproval, double hours);
         Task<ProjectManagerTrackingHoursApprovalViewModel> GetPendingTimeTrackingHoursByAdmin(int adminId);
-        Task<List<ProjectResumeViewModel>> ChargedProjectOrdinary(int userId, DateTime from, DateTime to);
-        Task<List<ProjectResumeViewModel>> ChargedProjectExtraordinary(int userId, DateTime from, DateTime to);
+        Task<List<ProjectTrackingWeekViewModel>> ChargedProjectOrdinary(int userId, DateTime from, DateTime to);
+        Task<List<ProjectTrackingWeekViewModel>> ChargedProjectExtraordinary(int userId, DateTime from, DateTime to);
         Task RemoveWeekTrackingHoursFromProject(int idProject, int idUser, DateTime from, DateTime to,int TypeHours);
         Task<ProjectTrackingWeekViewModel> ReadProjectWeekOrdinary(int idProject, int idUser, DateTime startDate, DateTime to);
         Task<ProjectTrackingWeekViewModel> ReadProjectWeekExtraordinary(int idProject, int idUser, DateTime startDate, DateTime to);
@@ -32,5 +32,7 @@ namespace BminingBlazor.Services
         Task<List<ProjectResumeViewModel>> GetProjectOrdinaryByAdmin(int AdminId, DateTime from, DateTime to);
         Task<List<ProjectTrackingWeekViewModel>> GetPendingWeekExtraordinaryFromAdmin(int idProject, int idAdmin, DateTime startDate, DateTime to);
         Task<List<ProjectResumeViewModel>> GetProjectExtraordinaryByAdmin(int AdminId, DateTime from, DateTime to);
+        Task<List<ProjectResumeViewModel>> ChargedProjectsOrdinary(int userId, DateTime from, DateTime to);
+        Task<List<ProjectResumeViewModel>> ChargedProjectsExtraordinary(int userId, DateTime from, DateTime to);
     }
 }

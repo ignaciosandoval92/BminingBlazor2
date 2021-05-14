@@ -239,12 +239,12 @@
 
 @code {
 
-        [Parameter]
-        public int userId { get; set; }
-        [Parameter]
-        public DateTime startDate { get; set; }
-        [Parameter]
-        public DateTime endDate { get; set; }
+    [Parameter]
+    public int userId { get; set; }
+    [Parameter]
+    public DateTime startDate { get; set; }
+    [Parameter]
+    public DateTime endDate { get; set; }
 
 
 
@@ -274,18 +274,9 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            var chargedProjectsOrdinary = await TimeTrackingService.ChargedProjectOrdinary(userId, startDate, endDate);
-            foreach (var i in chargedProjectsOrdinary)
-            {
-                _projectOrdinary = await TimeTrackingService.ReadProjectWeekOrdinary(i.MyProjectId, userId, startDate, endDate);
-                _projectsOrdinary.Add(_projectOrdinary);
-            }
-            var chargedProjectsExtraordinary = await TimeTrackingService.ChargedProjectExtraordinary(userId, startDate, endDate);
-            foreach (var i in chargedProjectsExtraordinary)
-            {
-                _projectExtraordinary = await TimeTrackingService.ReadProjectWeekExtraordinary(i.MyProjectId, userId, startDate, endDate);
-                _projectsExtraordinary.Add(_projectExtraordinary);
-            }
+            _projectsOrdinary = await TimeTrackingService.ChargedProjectOrdinary(userId, startDate, endDate);
+            _projectsExtraordinary = await TimeTrackingService.ChargedProjectExtraordinary(userId, startDate, endDate);
+      
             IsLoading = false;
             StateHasChanged();
         }

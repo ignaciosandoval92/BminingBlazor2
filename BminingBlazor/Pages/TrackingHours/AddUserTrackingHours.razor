@@ -254,7 +254,7 @@
         {
             MyTrackingHourDate = new DateTime(Year, Month, Day),
         };
-        _projectOrdinary = await TimeTrackingService.ChargedProjectOrdinary(userId, ViewModel.MyTrackingHourDate, ViewModel.MyTrackingHourDate.AddDays(6));
+        _projectOrdinary = await TimeTrackingService.ChargedProjectsOrdinary(userId, ViewModel.MyTrackingHourDate, ViewModel.MyTrackingHourDate.AddDays(6));
         foreach (var project in _projectOrdinary)
         {
             var itemToRemove = projectsBelongsUserIdOrdinary.Single(r => r.MyProjectId == project.MyProjectId);
@@ -267,7 +267,7 @@
         {
             MyTrackingHourDate = new DateTime(Year, Month, Day),
         };
-        _projectExtraordinary = await TimeTrackingService.ChargedProjectExtraordinary(userId, ViewModel2.MyTrackingHourDate, ViewModel2.MyTrackingHourDate.AddDays(6));
+        _projectExtraordinary = await TimeTrackingService.ChargedProjectsExtraordinary(userId, ViewModel2.MyTrackingHourDate, ViewModel2.MyTrackingHourDate.AddDays(6));
         foreach (var project in _projectExtraordinary)
         {
             var itemToRemove = projectsBelongsUserIdExtraordinary.Single(r => r.MyProjectId == project.MyProjectId);
