@@ -130,6 +130,9 @@ namespace Data
                         case Models.User.WorkAreaModelEnum.ExternalConsultant:
                             workSheet.Cells[line, 8].Value = Resource.ExternalConsultant;
                                         break;
+                        case Models.User.WorkAreaModelEnum.NotApply:
+                            workSheet.Cells[line, 8].Value = Resource.NotApply;
+                            break;
                     }                 
                     workSheet.Cells[line, 8].Style.Font.Size = 12;
                     workSheet.Cells[line, 8].Style.Font.Bold = true;
