@@ -282,7 +282,7 @@ namespace BminingBlazor.Services
                 .Select(UserConstants.HomeAddress)
                 .Select(MemberConstants.CodMembers)
                 .Where($"{MembersTable}.{MemberConstants.ProjectId}", idProject)
-                .GroupBy(UserConstants.Name)
+                .GroupBy(UserConstants.UserId)
                 .GetAsync<UserModel>()).ToList();
             var membersViewModel = new List<MemberViewModel>();
             foreach (var member in members)
