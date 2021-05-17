@@ -117,9 +117,7 @@ namespace BminingBlazor.Services
 
             var userQuery = queryFactory.Query(TableConstants.UserTable);
 
-            var query = queryFactory.Query(TableConstants.TimeTrackingTable)
-                .Where(TimeTrackingConstants.TimeTrackingStatusId, (int)TimeTrackingStatusEnum.WaitingForApproval)
-                .Where(TimeTrackingConstants.SendHours, (int)TimeTrackingSendHoursEnum.Send)
+            var query = queryFactory.Query(TableConstants.TimeTrackingTable)             
                 .Where(TimeTrackingConstants.TrackedHours, ">", 0)
                 .WhereBetween(TimeTrackingConstants.TimeTrackingDate, from, to)
                 .Join(TableConstants.ProjectTable, $"{TableConstants.ProjectTable}.{ProjectConstants.ProjectId}",
