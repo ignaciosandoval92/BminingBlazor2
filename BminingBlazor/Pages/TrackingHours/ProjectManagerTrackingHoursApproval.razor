@@ -73,6 +73,7 @@
                             <td>
                                 <button class="btn-approved" @onclick="()=>ApproveHoursOrdinary(pro)"></button>
                                 <button class="btn-disapproved" @onclick="()=>RejectHoursOrdinary(pro)"></button>
+                                <MatCheckbox @bind-Value="@pro.MyCheck"></MatCheckbox>
                             </td>
                         </tr>
                     }
@@ -115,6 +116,7 @@
                             <td>
                                 <button class="btn-approved" @onclick="()=>ApproveHoursExtraordinary(pro)"></button>
                                 <button class="btn-disapproved" @onclick="()=>RejectHoursExtraordinary(pro)"></button>
+                                <MatCheckbox @bind-Value="@pro.MyCheck"></MatCheckbox>
                             </td>
                         </tr>
                     }
@@ -161,6 +163,7 @@
                             <td>
                                 <button class="btn-approved" @onclick="()=>ApproveHoursOrdinaryLastWeek(pro)"></button>
                                 <button class="btn-disapproved" @onclick="()=>RejectHoursOrdinaryLastWeek(pro)"></button>
+                                <MatCheckbox @bind-Value="@pro.MyCheck" ></MatCheckbox>
                             </td>
                         </tr>
                     }
@@ -203,6 +206,7 @@
                             <td>
                                 <button class="btn-approved" @onclick="()=>ApproveHoursExtraordinaryLastWeek(pro)"></button>
                                 <button class="btn-disapproved" @onclick="()=>RejectHoursExtraordinaryLastWeek(pro)"></button>
+                                <MatCheckbox @bind-Value="@pro.MyCheck"></MatCheckbox>
                             </td>
                         </tr>
                     }
@@ -212,6 +216,7 @@
             </table>
             <div class="alternate1-break"></div>
         }
+        <button @onclick="()=>ApprovedCheckingWeeks(_projectsOrdinary,_projectsExtraordinary,_projectsOrdinaryLastWeek,_projectsExtraordinaryLastWeek)" class="bmining-button float-right">Aprobar horas seleccionadas</button>
     }
     else
     {
@@ -336,7 +341,88 @@
             StateHasChanged();
         }
     }
-
+    private async Task ApprovedCheckingWeeks(List<ProjectTrackingWeekViewModel> projectsOrdinary, List<ProjectTrackingWeekViewModel> projectsExtraordinary, List<ProjectTrackingWeekViewModel> projectsOrdinaryLastWeek, List<ProjectTrackingWeekViewModel> projectsExtraordinaryLastWeek)
+    {
+        var proordi = new List<ProjectTrackingWeekViewModel>();
+        var proextraordi = new List<ProjectTrackingWeekViewModel>();
+        var proordilastweek = new List<ProjectTrackingWeekViewModel>();
+        var proextraordilastweek = new List<ProjectTrackingWeekViewModel>();
+        IsLoading = true;
+        await Task.Delay(500);
+        foreach(var project in projectsOrdinary )
+        {
+            if(project.MyCheck)
+            {
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdSat);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdSun);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdMon);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdTue);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdWed);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdThu);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdFri);
+                proordi.Add(project);
+            }
+        }
+        foreach (var project in projectsExtraordinary)
+        {
+            if (project.MyCheck)
+            {
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdSat);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdSun);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdMon);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdTue);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdWed);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdThu);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdFri);
+                proextraordi.Add(project);
+            }
+        }
+        foreach (var project in projectsOrdinaryLastWeek)
+        {
+            if (project.MyCheck)
+            {
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdSat);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdSun);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdMon);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdTue);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdWed);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdThu);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdFri);
+                proordilastweek.Add(project);
+            }
+        }
+        foreach (var project in projectsExtraordinaryLastWeek)
+        {
+            if (project.MyCheck)
+            {
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdSat);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdSun);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdMon);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdTue);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdWed);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdThu);
+                await TimeTrackingService.ApproveUserTimeTracking(project.IdFri);
+                proextraordilastweek.Add(project);
+            }
+        }
+        foreach (var project in proordi)
+        {
+            _projectsOrdinary.Remove(project);
+        }
+        foreach (var project in proextraordi)
+        {
+            _projectsExtraordinary.Remove(project);
+        }
+        foreach (var project in proordilastweek)
+        {
+            _projectsOrdinaryLastWeek.Remove(project);
+        }
+        foreach (var project in proextraordilastweek)
+        {
+            _projectsExtraordinaryLastWeek.Remove(project);
+        }
+        IsLoading = false;
+    }
     private async Task ApproveHoursOrdinary(ProjectTrackingWeekViewModel project)
     {
         IsLoading = true;

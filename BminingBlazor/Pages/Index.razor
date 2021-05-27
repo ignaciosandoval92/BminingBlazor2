@@ -12,12 +12,14 @@
 }
 else
 {
+<div>
+    <h1 style="min-height:13pt;max-width:50pt;font-size:8pt;background-color:#002060;color:azure;" class="text-center"> @TypeRadiation()</h1>
+    <h4 style="background-color:@ColorRadiation();max-width:50pt;" class="text-center">@RadiationUV</h4>
+    <h1 style="min-height: 15pt; max-width: 50pt; font-size: 5pt; background-color: #002060; color: azure;" class="text-center"> @SecurityRadiation()</h1>
     <div>
-        <h1 style="min-height:13pt;max-width:50pt;font-size:8pt;background-color:#002060;color:azure;" class="text-center"> @TypeRadiation()</h1>
-        <h4 style="background-color:@ColorRadiation();max-width:50pt;" class="text-center">@RadiationUV</h4>
-        <h1 style="min-height: 15pt; max-width: 50pt; font-size: 5pt; background-color: #002060; color: azure;" class="text-center"> @SecurityRadiation()</h1>
-        <img src="https://i.ibb.co/C0VbHxM/Tabla-radiacio-n-UV.png" class="center" />
+        <img src="https://i.ibb.co/C0VbHxM/Tabla-radiacio-n-UV.png" class="center" />        
     </div>
+</div>
     @if (UserId == 26 || UserId == 25)
     {
         <button class="bmining-button" @onclick="EditRadiationUV">@Resource.Edit</button>

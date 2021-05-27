@@ -36,6 +36,7 @@ namespace BminingBlazor.ViewModels.TrackingHours
         public int IdWed { get; set; }
         public int IdThu { get; set; }
         public int IdFri { get; set; }
+        public bool MyCheck = false;
 
 
     }
