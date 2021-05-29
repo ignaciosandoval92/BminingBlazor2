@@ -19,7 +19,6 @@
     {
         <div>
             <button class="btn-plus" @onclick="AddMembersProjectCallback">
-                
             </button>
 
             <table>
@@ -35,22 +34,25 @@
                     {
                         <tr>
                             <td>
-                                <div class="form-group col-md-6">
-                                    <select class="form-control" @bind="membersProject.MyId" required>
+                               
+
+                                    <select class="form-control " @bind="membersProject.MyId" required>
                                         @foreach (var emails in _users)
                                         {
                                             <option value="@emails.MyId">@emails.MyEmail</option>
                                         }
                                     </select>
-                                </div>
+                               
                             </td>
                             <td><input type="number" step="0.1" @bind="@membersProject.MyProjectHours" /> </td>
                             <td>
                                 <button class="btn-delete" @onclick="()=>DeleteMembersProject(membersProject)">
-                                   
                                 </button>
                             </td>
                         </tr>
+
+
+
                     }
                 </tbody>
             </table>
@@ -63,8 +65,10 @@
 @code {
     [Parameter]
     public int IdProject { get; set; }
-    private List<MemberViewModel> _membersItems;
-    private List<UserViewModel> _users;
+    public List<MemberViewModel> _membersItems = new List<MemberViewModel>();
+    public List<MemberViewModel> _users = new List<MemberViewModel>();
+    public List<UserViewModel> users = new List<UserViewModel>();
+    public List<MemberViewModel> _members = new List<MemberViewModel>();
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -72,8 +76,26 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            _users = await UserDataService.ReadUsers();
+            users = await UserDataService.ReadUsers();
             _membersItems = new List<MemberViewModel>();
+            _users = new List<MemberViewModel>();
+            _members = await ProjectDataService.ReadMembers(IdProject);
+            foreach (var member in _members)
+            {
+                var itemToRemove = users.Single(r => r.MyId == member.MyId);
+                this.users.Remove(itemToRemove);
+            }
+            foreach (var user in users)
+            {
+                _users.Add(new MemberViewModel
+                {
+                    MyId = user.MyId,
+                    MyEmail = user.MyEmail,
+                    MyName = user.MyName,
+                    MyPaternalSurname = user.MyPaternalSurname
+                });
+            }
+
             StateHasChanged();
         }
     }
